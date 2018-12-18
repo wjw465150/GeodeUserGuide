@@ -1,0 +1,7 @@
+*.pdf
+*~
+*.bak
+*.off
+*.old
+.DS_Store
+
