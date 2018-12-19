@@ -548,7 +548,7 @@ See [MemberMXBean Notifications](http://geode.apache.org/docs/guide/17/managing/
 
 ##### RegionMXBean
 
-会员局部区域的视角。
+成员局部区域的视角。
 
 **MBean Details**
 
@@ -2446,7 +2446,7 @@ BACKUPDEFAULT_1.crf BACKUPDEFAULT_1.drf BACKUPDEFAULT.if
 ./2012-10-18-13-44-53/dasmith_e6410_server1_8623_v1_33892/user:
 ```
 
-#### 离线会员 - 手动追赶在线备份
+#### 离线成员 - 手动追赶在线备份
 
 如果在联机备份期间必须使成员脱机，则可以手动备份其磁盘存储。 手动将此成员的文件带入在线备份框架，并从另一个成员的脚本的副本开始手动创建还原脚本：
 
@@ -2936,7 +2936,7 @@ Apache Geode体系结构和管理功能有助于检测和解决网络分区问�
 
   Geode使用故障检测从成员资格视图中删除无响应的成员。
 
-- **会员协调员，主要会员和会员加权**
+- **成员协调员，主要成员和成员加权**
 
   网络分区检测使用指定的成员资格协调器和加权系统来计算潜在客户成员以确定是否发生了网络分区。
 
@@ -2988,7 +2988,7 @@ Geode通过使用加权系统来确定剩余的可用成员是否具有足够的
 
 5. 每次成员协调员发送视图时，每个成员都会计算当前成员资格视图中成员的总权重，并将其与先前成员资格视图的总权重进行比较。 一些条件需要注意：
 
-   - 当第一个会员资格视图发出时，没有累积的损失。 第一个视图只有附加内容。
+   - 当第一个成员资格视图发出时，没有累积的损失。 第一个视图只有附加内容。
    - 如果新协调员没有看到前一个（失败的）协调员发送的最后一个成员资格视图，则可能会有一个陈旧的成员资格视图。 如果在该失败期间添加了新成员，则在发送第一个新视图时可能会忽略新成员。
    - 如果在故障转移期间将成员移除给新协调员，那么新协调员将必须在视图准备步骤中确定这些损失。
 
@@ -3041,17 +3041,17 @@ ent(8788)<v7>:24136/53525]
 
 - 视图的第二部分列出了当前视图中的所有成员进程。`[ent(5767)<v0>:8700/44876, ent(5829)<v1>:48034/55334, ent(5875)<v2>:4738/54595, ent(5822)<v5>:49380/39564, ent(8788)<v7>:24136/53525]`,在上面的例子中。
 
-- 每个列出的成员的总体格式为：`Address(processId)<vXX>:membership-port/distribution port`。 会员协调员几乎总是视图中的第一个成员，其余的按年龄排序。
+- 每个列出的成员的总体格式为：`Address(processId)<vXX>:membership-port/distribution port`。 成员协调员几乎总是视图中的第一个成员，其余的按年龄排序。
 
 - membership -port是用于发送数据报的JGroups TCP UDP端口。 分发端口是用于缓存消息传递的TCP / IP端口。
 
 - 每个成员都会观察其成员的右侧以进行故障检测。
 
-### 会员协调员，主要会员和会员加权
+### 成员协调员，主要成员和成员加权
 
 网络分区检测使用指定的成员资格协调器和加权系统来计算潜在客户成员以确定是否发生了网络分区。
 
-#### 会员协调员和主要成员
+#### 成员协调员和主要成员
 
 成员协调员是管理集群中其他成员的进入和退出的成员。 启用网络分区检测后，协调器可以是任何Geode成员，但首选定位器。 在基于定位器的系统中，如果所有定位器都处于重新连接状态，则系统继续运行，但在成功重新连接定位器之前，新成员无法加入。 定位器重新连接后，重新连接的定位器将接管协调器的角色。
 
@@ -3081,16 +3081,16 @@ ent(8788)<v7>:24136/53525]
 
 **例子 1:** 集群有12个成员。 2个定位器，10个缓存服务器（一个缓存服务器被指定为主要成员。）查看总权重等于111。
 
-- 4个缓存服务器无法访问。 会员总权重减少40（36％）。 由于36％低于51％的损失阈值，因此集群保持不变。
-- 1个定位器和4个缓存服务器（包括主要成员）变得无法访问。 会员减重等于48（43％）。 由于43％低于51％的损失阈值，因此集群保持不变。
-- 5个缓存服务器（不包括主要成员），两个定位器都无法访问。 会员减重等于56（49％）。 由于49％低于51％的损失阈值，因此集群保持不变。
-- 5个缓存服务器（包括主要成员）和1个定位器变得无法访问。 会员减重等于58（52％）。 由于52％大于51％阈值，协调器启动关闭。
-- 6个缓存服务器（不包括主要成员），两个定位器都无法访问。 会员减重等于66（59％）。 由于59％大于51％阈值，因此新选出的协调器（缓存服务器，因为没有定位器保留）将启动关闭。
+- 4个缓存服务器无法访问。 成员总权重减少40（36％）。 由于36％低于51％的损失阈值，因此集群保持不变。
+- 1个定位器和4个缓存服务器（包括主要成员）变得无法访问。 成员减重等于48（43％）。 由于43％低于51％的损失阈值，因此集群保持不变。
+- 5个缓存服务器（不包括主要成员），两个定位器都无法访问。 成员减重等于56（49％）。 由于49％低于51％的损失阈值，因此集群保持不变。
+- 5个缓存服务器（包括主要成员）和1个定位器变得无法访问。 成员减重等于58（52％）。 由于52％大于51％阈值，协调器启动关闭。
+- 6个缓存服务器（不包括主要成员），两个定位器都无法访问。 成员减重等于66（59％）。 由于59％大于51％阈值，因此新选出的协调器（缓存服务器，因为没有定位器保留）将启动关闭。
 
 **例子 2:** 集群有4个成员。 2个缓存服务器（1个缓存服务器被指定为主要成员），2个定位器。 查看总权重是31。
 
-- 指定为主要成员的缓存服务器变得无法访问。 会员减重等于15或48％。 集群保持工作状态。
-- 指定为主要成员的缓存服务器和1个定位器变得无法访问。 会员减重等于18或58％。 成员协调员启动关闭。 如果无法访问的定位器是成员协调器，则另一个定位器被选为协调器，然后启动关闭。
+- 指定为主要成员的缓存服务器变得无法访问。 成员减重等于15或48％。 集群保持工作状态。
+- 指定为主要成员的缓存服务器和1个定位器变得无法访问。 成员减重等于18或58％。 成员协调员启动关闭。 如果无法访问的定位器是成员协调器，则另一个定位器被选为协调器，然后启动关闭。
 
 即使未启用网络分区，如果由于无响应进程而检测到仲裁丢失，定位器也会记录严重级别的消息以识别失败的进程：`pre由于{0}缓存进程丢失而检测到的仲裁可能丢失：{1}`
 
@@ -3113,7 +3113,7 @@ ent(8788)<v7>:24136/53525]
 
 在网络分区方案中，“丢失方”构成了集群分区，其中成员协调器检测到成员的法定人数不足以继续。
 
-会员协调员在发出其视图准备消息后计算会员权重变化。 如果在视图准备阶段之后没有剩余法定数量的成员，则“丢失方”上的协调器声明网络分区事件，并向成员发送检测到网络分区的UDP消息。 然后协调器使用`ForcedDisconnectException`关闭其集群。 如果成员在协调器关闭连接之前未能收到消息，则它负责自行检测事件。
+成员协调员在发出其视图准备消息后计算成员权重变化。 如果在视图准备阶段之后没有剩余法定数量的成员，则“丢失方”上的协调器声明网络分区事件，并向成员发送检测到网络分区的UDP消息。 然后协调器使用`ForcedDisconnectException`关闭其集群。 如果成员在协调器关闭连接之前未能收到消息，则它负责自行检测事件。
 
 当丢失方发现网络分区事件已经发生时，所有对等成员都会收到`RegionDestroyedException`并带有`Operation`：`FORCED_DISCONNECT`。
 
@@ -5225,7 +5225,7 @@ mcast-send-buffer-size=45000
 
 在多播的初始测试和调整过程中可能会出现几个问题。
 
-**部分或全部会员无法沟通**
+**部分或全部成员无法沟通**
 
 如果您的应用程序和缓存服务器无法相互通信，即使它们配置正确，您的网络上也可能没有多播连接。 通常具有单播连接，但不具有多播连接。 见网络管理员。
 
@@ -6072,7 +6072,7 @@ Geode日志和统计信息是故障排除中使用的两个最重要的工件。
 - [定位器无法启动](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_7BC1FF8CE0FC492CB49235FC4BC4060B)
 - [应用程序或缓存服务器进程无法启动](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_D51F5FA86ABA43C699B593D890BC3E28)
 - [应用程序或缓存服务器不加入集群](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_53D97CED679443F28E20E8B08C699056)
-- [会员流程似乎挂了](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_D607C96A6CBE42FD880F1463A20A8BEF)
+- [成员流程似乎挂了](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_D607C96A6CBE42FD880F1463A20A8BEF)
 - [成员进程不读取gemfire.properties文件中的设置](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_E3B4A6DB81AB4C659C6093D2D61EFD71)
 - [缓存创建失败 - 必须与模式定义根匹配](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_B0698527A4DF4D84877B1AF66291ABFD)
 - [缓存配置不正确](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_B2DAD06E80A4475D96FF2ACCF30FE198)
@@ -6158,7 +6158,7 @@ org.apache.geode.distributed.LocatorLauncher.start(LocatorLauncher.java:596)
   - 在多宿主主机上绑定地址设置不正确。 指定绑定地址时，请使用IP地址而不是主机名。 有时，多个网络适配器配置有相同的主机名。 有关使用绑定地址的详细信息，请参阅[拓扑和通信一般概念](http://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/chapter_overview.html#concept_7628F498DB534A2D8A99748F5DA5DC94)。
 - 错误的Geode版本。 版本不匹配可能导致进程挂起或崩溃。 使用gemfire version命令检查软件版本。
 
-#### 会员流程似乎挂了
+#### 成员流程似乎挂了
 
 解答:
 
@@ -6925,192 +6925,183 @@ enable-cluster-configuration = false
 
 #### 从客户端故障中恢复
 
-When a client crashes, restart it as quickly as possible in the usual way. The client recovers its data from its servers through normal operation. Some of the data may be recovered immediately, and some may be recovered lazily as the client requests it. Additionally, the server may be configured to replay events for some data and for some client queries. These are the different configurations that affect client recovery:
+当客户端崩溃时，以通常的方式尽快重新启动它。 客户端通过正常操作从其服务器恢复其数据。 一些数据可能会立即恢复，有些数据可能会在客户端请求时懒得恢复。 另外，服务器可以被配置为重放某些数据和某些客户端查询的事件。 这些是影响客户端恢复的不同配置：
 
-- **Entries immediately sent to the client**—Entries are immediately sent to the client for entries the client registers interest in, if those entries are present in the server cache.
-- **Entries sent lazily to the client**—Entries are sent lazily to the client for entries that the client registers interest in that are not initially available in the server cache.
-- **Events sent immediately to the client**—If the server has been saving events for the client, these are immediately replayed when the client reconnects. Cache modification events for entries in which the client has registered durable interest are saved.
+- **条目立即发送给客户**—如果这些条目存在于服务器缓存中，则会立即将条目发送到客户端以查找客户端注册的条目。
+- **条目懒惰地发送给客户**—条目被懒惰地发送到客户端，用于客户端注册的对于服务器高速缓存中最初不可用的条目。
+- **事件立即发送给客户端**—如果服务器一直在为客户端保存事件，则在客户端重新连接时会立即重播这些事件。 保存客户端已注册持久兴趣的条目的缓存修改事件。
 
-If you have a durable client configured to connect to multiple servers, keep in mind that Geode does not maintain server redundancy while the client is disconnected. If you lose all of its primary and secondary servers, you lose the client’s queued messages. Even if the servers fail one at a time, so that running clients have time to fail over and pick new secondary servers, an off-line durable client cannot do that and thus loses its queued messages.
-
-
-
-### Recovering from Machine Crashes
-
-When a machine crashes because of a shutdown, power loss, hardware failure, or operating system failure, all of its applications and cache servers and their local caches are lost.
-
-System members on other machines are notified that this machine’s members have left the cluster unexpectedly.
-
-#### Recovery Procedure
-
-To recover from a machine crash:
-
-1. Determine which processes run on this machine.
-2. Reboot the machine.
-3. If a Geode locator runs here, start it first. **注意:** At least one locator must be running before you start any applications or cache servers.
-4. Start the applications and cache servers in the usual order.
-
-If you have to move a locator process to a different machine, the locator isn’t useful until you update the locators list in the `gemfire.properties` file and restart all the applications and cache servers in the cluster. If other locators are running, however, you don’t have to restart the system immediately. For a list of the locators in use, check the locators property in one of the application `gemfire.properties` files.
-
-#### Data Recovery for Partitioned Regions
-
-The partitioned region initializes itself correctly regardless of the order in which the data stores rejoin. The applications and cache servers recreate their data automatically as they return to active work.
-
-If the partitioned region is configured for data redundancy, Geode may be able to handle a machine crash automatically with no data loss, depending on how many redundant copies there are and how many members have to be restarted. See also [Recovery for Partitioned Regions](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_p2p_crashes.html#rec_app_p2p_crash__section_0E7D482DD8E84250A10070431B29AAC5).
-
-If the partitioned region does not have redundant copies, the system members recreate the data through normal operation. If the member that crashed was an application, check whether it was designed to write its data to an external data source. If so, decide whether data recovery is possible and preferable to starting with new data generated through the Geode cluster.
-
-#### Data Recovery for Distributed Regions
-
-The applications and cache servers recreate their data automatically. Recovery happens through replicas, disk store files, or newly generated data, as explained in [Recovery for Distributed Regions](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_p2p_crashes.html#rec_app_p2p_crash__section_19CFA40F5EE64C4F8062BFBF7A6C1571).
-
-If the recovery is from disk stores, you may not get all of the latest data. Persistence depends on the operating system to write data to the disk, so when the machine or operating system fails unexpectedly, the last changes can be lost.
-
-For maximum data protection, you can set up duplicate replicate regions on the network, with each one configured to back up its data to disk. Assuming the proper restart sequence, this architecture significantly increases your chances of recovering every update.
-
-#### Data Recovery in a Client/Server Configuration
-
-If the machine that crashed hosted a server, how the server recovers its data depends on whether the regions are partitioned or distributed. See [Data Recovery for Partitioned Regions](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_machine_crashes.html#rec_system_crash__section_3D2B55C456024BBBBF2898EA4DDAFF5C) and [Data Recovery for Distributed Regions](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_machine_crashes.html#rec_system_crash__section_D3E3002D6C864853B1517A310BD05BDF) as appropriate.
-
-The impact of a server crash on its clients depends on whether the installation is configured for highly available servers. For information, see [Recovering from Crashes with a Client/Server Configuration](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash).
-
-If the machine that crashed hosted a client, restart the client as quickly as possible and let it recover its data automatically from the server. For details, see [Recovering from Client Failure](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_24B1898202E64C1E808C59E39417891B).
+如果您将持久客户端配置为连接到多个服务器，请记住，在客户端断开连接时，Geode不会维护服务器冗余。 如果丢失了所有主服务器和辅助服务器，则会丢失客户端的排队消息。 即使服务器一次失败一个，以便运行的客户端有时间进行故障转移并选择新的辅助服务器，离线持久客户端也无法做到这一点，从而丢失其排队的消息。
 
 
+### 从机器崩溃中恢复
 
-### Recovering from ConfictingPersistentDataExceptions
+当计算机因关闭，断电，硬件故障或操作系统故障而崩溃时，其所有应用程序和缓存服务器及其本地缓存都将丢失。
 
-A `ConflictingPersistentDataException` while starting up persistent members indicates that you have multiple copies of some persistent data, and Geode cannot determine which copy to use.
+其他计算机上的系统成员会收到通知，说明此计算机的成员已意外离开集群。
 
-Normally Geode uses metadata to determine automatically which copy of persistent data to use. Along with the region data, each member persists a list of other members that are hosting the region and whether their data is up to date. A `ConflictingPersistentDataException` happens when two members compare their metadata and find that it is inconsistent. The members either don’t know about each other, or they both think the other member has stale data.
+#### 恢复程序
 
-The following sections describe scenarios that can cause `ConflictingPersistentDataException`s in Geode and how to resolve the conflict.
+要从机器崩溃中恢复：
 
-#### Independently Created Copies
+1. 确定在此计算机上运行的进程。
+2. 重新启动机器。
+3. 如果Geode定位器在此处运行，请先启动它。 **注意:** 在启动任何应用程序或缓存服务器之前，必须至少运行一个定位器。
+4. 按常规顺序启动应用程序和缓存服务器。
 
-Trying to merge two independently created clusters into a single cluster will cause a `ConflictingPersistentDataException`.
+如果必须将定位器进程移动到其他计算机，则在更新`gemfire.properties`文件中的定位器列表并重新启动集群中的所有应用程序和缓存服务器之前，定位器无用。 但是，如果其他定位器正在运行，则不必立即重新启动系统。 有关正在使用的定位器的列表，请检查其中一个应用程序`gemfire.properties`文件中的locators属性。
 
-There are a few ways to end up with independently created systems.
+#### 分区区域的数据恢复
 
-- Create two different clusters by having members connect to different locators that are not aware of each other.
-- Shut down all persistent members and then start up a different set of brand new persistent members.
+无论数据存储重新加入的顺序如何，分区区域都会正确初始化。 应用程序和缓存服务器在返回活动工作时会自动重新创建数据。
 
-Geode will not automatically merge independently created data for the same region. Instead, you need to export the data from one of the systems and import it into the other system. See the section [Cache and Region Snapshots](http://geode.apache.org/docs/guide/17/managing/cache_snapshots/chapter_overview.html#concept_E6AC3E25404D4D7788F2D52D83EE3071) for instructions on how to export data from one system and import it into another.
+如果分区区域配置为数据冗余，则Geode可以自动处理机器崩溃而不会丢失数据，具体取决于有多少冗余副本以及必须重新启动的成员数。 另请参见[分区区域恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_p2p_crashes.html#rec_app_p2p_crash__section_0E7D482DD8E84250A10070431B29AAC5).
 
-#### Starting New Members First
+如果分区区域没有冗余副本，则系统成员通过正常操作重新创建数据。 如果崩溃的成员是应用程序，请检查它是否设计为将其数据写入外部数据源。 如果是，请确定是否可以进行数据恢复，并且最好是从通过Geode集群生成的新数据开始。
 
-Starting a brand new member that has no persistent data before starting older members with persistent data can cause a `ConflictingPersistentDataException`.
+#### 分布式区域的数据恢复
 
-One accidental way this can happen is to shut the system down, add a new member to the startup scripts, and start all members in parallel. By chance, the new member may start first. The issue is that the new member will create an empty, independent copy of the data before the older members start up. Geode will be treat this situation like the [Independently Created Copies](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_conflicting_data_exceptions.html#topic_ghw_z2m_jq__section_sj3_lpm_jq) case.
+应用程序和缓存服务器会自动重新创建数据。 通过副本，磁盘存储文件或新生成的数据进行恢复，如[分布式区域恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_p2p_crashes.html#rec_app_p2p_crash__section_19CFA40F5EE64C4F8062BFBF7A6C1571)中所述。
 
-In this case the fix is simply to move aside or delete the persistent files for the new member, shut down the new member and then restart the older members. When the older members have fully recovered, then restart the new member.
+如果恢复来自磁盘存储，则可能无法获取所有最新数据。 持久性取决于操作系统将数据写入磁盘，因此当计算机或操作系统意外失败时，最后的更改可能会丢失。
 
-#### A Network Failure Occurs and Network Partitioning Detection is Disabled
+为了获得最大程度的数据保护，您可以在网络上设置重复的复制区域，每个复制区域都配置为将其数据备份到磁盘。 假设正确的重启顺序，这种架构显着增加了恢复每次更新的机会。
 
-When `enable-network-partition-detection` is set to the default value of true, Geode will detect a network partition and shut down unreachable members to prevent a network partition (“split brain”) from occurring. No conflicts should occur when the system is healed.
+#### 客户端/服务器配置中的数据恢复
 
-However if `enable-network-partition-detection` is false, Geode will not detect the network partition. Instead, each side of the network partition will end up recording that the other side of the partition has stale data. When the partition is healed and persistent members are restarted, the members will report a conflict because both sides of the partition think the other members are stale.
+如果崩溃的机器托管了服务器，则服务器如何恢复其数据取决于区域是分区还是分布。 请参阅[分区区域的数据恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_machine_crashes.html#rec_system_crash__section_3D2B55C456024BBBBF2898EA4DDAFF5C)和[分布式区域的数据恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_machine_crashes.html#rec_system_crash__section_D3E3002D6C864853B1517A310BD05BDF)视情况而定。
 
-In some cases it may be possible to choose between sides of the network partition and just keep the data from one side of the partition. Otherwise you may need to salvage data and import it into a fresh system.
+服务器崩溃对其客户端的影响取决于是否为高可用性服务器配置了安装。 有关信息，请参阅[使用客户端/服务器配置从崩溃中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash)。
 
-#### Salvaging Data
+如果崩溃的计算机托管了客户端，请尽快重新启动客户端，并让它从服务器自动恢复其数据。 有关详细信息，请参阅[从客户端故障中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_24B1898202E64C1E808C59E39417891B)。
 
-If you receive a `ConflictingPersistentDataException`, you will not be able to start all of your members and have them join the same cluster. You have some members with conflicting data.
 
-First, see if there is part of the system that you can recover. For example if you just added some new members to the system, try to start up without including those members.
+### 从ConfictingPersistentDataExceptions中恢复
 
-For the remaining members you can extract data from the persistent files on those members and import the data.
+启动持久成员时出现`ConflictingPersistentDataException`表示您有一些持久数据的多个副本，并且Geode无法确定要使用哪个副本。
 
-To extract data from the persistent files, use the `gfsh export offline-disk-store` command.
+通常，Geode使用元数据自动确定要使用的持久数据副本。 除了区域数据外，每个成员还会保留托管该区域的其他成员列表以及他们的数据是否是最新的。 当两个成员比较它们的元数据并发现它不一致时，会发生`ConflictingPersistentDataException`。 成员要么彼此不了解，要么他们都认为其他成员有陈旧数据。
+
+以下部分描述了可能导致Geode中出现`ConflictingPersistentDataException`以及如何解决冲突的场景。
+
+#### 独立创建的副本
+
+尝试将两个独立创建的集群合并到一个集群中将导致`ConflictingPersistentDataException`。
+
+有几种方法可以结束独立创建的系统。
+
+- 通过让成员连接到彼此不了解的不同定位器来创建两个不同的集群。
+- 关闭所有持久成员，然后启动一组不同的全新持久成员。
+
+Geode不会自动合并同一区域的独立创建数据。 相反，您需要从其中一个系统导出数据并将其导入另一个系统。 有关如何从一个系统导出数据并将其导入的信息，请参阅[缓存和区域快照](http://geode.apache.org/docs/guide/17/managing/cache_snapshots/chapter_overview.html#concept_E6AC3E25404D4D7788F2D52D83EE3071) 。 
+
+#### 首先开始新成员
+
+在使用持久数据启动旧成员之前启动没有持久数据的全新成员可能会导致`ConflictingPersistentDataException`。
+
+这可能发生的一种偶然方式是关闭系统，向启动脚本添加新成员，并并行启动所有成员。 偶然的机会，新成员可能会先开始。 问题是新成员将在旧成员启动之前创建一个空的，独立的数据副本。 Geode会像[独立创建的副本](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_conflicting_data_exceptions.html#topic_ghw_z2m_jq__section_sj3_lpm_jq)一样处理这种情况。
+
+在这种情况下，修复只是移动或删除新成员的持久文件，关闭新成员，然后重新启动旧成员。 当旧成员完全恢复时，重新启动新成员。
+
+#### 发生网络故障并禁用网络分区检测
+
+当`enable-network-partition-detection`设置为默认值true时，Geode将检测网络分区并关闭无法访问的成员，以防止发生网络分区（“裂脑”）。 系统愈合时不会发生冲突。
+
+但是，如果`enable-network-partition-detection`为false，Geode将不会检测到网络分区。 相反，网络分区的每一端最终都会记录分区的另一侧有陈旧数据。 当分区被修复并且持久成员重新启动时，成员将报告冲突，因为分区的两侧都认为其他成员是陈旧的。
+
+在某些情况下，可以在网络分区的各边之间进行选择，只需从分区的一侧保留数据即可。 否则，您可能需要抢救数据并将其导入新系统。
+
+#### 抢救数据
+
+如果收到`ConflictingPersistentDataException`，您将无法启动所有成员并让它们加入同一个集群。 您有一些成员有冲突的数据。
+
+首先，查看是否有部分系统可以恢复。 例如，如果您刚刚向系统添加了一些新成员，请尝试启动而不包括这些成员。
+
+对于其余成员，您可以从这些成员上的持久性文件中提取数据并导入数据。
+
+要从持久性文件中提取数据，请使用`gfsh export offline-disk-store`命令。
 
 ```
 gfsh> export offline-disk-store --name=MyDiskStore --disk-dirs=./mydir --dir=./outputdir
 ```
 
-This will produce a set of snapshot files. Those snapshot files can be imported into a running system using:
+这将生成一组快照文件。 可以使用以下命令将这些快照文件导入到正在运行的系统中:
 
 ```
 gfsh> import data --region=/myregion --file=./outputdir/snapshot-snapshotTest-test0.gfd --member=server1
 ```
 
 
+### 防止和恢复磁盘完全错误
 
-### Preventing and Recovering from Disk Full Errors
+监视Geode成员的磁盘使用情况非常重要。 如果成员缺少足够的磁盘空间用于磁盘存储，则该成员会尝试关闭磁盘存储及其关联的缓存，并记录错误消息。 由于成员磁盘空间不足而导致的关闭可能导致数据丢失，数据文件损坏，日志文件损坏以及可能对您的应用程序产生负面影响的其他错误情况。
 
-It is important to monitor the disk usage of Geode members. If a member lacks sufficient disk space for a disk store, the member attempts to shut down the disk store and its associated cache, and logs an error message. A shutdown due to a member running out of disk space can cause loss of data, data file corruption, log file corruption and other error conditions that can negatively impact your applications.
+为成员提供足够的磁盘空间后，可以重新启动该成员。
 
-After you make sufficient disk space available to the member, you can restart the member.
+您可以使用以下技术防止磁盘文件错误：
 
-You can prevent disk file errors using the following techniques:
+- 如果您使用的是ext4文件系统，我们建议您预先分配磁盘存储文件和磁盘存储元数据文件。 预分配为这些文件保留磁盘空间，并在磁盘存储区和区域关闭时使成员处于正常状态，允许您在足够的磁盘空间可用后重新启动成员。 默认情况下启用预分配。
+- 配置磁盘的关键使用阈值（磁盘使用警告百分比和磁盘使用关键百分比）。 默认情况下，这些设置为90％用于警告，99％用于关闭缓存的错误。
+- 按照[使用磁盘存储优化系统](http://geode.apache.org/docs/guide/17/managing/disk_storage/optimize_availability_and_performance.html#optimize_avail_disk_store) 中的建议，了解常规磁盘管理最佳做法。
 
-- If you are using ext4 file system, we recommend that you pre-allocate disk store files and disk store metadata files. Pre-allocation reserves disk space for these files and leaves the member in a healthy state when the disk store and regions are shut down, allowing you to restart the member once sufficient disk space has been made available. Pre-allocation is enabled by default.
-- Configure critical usage thresholds (disk-usage-warning-percentage and disk-usage-critical-percentage) for the disk. By default, these are set to 90% for warning and 99% for errors that will shut down the cache.
-- Follow the recommendations in [Optimizing a System with Disk Stores](http://geode.apache.org/docs/guide/17/managing/disk_storage/optimize_availability_and_performance.html#optimize_avail_disk_store) for general disk management best practices.
+当磁盘写入因磁盘已满而导致失败时，该成员将关闭并从集群中删除。
 
-When a disk write fails due to disk full conditions, the member is shutdown and removed from the cluster.
+#### 从磁盘完全错误中恢复
 
-#### Recovering from Disk Full Errors
+如果集群成员由于磁盘已满磁盘故障而失败，请添加或使其他磁盘容量可用，并尝试正常重新启动该成员。 如果该成员未重新启动并且其他成员上的磁盘存储中存在其区域的冗余副本，则可以使用以下步骤还原该成员：
 
-If a member of your cluster fails due to a disk full error condition, add or make additional disk capacity available and attempt to restart the member normally. If the member does not restart and there is a redundant copy of its regions in a disk store on another member, you can restore the member using the following steps:
+1. 从失败的成员中删除或移动磁盘存储文件。
+2. 使用gfsh`show missing-disk-stores`命令识别任何丢失的数据。 您可能需要手动还原此数据。
+3. 使用[revoke missing-disk-store](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/revoke.html)gfsh命令撤消丢失的磁盘存储。
+4. 重启成员。
 
-1. Delete or move the disk store files from the failed member.
-2. Use the gfsh `show missing-disk-stores` command to identify any missing data. You may need to manually restore this data.
-3. Revoke the missing disk stores using the [revoke missing-disk-store](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/revoke.html) gfsh command.
-4. Restart the member.
-
-See [Handling Missing Disk Stores](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores) for more information.
-
+有关详细信息，请参阅[处理丢失的磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores) 。
 
 
-### Understanding and Recovering from Network Outages
+### 理解和恢复网络中断
 
-The safest response to a network outage is to restart all the processes and bring up a fresh data set.
+对网络中断的最安全响应是重新启动所有进程并调出新数据集。
 
-However, if you know the architecture of your system well, and you are sure you won’t be resurrecting old data, you can do a selective restart. At the very least, you must restart all the members on one side of the network failure, because a network outage causes separate clusters that can’t rejoin automatically.
+但是，如果您很好地了解系统的体系结构，并且确定不会恢复旧数据，则可以选择性地重新启动。 至少，您必须重新启动网络故障一侧的所有成员，因为网络中断会导致无法自动重新加入的单独集群。
 
-#### What Happens During a Network Outage
+#### 网络中断期间会发生什么
 
-When the network connecting members of a cluster goes down, system members treat this like a machine crash. Members on each side of the network failure respond by removing the members on the other side from the membership list. If network partitioning detection is enabled (the default), the partition that contains sufficient quorum (> 51% based on member weight) will continue to operate, while the other partition with insufficient quorum will shut down. See [Network Partitioning](http://geode.apache.org/docs/guide/17/managing/network_partitioning/chapter_overview.html#network_partitioning) for a detailed explanation on how this detection system operates.
+当连接集群成员的网络出现故障时，系统成员会将此视为机器崩溃。 网络故障每一方的成员通过从成员列表中删除另一方的成员来做出响应。 如果启用了网络分区检测（默认设置），则包含足够仲裁（基于成员权重的大于51％）的分区将继续运行，而具有足够仲裁的其他分区将关闭。 有关此检测系统如何运行的详细说明，请参阅[网络分区](http://geode.apache.org/docs/guide/17/managing/network_partitioning/chapter_overview.html#network_partitioning)。
 
-In addition, members that have been disconnected either via network partition or due to unresponsiveness will automatically try to reconnect to the cluster unless configured otherwise. See [Handling Forced Cache Disconnection Using Autoreconnect](http://geode.apache.org/docs/guide/17/managing/member-reconnect.html).
+此外，通过网络分区或由于无响应而断开连接的成员将自动尝试重新连接到集群，除非另有配置。 请参阅[使用自动重新连接处理强制缓存断开连接](http://geode.apache.org/docs/guide/17/managing/member-reconnect.html)。
 
-#### Recovery Procedure
+#### 恢复程序
 
-For deployments that have network partition detection and/or auto-reconnect disabled, to recover from a network outage:
+对于禁用网络分区检测和/或自动重新连接的部署，要从网络中断中恢复：
 
-1. Decide which applications and cache servers to restart, based on the architecture of the cluster. Assume that any process other than a data source is bad and needs restarting. For example, if an outside data feed is coming in to one member, which then redistributes to all the others, you can leave that process running and restart the other members.
-2. Shut down all the processes that need restarting.
-3. Restart them in the usual order.
+1. 根据集群的体系结构确定要重新启动的应用程序和缓存服务器。 假设除数据源之外的任何进程都很糟糕，需要重新启动。 例如，如果外部数据馈送进入一个成员，然后将其重新分发给所有其他成员，则可以使该进程保持运行并重新启动其他成员。
+2. 关闭所有需要重新启动的进程。
+3. 按通常顺序重新启动它们。
 
-The members recreate the data as they return to active work. For details, see [Recovering from Application and Cache Server Crashes](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_app_crashes.html#rec_app_crash).
+成员在返回活动工作时重新创建数据。 有关详细信息，请参阅[从应用程序和缓存服务器崩溃中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_app_crashes.html#rec_app_crash)。
 
-#### Effect of Network Failure on Partitioned Regions
+#### 网络故障对分区域的影响
 
-Both sides of the cluster continue to run as though the members on the other side were not running. If the members that participate in a partitioned region are on both sides of the network failure, both sides of the partitioned region also continue to run as though the data stores on the other side did not exist. In effect, you now have two partitioned regions.
+集群的两端继续运行，就好像另一侧的成员没有运行一样。 如果参与分区区域的成员位于网络故障的两侧，则分区区域的两侧也继续运行，就好像另一侧的数据存储不存在一样。 实际上，您现在有两个分区区域。
 
-When the network recovers, the members may be able to see each other again, but they are not able to merge back together into a single cluster and combine their buckets back into a single partitioned region. You can be sure that the data is in an inconsistent state. Whether you are configured for data redundancy or not, you don’t really know what data was lost and what wasn’t. Even if you have redundant copies and they survived, different copies of an entry may have different values reflecting the interrupted workflow and inaccessible data.
+当网络恢复时，成员可能能够再次看到对方，但是他们无法一起合并到一个集群中并将他们的桶组合回一个分区区域。 您可以确定数据处于不一致状态。 无论您是否配置了数据冗余，您都不知道丢失了哪些数据，哪些数据没有丢失。 即使您有冗余副本并且它们幸存下来，条目的不同副本可能具有反映中断的工作流程和不可访问数据的不同值。
 
-#### Effect of Network Failure on Distributed Regions
+#### 网络故障对分布式区域的影响
 
-By default, both sides of the cluster continue to run as though the members on the other side were not running. For distributed regions, however, the regions’s reliability policy configuration can change this default behavior.
+默认情况下，集群的两端继续运行，就好像另一侧的成员未运行一样。 但是，对于分布式区域，区域的可靠性策略配置可以更改此默认行为。
 
-When the network recovers, the members may be able to see each other again, but they are not able to merge back together into a single cluster.
+当网络恢复时，成员可能能够再次看到对方，但是他们无法一起合并到单个集群中。
 
-#### Effect of Network Failure on Persistent Regions
+#### 网络故障对持久性区域的影响
 
-A network failure when using persistent regions can cause conflicts in your persisted data. When you recover your system, you will likely encounter `ConflictingPersistentDataException`s when members start up.
+使用持久性区域时网络故障可能会导致持久数据发生冲突。 恢复系统时，成员启动时可能会遇到`ConflictingPersistentDataException`。
 
-For this reason, `enable-network-partition-detection` must be set to true if you are using persistent regions.
+因此，如果使用持久性区域，则必须将`enable-network-partition-detection`设置为true。
 
-For information on how to recover from `ConflictingPersistentDataException` errors should they occur, see [Recovering from ConfictingPersistentDataExceptions](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_conflicting_data_exceptions.html#topic_ghw_z2m_jq).
+有关如何从`ConflictingPersistentDataException`错误中恢复的信息，请参阅[从ConfictingPersistentDataExceptions中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_conflicting_data_exceptions.html#topic_ghw_z2m_jq)。
 
-#### Effect of Network Failure on Client/Server Installations
+#### 网络故障对客户端/服务器安装的影响
 
-If a client loses contact with all of its servers, the effect is the same as if it had crashed. You need to restart the client. See [Recovering from Client Failure](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_24B1898202E64C1E808C59E39417891B). If a client loses contact with some servers, but not all of them, the effect on the client is the same as if the unreachable servers had crashed. See [Recovering from Server Failure](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_2A598C85FAD44CDEA605646BF7BEE388).
+如果客户端失去与其所有服务器的联系，则效果与崩溃时的效果相同。 您需要重新启动客户端。 请参阅[从客户端故障中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_24B1898202E64C1E808C59E39417891B)。 如果客户端与某些服务器（但不是所有服务器）失去联系，则对客户端的影响与无法访问的服务器崩溃时的影响相同。 请参阅[从服务器故障中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_2A598C85FAD44CDEA605646BF7BEE388)。
 
-Servers, like applications, are members of a cluster, so the effect of network failure on a server is the same as for an application. Exactly what happens depends on the configuration of your site.
-
-
-
-
-
+服务器（如应用程序）是集群的成员，因此网络故障对服务器的影响与应用程序相同。 究竟发生了什么取决于您的网站的配置。
