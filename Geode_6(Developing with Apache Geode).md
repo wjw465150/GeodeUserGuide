@@ -2255,5 +2255,1449 @@ Keep your distributed cache in sync with an outside data source by programming a
 
 
 
+#### Overview of Outside Data Sources
+
+Apache Geode has application plug-ins to read data into the cache and write it out.
+
+The application plug-ins:
+
+1. Load data on cache misses using an implementation of a `org.apache.geode.cache.CacheLoader`. The `CacheLoader.load` method is called when the `get` operation can’t find the value in the cache. The value returned from the loader is put into the cache and returned to the `get`operation. You might use this in conjunction with data expiration to get rid of old data, and your other data loading applications, which might be prompted by events in the outside data source. See [Configure Data Expiration](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html).
+
+2. Write data out to the data source using the cache event handlers, `CacheWriter` and `CacheListener`. For implementation details, see [Implementing Cache Event Handlers](https://geode.apache.org/docs/guide/17/developing/events/implementing_cache_event_handlers.html).
+
+   Implementing Cache Event Handlers
+
+   - `CacheWriter` is run synchronously. Before performing any operation on a region entry, if any cache writers are defined for the region in the cluster, the system invokes the most convenient writer. In partitioned and distributed regions, cache writers are usually defined in only a subset of the caches holding the region - often in only one cache. The cache writer can abort the region entry operation.
+   - `CacheListener` is run synchronously after the cache is updated. This listener works only on local cache events, so install your listener in every cache where you want it to handle events. You can install multiple cache listeners in any of your caches.
+
+In addition to using application plug-ins, you can also configure external JNDI database sources in your cache.xml and use these data sources in transactions. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html) for more information.
+
+
+
+#### Configuring Database Connections Using JNDI
+
+To connect to external databases, for example when using JTA transactions, you can configure database JNDI data sources in `cache.xml`. The `DataSource` object points to either a JDBC connection or, more commonly, a JDBC connection pool. The connection pool is usually preferred, because a program can use and reuse a connection as long as necessary and then free it for another thread to use.
+
+The following list shows `DataSource` connection types used in JTA transactions:
+
+- **XAPooledDataSource**. Pooled SQL connections.
+- **ManagedDataSource**. JNDI binding type for the J2EE Connector Architecture (JCA) ManagedConnectionFactory.
+- **PooledDataSource**. Pooled SQL connections.
+- **SimpleDataSource**. Single SQL connection. No pooling of SQL connections is done. Connections are generated on the fly and cannot be reused.
+
+The `jndi-name` attribute of the `jndi-binding` element is the key binding parameter. If the value of `jndi-name` is a DataSource, it is bound as `java:/`*myDatabase*, where *myDatabase* is the name you assign to your data source. If the data source cannot be bound to JNDI at runtime, Geode logs a warning. For information on the `DataSource` interface, see: <http://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html>
+
+Geode supports JDBC 2.0 and 3.0.
+
+**Note:** Include any data source JAR files in your CLASSPATH.
+
+**Example DataSource Configurations in cache.xml**
+
+The following sections show example `cache.xml` files configured for each of the `DataSource`connection types.
+
+**XAPooledDataSource cache.xml Example (Derby)**
+
+The example shows a `cache.xml` file configured for a pool of `XAPooledDataSource` connections connected to the data resource `newDB`.
+
+The log-in and blocking timeouts are set lower than the defaults. The connection information, including `user-name` and `password`, is set in the `cache.xml` file, instead of waiting until connection time. The password is not encrypted.
+
+When specifying the configuration properties for JCA-implemented database drivers that support XA transactions (in other words, **XAPooledDataSource**), you must use configuration properties to define the datasource connection instead of the `connection-url` attribute of the `<jndi-binding>`element. Configuration properties differ depending on your database vendor. Specify JNDI binding properties through the `config-property` tag, as shown in this example. You can add as many `config-property` tags as required.
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<cache
+    xmlns="http://geode.apache.org/schema/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+    version="1.0"
+    lock-lease="120" lock-timeout="60" search-timeout="300"> 
+   <region name="root">
+      <region-attributes scope="distributed-no-ack" data-policy="cached" initial-capacity="16"
+load-factor="0.75" concurrency-level="16" statistics-enabled="true">
+    . . .
+   </region>
+   <jndi-bindings>
+      <jndi-binding type="XAPooledDataSource" 
+    jndi-name="newDB2trans" 
+    init-pool-size="20" 
+    max-pool-size="100"
+    idle-timeout-seconds="20"
+    blocking-timeout-seconds="5" 
+    login-timeout-seconds="10"
+    xa-datasource-class="org.apache.derby.jdbc.EmbeddedXADataSource"
+    user-name="mitul" 
+    password="thecleartextpassword">
+         <config-property>
+          <config-property-name>Description</config-property-name>
+          <config-property-type>java.lang.String</config-property-type>
+          <config-property-value>pooled_transact</config-property-value>
+       </config-property>
+          <config-property>
+             <config-property-name>DatabaseName</config-property-name>
+             <config-property-type>java.lang.String</config-property-type>
+             <config-property-value>newDB</config-property-value>
+          </config-property>
+          <config-property>
+             <config-property-name>CreateDatabase</config-property-name>
+             <config-property-type>java.lang.String</config-property-type>
+             <config-property-value>create</config-property-value>
+          </config-property>       
+       . . .
+      </jndi-binding>
+   </jndi-bindings>
+</cache>
+```
+
+**JNDI Binding Configuration Properties for Different XAPooledDataSource Connections**
+
+The following are some example data source configurations for different databases. Consult your vendor database’s documentation for additional details.
+
+**MySQL**
+
+```
+...
+<jndi-bindings>
+   <jndi-binding type="XAPooledDataSource" 
+    ...
+    xa-datasource-class="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource">
+    <config-property>
+    <config-property-name>URL</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>"jdbc:mysql://mysql-servername:3306/databasename"</config-property-value>
+    </config-property>
+    ...
+    </jndi-binding>
+    ...
+</jndi-bindings>
+```
+
+**PostgreSQL**
+
+```
+...
+<jndi-bindings>
+   <jndi-binding type="XAPooledDataSource" 
+    ...
+    xa-datasource-class="org.postgresql.xa.PGXADataSource">
+    <config-property>
+    <config-property-name>ServerName</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>postgresql-hostname</config-property-value>
+    </config-property>
+    <config-property>
+    <config-property-name>DatabaseName</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>postgresqldbname</config-property-value>
+    </config-property>
+    ...
+   </jndi-binding>
+    ...
+</jndi-bindings>
+```
+
+**Oracle**
+
+```
+...
+<jndi-bindings>
+   <jndi-binding type="XAPooledDataSource" 
+    ...
+    xa-datasource-class="oracle.jdbc.xa.client.OracleXADataSource">
+    <config-property>
+    <config-property-name>URL</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>jdbc:oracle:oci8:@tc</config-property-value>
+    </config-property>
+    ...
+    </jndi-binding>
+    ...
+</jndi-bindings>
+```
+
+**Microsoft SQL Server**
+
+```
+...
+<jndi-bindings>
+   <jndi-binding type="XAPooledDataSource" 
+      ...
+    xa-datasource-class="com.microsoft.sqlserver.jdbc.SQLServerXADataSource">
+    <config-property>
+    <config-property-name>ServerName</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>mysqlserver</config-property-value>
+    </config-property>
+    <config-property>
+    <config-property-name>DatabaseName</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>databasename</config-property-value>
+    </config-property>
+    <config-property>
+    <config-property-name>SelectMethod</config-property-name>
+    <config-property-type>java.lang.String</config-property-type>
+    <config-property-value>cursor</config-property-value>
+    </config-property>
+    ...
+    </jndi-binding>
+    ...
+</jndi-bindings>
+```
+
+**ManagedDataSource Connection Example (Derby)**
+
+`ManagedDataSource` connections for the JCA `ManagedConnectionFactory` are configured as shown in the example. This configuration is similar to `XAPooledDataSource` connections, except the type is `ManagedDataSource`, and you specify a `managed-conn-factory-class` instead of an `xa-datasource-class`.
+
+```
+<?xml version="1.0"?>
+<cache xmlns="http://geode.apache.org/schema/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+    version="1.0"
+    lock-lease="120" 
+    lock-timeout="60"
+    search-timeout="300">
+   <region name="root">
+      <region-attributes scope="distributed-no-ack" data-policy="cached" initial-capacity="16"
+load-factor="0.75" concurrency-level="16" statistics-enabled="true">
+      . . .
+    </region>
+    <jndi-bindings>
+      <jndi-binding type="ManagedDataSource" 
+    jndi-name="DB3managed" 
+    init-pool-size="20" 
+    max-pool-size="100" 
+    idle-timeout-seconds="20" 
+    blocking-timeout-seconds="5" 
+    login-timeout-seconds="10"
+    managed-conn-factory-class="com.myvendor.connection.ConnFactory"
+    user-name="mitul"  
+    password="thecleartextpassword">
+          <config-property>
+             <config-property-name>Description</config-property-name>
+             <config-property-type>java.lang.String</config-property-type>
+             <config-property-value>pooled_transact</config-property-value>
+          </config-property>  
+          <config-property>
+             <config-property-name>DatabaseName</config-property-name>
+             <config-property-type>java.lang.String</config-property-type>
+             <config-property-value>newDB</config-property-value>
+          </config-property>
+          <config-property>
+             <config-property-name>CreateDatabase</config-property-name>
+             <config-property-type>java.lang.String</config-property-type>
+             <config-property-value>create</config-property-value>
+          </config-property>           
+           . . .
+     </jndi-binding>
+   </jndi-bindings>
+ </cache>
+```
+
+**PooledDataSource Example (Derby)**
+
+Use the `PooledDataSource` and `SimpleDataSource` connections for operations executed outside of any transaction. This example shows a `cache.xml` file configured for a pool of `PooledDataSource`connections to the data resource `newDB`. For this non-transactional connection pool, the log-in and blocking timeouts are set higher than for the transactional connection pools in the two previous examples. The connection information, including `user-name` and `password`, is set in the `cache.xml` file, instead of waiting until connection time. The password is not encrypted.
+
+```
+<?xml version="1.0"?>
+<cache xmlns="http://geode.apache.org/schema/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+    version="1.0"
+    lock-lease="120"
+    lock-timeout="60"
+    search-timeout="300">
+    <region name="root">
+         <region-attributes scope="distributed-no-ack" data-policy="cached" 
+initial-capacity="16" load-factor="0.75" concurrency-level="16" statistics-enabled="true">
+            . . .
+    </region>
+    <jndi-bindings>
+      <jndi-binding
+    type="PooledDataSource"
+    jndi-name="newDB1" 
+    init-pool-size="2" 
+    max-pool-size="7" 
+    idle-timeout-seconds="20" 
+    blocking-timeout-seconds="20"
+    login-timeout-seconds="30" 
+    conn-pooled-datasource-class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource"
+    user-name="mitul"
+    password="thecleartextpassword">
+       <config-property>
+          <config-property-name>Description</config-property-name>
+          <config-property-type>java.lang.String</config-property-type>
+          <config-property-value>pooled_transact</config-property-value>
+       </config-property> 
+       <config-property>
+         <config-property-name>DatabaseName</config-property-name>
+         <config-property-type>java.lang.String</config-property-type>
+         <config-property-value>newDB</config-property-value>
+       </config-property>
+       <config-property>
+         <config-property-name>CreateDatabase</config-property-name>
+         <config-property-type>java.lang.String</config-property-type>
+         <config-property-value>create</config-property-value>
+       </config-property>              
+       . . .
+      </jndi-binding>
+   </jndi-bindings>
+</cache>
+```
+
+**SimpleDataSource Connection Example (Derby)**
+
+The example below shows a very basic configuration in the `cache.xml` file for a `SimpleDataSource`connection to the data resource `oldDB`. You only need to configure a few properties like a `jndi-name` for this connection pool, `oldDB1`, and the `databaseName`, `oldDB`. This password is in clear text.
+
+A simple data source connection does not generally require vendor-specific property settings. If you need them, add `config-property` tags as shown in the earlier examples.
+
+```
+<?xml version="1.0"?>
+<cache xmlns="http://geode.apache.org/schema/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+    version="1.0"
+    lock-lease="120" 
+    lock-timeout="60" 
+    search-timeout="300">
+   <region name="root">
+      <region-attributes scope="distributed-no-ack" data-policy="cached" initial-capacity="16"
+load-factor="0.75" concurrency-level="16" statistics-enabled="true">
+        . . .
+      </region-attributes>   
+    </region>
+    <jndi-bindings>
+      <jndi-binding type="SimpleDataSource"
+    jndi-name="oldDB1" 
+    jdbc-driver-class="org.apache.derby.jdbc.EmbeddedDriver"
+    user-name="mitul" 
+    password="thecleartextpassword" 
+    connection-url="jdbc:derby:newDB;create=true">
+        . . .
+       </jndi-binding>
+   </jndi-bindings>
+</cache>
+```
+
+
+
+#### How Data Loaders Work
+
+By default, a region has no data loader defined. Plug an application-defined loader into any region by setting the region attribute cache-loader on the members that host data for the region.
+
+The loader is called on cache misses during get operations, and it populates the cache with the new entry value in addition to returning the value to the calling thread.
+
+A loader can be configured to load data into the Geode cache from an outside data store. To do the reverse operation, writing data from the Geode cache to an outside data store, use a cache writer event handler. See [Implementing Cache Event Handlers](https://geode.apache.org/docs/guide/17/developing/events/implementing_cache_event_handlers.html).
+
+How to install your cache loader depends on the type of region.
+
+**Data Loading in Partitioned Regions**
+
+Because of the huge amounts of data they can handle, partitioned regions support partitioned loading. Each cache loader loads only the data entries in the member where the loader is defined. If data redundancy is configured, data is loaded only if the member holds the primary copy. So you must install a cache loader in every member where the partitioned attributes `local-max-memory` is not zero.
+
+If you depend on a JDBC connection, every data store must have a connection to the data source, as shown in the following figure. Here the three members require three connections. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html) for information on how to configure data sources.
+
+**Note:** Partitioned regions generally require more JDBC connections than distributed regions.
+
+![img](assets/cache_data_loader-1545192090096.svg)
+
+
+**Data Loading in Distributed Regions**
+
+In a non-partitioned distributed region, a cache loader defined in one member is available to all members that have the region defined. Loaders are usually defined in just a subset of the caches holding the region. When a loader is needed, all available loaders for the region are invoked, starting with the most convenient loader, until the data is loaded or all loaders have been tried.
+
+In the following figure, these members of one cluster can be running on different machines. Loading for the distributed region is performed from M1.
+
+![img](assets/cache_data_loader_2-1545192090106.svg)
+
+**Data Loading in Local Regions**
+
+For local regions, the cache loader is available only in the member where it is defined. If a loader is defined, it is called whenever a value is not found in the local cache.
+
+
+
+#### Implement a Data Loader
+
+To use a data loader:
+
+1. Implement the `org.apache.geode.cache.CacheLoader` interface.
+2. Configure and deploy the implementation.
+
+**Implement the CacheLoader Interface**
+
+For a get operation, if the key is not in the cache, the thread serving the get operation invokes the `CacheLoader.load` method. Implement `load` to return the value for the key, which will be placed into the region in addition to being returned to the caller.
+
+`org.apache.geode.cache.CacheLoader` inherits from `Declarable`, so implement the `Declarable.initialize` method if your `CacheLoader` implementation needs to be initialized with some arguments. Specify the required arguments either in your `cache.xml` file or in a gfsh `create region` or `alter region` command. Do not define the `Declarable.init()` method; it is deprecated.
+
+Here is an example implementation:
+
+```
+public class SimpleCacheLoader implements CacheLoader {
+    public Object load(LoaderHelper helper) {
+        String key = (String) helper.getKey();
+
+        // Return an entry value created from the key, assuming that
+        // all keys are of the form "key1", "key2", "keyN"
+        return "LoadedValue" + key.substring(3);
+    }
+}
+```
+
+If you need to run `Region` API calls from your implementation, spawn separate threads for them. Do not make direct calls to `Region` methods from your `load` method, as it could cause the cache loader to block, hurting the performance of the cluster.
+
+**Configure and Deploy**
+
+Use one of these three ways to configure and deploy the cache loader:
+
+**Option 1:** If configuring a cluster by defining a `cache.xml` file, deploy by adding the cache loader to the classpath when starting servers.
+
+Here is an example configuration within the `cache.xml` file that specifies the loader without arguments:
+
+```
+<region-attributes>
+    <cache-loader>
+        <class-name>myLoader</class-name>
+    </cache-loader>
+</region-attributes>
+```
+
+Or, here is an example configuration within the `cache.xml` file that specifies the loader with an argument:
+
+```
+<cache-loader>
+    <class-name>com.company.data.DatabaseLoader</class-name>
+    <parameter name="URL">
+        <string>jdbc:cloudscape:rmi:MyData</string>
+    </parameter>
+</cache-loader>
+```
+
+To deploy the JAR file, add the cache loader JAR file to the classpath when starting servers. For example:
+
+```
+gfsh>start server --name=s2 --classpath=/var/data/lib/myLoader.jar
+```
+
+**Option 2:** If deploying the JAR file at server startup, add the JAR file to the classpath and use gfsh to apply the configuration to the region.
+
+To deploy the JAR file, add the cache loader JAR file to the classpath when starting servers. For example:
+
+```
+gfsh>start server --name=s2 --classpath=/var/data/lib/myLoader.jar
+```
+
+Use gfsh to apply the configuration of the `CacheLoader` implementation to the region with `gfsh create region` or `gfsh alter region`. Here is an example of region creation without arguments:
+
+```
+gfsh>create region --name=r3 --cache-loader=com.example.appname.myCacheLoader
+```
+
+Here is an example of region creation with an argument:
+
+```
+gfsh>create region --name=r3 \
+--cache-loader=com.example.appname.myCacheLoader{'URL':'jdbc:cloudscape:rmi:MyData'}
+```
+
+Here is an example of altering a region:
+
+```
+gfsh>alter region --name=r3 --cache-loader=com.example.appname.myCacheLoader
+```
+
+**Option 3 applies to partitioned regions:** If deploying the JAR file with the gfsh deploy command after servers have been started, use gfsh to apply the configuration to the region.
+
+After server creation use gfsh to deploy the JAR file to all the servers. For example:
+
+```
+gfsh>deploy --jars=/var/data/lib/myLoader.jar
+```
+
+We do not generally use the gfsh deploy command when the servers host replicated regions, as detailed in [How Data Loaders Work](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/how_data_loaders_work.html).
+
+Use gfsh to apply the configuration of the `CacheLoader` implementation to the region with `gfsh create region` or `gfsh alter region`. Here is an example of region creation without arguments:
+
+```
+gfsh>create region --name=r3 --cache-loader=com.example.appname.myCacheLoader
+```
+
+Here is an example of region creation with an argument:
+
+```
+gfsh>create region --name=r3 \
+--cache-loader=com.example.appname.myCacheLoader{'URL':'jdbc:cloudscape:rmi:MyData'}
+```
+
+Here is an example of altering a region:
+
+```
+gfsh>alter region --name=r3 --cache-loader=com.example.appname.myCacheLoader
+```
+
+**Implementing a Server or Peer with a Cache Loader**
+
+Servers and peers with an embedded cache can configure a cache loader in only the members where it makes sense to do so. The design might, for example, assign the job of loading from a database to one or two members for a region hosted by many more members. This can be done to reduce the number of connections when the outside source is a database.
+
+Implement the `org.apache.geode.cache.CacheLoader` interface. Region creation configures the the cache loader as in this example:
+
+```
+RegionFactory<String,Object> rf = cache.createRegionFactory(REPLICATE);
+rf.setCacheLoader(new QuoteLoader());
+quotes = rf.create("NASDAQ-Quotes");
+```
+
+
+
+## Data Serialization
+
+Data that you manage in Geode must be serialized and deserialized for storage and transmittal between processes. You can choose among several options for data serialization.
+
+- **Overview of Data Serialization**
+
+  Geode offers serialization options other than Java serialization that give you higher performance and greater flexibility for data storage, transfers, and language types.
+
+- **Geode PDX Serialization**
+
+  Geode’s Portable Data eXchange (PDX) is a cross-language data format that can reduce the cost of distributing and serializing your objects. PDX stores data in named fields that you can access individually, to avoid the cost of deserializing the entire data object. PDX also allows you to mix versions of objects where you have added or removed fields.
+
+- **Geode Data Serialization (DataSerializable and DataSerializer)**
+
+  Geode’s `DataSerializable` interface gives you quick serialization of your objects.
+
+- **Standard Java Serialization**
+
+  You can use standard Java serialization for data you only distribute between Java applications. If you distribute your data between non-Java clients and Java servers, you need to do additional programming to get the data between the various class formats.
+
+
+
+### Overview of Data Serialization
+
+Geode offers serialization options other than Java serialization that give you higher performance and greater flexibility for data storage, transfers, and language types.
+
+All data that Geode moves out of the local cache must be serializable. However, you do not necessarily need to implement `java.io.Serializable` since other serialization options are available in Geode. Region data that must be serializable falls under the following categories:
+
+- Partitioned regions
+- Distributed regions
+- Regions that are persisted or overflowed to disk
+- Server or client regions in a client/server installation
+- Regions configured with a gateway sender for distributing events in a multi-site installation
+- Regions that receive events from remote caches
+- Regions that provide function arguments and results
+
+**Note:** If you are storing objects with the [HTTP Session Management Modules](https://geode.apache.org/docs/guide/17/tools_modules/http_session_mgmt/chapter_overview.html), these objects must be serializable since they are serialized before being stored in the region.
+
+To minimize the cost of serialization and deserialization, Geode avoids changing the data format whenever possible. This means your data might be stored in the cache in serialized or deserialized form, depending on how you use it. For example, if a server acts only as a storage location for data distribution between clients, it makes sense to leave the data in serialized form, ready to be transmitted to clients that request it. Partitioned region data is always initially stored in serialized form.
+
+**Data Serialization Options**
+
+With Geode, you have the option to serialize your domain objects automatically or to implement serialization using one of Geode’s interfaces. Enabling automatic serialization means that domain objects are serialized and deserialized without your having to make any code changes to those objects. This automatic serialization is performed by registering your domain objects with a custom `PdxSerializer` called the `ReflectionBasedAutoSerializer`, which uses Java reflection to infer which fields to serialize.
+
+If autoserialization does not meet your needs, you can serialize your objects by implementing one of the Geode interfaces, `PdxSerializable` or `DataSerializable`. You can use these interfaces to replace any standard Java data serialization for better performance. If you cannot or do not want to modify your domain classes, each interface has an alternate serializer class, `PdxSerializer` and `DataSerializer`. To use these, you create your custom serializer class and then associate it with your domain class in the Geode cache configuration.
+
+Geode Data serialization is about 25% faster than PDX serialization, however using PDX serialization will help you to avoid the even larger costs of performing deserialization.
+
+
+
+| Capability                                                   | Geode Data Serializable | Geode PDX Serializable |
+| ------------------------------------------------------------ | ----------------------- | ---------------------- |
+| Implements Java Serializable.                                | X                       |                        |
+| Handles multiple versions of application domain objects, providing the versions differ by the addition or subtraction of fields. |                         | X                      |
+| Provides single field access of serialized data, without full deserialization - supported also for OQL querying. |                         | X                      |
+| Automatically ported to other languages by Geode             |                         | X                      |
+| Works with .NET clients.                                     | X                       | X                      |
+| Works with C++ clients.                                      | X                       | X                      |
+| Works with Geode delta propagation.                          | X                       | X (See note below.)    |
+
+**Table 1.** Serialization Options: Comparison of Features
+
+**Note:** By default, you can use Geode delta propagation with PDX serialization. However, delta propagation will not work if you have set the Geode property `read-serialized` to “true”. In terms of deserialization, to apply a change delta propagation requires a domain class instance and the `fromDelta`method. If you have set `read-serialized` to true, then you will receive a `PdxInstance`instead of a domain class instance and `PdxInstance` does not have the `fromDelta` method required for delta propagation.
+
+**Differences between Geode Serialization (PDX or Data Serializable) and Java Serialization**
+
+Geode serialization (either PDX Serialization or Data Serialization) does not support circular object graphs whereas Java serialization does. In Geode serialization, if the same object is referenced more than once in an object graph, the object is serialized for each reference, and deserialization produces multiple copies of the object. By contrast in this situation, Java serialization serializes the object once and when deserializing the object, it produces one instance of the object with multiple references.
+
+
+
+### Geode PDX Serialization
+
+Geode’s Portable Data eXchange (PDX) is a cross-language data format that can reduce the cost of distributing and serializing your objects. PDX stores data in named fields that you can access individually, to avoid the cost of deserializing the entire data object. PDX also allows you to mix versions of objects where you have added or removed fields.
+
+- **Geode PDX Serialization Features**
+
+  Geode PDX serialization offers several advantages in terms of functionality.
+
+- **High Level Steps for Using PDX Serialization**
+
+  To use PDX serialization, you can configure and use Geode’s reflection-based autoserializer, or you can program the serialization of your objects by using the PDX interfaces and classes.
+
+- **Using Automatic Reflection-Based PDX Serialization**
+
+  You can configure your cache to automatically serialize and deserialize domain objects without having to add any extra code to them.
+
+- **Serializing Your Domain Object with a PdxSerializer**
+
+  For a domain object that you cannot or do not want to modify, use the `PdxSerializer` class to serialize and deserialize the object’s fields. You use one `PdxSerializer` implementation for the entire cache, programming it for all of the domain objects that you handle in this way.
+
+- **Implementing PdxSerializable in Your Domain Object**
+
+  For a domain object with source that you can modify, implement the `PdxSerializable` interface in the object and use its methods to serialize and deserialize the object’s fields.
+
+- **Programming Your Application to Use PdxInstances**
+
+  A `PdxInstance` is a light-weight wrapper around PDX serialized bytes. It provides applications with run-time access to fields of a PDX serialized object.
+
+- **Adding JSON Documents to the Geode Cache**
+
+  The `JSONFormatter` API allows you to put JSON formatted documents into regions and retrieve them later by storing the documents internally as PdxInstances.
+
+- **Using PdxInstanceFactory to Create PdxInstances**
+
+  You can use the `PdxInstanceFactory` interface to create a `PdxInstance` from raw data when the domain class is not available on the server.
+
+- **Persisting PDX Metadata to Disk**
+
+  Geode allows you to persist PDX metadata to disk and specify the disk store to use.
+
+- **Using PDX Objects as Region Entry Keys**
+
+  Using PDX objects as region entry keys is highly discouraged.
+
+
+
+#### Geode PDX Serialization Features
+
+Geode PDX serialization offers several advantages in terms of functionality.
+
+**Application Versioning of PDX Domain Objects**
+
+Domain objects evolve along with your application code. You might create an address object with two address lines, then realize later that a third line is required for some situations. Or you might realize that a particular field is not used and want to get rid of it. With PDX, you can use old and new versions of domain objects together in a cluster if the versions differ by the addition or removal of fields. This compatibility lets you gradually introduce modified code and data into the cluster, without bringing the cluster down.
+
+Geode maintains a central registry of the PDX domain object metadata. Using the registry, Geode preserves fields in each member’s cache regardless of whether the field is defined. When a member receives an object with a registered field that the member is not aware of, the member does not access the field, but preserves it and passes it along with the entire object to other members. When a member receives an object that is missing one or more fields according to the member’s version, Geode assigns the Java default values for the field types to the missing fields.
+
+**Portability of PDX Serializable Objects**
+
+When you serialize an object using PDX, Geode stores the object’s type information in the central registry. The information is passed among clients and servers, peers, and clusters.
+
+This centralization of object type information is advantageous for client/server installations in which clients and servers are written in different languages. Clients pass registry information to servers automatically when they store a PDX serialized object. Clients can run queries and functions against the data in the servers without compatibility between server and the stored objects. One client can store data on the server to be retrieved by another client, with no requirements on the part of the server.
+
+**Reduced Deserialization of Serialized Objects**
+
+The access methods of PDX serialized objects allow you to examine specific fields of your domain object without deserializing the entire object. Depending on your object usage, you can reduce serialization and deserialization costs significantly.
+
+Java and other clients can run queries and execute functions against the objects in the server caches without deserializing the entire object on the server side. The query engine automatically recognizes PDX objects, retrieves the `PdxInstance` of the object and uses only the fields it needs. Likewise, peers can access only the necessary fields from the serialized object, keeping the object stored in the cache in serialized form.
+
+
+
+#### High Level Steps for Using PDX Serialization
+
+To use PDX serialization, you can configure and use Geode’s reflection-based autoserializer, or you can program the serialization of your objects by using the PDX interfaces and classes.
+
+Optionally, program your application code to deserialize individual fields out of PDX representations of your serialized objects. You may also need to persist your PDX metadata to disk for recovery on startup.
+
+**Procedure**
+
+1. Use one of these serialization options for each object type that you want to serialize using PDX serialization:
+
+   - [Using Automatic Reflection-Based PDX Serialization](https://geode.apache.org/docs/guide/17/developing/data_serialization/auto_serialization.html)
+   - [Serializing Your Domain Object with a PdxSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializer.html)
+   - [Implementing PdxSerializable in Your Domain Object](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializable.html)
+
+2. To ensure that your servers do not need to load the application classes, set the `pdx` `read-serialized` attribute to true. In gfsh, execute the following command before starting up your servers:
+
+   ```
+   gfsh>configure pdx --read-serialized=true
+   ```
+
+   By using gfsh, this configuration can propagated across the cluster through the [Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html). Alternately, you would need to configure `pdx read-serialized` in each server’s `cache.xml` file.
+
+3. If you are storing any Geode data on disk, then you must configure PDX serialization to use persistence. See [Persisting PDX Metadata to Disk](https://geode.apache.org/docs/guide/17/developing/data_serialization/persist_pdx_metadata_to_disk.html) for more information.
+
+4. (Optional) Wherever you run explicit application code to retrieve and manage your cached entries, you may want to manage your data objects without using full deserialization. To do this, see [Programming Your Application to Use PdxInstances](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
+
+**PDX and Multi-Site (WAN) Deployments**
+
+For multisite (WAN) installations only– if you will use PDX serialization in any of your WAN-enabled regions, for each cluster, you must choose a unique integer between 0 (zero) and 255 and set the `distributed-system-id` in every member’s `gemfire.properties` file. See [Configuring a Multi-site (WAN) System](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html).
+
+
+
+#### Using Automatic Reflection-Based PDX Serialization
+
+You can configure your cache to automatically serialize and deserialize domain objects without having to add any extra code to them.
+
+You can automatically serialize and deserialize domain objects without coding a `PdxSerializer`class. You do this by registering your domain objects with a custom `PdxSerializer` called `ReflectionBasedAutoSerializer` that uses Java reflection to infer which fields to serialize.
+
+You can also extend the ReflectionBasedAutoSerializer to customize its behavior. For example, you could add optimized serialization support for BigInteger and BigDecimal types. See [Extending the ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279) for details.
+
+**Note:** Your custom PDX autoserializable classes cannot use the `org.apache.geode` package. If they do, the classes will be ignored by the PDX auto serializer.
+
+
+
+**Prerequisites**
+
+- Understand generally how to configure the Geode cache.
+- Understand how PDX serialization works and how to configure your application to use `PdxSerializer`.
+
+**Procedure**
+
+In your application where you manage data from the cache, provide the following configuration and code as appropriate:
+
+1. In the domain classes that you wish to autoserialize, make sure each class has a zero-arg constructor. For example:
+
+   ```
+   public PortfolioPdx(){}
+   ```
+
+2. Using one of the following methods, set the PDX serializer to `ReflectionBasedAutoSerializer`.
+
+   1. In gfsh, execute the following command prior to starting up any members that host data:
+
+      ```
+      gfsh>configure pdx --auto-serializable-classes=com\.company\.domain\..*
+      ```
+
+      By using gfsh, this configuration can propagated across the cluster through the [Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
+
+   2. Alternately, in `cache.xml`:
+
+      ```
+      <!-- Cache configuration configuring auto serialization behavior -->
+      <cache>
+        <pdx>
+          <pdx-serializer>
+            <class-name>
+             org.apache.geode.pdx.ReflectionBasedAutoSerializer
+            </class-name>
+            <parameter name="classes">
+            <string>com.company.domain.DomainObject</string>
+           </parameter>
+        </pdx-serializer>
+       </pdx>
+        ...
+      </cache>
+      ```
+
+      The parameter, `classes`, takes a comma-separated list of class patterns to define the domain classes to serialize. If your domain object is an aggregation of other domain classes, you need to register the domain object and each of those domain classes explicitly for the domain object to be serialized completely.
+
+   3. Using the Java API:
+
+      ```
+      Cache c = new CacheFactory()
+        .setPdxSerializer(new ReflectionBasedAutoSerializer("com.company.domain.DomainObject"))
+        .create();
+      ```
+
+3. Customize the behavior of the `ReflectionBasedAutoSerializer` using one of the following mechanisms:
+
+   - By using a class pattern string to specify the classes to auto-serialize and customize how the classes are serialized. Class pattern strings can be specified in the API by passing strings to the `ReflectionBasedAutoSerializer` constructor or by specifying them in cache.xml. See [Customizing Serialization with Class Pattern Strings](https://geode.apache.org/docs/guide/17/developing/data_serialization/autoserialization_with_class_pattern_strings.html#concept_9B67BBE94B414B7EA63BD7E8D61D0312) for details.
+   - By creating a subclass of `ReflectionBasedAutoSerializer` and overriding specific methods. See [Extending the ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279) for details.
+
+4. If desired, configure the `ReflectionBasedAutoSerializer` to check the portability of the objects it is passed before it tries to autoserialize them. When this flag is set to true, the `ReflectionBasedAutoSerializer` will throw a `NonPortableClassException` error when trying to autoserialize a non-portable object. To set this, use the following configuration:
+
+   - In gfsh, use the following command:
+
+     ```
+     gfsh>configure pdx --portable-auto-serializable-classes=com\.company\.domain\..*
+     ```
+
+     By using gfsh, this configuration can propagated across the cluster through the [Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
+
+   - In cache.xml:
+
+     ```
+     <!-- Cache configuration configuring auto serialization behavior -->
+     <cache>
+       <pdx>
+         <pdx-serializer>
+           <class-name>
+            org.apache.geode.pdx.ReflectionBasedAutoSerializer
+           </class-name>
+         <parameter name="classes">
+           <string>com.company.domain.DomainObject</string>
+         </parameter>
+         <parameter name="check-portability">
+           <string>true</string>
+         </parameter>
+       </pdx-serializer>
+      </pdx>
+       ...
+     </cache>
+     ```
+
+   - Using the Java API:
+
+     ```
+     Cache c = new CacheFactory()
+       .setPdxSerializer(new ReflectionBasedAutoSerializer(true,"com.company.domain.DomainObject"))
+       .create();
+     ```
+
+For each domain class you provide, all fields are considered for serialization except those defined as `static` or `transient` and those you explicitly exclude using the class pattern strings.
+
+**Note:** The `ReflectionBasedAutoSerializer` traverses the given domain object’s class hierarchy to retrieve all fields to be considered for serialization. So if `DomainObjectB` inherits from `DomainObjectA`, you only need to register `DomainObjectB` to have all of `DomainObjectB` serialized.
+
+
+
+##### Customizing Serialization with Class Pattern Strings
+
+Use class pattern strings to name the classes that you want to serialize using Geode’s reflection-based autoserializer and to specify object identity fields and to specify fields to exclude from serialization.
+
+The class pattern strings used to configured the `ReflectionBasedAutoSerializer` are standard regular expressions. For example, this expression would select all classes defined in the `com.company.domain` package and its subpackages:
+
+```
+com\.company\.domain\..*
+```
+
+You can augment the pattern strings with a special notation to define fields to exclude from serialization and to define fields to mark as PDX identity fields. The full syntax of the pattern string is:
+
+```
+<class pattern> [# (identity|exclude) = <field pattern>]... [, <class pattern>...]
+```
+
+The following example pattern string sets these PDX serialization criteria:
+
+- Classes with names matching the pattern `com.company.DomainObject.*` are serialized. In those classes, fields beginning with `id` are marked as identity fields and fields named `creationDate`are not serialized.
+- The class `com.company.special.Patient` is serialized. In the class, the field, `ssn` is marked as an identity field
+
+```
+com.company.DomainObject.*#identity=id.*#exclude=creationDate, 
+com.company.special.Patient#identity=ssn
+```
+
+**Note:** There is no association between the `identity` and `exclude` options, so the pattern above could also be expressed as:
+
+```
+com.company.DomainObject.*#identity=id.*, com.company.DomainObject.*#exclude=creationDate, 
+com.company.special.Patient#identity=ssn
+```
+
+**Note:** The order of the patterns is not relevant. All defined class patterns are used when determining whether a field should be considered as an identity field or should be excluded.
+
+Examples:
+
+- This XML uses the example pattern shown above:
+
+  ```
+  <parameter name="classes">
+    <string>com.company.DomainObject.*#identity=id.*#exclude=creationDate, 
+  com.company.special.Patient#identity=ssn</string>
+  </parameter>
+  ```
+
+- This application code sets the same pattern:
+
+  ```
+  classPatterns.add("com.company.DomainObject.*#identity=id.*#exclude=creationDate,
+     com.company.special.Patient#identity=ssn");
+  ```
+
+- This application code has the same effect:
+
+  ```
+   Cache c = new CacheFactory().set("cache-xml-file", cacheXmlFileName)
+       .setPdxSerializer(new ReflectionBasedAutoSerializer("com.foo.DomainObject*#identity=id.*",
+           "com.company.DomainObject.*#exclude=creationDate","com.company.special.Patient#identity=ssn"))
+       .create();
+  ```
+
+
+
+##### Extending the ReflectionBasedAutoSerializer
+
+You can extend the `ReflectionBasedAutoSerializer` to handle serialization in a customized manner. This section provides an overview of the available method-based customization options and an example of extending the serializer to support BigDecimal and BigInteger types.
+
+**Reasons to Extend the ReflectionBasedAutoSerializer**
+
+One of the main use cases for extending the `ReflectionBasedAutoSerializer` is that you want it to handle an object that would currently need to be handled by standard Java serialization. There are several issues with having to use standard Java serialization that can be addressed by extending the PDX `ReflectionBasedAutoSerializer`.
+
+- Each time we transition from a Geode serialized object to an object that will be Java I/O serialized, extra data must get serialized. This can cause a great deal of serialization overhead. This is why it is worth extending the `ReflectionBasedAutoSerializer` to handle any classes that normally would have to be Java I/O serialized.
+- Expanding the number of classes that can use the `ReflectionBasedAutoSerializer` is beneficial when you encounter object graphs. After we use Java I/O serialization on an object, any objects under that object in the object graph will also have to be Java I/O serialized. This includes objects that normally would have been serialized using PDX or `DataSerializable`.
+- If standard Java I/O serialization is done on an object and you have enabled check-portability, then an exception will be thrown. Even if you are not concerned with the object’s portability, you can use this flag to find out what classes would use standard Java serialization (by getting an exception on them) and then enhancing your auto serializer to handle them.
+
+**Overriding ReflectionBasedAutoSerializer Behavior**
+
+You can customize the specific behaviors in `ReflectionBasedAutoSerializer` by overriding the following methods:
+
+- **isClassAutoSerialized** customizes which classes to autoserialize.
+- **isFieldIncluded** specifies which fields of a class to autoserialize.
+- **getFieldName** defines the specific field names that will be generated during autoserialization.
+- **isIdentifyField** controls which field is marked as the identity field. Identity fields are used when a PdxInstance computes its hash code to determine whether it is equal to another object.
+- **getFieldType** determines the field type that will be used when autoserializing the given field.
+- **transformFieldValue** controls whether specific field values of a PDX object can be transformed during serialization.
+- **writeTransform** controls what field value is written during auto serialization.
+- **readTransform** controls what field value is read during auto deserialization.
+
+These methods are only called the first time the `ReflectionBasedAutoSerializer` sees a new class. The results will be remembered and used the next time the same class is seen.
+
+For details on these methods and their default behaviors, see the JavaDocs on [ReflectionBasedAutoSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/pdx/ReflectionBasedAutoSerializer.html) for details.
+
+**Example of Optimizing Autoserialization of BigInteger and BigDecimal Types**
+
+This section provides an example of extending the `ReflectionBasedAutoSerializer` to optimize the automatic serialization of BigInteger and BigDecimal types.
+
+The following code sample illustrates a subclass of the `ReflectionBasedAutoSerializer` that optimizes BigInteger and BigDecimal autoserialization:
+
+```
+public static class BigAutoSerializer extends ReflectionBasedAutoSerializer {
+   public BigAutoSerializer(Boolean checkPortability, string… patterns) {
+    super(checkPortability, patterns);
+}
+
+@Override
+public FieldType get FieldType(Field f, Class<?> clazz) {
+   if (f.getType().equals(BigInteger.class)) {
+        return FieldType.BYTE_ARRAY; 
+      } else if (f.getType().equals(BigDecimal.class)) {
+        return FieldType.STRING; 
+      } else {
+        return super.getFieldType(f, clazz);
+      }
+    }
+@Override
+    public boolean transformFieldValue(Field f, Class<?> clazz) {
+      if (f.getType().equals(BigInteger.class)) {
+        return true;
+      } else if (f.getType().equals(BigDecimal.class)) {
+        return true;
+      } else {
+        return super.transformFieldValue(f, clazz);
+      }
+    }
+
+@Override
+    public Object writeTransform(Field f, Class<?> clazz, Object originalValue) {
+      if (f.getType().equals(BigInteger.class)) {
+        byte[] result = null;
+        if (originalValue != null) {
+          BigInteger bi = (BigInteger)originalValue;
+          result = bi.toByteArray();
+        }
+        return result;
+      } else if (f.getType().equals(BigDecimal.class)) {
+        Object result = null;
+        if (originalValue != null) {
+          BigDecimal bd = (BigDecimal)originalValue;
+          result = bd.toString();
+        }
+        return result;
+      } else {
+        return super.writeTransform(f, clazz, originalValue);
+      }
+    }
+
+@Override
+    public Object readTransform(Field f, Class<?> clazz, Object serializedValue) {
+      if (f.getType().equals(BigInteger.class)) {
+        BigInteger result = null;
+        if (serializedValue != null) {
+          result = new BigInteger((byte[])serializedValue);
+        }
+        return result;
+      } else if (f.getType().equals(BigDecimal.class)) {
+        BigDecimal result = null;
+        if (serializedValue != null) {
+          result = new BigDecimal((String)serializedValue);
+        }
+        return result;
+      } else {
+        return super.readTransform(f, clazz, serializedValue);
+      }
+    }
+
+  }
+```
+
+
+
+#### Serializing Your Domain Object with a PdxSerializer
+
+For a domain object that you cannot or do not want to modify, use the `PdxSerializer` class to serialize and deserialize the object’s fields. You use one `PdxSerializer` implementation for the entire cache, programming it for all of the domain objects that you handle in this way.
+
+With `PdxSerializer`, you leave your domain object as-is and handle the serialization and deserialization in the separate serializer. You register the serializer in your cache PDX configuration. Program the serializer to handle all of the domain objects you need.
+
+If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoSerializer`, then the `PdxSerializer` needs to own the `ReflectionBasedAutoSerializer` and delegate to it. A Cache can only have a single `PdxSerializer` instance.
+
+**Note:** The `PdxSerializer` `toData` and `fromData` methods differ from those for `PdxSerializable`. They have different parameters and results.
+
+**Procedure**
+
+1. In the domain classes that you wish to PDX serialize, make sure each class has a zero-arg constructor. For example:
+
+   ```
+   public PortfolioPdx(){}
+   ```
+
+2. If you have not already implemented `PdxSerializer` for some other domain object, perform these steps:
+
+   1. Create a new class as your cache-wide serializer and make it implement `PdxSerializer`. If you want to declare your new class in the `cache.xml` file, have it also implement `Declarable`.
+
+      Example:
+
+      ```
+      import org.apache.geode.cache.Declarable;
+      import org.apache.geode.pdx.PdxReader;
+      import org.apache.geode.pdx.PdxSerializer;
+      import org.apache.geode.pdx.PdxWriter;
+      
+      public class ExamplePdxSerializer implements PdxSerializer, Declarable {
+      ...
+      ```
+
+   2. In your cache pdx configuration, register the serializer class in the cache’s `<pdx>` `<pdx-serializer>` `<class-name>` attribute.
+
+      Example:
+
+      ```
+      // Configuration setting PDX serializer for the cache
+      <cache>
+        <pdx>
+          <pdx-serializer>
+           <class-name>com.company.ExamplePdxSerializer</class-name>
+          </pdx-serializer>
+        </pdx> 
+        ...
+      </cache>
+      ```
+
+      Or use the `CacheFactory.setPdxSerializer` API.
+
+      ```
+      Cache c = new CacheFactory
+         .setPdxSerializer(new ExamplePdxSerializer())
+         .create();
+      ```
+
+   **Note:** You cannot specify a custom `pdx-serializer` class using gfsh, however the `configure pdx` command automatically configures the org.apache.geode.pdx.ReflectionBasedAutoSerializer class. See [configure pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh).
+
+3. Program `PdxSerializer.toData` to recognize, cast, and handle your domain object:
+
+   1. Write each standard Java data field of your domain class using the `PdxWriter` write methods.
+   2. Call the `PdxWriter` `markIdentityField` method for each field you want to have Geode use to identify your object. Put this after the field’s write method. Geode uses this information to compare objects for operations like distinct queries. If you do not set as least one identity field, then the `equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well. It is important that the fields used by your `equals` and `hashCode` implementations are the same fields that you mark as identity fields.
+   3. For a particular version of your class, you need to consistently write the same named field each time. The field names or number of fields must not change from one instance to another for the same class version.
+   4. For best performance, do fixed width fields first and then variable length fields.
+   5. If desired, you can check the portability of the object before serializing it by adding the `checkPortability` parameter when using the`PdxWriter` `writeObject`, `writeObjectArray`, and `writeField` methods.
+
+   Example `toData` code:
+
+   ```
+   public boolean toData(Object o, PdxWriter writer)
+     {
+       if(!(o instanceof PortfolioPdx)) {
+         return false;
+       }
+   
+       PortfolioPdx instance = (PortfolioPdx) o;
+       writer.writeInt("id", instance.id)
+       //identity field
+       .markIdentityField("id")
+       .writeDate("creationDate", instance.creationDate)
+       .writeString("pkid", instance.pkid)
+       .writeObject("positions", instance.positions)
+       .writeString("type", instance.type)
+       .writeString("status", instance.status)
+       .writeStringArray("names", instance.names)
+       .writeByteArray("newVal", instance.newVal)
+   
+       return true;
+     }
+   ```
+
+   1. Program `PdxSerializer.fromData` to create an instance of your class, read your data fields from the serialized form into the object’s fields using the `PdxReader` read methods, and return the created object.
+
+      Provide the same names that you did in `toData` and call the read operations in the same order as you called the write operations in your `toData` implementation.
+
+      Geode provides the domain class type and `PdxReader` to the `fromData` method.
+
+      Example `fromData` code:
+
+      ```
+        public Object fromData(Class<?> clazz, PdxReader reader)
+        {
+          if(!clazz.equals(PortfolioPdx.class)) {
+            return null;
+          }
+      
+          PortfolioPdx instance = new PortfolioPdx();
+          instance.id = reader.readInt("id");
+          instance.creationDate = reader.readDate("creationDate");
+          instance.pkid = reader.readString("pkid");
+          instance.positions = (Map<String, PositionPdx>)reader.readObject("positions");
+          instance.type = reader.readString("type");
+          instance.status = reader.readString("status");
+          instance.names = reader.readStringArray("names");
+          instance.newVal = reader.readByteArray("newVal");
+      
+          return instance;
+        }
+      ```
+
+4. If desired, you can also enable extra validation in your use of `PdxWriter`. You can set this by setting the system property `gemfire.validatePdxWriters` to **true**. Note that you should only set this option if you are debugging new code as this option can decrease system performance.
+
+
+
+#### Implementing PdxSerializable in Your Domain Object
+
+For a domain object with source that you can modify, implement the `PdxSerializable` interface in the object and use its methods to serialize and deserialize the object’s fields.
+
+**Procedure**
+
+1. In your domain class, implement `PdxSerializable`, importing the required `org.apache.geode.pdx` classes.
+
+   For example:
+
+   ```
+   import org.apache.geode.pdx.PdxReader;
+   import org.apache.geode.pdx.PdxSerializable;
+   import org.apache.geode.pdx.PdxWriter;
+   
+   public class PortfolioPdx implements PdxSerializable {
+     ...
+   ```
+
+2. If your domain class does not have a zero-arg constructor, create one for it.
+
+   For example:
+
+   ```
+   public PortfolioPdx(){}
+   ```
+
+3. Program `PdxSerializable.toData.`
+
+   1. Write each standard Java data field of your domain class using the `PdxWriter` write methods. Geode automatically provides `PdxWriter` to the `toData` method for `PdxSerializable` objects.
+
+   2. Call the `PdxWriter` `markIdentifyField` method for each field you want to have Geode use to identify your object. Put this after the field’s write method. Geode uses this information to compare objects for operations like distinct queries. If you do not set as least one identity field, then the `equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well. It is important that the fields used by your `equals` and `hashCode` implementations are the same fields that you mark as identity fields.
+
+   3. For a particular version of your class, you need to consistently write the same named field each time. The field names or number of fields must not change from one instance to another for the same class version.
+
+   4. For best performance, do fixed width fields first and then variable length fields.
+
+      Example `toData` code:
+
+      ```
+      // PortfolioPdx fields
+        private int id;
+        private String pkid;
+        private Map<String, PositionPdx> positions;
+        private String type;
+        private String status;
+        private String[] names;
+        private byte[] newVal;
+        private Date creationDate;
+        ...
+      
+        public void toData(PdxWriter writer)
+        {
+          writer.writeInt("id", id)
+      // The markIdentifyField call for a field must 
+      // come after the field's write method 
+          .markIdentityField("id")
+          .writeDate("creationDate", creationDate) //fixed length field
+          .writeString("pkid", pkid)
+          .writeObject("positions", positions)
+          .writeString("type", type)
+          .writeString("status", status)
+          .writeStringArray("names", names)
+          .writeByteArray("newVal", newVal)
+        }
+      ```
+
+4. Program `PdxSerializable.fromData` to read your data fields from the serialized form into the object’s fields using the `PdxReader` read methods.
+
+   Provide the same names that you did in `toData` and call the read operations in the same order as you called the write operations in your `toData` implementation.
+
+   Geode automatically provides `PdxReader` to the `fromData` method for `PdxSerializable`objects.
+
+   Example `fromData` code:
+
+   ```
+   public void fromData(PdxReader reader)
+     {
+       id = reader.readInt("id");
+       creationDate = reader.readDate("creationDate");
+       pkid = reader.readString("pkid");
+       position1 = (PositionPdx)reader.readObject("position1");
+       position2 = (PositionPdx)reader.readObject("position2");
+       positions = (Map<String, PositionPdx>)reader.readObject("positions");
+       type = reader.readString("type");
+       status = reader.readString("status");
+       names = reader.readStringArray("names");
+       newVal = reader.readByteArray("newVal");
+       arrayNull = reader.readByteArray("arrayNull");
+       arrayZeroSize = reader.readByteArray("arrayZeroSize");
+     }
+   ```
+
+**What to do next**
+
+- As needed, configure and program your Geode applications to use `PdxInstance` for selective object deserialization. See [Programming Your Application to Use PdxInstances](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
+
+
+
+#### Programming Your Application to Use PdxInstances
+
+A `PdxInstance` is a light-weight wrapper around PDX serialized bytes. It provides applications with run-time access to fields of a PDX serialized object.
+
+You can configure your cache to return a `PdxInstance` when a PDX serialized object is deserialized instead of deserializing the object to a domain class. You can then program your application code that reads your entries to handle `PdxInstance`s fetched from the cache.
+
+**Note:** This applies only to entry retrieval that you explicitly code using methods like `EntryEvent.getNewValue` and `Region.get`, as you do inside functions or in cache listener code. This does not apply to querying because the query engine retrieves the entries and handles object access for you.
+
+If you configure your cache to allow PDX serialized reads, a fetch from the cache returns the data in the form it is found. If the object is not serialized, the fetch returns the domain object. If the object is serialized, the fetch returns the `PdxInstance` for the object.
+
+**Note:** If you are using `PdxInstance`s, you cannot use delta propagation to apply changes to PDX serialized objects.
+
+For example, in client/server applications that are programmed and configured to handle all data activity from the client, PDX serialized reads done on the server side will always return a `PdxInstance`. This is because all of data is serialized for transfer from the client, and you are not performing any server-side activities that would deserialize the objects in the server cache.
+
+In mixed situations, such as where a server cache is populated from client operations and also from data loads done on the server side, fetches done on the server can return a mix of `PdxInstance`s and domain objects.
+
+When fetching data in a cache with PDX serialized reads enabled, the safest approach is to code to handle both types, receiving an `Object` from the fetch operation, checking the type and casting as appropriate. However, if you know that the class is not available in the JVM, then you can avoid performing the type check.
+
+`PdxInstance` overrides any custom implementation you might have coded for your object’s `equals` and `hashcode` methods. Make sure you have marked at least one identity field when writing PDX serialized objects. If you do not set as least one identity field, then the PdxInstance`equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well.
+
+
+
+**Prerequisites**
+
+- Understand generally how to configure the Geode cache. See [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html#basic_config_management).
+
+
+
+**Procedure**
+
+In your application where you fetch data from the cache, provide the following configuration and code as appropriate:
+
+1. In the cache.xml file of the member where entry fetches are run, set the `<pdx>` `read-serialized` attribute to true. Data is not necessarily accessed on the member that you have coded for it. For example, if a client application runs a function on a server, the actual data access is done on the server, so you set `read-serialized` to true on the server.
+
+   For example:
+
+   ```
+   // Cache configuration setting PDX read behavior 
+   <cache>
+     <pdx read-serialized="true" />
+     ...
+   </cache>
+   ```
+
+2. Write the application code that fetches data from the cache to handle a `PdxInstance`. If you are sure you will only retrieve `PdxInstance`s from the cache, you can code only for that. In many cases, a `PdxInstance` or a domain object may be returned from your cache entry retrieval operation, so you should check the object type and handle each possible type.
+
+   For example:
+
+   ```
+   // put/get code with serialized read behavior
+   // put is done as normal
+   myRegion.put(myKey, myPdxSerializableObject);
+   
+   // get checks Object type and handles each appropriately
+   Object myObject = myRegion.get(myKey);
+   if (myObject instanceof PdxInstance) {
+     // get returned PdxInstance instead of domain object    
+     PdxInstance myPdxInstance = (PdxInstance)myObject;
+   
+     // PdxInstance.getField deserializes the field, but not the object
+     String fieldValue = myPdxInstance.getField("stringFieldName"); 
+   
+     // Update a field and put it back into the cache 
+     // without deserializing the entire object
+     WritablePdxInstance myWritablePdxI = myPdxInstance.createWriter();
+     myWritablePdxI.setField("fieldName", fieldValue);
+     region.put(key, myWritablePdxI);
+   
+     // Deserialize the entire object if needed, from the PdxInstance
+     DomainClass myPdxObject = (DomainClass)myPdxInstance.getObject();
+   }
+   else if (myObject instanceof DomainClass) {
+     // get returned instance of domain object  
+     // code to handle domain object instance  
+     ...  
+   }
+   ...
+   ```
+
+   **Note:** Due to a limitation with PDX, if your PDX-enabled cache contains TreeSet domain objects, you should implement a Comparator that can handle both your domain objects and PdxInstance objects. You will also need to make the domain classes available on the server.
+
+
+
+#### Adding JSON Documents to the Geode Cache
+
+The `JSONFormatter` API allows you to put JSON formatted documents into regions and retrieve them later by storing the documents internally as PdxInstances.
+
+Geode supports the use of JSON formatted documents natively. When you add a JSON document to a Geode cache, you call the JSONFormatter APIs to transform them into the PDX format (as a `PdxInstance`), which enables Geode to understand the JSON document at a field level.
+
+In terms of querying and indexing, because the documents are stored internally as PDX, applications can index on any field contained inside the JSON document including any nested field (within JSON objects or JSON arrays.) Any queries run on these stored documents will return PdxInstances as results. To update a JSON document stored in Geode , you can execute a function on the PdxInstance.
+
+You can then use the `JSONFormatter` to convert the PdxInstance results back into the JSON document.
+
+`JSONFormatter` uses a streaming parser ([Jackson](http://wiki.fasterxml.com/JacksonHome), JSON processor) to turn JSON documents into the optimized PDX format. To use the JSONFormatter, make sure that `lib/geode-dependencies.jar` is available in your application’s CLASSPATH.
+
+The `JSONFormatter` class has four static methods that are used to convert JSON document into PdxInstances and then to convert those PdxInstances back into JSON document.
+
+You need to call the following methods before putting any JSON document into the Geode region:
+
+- `fromJSON`. Creates a PdxInstance from a JSON byte array. Returns the PdxInstance.
+- `fromJSON`. Creates a PdxInstance from a JSON string. Returns the PdxInstance.
+
+After putting the JSON document into a region as a PdxInstance, you can execute standard Geode queries and create indexes on the JSON document in the same manner you would query or index any other Geode PdxInstance.
+
+After executing a Geode query or calling `region.get`, you can use the following methods to convert a PdxInstance back into the JSON format:
+
+- `toJSON`. Reads a PdxInstance and returns a JSON string.
+- `toJSONByteArray`. Reads a PdxInstance and returns a JSON byte array.
+
+For more information on using the JSONFormatter, see the Java API documentation for `org.apache.geode.pdx.JSONFormatter`.
+
+**Sorting Behavior of Serialized JSON Fields**
+
+By default, Geode serialization creates a unique pdx typeID for each unique JSON document, even if the only difference between the JSON documents is the order in which their fields are specified.
+
+If you prefer that JSON documents which differ only in the order in which their fields are specified map to the same typeID, set the property `gemfire.pdx.mapper.sort-json-field-names` to `true`. This tells the system to sort the JSON fields prior to serialization, allowing the system to identify matching entries, and helps reduce the number of pdx typeIDs that are generated by the serialization mechanism.
+
+
+
+#### Using PdxInstanceFactory to Create PdxInstances
+
+You can use the `PdxInstanceFactory` interface to create a `PdxInstance` from raw data when the domain class is not available on the server.
+
+This can be particularly useful when you need an instance of a domain class for plug in code such as a function or a loader. If you have the raw data for the domain object (the class name and each field’s type and data), then you can explicitly create a `PdxInstance`. The `PdxInstanceFactory` is very similar to the `PdxWriter` except that after writing each field, you need to call the create method which returns the created PdxInstance.
+
+To create a factory call `RegionService.createPdxInstanceFactory`. A factory can only create a single instance. To create multiple instances create multiple factories or use `PdxInstance.createWriter()`to create subsequent instances. Using `PdxInstance.createWriter()` is usually faster.
+
+When you create a PdxInstance, set as least one identity field using the `markIndentityField`method. If you do not mark an identity field, the PdxInstance`equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well. It is important that the fields used by your `equals` and `hashCode` implementations are the same fields that you mark as identity fields.
+
+The following is a code example of using `PdxInstanceFactory`:
+
+```
+PdxInstance pi = cache.createPdxInstanceFactory("com.company.DomainObject")
+   .writeInt("id", 37)
+   .markIdentityField("id")
+   .writeString("name", "Mike Smith")
+   .writeObject("favoriteDay", cache.createPdxEnum("com.company.Day", "FRIDAY", 5))
+   .create();
+```
+
+For more information, see `PdxInstanceFactory` in the Java API documentation.
+
+**Enum Objects as PdxInstances**
+
+You can now work with enum objects as PdxInstances. When you fetch an enum object from the cache, you can now deserialize it as a `PdxInstance`. To check whether a `PdxInstance` is an enum, use the `PdxInstance.isEnum` method. An enum `PdxInstance` will have one field named “name” whose value is a String that corresponds to the enum constant name.
+
+An enum `PdxInstance` is not writable; if you call `createWriter` it will throw an exception.
+
+The `RegionService` has a method that allows you to create a `PdxInstance` that represents an enum. See `RegionService.createPdxEnum` in the Java API documentation.
+
+
+
+#### Persisting PDX Metadata to Disk
+
+Geode allows you to persist PDX metadata to disk and specify the disk store to use.
+
+**Prerequisites**
+
+- Understand generally how to configure the Geode cache. See [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
+- Understand how Geode disk stores work. See [Disk Storage](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
+
+**Procedure**
+
+1. Set the `<pdx>` attribute `persistent` to true in your cache configuration. This is required for caches that use PDX with persistent regions and with regions that use a gateway sender to distribute events across a WAN.. Otherwise, it is optional.
+2. (Optional) If you want to use a disk store that is not the Geode default disk store, set the `<pdx>`attribute `disk-store-name` to the name of your non-default disk store. **Note:** If you are using PDX serialized objects as region entry keys and you are using persistent regions, then you must configure your PDX disk store to be a different one than the disk store used by the persistent regions.
+3. (Optional) If you later want to rename the PDX types that are persisted to disk, you can do so on your offline disk-stores by executing the `pdx rename` command. See [pdx rename](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/pdx.html).
+
+**Example cache.xml:**
+
+This example `cache.xml` enables PDX persistence and sets a non-default disk store in a server cache configuration:
+
+```
+  <pdx read-serialized="true" 
+       persistent="true" disk-store-name="SerializationDiskStore">
+    <pdx-serializer>
+      <class-name>pdxSerialization.defaultSerializer</class-name>
+    </pdx-serializer>
+  </pdx>
+  <region ...
+```
+
+
+
+#### Using PDX Objects as Region Entry Keys
+
+Using PDX objects as region entry keys is highly discouraged.
+
+The best practice for creating region entry keys is to use a simple key; for example, use a String or Integer. If the key must be a domain class, then you should use a non-PDX-serialized class.
+
+If you must use PDX serialized objects as region entry keys, ensure that you do not set `read-serialized` to `true`. This configuration setting will cause problems in partitioned regions because partitioned regions require the hash code of the key to be the same on all JVMs in the distributed system. When the key is a `PdxInstance` object, its hash code will likely not be the same as the hash code of the domain object.
+
+If you are using PDX serialized objects as region entry keys and you are using persistent regions, then you must configure your PDX disk store to be a different one than the disk store used by the persistent regions.  
+
+
+
+### Geode Data Serialization (DataSerializable and DataSerializer)
+
+Geode’s `DataSerializable` interface gives you quick serialization of your objects.
+
+**Data Serialization with the DataSerializable Interface**
+
+Geode’s `DataSerializable` interface gives you faster and more compact data serialization than the standard Java serialization or Geode PDX serialization. However, while Geode `DataSerializable`interface is generally more performant than Geode’s `PdxSerializable`, it requires full deserialization on the server and then reserialization to send the data back to the client.
+
+You can further speed serialization by registering the instantiator for your `DataSerializable` class through `Instantiator`, eliminating the need for reflection to find the right serializer. You can provide your own serialization through the API.
+
+The recommended way to register your custom `Instantiator` is by specifying it in the `serialization-registration` element of cache.xml.
+
+For more information, see the online Java documentation for `DataSerializable` and `DataSerializer`.
+
+**Example cache.xml:**
+
+The following provides an example of how to register an instantiator using cache.xml.
+
+```
+<serialization-registration>
+<instantiator id="30">
+   <class-name>com.package.MyClass</class-name>
+</instantiator>
+</serialization-registration>
+```
+
+In addition to speeding standard object serialization, you can use the `DataSerializable` interface to serialize any custom objects you store in the cache.
+
+**Serializing Your Domain Object with DataSerializer**
+
+You can also use `DataSerializer` to serialize domain objects. It serializes data in the same way as `DataSerializable` but allows you to serialize classes without modifying the domain class code.
+
+See the JavaDocs on [DataSerializable](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializable.html) and [DataSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializer.html) for more information.
+
+
+
+### Standard Java Serialization
+
+You can use standard Java serialization for data you only distribute between Java applications. If you distribute your data between non-Java clients and Java servers, you need to do additional programming to get the data between the various class formats.
+
+Standard Java types are serializable by definition. For your domain classes, implement `java.io.Serializable`, then make sure to mark your transient and static variables as needed for your objects. For information, see the online documentation for `java.io.Serializable` for your Java version.
+
+Mixing `DataSerializable` with `Serializable` or `PdxSerializable` use on the same data can result in increased memory use and lower throughput than using just `Serializable` on the entire data, especially if the `Serializable` entries are in collections. The bigger the data collection, the lower the throughput as the metadata for the collection entries is not shared when using `DataSerializable`.
+
+
+
+## Events and Event Handling
+
+Geode provides versatile and reliable event distribution and handling for your cached data and system member events.
+
+- **How Events Work**
+
+  Members in your cluster receive cache updates from other members through cache events. The other members can be peers to the member, clients or servers or other clusters.
+
+- **Implementing Geode Event Handlers**
+
+  You can specify event handlers for region and region entry operations and for administrative events.
+
+- **Configuring Peer-to-Peer Event Messaging**
+
+  You can receive events from cluster peers for any region that is not a local region. Local regions receive only local cache events.
+
+- **Configuring Client/Server Event Messaging**
+
+  You can receive events from your servers for server-side cache events and query result changes.
+
+- **Configuring Multi-Site (WAN) Event Queues**
+
+  In a multi-site (WAN) installation, Geode uses gateway sender queues to distribute events for regions that are configured with a gateway sender. AsyncEventListeners also use an asynchronous event queue to distribute events for configured regions. This section describes additional options for configuring the event queues that are used by gateway senders or AsyncEventListener implementations.
+
+
+
 
 

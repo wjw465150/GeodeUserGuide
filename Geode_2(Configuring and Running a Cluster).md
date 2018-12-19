@@ -64,7 +64,7 @@
 
 Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保存到集群中的定位器，并将配置分发给集群成员。
 
-### 为什么使用集群配置服务
+**为什么使用集群配置服务**
 
 我们强烈建议您使用`gfsh`命令行和集群配置服务作为管理集群配置的主要机制。 在`cache.xml`文件中指定配置，仅用于那些使用`gfsh`无法指定或更改的项。使用通用集群配置可减少在配置集群中的新成员时配置单个成员所花费的时间并实施一致的配置。 您不再需要重新配置添加到集群的每个新成员。 您不再需要担心验证`cache.xml`文件。 在整个集群中传播配置更改并将配置更改部署到不同的环境也变得更加容易。
 
@@ -76,7 +76,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
 - 无需单独配置每个服务器即可启动其他服务器。
 - 配置一些服务器以托管某些区域和其他服务器以托管不同的区域，并将所有服务器配置为托管一组公共区域。
 
-### 使用集群配置服务
+**使用集群配置服务**
 
 要在Geode中使用集群配置服务，必须在部署中使用专用的独立定位器。 您不能将集群配置服务与位于同一位置的定位器（在另一个进程（如服务器）中运行的定位器）或多播环境中一起使用。
 
@@ -88,7 +88,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
 
 随后，任何以`-use-cluster-configuration`设置为`true`的`gfsh`开头的服务器将从定位器以及任何适当的组级配置中获取集群配置(对于成员组，它们 属于)。 要在服务器上禁用集群配置服务，必须使用`--use-cluster-configuration`参数设置为`false`来启动服务器。 默认情况下，该参数设置为true。
 
-### 集群配置服务的工作原理
+**集群配置服务的工作原理**
 
 使用`gfsh`命令创建Apache Geode区域，磁盘存储和其他对象时，集群配置服务会保存集群中每个定位器的配置。 如果在发出这些命令时指定组，则会保存单独的配置，其中仅包含适用于该组的配置。
 
@@ -96,7 +96,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
 
 ![img](assets/cluster_config_overview.svg)
 
-### gfsh创建集群配置的命令
+**gfsh创建集群配置的命令**
 
 以下`gfsh`命令会将配置写入集群中的所有定位器（定位器将配置写入磁盘）：
 
@@ -117,7 +117,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
 
 ***** 请注意，必须在启动数据成员之前执行configure pdx命令。 此命令不会影响系统中当前正在运行的任何成员。 运行此命令后启动的数据成员（已启用集群配置）将获取新的PDX配置。
 
-### gfsh限制
+**gfsh限制**
 
 这些是您无法使用`gfsh`创建或更改的配置。 这些配置必须位于`cache.xml`文件中，或者使用API：
 
@@ -167,7 +167,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
   - `gateway-transport-filter`
   - `gateway-event-substitution-filter`
 
-### 禁用集群配置服务
+**禁用集群配置服务**
 
 如果您不想使用集群配置服务，请启动定位器，并将`--enable-cluster-configuration`参数设置为false，或者不要使用独立定位器。 然后，您需要在所有集群成员上单独配置缓存（通过cache.xml或API）。
 
@@ -564,7 +564,7 @@ datanode2 | group1_functions.jar | /usr/local/gemfire/deploy/vf.gf#group1_functi
 
 有关`gfsh`用法的更多信息，请参阅[gfsh](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/chapter_overview.html).
 
-### JAR文件的部署位置
+**JAR文件的部署位置**
 
 在每个成员上写入JAR文件的系统位置由为该成员配置的`deploy-working-dir` Geode属性确定。 例如，您可以在您的成员的`gemfire.properties`文件中配置以下内容：
 
@@ -575,13 +575,13 @@ deploy-working-dir=/usr/local/gemfire/deploy
 
 此部署位置可以是本地或多个成员使用的共享网络资源（例如装载位置），以减少磁盘空间使用。 如果使用共享目录，则仍需要在要访问应用程序的每个成员上部署JAR文件，因为部署会更新CLASSPATH和自动注册功能。
 
-### 关于部署JAR文件和集群配置服务
+**关于部署JAR文件和集群配置服务**
 
 默认情况下，集群配置服务将已部署的JAR文件分发到集群中的所有定位器。 当您使用`gfsh`启动新服务器时，定位器将配置文件和已部署的jar文件提供给成员，并将它们写入服务器的目录。
 
 请参见[集群配置服务概述](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
 
-### JAR文件的版本控制
+**JAR文件的版本控制**
 
 将JAR文件部署到集群或成员组时，将修改JAR文件以在其名称中指示版本信息。 每个JAR文件名都以`vf.gf #`为前缀，并在文件名末尾包含一个版本号。 例如，如果您将`MyClasses.jar`部署五次，则在列出所有已部署的jar时，文件名将显示为`vf.gf＃MyClasses.jar＃5`。
 
@@ -589,7 +589,7 @@ deploy-working-dir=/usr/local/gemfire/deploy
 
 当成员开始使用JAR文件时，该成员将获取该文件的共享锁。 如果成员通过部署接收到较新版本，则该成员将释放共享锁并尝试删除现有JAR文件以支持较新版本。 如果没有其他成员在现有JAR上具有共享锁，则会删除现有的旧版本JAR。
 
-### 自动类路径加载
+**自动类路径加载**
 
 启动缓存时，新缓存会请求将当前工作目录中每个JAR文件的最新版本添加到ClassPathLoader。 如果已将JAR文件部署到ClassPathLoader，则ClassPathLoader会在找到更新版本时更新其加载的版本; 否则，没有变化。 如果检测到，则如果没有其他成员对其具有共享锁，则会删除旧版本的JAR文件。
 
@@ -599,7 +599,7 @@ deploy-working-dir=/usr/local/gemfire/deploy
 
 如果使用共享部署工作目录，则共享该目录的所有成员应属于同一成员组。 重新启动后，共享同一部署工作目录的所有成员将使用当前工作目录中找到的任何JAR部署和自动加载其CLASSPATH。 这意味着某些成员可能会加载JAR，即使它们不是接收原始部署的成员组的一部分。
 
-### 自动函数注册
+**自动函数注册**
 
 部署包含函数的JAR文件（换句话说，包含实现Function接口的类）时，该函数将通过`FunctionService.registerFunction`方法自动注册。如果使用相同的函数部署了另一个JAR文件（具有相同的JAR文件名或另一个文件名），则会注册该函数的新实现，覆盖旧的实现。如果取消部署JAR文件，则在部署时自动注册的任何功能都将取消注册。 由于多次部署具有相同名称的JAR文件会导致JAR未部署和重新部署，因此JAR中的函数将在每次发生时取消注册并重新注册。如果从多个不同名称的JAR文件中注册了具有相同ID的函数，则在重新部署或取消部署任何这些JAR文件时，将取消注册该函数。
 
@@ -638,7 +638,7 @@ Apache Geode允许您将集群成员组织到逻辑成员组中。
 
 使用`gfsh`命令创建区域，磁盘存储和其他对象时，集群配置服务会保存集群配置。 您可以将此配置以及包含应用程序文件的任何jar文件导出到zip文件，然后导入此配置以创建新集群。
 
-### 导出集群配置
+**导出集群配置**
 
 发出`gfsh``export cluster-configuration`命令，以便在zip文件中保存集群的配置数据。 此zip文件包含集群级配置的子目录和集群中指定的每个组的目录。 [集群配置文件和故障排除](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_config_troubleshooting.html#concept_ylt_2cb_y4)中介绍了这些目录的内容。
 
@@ -652,7 +652,7 @@ export cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 **注意:** `gfsh`仅保存使用`gfsh`指定的配置的集群配置值。 管理API创建的配置不随集群配置一起保存。
 
-### 导入集群配置
+**导入集群配置**
 
 使用`gfsh``import cluster-configuration`命令根据从其他系统导出的配置信息来配置新的集群。 您只能将集群配置导入新集群，即：
 
@@ -699,7 +699,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 您可以导出包含集群配置的所有工件的zip文件。 zip文件包含定位器的`cluster_config`（或其他指定的）子目录中的所有文件。 您可以将此配置导入新集群。 请参见[导出和导入集群配置](http://geode.apache.org/docs/guide/17/configuring/cluster_config/export-import.html#concept_wft_dkq_34)。
 
-### 故障排除提示
+**故障排除提示**
 
 - 当您使用`gfsh`启动定位器时，您应该看到以下消息：
 
@@ -823,7 +823,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 2. 将文件放在目录或jar文件中。
 3. 对于具有非默认名称或位置的任何文件，请在系统属性文件 和/或 成员`CLASSPATH中提供文件规范。
 
-#### Geode配置文件
+**Geode配置文件**
 
 - `gemfire.properties`. 包含集群成员所需的设置。 这些设置包括许可，系统成员发现，通信参数，日志记录和统计信息。 请参阅[Geode属性参考](http://geode.apache.org/docs/guide/17/reference/topics/gemfire_properties.html)。
 - **gfsecurity.properties**. 一个可选的单独文件，包含与`gemfire.properties`中另外定义的安全相关（`security- *`）设置。 将这些成员属性放入单独的文件允许您限制用户对这些特定设置的访问。 请参阅[Geode属性参考](http://geode.apache.org/docs/guide/17/reference/topics/gemfire_properties.html)。
@@ -895,7 +895,7 @@ locators=cache-xml-file=/gemfireSamples/examples/dist/cacheRunner/queryPortfolio
 
 
 
-### 在JAR文件中部署配置文件
+**在JAR文件中部署配置文件**
 
 本节提供了在JAR文件中部署配置文件的过程和示例。
 
@@ -907,7 +907,7 @@ locators=cache-xml-file=/gemfireSamples/examples/dist/cacheRunner/queryPortfolio
 4. 验证jar文件副本是运行时应用程序唯一可见的副本。 Geode在搜索其他位置后搜索`CLASSPATH`，因此这些文件在其他搜索区域中无法使用。
 5. 启动应用程序。 配置文件从jar文件加载。
 
-**部署配置JAR的示例**
+### 部署配置JAR的示例
 
 以下示例在`my.jar`中部署缓存配置文件`myCache.xml`。 以下显示了'my.jar`的内容：
 
@@ -937,7 +937,7 @@ myConfig/myCache.xml
 
 使用以下准则创建启动和关闭过程和脚本。 其中一些说明使用[`gfsh`](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/chapter_overview.html)。
 
-### 启动你的系统
+**启动你的系统**
 
 您应该在启动Geode系统时,遵循一定的顺序准则。
 
@@ -961,7 +961,7 @@ myConfig/myCache.xml
 
 **注意:** 您可以选择覆盖关闭单个进程的默认超时期限。 必须在成员启动期间指定此覆盖设置。 有关详细信息，请参阅[关闭系统](http://geode.apache.org/docs/guide/17/configuring/running/starting_up_shutting_down.html#starting_up_shutting_down__section_mnx_4cp_cv)。
 
-### 在磁盘上丢失数据后启动
+**在磁盘上丢失数据后启动**
 
 此信息与Geode磁盘存储文件的灾难性丢失有关。 如果丢失磁盘存储文件，则下一次启动可能会挂起，等待丢失的磁盘存储重新联机。 如果您的系统在启动时挂起，请使用`gfsh`命令`show missing-disk-store`列出缺少的磁盘存储，如果需要，还可以撤消丢失的磁盘存储，以便完成系统启动。 您必须使用磁盘存储ID来撤消磁盘存储。 这些是两个命令：
 
@@ -977,11 +977,11 @@ gfsh>revoke missing-disk-store --id=60399215-532b-406f-b81f-9b5bd8d1b55a
 
 **注意:** 此`gfsh`命令要求您通过JMX Manager节点连接到集群。
 
-### 关闭系统
+**关闭系统**
 
 使用`gfsh``shutdown`命令关闭Geode系统，或者一次关闭一个成员。
 
-### 使用`shutdown`命令
+**使用`shutdown`命令**
 
 如果您正在使用持久性区域（成员将数据持久保存到磁盘），则应使用`gfsh``shutdown`命令以有序的方式停止正在运行的系统。 此命令在关闭之前同步持久分区区域，这使得集群的下一次启动尽可能高效。
 
@@ -1011,7 +1011,7 @@ gfsh>shutdown --time-out=60
 gfsh>shutdown --include-locators=true --time-out=60
 ```
 
-### 单独关闭系统成员
+**单独关闭系统成员**
 
 如果您不使用持久性区域，则可以按照与启动相反的顺序关闭每个成员来关闭集群。 （有关成员启动的建议顺序，请参阅[启动系统](http://geode.apache.org/docs/guide/17/configuring/running/starting_up_shutting_down.html#starting_up_shutting_down__section_3D111558326D4A38BE48C17D44BB66DB)。）
 
@@ -1045,7 +1045,7 @@ gfsh>shutdown --include-locators=true --time-out=60
 
 - 在正常情况下，不要使用命令行`kill -9`来关闭服务器。特别是在具有少量成员的系统上，使用`kill`而不是`gfsh stop`会导致分区检测机制将系统置于最终状态，该状态将永远等待重新连接到被杀死的服务器，并且 无法重启那个被杀死的服务器。 如果出现`kill`命令是摆脱服务器系统的唯一方法，那么`kill` * all *集群的进程或使用`kill -INT`，这将允许有序关闭进程。
 
-### 系统成员关闭行为的选项
+**系统成员关闭行为的选项**
 
 `DISCONNECT_WAIT`命令行参数设置关闭过程中每个步骤的最长时间。 如果任何步骤花费的时间超过指定的数量，则强制结束。 每个操作都给出此宽限期，因此缓存成员关闭所需的总时间长度取决于操作数和“DISCONNECT_WAIT”设置。 在关机过程中，Geode会生成以下消息：
 
@@ -1078,7 +1078,7 @@ gfsh>start server --J=-DDistributionManager.DISCONNECT_WAIT=<milliseconds>
 
 您可以独立运行定位器或嵌入另一个Geode过程。 独立运行定位器可提供定位器服务的最高可靠性和可用性。
 
-### 定位器配置和日志文件
+**定位器配置和日志文件**
 
 定位器配置和日志文件具有以下属性：
 
@@ -1108,13 +1108,13 @@ gfsh>start server --J=-DDistributionManager.DISCONNECT_WAIT=<milliseconds>
 
 - 默认情况下，由于网络分区事件或成员无响应而已关闭和断开连接的定位器将自行重新启动并自动尝试重新连接到现有集群。 当定位器处于重新连接状态时，它不为集群提供任何发现服务。 有关详细信息，请参阅[使用自动重新连接处理强制高速缓存断开连接](http://geode.apache.org/docs/guide/17/managing/member-reconnect.html)。
 
-### 定位器和集群配置服务
+**定位器和集群配置服务**
 
 定位器使用集群配置服务来保存适用于所有集群成员或指定组成员的配置。 配置保存在Locator的目录中，并传播到集群中的所有定位器。 使用`gfsh`启动服务器时，服务器从定位器接收组级别和集群级别配置。
 
 请参见[集群配置服务概述](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)。
 
-### 启动定位器
+**启动定位器**
 
 使用以下准则启动定位器：
 
@@ -1222,7 +1222,7 @@ gfsh>start server --J=-DDistributionManager.DISCONNECT_WAIT=<milliseconds>
 
     执行java命令的目录成为定位器进程的工作目录。
 
-### 检查定位器状态
+**检查定位器状态**
 
 如果使用`gfsh`连接到集群，则可以通过提供定位器名称来检查正在运行的定位器的状态。 例如：
 
@@ -1267,7 +1267,7 @@ Class-Path: /Users/username/apache_geode/lib/geode-dependencies.jar
 Cluster configuration service is up and running.
 ```
 
-### 停止定位器
+**停止定位器**
 
 如果使用`gfsh`连接到集群，则可以通过提供定位器名称来停止正在运行的定位器。 例如：
 
@@ -1289,7 +1289,7 @@ gfsh>stop locator --dir=<locator_working_directory>
 
 其中<* locator_working_directory *>对应于运行定位器的本地工作目录。
 
-### 定位器和多站点（WAN）部署
+**定位器和多站点（WAN）部署**
 
 如果使用多站点（WAN）配置，则可以在启动定位器时将定位器连接到远程站点。
 
@@ -1311,7 +1311,7 @@ Geode服务器主要用于托管长期数据区域以及运行标准Geode进程�
 - `gfsh`命令行工具。
 - 以编程方式，通过`org.apache.geode.distributed.ServerLauncher` API。 `ServerLauncher` API只能用于以`gfsh`或`ServerLauncher`类本身启动的Geode服务器。
 
-### 默认服务器配置和日志文件
+**默认服务器配置和日志文件**
 
 `gfsh`实用程序为其配置文件和日志文件使用工作目录。 这些是默认值和配置选项：
 
@@ -1338,7 +1338,7 @@ Geode服务器主要用于托管长期数据区域以及运行标准Geode进程�
 
 - 我们建议您在启动服务器时不要使用`-XX：+ UseCompressedStrings`和`-XX：+ UseStringCache`JVM配置属性。 这些JVM选项可能会导致数据损坏和兼容性问题。
 
-### 使用gfsh启动服务器
+**使用gfsh启动服务器**
 
 有关语法信息，请参阅[`gfsh start server`](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/start.html#topic_3764EE2DB18B4AE4A625E0354471738A)命令参考页。
 
@@ -1373,7 +1373,7 @@ gfsh>start server --name=server3 \
 --J=-Xms80m,-Xmx80m --J=-XX:+UseConcMarkSweepGC,-XX:CMSInitiatingOccupancyFraction=65
 ```
 
-### 以编程方式启动服务器
+**以编程方式启动服务器**
 
 使用`org.apache.geode.distributed.ServerLauncher` API在代码中启动缓存服务器进程。 使用`ServerLauncher.Builder`类构造`ServerLauncher`的实例，然后使用`start（）`方法启动服务器服务。 `ServerLauncher`类中的其他方法提供有关服务器的状态信息，并允许您停止服务器。
 
@@ -1397,7 +1397,7 @@ import org.apache.geode.distributed.ServerLauncher;
 }
 ```
 
-### 检查服务器状态
+**检查服务器状态**
 
 在`gfsh`中连接到集群后，通过提供服务器名称来检查正在运行的缓存服务器的状态：
 
@@ -1431,7 +1431,7 @@ JVM Arguments:
 ...
 ```
 
-### 停止服务器
+**停止服务器**
 
 当连接到`gfsh`中的集群时，通过提供服务器名称来停止正在运行的缓存服务器：
 
@@ -1514,11 +1514,11 @@ Apache Geode是一个以网络为中心的分布式系统，因此如果您的�
 
 - 对于客户端，您将客户端配置为使用客户端池配置连接到服务器。 客户端的池配置有两个选项：您可以使用服务器元素列表或定位器元素列表创建池。 对于每个元素，指定主机和端口。 必须通过防火墙访问指定的端口。
 
-### 限制短暂的端口以实现点对点成员资格
+**限制短暂的端口以实现点对点成员资格**
 
 默认情况下，Geode分配* ephemeral *端口，即从指定范围分配的临时端口，可以包含大量可能的端口。 当存在防火墙时，短暂的端口范围通常必须限制为更小的数量，例如六个。 如果要通过防火墙配置P2P通信，则还必须为每个进程设置TCP端口，并确保允许UDP流量通过防火墙。
 
-### 防火墙和端口配置的属性
+**防火墙和端口配置的属性**
 
 此表包含可能涉及防火墙行为的属性，并提供每个属性的简要说明。
 
@@ -1537,7 +1537,7 @@ Apache Geode是一个以网络为中心的分布式系统，因此如果您的�
 | cache server config | `max-connections`                                            | 服务器的最大客户端连接数。 达到最大值时，服务器拒绝其他客户端连接。 |
 | cache server config | `port` (cache.xml) or `--port`parameter to the `gfsh start server` command | 服务器侦听以进行客户端通信的端口。                           |
 
-### 默认端口配置
+**默认端口配置**
 
 | **Port Name**         | Related Configuration Setting                                | **Default Port**                                             |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -1550,7 +1550,7 @@ Apache Geode是一个以网络为中心的分布式系统，因此如果您的�
 | RMI                   | `jmx-manager-port`                                           | 1099                                                         |
 | TCP                   | `tcp-port`                                                   | ephemeral port                                               |
 
-### 多站点（WAN）配置中的防火墙和端口配置的属性
+**多站点（WAN）配置中的防火墙和端口配置的属性**
 
 每个网关接收器使用单个端口接受来自其他系统中的网关发送器的连接。 网关接收器的配置指定要使用的一系列可能的端口值。 当网关接收器启动时，Geode从指定范围中选择一个可用端口。 配置防火墙，以便WAN上的网关发件人可以访问所有可能的端口值。
 

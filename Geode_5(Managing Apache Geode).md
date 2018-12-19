@@ -95,7 +95,7 @@ Geode管理架构的其他一些关键优势和特性：
 - 可以将任何Geode成员配置为为Geode集群中的所有成员提供所有MXBean的联合视图。
 - Geode还将JMX的使用修改为行业标准，并且对通用JMX客户端友好。 您现在可以使用任何符合JMX的第三方工具轻松监控或管理集群。 例如，JConsole。
 
-#### 参考
+**参考**
 
 有关MXBeans和Open MBean的更多信息，请参阅：
 
@@ -112,7 +112,7 @@ Geode管理和监视工具允许您配置集群的所有成员和进程，监视
 
 Geode提供以下工具来管理Geode安装：
 
-#### gfsh命令行工具
+**gfsh命令行工具**
 
 gfsh命令行工具提供了一组用于配置，管理和监视集群的命令。 gfsh是管理集群的推荐工具。
 
@@ -139,7 +139,7 @@ gfsh在它自己的shell中运行，或者你可以[直接从OS命令行执行gf
 
 Geode的管理和监视系统由一个JMX Manager节点(应该只有一个)和一个集群中的一个或多个受管节点组成。 集群中的所有成员都可通过MBean和Geode Management Service API进行管理。
 
-#### 架构
+**架构**
 
 下图描绘了管理和监视系统组件的体系结构。
 
@@ -147,14 +147,14 @@ Geode的管理和监视系统由一个JMX Manager节点(应该只有一个)和�
 
 在这个架构中，每个Geode成员都是可管理的。 本地Geode进程的所有Geode MBean都自动注册在Platform MBeanServer（托管平台MXBeans的每个JVM的默认MBeanServer）中。
 
-#### 受管节点
+**受管节点**
 
 Each member of a cluster is a managed node. Any node that is not currently also acting as a JMX Manager node is referred to simply as a managed node. A managed node has the following resources so that it can answer JMX queries both locally and remotely:
 
 - Local MXBeans that represent the locally monitored components on the node. See [List of Geode JMX MBeans](http://geode.apache.org/docs/guide/17/managing/management/list_of_mbeans.html#topic_4BCF867697C3456D96066BAD7F39FC8B) for a list of possible MXBeans existing for the managed node.
 - Built-in platform MBeans.
 
-#### JMX Manager Node
+**JMX Manager Node**
 
 JMX Manager节点是可以管理其他Geode成员（即其他受管节点）以及自身的成员。 JMX Manager节点可以管理集群中的所有其他成员。
 
@@ -174,7 +174,7 @@ JMX Manager节点分配了以下额外资源，以便它可以回答JMX查询：
 - 受管节点上的MXBeans代理。
 - 内置平台MXBeans。
 
-#### JMX集成
+**JMX集成**
 
 管理和监视工具(如gfsh命令行界面和Pulse)使用JMX/RMI作为连接到Geode节点的通信层。 默认情况下，所有Geode进程都允许从localhost到Platform MBeanServer的JMX连接。 默认情况下，受管节点和JMX管理器节点都启用了RMI连接器以允许JMX客户端连接。
 
@@ -190,7 +190,7 @@ JConsole可以连接到任何Geode成员，但如果它连接到非JMX-Manager�
 
 有关如何配置RMI注册表和RMI连接器的信息，请参阅[配置RMI注册表端口和RMI连接器](http://geode.apache.org/docs/guide/17/managing/management/configuring_rmi_connector.html#concept_BC793A7ACF9A4BD9A29C2DCC6894767D)。
 
-#### 管理API
+**管理API**
 
 Geode管理API代表JMX用户的Geode集群。 但是，它们不提供JMX中存在的功能。 它们仅为Geode监控和管理提供的各种服务提供网关。
 
@@ -218,7 +218,7 @@ ManagementService service = ManagementService.getManagementService(cache);
 
 您还可以使用ManagementService API执行gfsh命令。 请参阅[通过Management API执行gfsh命令](http://geode.apache.org/docs/guide/17/managing/management/gfsh_and_management_api.html#concept_451F0978285245E69C3E8DE795BD8635)和`org.apache.geode.management.cli`的JavaDocs。
 
-#### Geode管理和监控工具
+**Geode管理和监控工具**
 
 本节列出了当前可用于管理和监控Geode的工具：
 
@@ -357,7 +357,7 @@ No longer connected to ubuntu.local[1099].
 
 Geode使用MBean来管理和监控Geode的不同部分。 Geode的联合MBean架构是可扩展的，允许您拥有Geode集群的单代理视图。
 
-#### Geode MBean和MBeanServers的联合
+**Geode MBean和MBeanServers的联合**
 
 MBeanServers的联合意味着一个成员JMX Manager Node可以提供MBeanServer托管的所有MBean的代理视图。 联合还意味着操作和通知分布在集群中。
 
@@ -368,7 +368,7 @@ Geode federation负责以下功能：
 - 通知传播
 - 操作调用
 
-#### MBean代理命名约定
+**MBean代理命名约定**
 
 每个Geode MBean都遵循特定的命名约定，以便于分组。 例如：
 
@@ -386,11 +386,11 @@ MemberMBean:
 GemFire:type=Member,member=<Node1>
 ```
 
-#### 使用MXBeans
+**使用MXBeans**
 
 在其管理API中，Geode提供MXBeans以确保任何客户端（包括远程客户端）都可以使用所创建的任何MBean，而无需客户端访问特定类以访问MBean的内容。
 
-#### MBean代理创建
+**MBean代理创建**
 
 Geode代理本质上是本地MBean。 每个Geode JMX管理器成员都托管指向每个受管节点的本地MBean的代理。 当在该受管节点中发生事件时，代理MBean还将发出受管节点中本地MBean发出的任何通知。
 
@@ -413,7 +413,6 @@ Geode代理本质上是本地MBean。 每个Geode JMX管理器成员都托管指
 
   本节介绍所有受管节点上可用的MBean。
 
-
 ##### JMX Manager MBeans
 
 本节介绍JMX Manager节点上可用的MBean。
@@ -425,7 +424,7 @@ JMX Manager节点包括[Managed Node MBeans](http://geode.apache.org/docs/guide/
 - [DistributedRegionMXBean](http://geode.apache.org/docs/guide/17/managing/management/list_of_mbeans_full.html#topic_14E3721DD0CF47D7AD8C742DFBE9FB9C__section_48384B091AB846E591F22EEA2770DD36)
 - [DistributedLockServiceMXBean](http://geode.apache.org/docs/guide/17/managing/management/list_of_mbeans_full.html#topic_14E3721DD0CF47D7AD8C742DFBE9FB9C__section_9E004D8AA3D24647A5C19CAA1879F0A4)
 
-##### ManagerMXBean
+**ManagerMXBean**
 
 表示托管成员的Geode Management层。 控制管理范围。 此MBean提供`start`和`stop`方法，以将受管节点转换为JMX Manager节点或停止节点成为JMX Manager。 对于潜在的管理者(`jmx-manager=true`和`jmx-manager-start=false`)，这个MBean是在Locator请求时创建的。
 
@@ -442,7 +441,7 @@ JMX Manager节点包括[Managed Node MBeans](http://geode.apache.org/docs/guide/
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.ManagerMXBean` JavaDocs。
 
-##### DistributedSystemMXBean
+**DistributedSystemMXBean**
 
 系统范围的聚合MBean，提供整个集群的高级视图，包括所有成员(缓存服务器，对等方，定位器)及其缓存。 在任何给定的时间点，它都可以提供完整集群及其操作的快照。
 
@@ -463,7 +462,7 @@ DistributedSystemMXBean提供用于执行集群范围操作的API，例如备份
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.DistributedSystemMXBean` JavaDocs。
 
-##### DistributedRegionMXBean
+**DistributedRegionMXBean**
 
 系统范围的命名区域的聚合MBean。 它为托管和/或使用该区域的所有成员提供了一个区域的高级视图。 例如，您可以获取托管该区域的所有成员的列表。 某些方法仅适用于分区区域。
 
@@ -478,7 +477,7 @@ DistributedSystemMXBean提供用于执行集群范围操作的API，例如备份
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.DistributedRegionMXBean` JavaDocs。
 
-##### DistributedLockServiceMXBean
+**DistributedLockServiceMXBean**
 
 表示DistributedLockService的命名实例。 可以在成员中创建任意数量的DistributedLockService。
 
@@ -495,7 +494,7 @@ DistributedLockService的命名实例定义了一个空间，用于锁定由指�
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.DistributedLockServiceMXBean` JavaDocs。
 
-受管节点MBean
+##### 受管节点MBean
 
 本节介绍所有受管节点上可用的MBean。
 
@@ -512,7 +511,7 @@ DistributedLockService的命名实例定义了一个空间，用于锁定由指�
 
 JMX Manager节点将自己拥有受管节点MBean，因为它们也是集群中的可管理实体。
 
-##### MemberMXBean
+**MemberMXBean**
 
 成员对其连接和缓存的本地视图。 它是管理特定成员的主要网关。 它公开了成员级属性和统计信息。 像`createCacheServer()`和`createManager()`这样的操作将有助于创建一些Geode资源。 任何JMX客户端都可以连接到MBean服务器，并使用此MBean开始管理Geode成员。
 
@@ -529,7 +528,7 @@ See [MemberMXBean Notifications](http://geode.apache.org/docs/guide/17/managing/
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.MemberMXBean` JavaDocs。
 
-##### CacheServerMXBean
+**CacheServerMXBean**
 
 表示Geode CacheServer。 提供有关服务器，订阅，持久队列和索引的数据和通知。
 
@@ -546,7 +545,7 @@ See [MemberMXBean Notifications](http://geode.apache.org/docs/guide/17/managing/
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.CacheServerMXBean` JavaDocs。
 
-##### RegionMXBean
+**RegionMXBean**
 
 成员局部区域的视角。
 
@@ -561,7 +560,7 @@ See [MemberMXBean Notifications](http://geode.apache.org/docs/guide/17/managing/
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.RegionMXBean` JavaDocs。
 
-##### LockServiceMXBean
+**LockServiceMXBean**
 
 表示LockService的命名实例。 可以在成员中创建任意数量的LockServices。
 
@@ -576,7 +575,7 @@ See [MemberMXBean Notifications](http://geode.apache.org/docs/guide/17/managing/
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.LockServiceMXBean` JavaDocs。
 
-##### DiskStoreMXBean
+**DiskStoreMXBean**
 
 表示为一个或多个区域提供磁盘存储的DiskStore对象
 
@@ -591,7 +590,7 @@ See [MemberMXBean Notifications](http://geode.apache.org/docs/guide/17/managing/
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.DiskStoreMXBean` JavaDocs。
 
-##### AsyncEventQueueMXBean
+**AsyncEventQueueMXBean**
 
 AsyncEventQueueMXBean提供对AsyncEventQueue的访问，AsyncEventQueue表示将事件传递到AsyncEventListener的通道。
 
@@ -606,7 +605,7 @@ AsyncEventQueueMXBean提供对AsyncEventQueue的访问，AsyncEventQueue表示�
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.AsyncEventQueueMXBean` JavaDocs。
 
-##### LocatorMXBean
+**LocatorMXBean**
 
 LocatorMXBean表示定位器。
 
@@ -621,7 +620,7 @@ LocatorMXBean表示定位器。
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.LocatorMXBean` JavaDocs。
 
-##### LuceneServiceMXBean
+**LuceneServiceMXBean**
 
 成员对现有Lucene索引的本地视图。
 
@@ -636,7 +635,7 @@ LocatorMXBean表示定位器。
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.cache.lucene.management.LuceneServiceMXBean` JavaDocs。
 
-##### GatewaySenderMXBean
+**GatewaySenderMXBean**
 
 GatewaySenderMXBean表示网关发件人。
 
@@ -651,7 +650,7 @@ GatewaySenderMXBean表示网关发件人。
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.GatewaySenderMXBean` JavaDocs。
 
-##### GatewayReceiverMXBean
+**GatewayReceiverMXBean**
 
 GatewayReceiverMXBean表示网关接收器。
 
@@ -666,8 +665,7 @@ GatewayReceiverMXBean表示网关接收器。
 
 有关可用MBean方法和属性的信息，请参阅`org.apache.geode.management.GatewayReceiverMXBean` JavaDocs。
 
-
-##### 通过JConsole浏览Geode MBean
+#### 通过JConsole浏览Geode MBean
 
 您可以使用JConsole浏览集群中的所有Geode MBean。
 
@@ -715,7 +713,6 @@ Apache Geode MBean在发生特定事件或Geode系统中引发警报时发出通
 
   本主题列出了Geode MBeans发出的所有可用JMX通知。
 
-
 ##### 通知联邦
 
 从受管节点发出的所有通知都将联合到系统中的所有JMX Manager。
@@ -751,7 +748,6 @@ JMX Manager将为所有集群成员发出通知，但有两个例外：
 - **source**: Distributed System ID
 - **message**: alert message
 - **userData**: name or ID of the member that raised the alert
-
 
 ##### JMX MBean通知列表
 
@@ -816,13 +812,13 @@ JMX Manager将为所有集群成员发出通知，但有两个例外：
 
 Geode以编程方式模拟Java提供的开箱即用的JMX，并在所有可管理成员上创建带有RMI Registry和RMI Connector端口的JMXServiceURL。
 
-#### 配置JMX Manager端口和绑定地址
+**配置JMX Manager端口和绑定地址**
 
 您可以在启动将承载Geode JMX Manager的进程时配置特定的连接端口和地址。 为此，请指定`jmx-manager-bind-address`的值，它指定JMX管理器的IP地址和`jmx-manager-port`，它定义了RMI连接端口。
 
 默认的Geode JMX Manager RMI端口为1099.如果保留1099用于其他用途，则可能需要修改此默认值。
 
-#### 使用开箱即用的RMI连接器
+**使用开箱即用的RMI连接器**
 
 如果由于某种原因需要在部署中使用标准JMX RMI用于其他监视目的，请在要使用标准JMX RMI的任何成员上将Geode属性`jmx-manager-port`设置为0。
 
@@ -938,7 +934,7 @@ Geode资源管理器通过驱逐旧数据来防止缓存占用过多内存。 �
 
 有关更多信息，请参阅联机API文档中的`org.apache.geode.cache.control.ResourceManager`。
 
-### 如何进行后台驱逐
+**如何进行后台驱逐**
 
 当管理器开始驱逐时：
 
@@ -1059,7 +1055,7 @@ Geode`ResourceManagerStats`提供有关内存使用以及管理器阈值和逐�
     Region region = rf.create("bigDataStore");
   ```
 
-### 用例示例代码
+**用例示例代码**
 
 这是示例中使用的配置的一种可能方案：
 
@@ -1080,7 +1076,7 @@ JVM中的垃圾收集（GC）可能会成为性能障碍。 服务器无法控�
 
 资源管理器监视堆外内存的内容，并根据两个类似于监视JVM堆的阈值调用内存管理操作：`eviction-off-heap-percentage`和`critical-off-heap-percentage`。
 
-#### On-heap 和 Off-heap 对象
+**On-heap 和 Off-heap 对象**
 
 以下对象始终存储在JVM堆中：
 
@@ -1099,7 +1095,7 @@ JVM中的垃圾收集（GC）可能会成为性能障碍。 服务器无法控�
 
 **注意:** 不要将函数范围索引与堆外数据一起使用，因为它们不受支持。 尝试这样做会产生异常。
 
-#### Off-heap 建议
+**Off-heap 建议**
 
 Off-heap 存储最适合数据模式，其中：
 
@@ -1116,13 +1112,13 @@ Off-heap 存储最适合数据模式，其中：
 - 增量
 - 查询
 
-#### 实现细节
+**实现细节**
 
 堆外存储器管理器有效地处理大小相同或具有固定大小的区域数据值。 在堆外内存中分配固定和相同大小的数据值时，通常可以重用已释放的块，并且很少或根本不需要将周期用于碎片整理。
 
 即使该区域配置为使用堆外内存，小于或等于8个字节的区域值也不会驻留在堆外内存中。 这些非常小的区域值驻留在JVM堆中，而不是对堆外位置的引用。 此性能增强可节省空间和加载时间。
 
-#### 使用资源管理器控制堆外使用
+**使用资源管理器控制堆外使用**
 
 Geode资源管理器通过两个阈值控制堆外内存，与JVM堆内存的方式大致相同。 请参阅[使用Geode资源管理器](http://geode.apache.org/docs/guide/17/managing/heap_use/heap_management.html#how_the_resource_manager_works)。 资源管理器通过驱逐旧数据来防止缓存占用过多的堆外内存。 如果堆外内存管理器无法跟上，则资源管理器会拒绝添加到缓存，直到堆外内存管理器释放足够的内存。
 
@@ -1136,7 +1132,7 @@ Geode资源管理器通过两个阈值控制堆外内存，与JVM堆内存的方
 
    无论LRU驱逐策略如何，都会对所有区域强制执行临界阈值，但可以将其设置为零以禁用其效果。
 
-#### 指定堆外内存
+**指定堆外内存**
 
 要使用堆外内存，请在设置服务器和区域时指定以下选项：
 
@@ -1159,7 +1155,7 @@ Geode资源管理器通过两个阈值控制堆外内存，与JVM堆内存的方
   gfsh>create region --name=region1 --type=PARTITION_HEAP_LRU --off-heap=true
   ```
 
-#### gfsh Off-heap支持
+**gfsh Off-heap支持**
 
 gfsh支持服务器和区域创建操作以及报告功能中的堆外内存：
 
@@ -1184,7 +1180,7 @@ includes off-heap metrics `maxMemory`, `freeMemory`, `usedMemory`, `objects`, `f
 start server
 支持堆外选项`--lock-memory`，`--off-heap-memory-size`，`--critical-off-heap-percentage`和`--eviction-off-heap-percentage`请参阅 [启动服务器](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/start.html#topic_3764EE2DB18B4AE4A625E0354471738A)了解详情。
 
-#### 资源管理 API
+**资源管理 API**
 
 `org.apache.geode.cache.control.ResourceManager`接口定义了支持堆外使用的方法：
 
@@ -1238,7 +1234,7 @@ cache.xml文件支持两个资源管理器属性：
 </cache>
 ```
 
-#### 调整堆外内存使用情况
+**调整堆外内存使用情况**
 
 Geode收集有关堆外内存使用情况的统计信息，您可以使用gfsh`show metrics`命令查看。 有关可用的堆外统计信息的说明，请参阅[Off-Heap(OffHeapMemoryStats)](http://geode.apache.org/docs/guide/17/reference/statistics_list.html#topic_ohc_tjk_w5)。
 
@@ -1342,7 +1338,7 @@ Geode收集有关堆外内存使用情况的统计信息，您可以使用gfsh`s
 
 ![img](assets/diskStores-1.gif)
 
-#### Geode写入磁盘存储的内容
+**Geode写入磁盘存储的内容**
 
 Geode将以下内容写入磁盘存储：
 
@@ -1355,7 +1351,7 @@ Geode将以下内容写入磁盘存储：
 
 Geode不会将索引写入磁盘。
 
-#### 磁盘存储状态
+**磁盘存储状态**
 
 磁盘存储的文件由Geode作为一个组。 将它们视为一个单一的实体。 如果您复制它们，请将它们全部复制在一起。 不要更改文件名。
 
@@ -1372,7 +1368,7 @@ Geode不会将索引写入磁盘。
 
 下表描述了文件名和扩展名; 它们后面是示例磁盘存储文件。
 
-#### 文件名
+**文件名**
 
 文件名有三个部分：用途标识符，磁盘存储库名称和oplog序列号。
 
@@ -1397,7 +1393,7 @@ Geode不会将索引写入磁盘。
 | -------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ |
 | Sequence number in the format _n | Oplog data files only. Numbering starts with 1. | OVERFLOWoverflowDS1_1.crf, BACKUPpersistDS1_2.crf, BACKUPpersistDS1_3.crf |
 
-#### 文件扩展名
+**文件扩展名**
 
 | File extension | Used for                                         | Notes                                                        |
 | -------------- | ------------------------------------------------ | ------------------------------------------------------------ |
@@ -1462,7 +1458,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 系统将在所有可用磁盘目录中旋转以写入其日志。 下一个日志始终在未达到其已配置容量的目录中启动（如果存在）。
 
-#### 磁盘存储Oplog达到配置的磁盘容量时
+**磁盘存储Oplog达到配置的磁盘容量时**
 
 如果不存在容量限制范围内的目录，Geode如何处理这取决于是否启用了自动压缩。
 
@@ -1511,7 +1507,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 - [配置区域，队列和PDX序列化以使用磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/using_disk_stores.html#defining_disk_stores__section_AFB254CA9C5A494A8E335352A6849C16)
 - [在网关发件人上配置磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/using_disk_stores.html#defining_disk_stores__config-disk-store-gateway)
 
-##### 设计您的磁盘存储
+**设计您的磁盘存储**
 
 在开始之前，您应该了解Geode [基本配置和编程](http://geode.apache.org/docs/guide/17/basic_config/book_intro.html)。
 
@@ -1532,7 +1528,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
    - 确保新存储不会干扰在系统上使用磁盘的其他进程。 如果可能，请将文件存储到其他进程未使用的磁盘，包括虚拟内存或交换空间。 如果您有多个可用磁盘，为了获得最佳性能，请在每个磁盘上放置一个目录。
    - 为不同的成员使用不同的目录。 您可以将任意数量的目录用于单个磁盘存储。
 
-##### 创建和配置磁盘存储
+**创建和配置磁盘存储**
 
 1. 在您选择的位置，创建要为磁盘存储指定的所有目录。 如果在创建磁盘存储时指定的目录不可用，Geode会抛出异常。 您不需要用任何东西填充这些目录。
 
@@ -1614,11 +1610,11 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 **注意:** 作为在集群中的每个服务器上定义cache.xml的替代方法 - 如果启用了集群配置服务，则在`gfsh`中创建磁盘存储时，可以与其余集群共享磁盘存储的配置。 请参见[集群配置服务概述](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)。
 
-##### 修改磁盘存储
+**修改磁盘存储**
 
 您可以使用[alter disk-store](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/alter.html#topic_99BCAD98BDB5470189662D2F308B68EB)命令修改脱机磁盘存储。 如果要修改默认磁盘存储配置，请使用“DEFAULT”作为磁盘存储名称。
 
-##### 配置区域，队列和PDX序列化以使用磁盘存储
+**配置区域，队列和PDX序列化以使用磁盘存储**
 
 以下是为区域，队列和PDX序列化使用已创建和命名的磁盘存储的示例。
 
@@ -1657,7 +1653,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 </pdx>
 ```
 
-##### 在网关发件人上配置磁盘存储
+**在网关发件人上配置磁盘存储**
 
 网关发件人队列始终溢出，可能会保留。 如果不持久，则将它们分配给溢出磁盘存储，如果这样做，则分配给持久性磁盘存储。
 
@@ -1711,7 +1707,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 这些`<disk-store>`属性和子元素在`org.apache.geode.cache.DiskStoreFactory`和`org.apachegeode.cache.DiskStore`API中具有相应的`gfsh create disk-store`command-line参数以及getter和setter方法。 
 
-##### 磁盘存储配置属性和元素
+**磁盘存储配置属性和元素**
 
 | disk-store attribute             | 描述                                                         | 缺省值  |
 | -------------------------------- | ------------------------------------------------------------ | ------- |
@@ -1730,7 +1726,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 | ---------------------- | ---------------------------------------- | ---------------- |
 | `<disk-dirs>`          | 定义写入磁盘存储的系统目录及其最大大小。 | `.` 没有大小限制 |
 
-##### disk-dirs元素
+**disk-dirs元素**
 
 `<disk-dirs>`元素定义用于磁盘存储的主机系统目录。 它包含一个或多个单个`<disk-dir>`元素，其中包含以下内容：
 
@@ -1784,7 +1780,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 </cache-server>
 ```
 
-##### 更改默认磁盘存储的行为
+**更改默认磁盘存储的行为**
 
 Geode使用默认磁盘存储配置设置初始化默认磁盘存储。 您可以通过为名为“DEFAULT”的磁盘存储指定所需的属性来修改默认磁盘存储的行为。 关于默认磁盘存储，您唯一无法更改的是名称。
 
@@ -1820,7 +1816,7 @@ cache.xml:
 
 本节介绍启动和关闭期间发生的情况，并提供这些操作的过程。
 
-#### 启动
+**启动**
 
 当您使用持久区域启动成员时，将从磁盘存储中检索数据以重新创建成员的持久区域。 如果成员未保存该区域的所有最新数据，则其他成员将拥有数据和区域创建块，等待其他成员。 具有共置条目的分区区域也在启动时阻塞，等待共置区域的条目可用。 永久网关发件人的处理方式与共处理区域相同，因此它也可以阻止区域创建。
 
@@ -1859,7 +1855,7 @@ that are being waited on by other members.
 - 一旦从磁盘恢复了每个存储桶的至少一个副本，该区域就可用。 辅助存储桶将异步加载。
 - 在考虑条目值之前，从磁盘存储区中的密钥文件加载条目密钥。 加载所有密钥后，Geode将异步加载条目值。 如果在加载之前请求了值，则将立即从磁盘存储中获取该值。
 
-#### 启动程序
+**启动程序**
 
 要启动具有磁盘存储的系统：
 
@@ -1895,7 +1891,7 @@ that are being waited on by other members.
      - 确保可以访问磁盘存储文件。 如果已移动成员或磁盘存储文件，则必须更新磁盘存储配置以匹配。
    - 如果缺少您知道丢失的磁盘存储，因为您已删除它们或其文件不可用，请撤消它们以便启动可以继续。
 
-#### 示例启动以说明订购
+**示例启动以说明订购**
 
 以下列出了在关闭后启动复制的持久区域的两种可能性。 假设成员A（MA）首先退出，将剩余数据留在磁盘上用于RegionP。 成员B（MB）继续在RegionP上运行操作，RegionP更新其磁盘存储并使MA的磁盘存储处于过时状态。 MB退出，将最新数据保留在RegionP的磁盘上。
 
@@ -1907,7 +1903,7 @@ that are being waited on by other members.
   2. MB已启动。 MB标识它具有RegionP的最新磁盘数据并从磁盘初始化该区域。
   3. MA从磁盘恢复其RegionP数据，并根据需要从MB中的数据更新区域数据。
 
-#### 关闭
+**关闭**
 
 如果多个成员承载持久区域或队列，则在重新启动系统时，各个成员关闭的顺序可能很重要。 退出系统或关闭的最后一个成员具有磁盘上最新的数据。 每个成员都知道退出或关闭时哪些其他系统成员在线。 这允许成员在随后的启动时获取最新数据。
 
@@ -1971,11 +1967,11 @@ gfsh>shutdown --include-locators=true
 
 要获得任何gfsh命令的完整命令语法，请在gfsh命令行中运行`help <command>`。
 
-##### 在线磁盘存储操作
+**在线磁盘存储操作**
 
 对于在线操作，`gfsh`必须通过JMX管理器连接到集群，并将操作请求发送给具有磁盘存储的成员。 这些命令不会在脱机磁盘存储上运行。
 
-##### 脱机磁盘存储操作
+**脱机磁盘存储操作**
 
 对于脱机操作，`gfsh`对指定的磁盘存储及其指定的目录运行命令。 您必须指定磁盘存储的所有目录。 例如：
 
@@ -2017,13 +2013,13 @@ Geode通过将所有非垃圾记录复制到当前日志并丢弃旧文件来压
 
 您可以将系统配置为在垃圾内容达到特定百分比时自动压缩任何已关闭的操作日志。 您还可以手动请求在线和离线磁盘存储的压缩。 对于联机磁盘存储，无论压缩包含多少垃圾，当前操作日志都不可用于压缩。
 
-##### Log File Compaction for the Online Disk Store
+**联机磁盘存储的日志文件压缩**
 
 ![img](assets/diskStores-3.gif)
 
 脱机压缩基本上以相同的方式运行，但没有传入的缓存操作。 此外，由于当前没有打开日志，因此压缩会创建一个新的开始日志。
 
-##### 运行在线压缩
+**运行在线压缩**
 
 当旧日志文件的垃圾内容超过总文件的配置百分比时，它们就有资格进行在线压缩。 当一个记录的操作被同一个对象的更新操作取代时，该记录就是垃圾。 在压缩期间，非垃圾记录将与新的缓存操作一起添加到当前日志中。 在线压缩不会阻止当前的系统操作。
 
@@ -2051,7 +2047,7 @@ Geode通过将所有非垃圾记录复制到当前日志并丢弃旧文件来压
 
       **注意:** 您需要连接到`gfsh`中的JMX Manager才能运行此命令。
 
-##### 运行脱机压缩
+**运行脱机压缩**
 
 离线压缩是一个手动过程。 无论他们持有多少垃圾，所有日志文件都会尽可能地压缩。 脱机压缩为压缩的日志记录创建新的日志文件。
 
@@ -2070,20 +2066,20 @@ gfsh>compact offline-disk-store --name=Disk2 --disk-dirs=/Disks/Disk2
 
 离线压缩可能会占用大量内存。 如果在运行时出现“java.lang.OutOfMemory”错误，则可能需要使用`-J=-Xmx`参数增加堆大小。
 
-##### 手动压实的性能优势
+**手动压实的性能优势**
 
 如果禁用自动压缩并在较轻的系统负载期间或停机期间运行您自己的手动压缩，则可以在繁忙时间提高性能。 在应用程序执行大量数据操作后，您可以运行API调用。 当系统使用率很低时，你可以每晚运行`compact disk-store`命令。
 
 要遵循这样的策略，您需要留出足够的磁盘空间来容纳所有未压缩的磁盘数据。 您可能需要增加系统监视以确保不会超出磁盘空间。 您可能只能运行离线压缩。 如果是这样，您可以将`allow-force-compaction`设置为false，并避免存储手动在线压缩所需的信息。
 
-##### 目录大小限制
+**目录大小限制**
 
 压缩期间达到目录大小限制具有不同的结果，具体取决于您是运行自动压缩还是手动压缩：
 
 - 对于自动压缩，系统会记录警告，但不会停止。
 - 对于手动压缩，操作停止并向调用进程返回`DiskAccessException`，报告系统磁盘空间不足。
 
-##### 示例压缩运行
+**示例压缩运行**
 
 在这个离线压缩运行列表的例子中，磁盘存储压缩在`*_3.*`文件中没有任何关系，所以它们是独立的。 `*_4.*`文件有垃圾记录，因此来自它们的oplog被压缩成新的`*_5.*`文件。
 
@@ -2133,7 +2129,7 @@ bash-2.05$
 
 通常的做法是拥有多个离线磁盘存储，因为集群的每个成员通常都有自己的副本。 确保将相同的`alter disk-store`命令应用于磁盘存储的每个脱机副本。
 
-##### 更改区域配置
+**更改区域配置**
 
 磁盘存储脱机时，可以使用`cache.xml`和API设置使其区域的配置保持最新。 磁盘存储区保留区域配置属性的子集。 (有关保留属性的列表，请参阅[alter disk-store](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/alter.html#topic_99BCAD98BDB5470189662D2F308B68EB))。 如果配置在启动时不匹配，`cache.xml`和API将覆盖任何磁盘存储设置，磁盘存储将自动更新以匹配。 因此，您无需修改磁盘存储以保持缓存配置和磁盘存储同步，但如果这样做，您将节省启动时间和内存。
 
@@ -2152,7 +2148,7 @@ gfsh>alter disk-store --name=myDiskStoreName --region=partitioned_region
 --disk-dirs=/firstDiskStoreDir,/secondDiskStoreDir,/thirdDiskStoreDir  
 ```
 
-##### 从缓存配置和磁盘存储中取出一个区域
+**从缓存配置和磁盘存储中取出一个区域**
 
 如果您决定重命名区域或将其数据拆分为两个完全不同的区域，则可以从应用程序中删除区域。 任何重要的数据重组都可能导致您退出某些数据区域。
 
@@ -2218,7 +2214,7 @@ gfsh>describe disk-store --member=server1 --name=DiskStore1
 
 本节适用于为至少一个区域保存最新数据副本的磁盘存储。
 
-##### 显示缺少的磁盘存储
+**显示缺少的磁盘存储**
 
 使用`gfsh`，`show missing-disk-stores`命令列出所有磁盘存储，其中包含其他成员正在等待的最新数据。
 
@@ -2244,7 +2240,7 @@ gfsh>show missing-disk-stores
 - 网络分区
 - 驱动器故障
 
-##### 撤消丢失的磁盘存储
+**撤消丢失的磁盘存储**
 
 本节适用于满足以下两个条件的磁盘存储：
 
@@ -2271,11 +2267,11 @@ Missing disk store successfully revoked
 
 通常，Geode将磁盘数据写入操作系统的磁盘缓冲区，操作系统会定期将缓冲区刷新到磁盘。 增加写入磁盘的频率会降低应用程序或计算机崩溃导致数据丢失的可能性，但会影响性能。 您可以使用Geode的内存中数据备份的另一个选择是提供更好的性能。 通过将数据存储在多个复制区域或配置有冗余副本的分区区域中来执行此操作。 参见[地区类型](http://geode.apache.org/docs/guide/17/developing/region_options/region_types.html#region_types).
 
-##### 修改操作系统的磁盘刷新
+**修改操作系统的磁盘刷新**
 
 您可以更改定期刷新的操作系统设置。 您还可以从应用程序代码执行显式磁盘刷新。 有关这些选项的信息，请参阅操作系统的文档。 例如，在Linux中，您可以通过修改设置`/proc/sys/vm/dirty_expire_centiseconds`来更改磁盘刷新间隔。 默认为30秒。 要更改此设置，请参阅`dirty_expire_centiseconds`的Linux文档。
 
-##### 在磁盘写入上修改Geode以刷新缓冲区
+**在磁盘写入上修改Geode以刷新缓冲区**
 
 您可以让Geode在每次磁盘写入时刷新磁盘缓冲区。 通过在启动Geode成员时在命令行中将系统属性`gemfire.syncWrites`设置为true来执行此操作。 您只能在启动成员时修改此设置。 设置此项后，Geode使用带有标记“rwd”的Java“RandomAccessFile”，这会使每个文件更新同步写入存储设备。 如果您的磁盘存储位于本地设备上，则仅保证您的数据。 请参阅Java文档中的`java.IO.RandomAccessFile`。
 
@@ -2303,7 +2299,7 @@ gfsh>start server --name=... --J=-Dgemfire.syncWrites=true
 - [Offline Members—Manual Catch-Up to an Online Backup](http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html#backup_restore_disk_store__section_6F998080AF7640D1A9E951D155A75E3A)
 - [Restore Using a Backup Made While the System Was Online](http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html#backup_restore_disk_store__section_D08DC489B9D947DE97B8F96261E4A977)
 
-#### 系统在线时进行备份
+**系统在线时进行备份**
 
 gfsh命令`backup disk-store`为集群中运行的所有成员创建磁盘存储的备份。 备份通过将命令传递给正在运行的系统成员来工作; 因此，成员需要在线才能使此操作成功。 具有持久数据的每个成员都会创建自己的配置和磁盘存储的备份。 备份不会阻止集群中的任何活动，但它确实使用资源。
 
@@ -2390,7 +2386,7 @@ gfsh>backup disk-store --dir=/export/fileServerDirectory/gemfireBackupLocation
 
 任何未能完成增量备份的在线成员都会在其最高级别的备份目录中留下名为“INCOMPLETE_BACKUP”的文件。 此文件的存在标识备份文件仅包含部分备份，并且不能在还原操作中使用。 下次进行备份时，将进行完整备份。
 
-#### 什么是完整的在线备份保存
+**什么是完整的在线备份保存**
 
 对于具有持久数据的每个成员，完整备份包括以下内容：
 
@@ -2414,13 +2410,13 @@ gfsh>backup disk-store --dir=/export/fileServerDirectory/gemfireBackupLocation
 
 - 一个还原脚本，在Windows上称为“restore.bat”，在Linux上称为“restore.sh”。 此脚本稍后可用于执行还原。 该脚本将文件复制回原始位置。
 
-#### 增量在线备份保存的内容
+**增量在线备份保存的内容**
 
-An incremental backup saves the difference between the last backup and the current data. An incremental backup copies only operations logs that are not already present in the baseline directories for each member. For incremental backups, the restore script contains explicit references to operation logs in one or more previously chained incremental backups. When the restore script is run from an incremental backup, it also restores the operation logs from previous incremental backups that are part of the backup chain.
+增量备份可以保存上次备份与当前数据之间的差异。 增量备份仅复制每个成员的基准目录中尚不存在的操作日志。 对于增量备份，还原脚本包含对一个或多个先前链接的增量备份中的操作日志的显式引用。 从增量备份运行还原脚本时，它还会还原作为备份链一部分的先前增量备份的操作日志。
 
 如果基线目录中缺少成员，因为它们处于脱机状态或在基准备份时不存在，则这些成员会将其所有文件的完整备份放入增量备份目录中。
 
-#### 磁盘存储备份目录结构和内容
+**磁盘存储备份目录结构和内容**
 
 ```
 $ cd thebackupdir
@@ -2446,7 +2442,7 @@ BACKUPDEFAULT_1.crf BACKUPDEFAULT_1.drf BACKUPDEFAULT.if
 ./2012-10-18-13-44-53/dasmith_e6410_server1_8623_v1_33892/user:
 ```
 
-#### 离线成员 - 手动追赶在线备份
+**离线成员 - 手动追赶在线备份**
 
 如果在联机备份期间必须使成员脱机，则可以手动备份其磁盘存储。 手动将此成员的文件带入在线备份框架，并从另一个成员的脚本的副本开始手动创建还原脚本：
 
@@ -2456,7 +2452,7 @@ BACKUPDEFAULT_1.crf BACKUPDEFAULT_1.drf BACKUPDEFAULT.if
 4. 复制此成员的文件。
 5. 修改还原脚本以适用于此成员。
 
-#### 使用系统在线时进行的备份还原
+**使用系统在线时进行的备份还原**
 
 `restore.sh`或`restore.bat`脚本将文件复制回原始位置。
 
@@ -2505,7 +2501,7 @@ BACKUPDEFAULT_1.crf BACKUPDEFAULT_1.drf BACKUPDEFAULT.if
 
 通过了解缓存和区域快照的执行方式来优化缓存和区域快照功能
 
-#### 缓存一致性和并发操作
+**缓存一致性和并发操作**
 
 导入和导出区域数据是一种管理操作，某些同时运行时条件可能导致导入或导出操作失败，例如重新平衡分区区域存储桶或遇到网络分区事件时。 此行为是预期的，您应该重试该操作。 重做导出会覆盖不完整的快照文件，并重做导入会更新部分导入的数据。
 
@@ -2515,7 +2511,7 @@ BACKUPDEFAULT_1.crf BACKUPDEFAULT_1.drf BACKUPDEFAULT.if
 
 默认行为是在调用快照操作的节点上执行所有I/O操作。 如果该区域是分区区域，这将涉及通过网络收集或分散数据。
 
-#### 性能注意事项
+**性能注意事项**
 
 使用数据快照功能时，请注意以下性能注意事项：
 
@@ -2529,7 +2525,7 @@ BACKUPDEFAULT_1.crf BACKUPDEFAULT_1.drf BACKUPDEFAULT.if
 
 如果在导出期间发生错误，则导出将暂停并取消快照操作。 暂停导出的典型错误包括完整磁盘，文件权限问题和网络分区等方案。
 
-#### 导出缓存快照
+**导出缓存快照**
 
 导出整个缓存时，它会将缓存中的所有区域作为单独的快照文件导出到目录中。 如果未指定目录，则默认为当前目录。 为每个区域创建快照文件，导出操作使用以下约定自动命名每个快照文件名：
 
@@ -2550,7 +2546,7 @@ cache.getSnapshotService().save(mySnapshotDir, SnapshotFormat.GEMFIRE);
 
 可选,您可以在导出期间在快照条目上设置过滤器。 有关示例，请参阅[导入或导出期间的过滤条目](http://geode.apache.org/docs/guide/17/managing/cache_snapshots/filtering_snapshot_entries.html)。
 
-#### 导出区域快照
+**导出区域快照**
 
 您还可以使用以下API或gfsh命令导出特定区域：
 
@@ -2579,7 +2575,7 @@ gfsh>export data --region=region1 --file=region1_2012_10_10.gfd --member=server1
 
 快照文件将写在远程成员上的`--file`argument指定的位置。 例如，在上面的示例命令中，`region1_2012_10_10.gfd`文件将写在`server1`的工作目录中。 有关此命令的更多信息，请参阅[导出数据](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/export.html#topic_263B70069BFC4A7185F86B3272011734).
 
-#### 使用选项导出示例
+**使用选项导出示例**
 
 这些示例显示如何包含用于导出分区区域的`parallel`选项。 请注意，`parallel`选项采用目录而不是文件; 见[export data](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/export.html#topic_263B70069BFC4A7185F86B3272011734) for details.
 
@@ -2607,14 +2603,14 @@ gfsh>export data --parallel --region=region1 --dir=region1_2012_10_10 --member=s
 
 要导入先前导出到另一个集群或区域的Geode缓存或区域数据快照，请使用`cache.getSnapshotService.load`API，`region.getSnapshotService.load` API或`gfsh`命令行界面 (`import data`)。
 
-#### 导入要求
+**导入要求**
 
 在导入区域快照之前：
 
 - 确保正确配置了缓存。 配置所有已注册的PdxSerializers，DataSerializers和Instantiators; 创建区域; 并确保类路径包含任何必需的类。
 - 导入包含PDX类型的快照时，必须等到导出的类型定义导入缓存之后才能插入导致类型冲突的数据。 建议您在插入数据之前等待导入完成。
 
-#### 导入限制
+**导入限制**
 
 在导入期间，不会调用`CacheWriter`和`CacheListener`回调。
 
@@ -2622,7 +2618,7 @@ gfsh>export data --parallel --region=region1 --dir=region1_2012_10_10 --member=s
 
 导入后，缓存客户端的状态不确定。 客户端缓存中的数据可能与导入的数据不一致。 导入期间使客户端脱机，并在导入完成后重新启动它。
 
-#### 导入缓存快照
+**导入缓存快照**
 
 导入缓存快照时，快照文件将导入到快照导出期间使用的同一区域（由名称确定的匹配）。 导入缓存时，将位于目录中的所有快照文件导入缓存。 API尝试加载指定目录中的所有文件。
 
@@ -2635,7 +2631,7 @@ Cache cache = ...
 cache.getSnapshotService().load(mySnapshotDir, SnapshotFormat.GEMFIRE);
 ```
 
-#### 导入区域快照
+**导入区域快照**
 
 **Java API:**
 
@@ -2746,7 +2742,7 @@ try {
 
   压缩区域与非压缩区域的比较性能可以根据区域的使用方式以及区域是否托管在内存绑定的JVM中而变化。
 
-### 使用压缩的指南
+**使用压缩的指南**
 
 本主题描述在决定是否使用压缩时要考虑的因素。
 
@@ -2820,7 +2816,7 @@ regionFactory.setCompressor(new SnappyCompressor());
 regionFactory.setCompressor(SnappyCompressor.getDefaultInstance());
 ```
 
-### 如何检查压缩是否已启用
+**如何检查压缩是否已启用**
 
 您还可以通过查询正在使用的编解码器来检查区域是否已启用压缩。 空编解码器表示没有为该区域启用压缩。
 
@@ -2890,7 +2886,7 @@ public class LZWCompressor implements Compressor {
    </region-attributes>
    ```
 
-### 更改已压缩区域的压缩器
+**更改已压缩区域的压缩器**
 
 您通常在创建区域时在区域上启用压缩。 在区域联机时，您无法修改Compressor或禁用该区域的压缩。
 
@@ -2910,7 +2906,7 @@ public class LZWCompressor implements Compressor {
 
 有关性能的最终说明与在内存绑定JVM中对区域启用压缩时的成本有关。 启用压缩通常假定封闭的JVM受内存限制，因此花费大量时间进行垃圾回收。 在这种情况下，性能可以提高几百％，因为JVM将运行更少的垃圾收集周期并且在运行周期时花费更少的时间。
 
-### 监控压缩性能
+**监控压缩性能**
 
 以下统计信息提供对缓存压缩的监视：
 
@@ -3001,7 +2997,7 @@ Geode通过使用加权系统来确定剩余的可用成员是否具有足够的
 
 Geode使用故障检测从成员资格视图中删除无响应的成员。
 
-#### 故障检测
+**故障检测**
 
 网络分区具有故障检测协议，当NIC或计算机发生故障时，该协议不会挂起。 故障检测使每个成员在成员资格视图中观察来自对等体的消息（参见下面的“成员资格视图”视图布局）。 怀疑其对等方失败的成员向可疑成员发送数据报心跳请求。 在没有来自可疑成员的回复的情况下，可疑成员向所有其他成员广播`SuspectMembersMessage`数据报消息。 协调器尝试连接到可疑成员。 如果连接尝试失败，则会从成员资格视图中删除可疑成员。 将向可疑成员发送消息以断开与集群的连接并关闭缓存。 在收到`SuspectMembersMessage`的同时，如果协调者是可疑成员，则分布式算法会促使视图中最左边的成员充当协调者。
 
@@ -3013,7 +3009,7 @@ Geode使用故障检测从成员资格视图中删除无响应的成员。
 
 其中{0}是失败的进程数，{1}列出成员（缓存进程）。
 
-#### 成员视图
+**成员视图**
 
 以下是示例成员资格视图：
 
@@ -3051,7 +3047,7 @@ ent(8788)<v7>:24136/53525]
 
 网络分区检测使用指定的成员资格协调器和加权系统来计算潜在客户成员以确定是否发生了网络分区。
 
-#### 成员协调员和主要成员
+**成员协调员和主要成员**
 
 成员协调员是管理集群中其他成员的进入和退出的成员。 启用网络分区检测后，协调器可以是任何Geode成员，但首选定位器。 在基于定位器的系统中，如果所有定位器都处于重新连接状态，则系统继续运行，但在成功重新连接定位器之前，新成员无法加入。 定位器重新连接后，重新连接的定位器将接管协调器的角色。
 
@@ -3061,7 +3057,7 @@ ent(8788)<v7>:24136/53525]
 
 主要成员角色的目的是提供额外的重量。 它不执行任何特定功能。
 
-#### 成员加权系统
+**成员加权系统**
 
 默认情况下，为各个成员分配以下权重：
 
@@ -3075,7 +3071,7 @@ ent(8788)<v7>:24136/53525]
 
 损失百分比阈值为51（表示51％）。 请注意，百分比计算使用标准舍入。 因此，值50.51舍入为51.如果舍入损失百分比等于或大于51％，则成员协调员启动关闭。
 
-#### 样本成员权重计算
+**样本成员权重计算**
 
 本节提供了一些示例计算。
 
@@ -3109,7 +3105,7 @@ ent(8788)<v7>:24136/53525]
 
 ![img](assets/network_partition_scenario.svg)
 
-#### 失败的一面是什么
+**失败的一面是什么**
 
 在网络分区方案中，“丢失方”构成了集群分区，其中成员协调器检测到成员的法定人数不足以继续。
 
@@ -3134,7 +3130,7 @@ Operation.isExpiration(): false
 
 仍然在缓存上主动执行操作的成员可能会看到`ShutdownException`s或`CacheClosedException`s with`Custsed by：ForcedDisconnectException`。
 
-#### 孤立的成员做了什么
+**孤立的成员做了什么**
 
 当成员与所有定位器隔离时，它无法接收成员资格视图更改。 它无法知道当前协调员是否存在，或者如果已经离开，是否有其他成员可以接管该角色。 在这种情况下，成员最终将检测到所有其他成员的丢失，并将使用损失阈值来确定是否应该自行关闭。 对于具有2个定位器和2个高速缓存服务器的集群，与非高速缓存服务器和两个定位器的通信丢失将导致这种情况，并且剩余的高速缓存服务器最终会自行关闭。
 
@@ -3223,7 +3219,7 @@ Operation.isExpiration(): false
 
 ### 安全实施简介和概述
 
-#### 安全功能
+**安全功能**
 
 加密，SSL安全通信，身份验证和授权功能有助于保护集群。
 
@@ -3234,7 +3230,7 @@ Operation.isExpiration(): false
 - ** SSL通信**. 允许配置连接是基于SSL的，而不是普通的套接字连接。 您可以分别为对等，客户端，JMX，网关发件人和接收者以及HTTP连接启用SSL。
 - **区域数据的后处理**. 可以格式化返回区域值的操作的返回值。
 
-#### 概览
+**概览**
 
 身份验证和授权机制构成了集群内部安全的核心。 通过为传输中的数据启用SSL，可以进一步保护通信。
 
@@ -3245,7 +3241,7 @@ Operation.isExpiration(): false
 鉴于身份验证，可以通过实现授权机制来进一步保护对缓存数据和系统状态的隔离和访问，该授权机制也作为应用程序的一部分实现为专用回调。 例如，保护可能只允许某些系统管理员启动和停止服务器。 执行此操作的权限需要限于特定的已验证帐户，以防止未经授权的帐户。 授权回调的实现将要求认证身份伴随对系统的所有请求，并且系统维护允许哪些身份完成哪些动作或高速缓存命令的表示。
 
 
-#### 安全细节考虑因素
+### 安全细节考虑因素
 
 本节在一个方便的位置收集离散的详细信息，以便更好地帮助您评估和配置环境的安全性。
 
@@ -3264,7 +3260,7 @@ Operation.isExpiration(): false
 - **放置安全配置设置的位置**
 
 
-##### 外部接口，端口和服务
+#### 外部接口，端口和服务
 
 Geode进程使用UDP或TCP/IP端口与其他进程或客户端进行通信。
 
@@ -3279,7 +3275,7 @@ Geode进程使用UDP或TCP/IP端口与其他进程或客户端进行通信。
 
 Geode没有任何需要启用或打开的外部接口或服务。
 
-##### 必须受到保护的资源
+#### 必须受到保护的资源
 
 这些配置文件应该*只能*由运行服务器的专用用户读取和写入：
 
@@ -3289,7 +3285,7 @@ Geode没有任何需要启用或打开的外部接口或服务。
 
 `gemfire.properties`和`cache.xml`配置文件的默认位置是主安装目录的`defaultConfigs`子目录。
 
-##### 日志文件位置
+#### 日志文件位置
 
 默认情况下，日志文件位于启动相应进程时使用的工作目录中。
 
@@ -3307,7 +3303,7 @@ Geode没有任何需要启用或打开的外部接口或服务。
 
 这些日志文件应该*只由*运行服务器的专用用户读写。
 
-##### 放置安全配置设置的位置
+#### 放置安全配置设置的位置
 
 通常在`gemfire.properties`中配置的任何与安全相关的（以`security- *`开头的属性）配置属性都可以移动到单独的`gfsecurity.properties`文件中。 将这些配置设置放在单独的文件中允许您限制对安全配置数据的访问。 这样，您仍然可以允许对`gemfire.properties`文件进行读或写访问。
 
@@ -3321,7 +3317,7 @@ Geode没有任何需要启用或打开的外部接口或服务。
 
 ### 使用属性定义启用安全性
 
-#### 安全管理器属性
+**安全管理器属性**
 
 使用`security-manager`属性指定实现`SecurityManager`接口的认证回调和授权回调。 定义此属性后，将启用身份验证和授权。 `security-manager`属性的定义是实现`SecurityManager`接口的类的完全限定名。 例如：
 
@@ -3343,7 +3339,7 @@ security-manager = com.example.security.MySecurityManager
 - 通过REST API进行通信的应用程序使服务器在连接和操作请求时调用安全回调。
 - 请求网关发件人制作定位器会调用为该定位器定义的安全回调。
 
-#### security-post-processor Property(安全后处理器属性)
+**security-post-processor Property(安全后处理器属性)**
 
 `PostProcessor`接口允许定义一组回调，这些回调在获取数据的操作之后但在返回数据之前调用。 这允许回调干预并格式化要返回的数据。 回调不会修改区域数据，只会修改要返回的数据。
 
@@ -3369,13 +3365,13 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
 身份验证通过在组件连接到系统时验证组件的身份，为集群提供一定程度的安全性。 所有组件都使用相同的身份验证机制
 
-##### 身份验证如何工作
+**身份验证如何工作**
 
 当组件启动与集群的连接时，将调用`SecurityManager.authenticate`方法。 该组件以属性的形式提供其凭证作为`authenticate`方法的参数。 证书被认为是两个属性`security-username`和`security-password`。 期望`authenticate`方法返回表示委托人的对象或抛出`AuthenticationFailedException`。
 
 精心设计的`authenticate`方法将具有一组已知的用户和密码对，可以与所提供的凭证进行比较，或者有一种获得这些对的方法。
 
-##### 服务器如何设置其凭据
+**服务器如何设置其凭据**
 
 为了与进行身份验证的定位器连接，服务器需要设置其凭据，由两个属性`security-username`和`security-password`组成。 有两种方法可以实现此目的：
 
@@ -3398,7 +3394,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
 网关发件人和接收者作为其服务器成员的组件进行通信。 因此，服务器的凭证成为网关发送者或接收者的凭证。
 
-##### 缓存客户端如何设置其凭据
+**缓存客户端如何设置其凭据**
 
 为了与定位器或进行身份验证的服务器连接，客户端需要设置其凭证，由两个属性`security-username`和`security-password`组成。 要做到这一点：
 
@@ -3410,7 +3406,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
   然后，`getCredentials`的实现可以以任何方式获取属性`security-username`和`security-password`的值。 它可能会在数据库或其他外部资源中查找值，也可能会提示输入值。
 
-##### 其他组件如何设置其凭据
+**其他组件如何设置其凭据**
 
 `gfsh`在调用`gfsh connect`命令时提示输入用户名和密码。
 
@@ -3418,7 +3414,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
 由于REST API的无状态特性，通过REST API与服务器或定位器通信的Web应用程序或其他组件将对每个请求进行身份验证。 请求的标头需要包含定义`security-username`和`security-password`值的属性。
 
-##### 实现SecurityManager接口
+**实现SecurityManager接口**
 
 完成这些项目以实现定位器或服务器完成的身份验证。
 
@@ -3427,8 +3423,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 - 实现`SecurityManager`接口的`authenticate`方法。
 - 定义实现的身份验证算法所需的任何额外资源，以便做出决策。
 
-
-### 验证示例
+#### 验证示例
 
 此示例演示了`SecurityManager.authenticate`方法的实现的基础知识。 该示例的其余部分可以在`geode-core/src/main/java/org/apache/geode/examples/security`目录中的Apache Geode源代码中找到。
 
@@ -3473,7 +3468,7 @@ public Object authenticate(final Properties credentials)
 
 #### 实施授权
 
-##### 授权如何运作
+**授权如何运作**
 
 当组件请求操作时，将调用`SecurityManager.authorize`方法。 它传递了操作请求者的主体和`ResourcePermission`，它描述了所请求的操作。
 
@@ -3481,7 +3476,7 @@ public Object authenticate(final Properties credentials)
 
 精心设计的`authorize`方法将具有或将有一种方法来获取它们被允许做的操作（以资源许可的形式）的主体映射。
 
-##### 资源许可
+**资源许可**
 
 所有操作都由`ResourcePermission`类的实例描述。 权限包含`Resource`数据成员，该成员将操作分类为是否正在进行操作
 
@@ -3688,7 +3683,7 @@ public Object authenticate(final Properties credentials)
 | LockServiceMXBean.becomeLockGrantor                  | CLUSTER:MANAGE                                |
 | MemberMXBean.compactAllDiskStores                    | CLUSTER:MANAGE:DISK                           |
 
-##### 实施授权
+**实施授权**
 
 完成这些项目以实现授权。
 
@@ -3697,13 +3692,13 @@ public Object authenticate(final Properties credentials)
 - 实现`SecurityManager`接口的`authorize`方法。
 - 定义实现的授权算法所需的任何额外资源，以便做出决策。
 
-##### 功能执行的授权
+**功能执行的授权**
 
 默认情况下，在服务器上执行的函数要求调用该函数的实体对所涉及的区域具有`DATA:WRITE`权限。 由于默认权限可能不适合所有功能，因此可能会更改所需的权限。
 
 要实现不同的权限集，请覆盖函数类中的`Function.getRequiredPermissions()`方法。 该方法应该返回调用函数执行的实体所需权限的`集合`。
 
-##### 从查询调用的方法的授权
+**从查询调用的方法的授权**
 
 启用`SecurityManager`会通过限制正在运行的查询可能调用的方法来影响查询。 有关详细信息，请参阅[方法调用](http://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_D2F8D17B52B04895B672E2FCD675A676)。
 
@@ -3753,7 +3748,7 @@ public boolean authorize(final Object principal, final ResourcePermission contex
 
 在设计实现后处理回调的系统时应该小心。 它会导致每次get操作的额外方法调用的性能损失。
 
-#### 实施后期处理
+**实施后期处理**
 
 完成这些项目以实现后期处理。
 
@@ -3875,8 +3870,7 @@ Java管理扩展通信，包括与`gfsh`utility的通信。 Pulse监视工具使
 
 密钥库和信任库的类型，指定为字符串。 两者的默认值为“JKS”，表示Java密钥库或信任库。
 
-
-##### 示例：始终保护通信
+**示例：始终保护通信**
 
 要在整个集群中实现安全的SSL通信，每个进程都应为所有组件启用SSL。
 
@@ -3891,7 +3885,7 @@ ssl-truststore-password=changeit
 
 如果密钥库具有多个证书，您可能希望指定要为每个进程使用的别名。 例如，`ssl-default-alias=Hiroki`。
 
-##### 示例：非安全集群通信，安全客户端/服务器
+**示例：非安全集群通信，安全客户端/服务器**
 
 在此示例中，SSL用于保护客户端和服务器之间的通信：
 
@@ -3997,7 +3991,7 @@ Table 2. SSL配置属性
 
 一个简单的示例演示了使用SSL配置和启动Geode系统组件。
 
-##### 特定于提供者的配置文件
+**特定于提供者的配置文件**
 
 此示例使用Java`keytool`应用程序创建的密钥库为提供程序提供正确的凭据。 要创建密钥库，请运行`keytool`实用程序：
 
@@ -4014,7 +4008,7 @@ keytool -genkey \
 
 这将创建一个稍后将使用的`./ trusted.keystore`文件。
 
-##### gemfire.properties 文件
+**gemfire.properties 文件**
 
 您可以在`gemfire.properties`文件中启用SSL。 在此示例中，为所有组件启用了SSL。
 
@@ -4024,7 +4018,7 @@ mcast-port=0
 locators=<hostaddress>[<port>]
 ```
 
-##### gfsecurity.properties 文件
+**gfsecurity.properties 文件**
 
 您可以在`gfsecurity.properties`文件中指定特定于提供程序的设置，然后可以通过限制对此文件的访问来保护该文件。 以下示例配置JDK附带的默认JSSE提供程序设置。
 
@@ -4037,7 +4031,7 @@ security-username=xxxx
 security-userPassword=yyyy 
 ```
 
-##### 定位器启动
+**定位器启动**
 
 在启动其他系统成员之前，我们使用SSL和特定于提供程序的配置设置启动了定位器。 在正确配置`gemfire.properties`和`gfsecurity.properties`之后，启动定位器并提供属性文件的位置。 如果任何密码字段留空，系统将提示您输入密码。
 
@@ -4047,7 +4041,7 @@ gfsh>start locator --name=my_locator --port=12345 \
 --security-properties-file=/path/to/your/gfsecurity.properties
 ```
 
-##### 其他成员启动
+**其他成员启动**
 
 应用程序和缓存服务器可以与定位器启动类似地启动，并在当前工作目录中放置相应的`gemfire.properties`文件和`gfsecurity.properties`文件。 您还可以在命令行上将两个文件的位置作为系统属性传递。 例如：
 
@@ -4057,7 +4051,7 @@ gfsh>start server --name=my_server \
 --security-properties-file=/path/to/your/gfsecurity.properties
 ```
 
-##### 连接到正在运行的集群
+**连接到正在运行的集群**
 
 您可以使用`gfsh`通过指定`use-ssl`命令行选项并提供安全配置文件的路径来连接已启用的已启用SSL的集群：
 
@@ -4139,7 +4133,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 
 ### 提高vSphere的性能
 
-#### 操作系统指南
+**操作系统指南**
 
 使用最新支持的客户操作系统版本，并使用Java大型分页。
 
@@ -4151,7 +4145,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
   -XX:+UseLargePages
   ```
 
-#### NUMA, CPU, 和 BIOS 设置
+**NUMA, CPU, 和 BIOS 设置**
 
 本节为您的硬件和虚拟机提供VMware推荐的NUMA，CPU和BIOS设置。
 
@@ -4166,7 +4160,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 
 **注意:** 根据您的硬件品牌和型号，设置可能略有不同。 根据需要使用上面的设置或等效设置。
 
-#### 物理和虚拟NIC设置
+**物理和虚拟NIC设置**
 
 这些指南可帮助您减少延迟。
 
@@ -4197,7 +4191,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
   - 将VMXNET3虚拟NIC用于对延迟敏感或其他性能关键型虚拟机。 有关为虚拟机选择适当类型的虚拟NIC的详细信息，请参阅<http://kb.vmware.com/kb/1001805>。
   - VMXNET3支持自适应中断合并，可以帮助驱动具有多个具有并行工作负载（多线程）的vCPU的虚拟机的高吞吐量，同时最大限度地减少虚拟中断交付的延迟。 但是，如果您的工作负载对延迟非常敏感，VMware建议您禁用虚拟NIC的虚拟中断合并。 您可以通过API或编辑虚拟机的.vmx配置文件以编程方式执行此操作。 有关具体说明，请参阅vSphere API参考或VMware ESXi文档。
 
-#### VMware vSphere vMotion和DRS集群使用情况
+**VMware vSphere vMotion和DRS集群使用情况**
 
 本主题讨论vSphere vMotion的使用限制，包括将其与DRS一起使用。
 
@@ -4208,7 +4202,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 - 如果无法使用专用vSphere DRS集群，并且Apache Geode必须在共享DRS集群中运行，请确保已设置DRS规则，以便不在Geode虚拟机上执行vMotion迁移。
 - 如果必须使用vMotion进行迁移，VMware建议在低活动和计划维护时段期间，Apache Geode成员的所有vMotion迁移活动都将超过10GbE。
 
-#### 虚拟机的放置和组织
+**虚拟机的放置和组织**
 
 本节提供有关JVM实例和缓存数据冗余副本放置的指南。
 
@@ -4217,7 +4211,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 - 在一个JVM实例中运行一个Apache Geode服务器的至少四个vCPU虚拟机的大小。 这允许垃圾收集器有足够的CPU周期，其余用于用户事务。
 - 由于Apache Geode可以在任何虚拟机上放置缓存数据的冗余副本，因此可能会在同一ESX/ESXi主机上无意中放置两个冗余数据副本。 如果主机发生故障，这不是最佳选择。 要创建更强大的配置，请使用VM1到VM2反关联性规则，以向vSphere指示VM1和VM2永远不能放在同一主机上，因为它们包含冗余数据副本。
 
-#### 虚拟机内存预留
+**虚拟机内存预留**
 
 本节提供了调整大小和设置内存的指南。
 
@@ -4225,7 +4219,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 - 不要过度使用Geode主机的内存。
 - 在为一个虚拟机上的一个JVM内的Geode服务器调整内存大小时，虚拟机的总预留内存不应超过一个NUMA节点中可用的内存以获得最佳性能。
 
-#### vSphere的高可用性和Apache的Geode
+**vSphere的高可用性和Apache的Geode**
 
 在Apache Geode虚拟机上，禁用vSphere High Availability（HA）。
 
@@ -4233,7 +4227,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 
 此外，为了支持高可用性，您还可以在Apache Geode虚拟机之间设置反关联性规则，以防止两个Apache Geode服务器在同一DRS集群内的同一ESXi主机上运行。
 
-#### 存储指南
+**存储指南**
 
 本节提供持久性文件，二进制文件，日志等的存储准则。
 
@@ -4244,7 +4238,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 - 将专用LUN映射到每个VMDK。
 - 对于Linux虚拟机，使用NOOP调度作为I/O调度程序而不是完全公平队列（CFQ）。 从Linux内核2.6开始，CFQ是许多Linux发行版中的默认I/O调度程序。 有关详细信息，请参阅<http://kb.vmware.com/kb/2011861>。
 
-#### 其他资源
+**其他资源**
 
 这些较旧的VMware出版物提供了有关vSphere优化的其他资源。
 
@@ -4828,7 +4822,7 @@ Unix系统有一个默认的最大套接字缓冲区大小，用于接收UDP多�
 
 套接字使用文件描述符，操作系统的应用程序套接字使用视图以文件描述符表示。 有两个限制，一个是关于单个应用程序可用的最大描述符，另一个是关于系统中可用的描述符总数。 如果您收到错误消息，告诉您打开了太多文件，则可能会因使用套接字而达到操作系统限制。 您的系统管理员可能能够增加系统限制，以便您可以获得更多可用信息。 您还可以调整成员，以便为其传出连接使用更少的套接字。 本节讨论Geode中的套接字使用以及限制Geode成员中套接字消耗的方法。
 
-##### 套接字共享
+**套接字共享**
 
 您可以为peer-to-peer 喝 client-to-server连接配置套接字共享：
 
@@ -4838,14 +4832,14 @@ Unix系统有一个默认的最大套接字缓冲区大小，用于接收UDP多�
 
 - **Client**. 您可以配置客户端是否与池设置为`thread-local-connections`的服务器共享其套接字连接。 此设置没有线程覆盖。 所有线程都有自己的套接字或者它们都共享。
 
-##### 套接字租约时间
+**套接字租约时间**
 
 您可以强制释放空闲套接字连接以进行对等和客户端到服务器连接：
 
 - **Peer-to-peer**. 对于不共享套接字的对等线程，可以使用`socket-lease-time`来确保没有套接字空闲太长时间。 当属于单个线程的套接字在此时间段内保持未使用状态时，系统会自动将其返回到池中。 下一次线程需要套接字时，它会创建一个新套接字。
 - **Client**. 对于客户端连接，可以通过设置池`idle-timeout`来影响相同的租用时间行为。
 
-##### 计算连接要求
+**计算连接要求**
 
 每种类型的成员都有自己的连接要求。 客户端需要连接到他们的服务器，对等端需要连接到对等端，等等。 许多成员都有复合角色。 使用这些指南来计算每个成员的套接字需求，并计算在单个主机系统上运行的成员的组合需求。
 
@@ -4860,7 +4854,7 @@ Unix系统有一个默认的最大套接字缓冲区大小，用于接收UDP多�
 
 要计算任何成员的套接字要求，请为适用于该成员的每个类别添加要求。 例如，在与客户端连接的集群中运行的缓存服务器具有对等和服务器套接字要求。
 
-##### 每位成员的Peer-to-Peer 套接字要求
+**每位成员的Peer-to-Peer 套接字要求**
 
 集群的每个成员都维护到每个对等方的两个传出连接和两个传入连接。 如果线程共享套接字，则这些固定套接字是它们共享的套接字。
 
@@ -4881,7 +4875,7 @@ Unix系统有一个默认的最大套接字缓冲区大小，用于接收UDP多�
 
 **注意:** 服务客户端请求的线程会为连接到其对等方的成员以及连接到此成员的对等方添加线程拥有的套接字的总数。
 
-##### 每服务器的服务器套接字要求
+**每服务器的服务器套接字要求**
 
 服务器为每个传入客户端连接使用一个连接。 默认情况下，每个连接都由服务器线程提供服务。 这些服务客户端请求的线程与其余服务器通信以满足请求和分布式更新操作。 这些线程中的每一个都使用自己的线程拥有的套接字进行对等通信。 所以这会增加服务器的线程拥有的套接字组。
 
@@ -4905,7 +4899,7 @@ Unix系统有一个默认的最大套接字缓冲区大小，用于接收UDP多�
 
 服务器是它们自己的集群中的对等体，并具有额外的套接字要求，如上面的点对点部分所述。
 
-##### 每个客户的客户端套接字要求
+**每个客户的客户端套接字要求**
 
 客户端连接要求因其使用的池数而变得复杂。 使用情况因运行时客户端连接需求而异，但通常具有最大和最小设置。 在`cache.xml`中查找配置属性的<pool>元素。
 
@@ -4982,7 +4976,7 @@ gfsh>start server --name=server_name --J=-Dp2p.handshakeTimeoutMs=75000
 
 **注意:** WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传递相关的挂起，请始终为参与WAN部署的GemFire成员设置`conserve-sockets=false`。
 
-##### Multi-site (WAN) 套接字要求
+**Multi-site (WAN) 套接字要求**
 
 每个网关发送方和网关接收方使用套接字来分发事件或侦听来自远程站点的传入连接。
 
@@ -4994,7 +4988,7 @@ gfsh>start server --name=server_name --J=-Dp2p.handshakeTimeoutMs=75000
 
 服务器是它们自己的集群中的对等体，并具有额外的套接字要求，如上面的点对点部分所述。
 
-##### 成员生成SocketTimeoutException
+**成员生成SocketTimeoutException**
 
 当客户端，服务器，网关发送器或网关接收器停止等待来自连接另一端的响应并关闭套接字时，会产生`SocketTimeoutException`。 此异常通常发生在握手或建立回调连接时。
 
@@ -5011,13 +5005,13 @@ gfsh>start server --name=server_name --J=-Dp2p.handshakeTimeoutMs=75000
 
 在开始之前，您应该了解Geode [基本配置和编程](http://geode.apache.org/docs/guide/17/basic_config/book_intro.html)。 另请参阅[套接字通信](http://geode.apache.org/docs/guide/17/managing/monitor_tune/socket_communication.html)和[多播通信](http://geode.apache.org/docs/guide/17/managing/monitor_tune/multicast_communication.html#multicast)中涵盖的一般通信调优和多播特定调整。
 
-#### UDP数据报大小
+**UDP数据报大小**
 
 您可以使用Geode属性`udp-fragment-size`更改UDP数据报大小。 这是通过UDP单播或多播套接字传输的最大数据包大小。 如果可能，将较小的消息组合成最多为此设置大小的批次。
 
 大多数操作系统为UDP数据报设置的最大传输大小为64k，因此该设置应保持在60k以下以允许通信头。 如果您的网络容易丢包，则将片段大小设置得过高会导致额外的网络流量，因为每次重新传输都必须重新发送更多数据。 如果在DistributionStats中出现许多UDP重新传输，您可以通过降低片段大小来获得更好的吞吐量。
 
-#### UDP流量控制
+**UDP流量控制**
 
 UDP协议通常具有内置的流控制协议，以防止进程的no-ack消息超出进程。 Geode UDP流量控制协议是一种基于信用的系统，其中发送方具有在其接收方补充或重新充值其字节信用计数之前可以发送的最大字节数。 虽然其字节信用太低，但发件人等待。 接收器尽最大努力预测发送者的充电要求，并在需要之前提供充电。 如果发送方的信用额度过低，则明确要求其接收方进行充值。
 
@@ -5029,7 +5023,7 @@ UDP协议通常具有内置的流控制协议，以防止进程的no-ack消息�
 
 在一个调整良好的系统中，缓存事件的消费者与生产者保持同步，可以将`byteAllowance`设置为高，以限制控制流消息和暂停。 JVM膨胀或频繁的消息重传表明生产者的缓存事件超出了消费者。
 
-#### UDP重传统计
+**UDP重传统计**
 
 Geode存储其发送者和接收者的重传统计数据。 您可以使用这些统计信息来帮助确定流控制和片段大小设置是否适合您的系统。
 
@@ -5244,7 +5238,7 @@ mcast-send-buffer-size=45000
 
 维护分布式Geode系统中缓存之间的数据一致性对于确保其功能完整性和防止数据丢失至关重要。
 
-#### 一般准则
+**一般准则**
 
 **在使用磁盘存储重新启动区域之前，请考虑整个区域的状态**
 
@@ -5283,7 +5277,7 @@ Geode存储有关持久数据的信息，并阻止您在正在运行的系统中
 
 在其事务中运行相同操作序列的两个应用程序可能会得到不同的结果。 这可能是因为在其中一个成员的事务外发生的操作可能会覆盖事务，即使在提交过程中也是如此。 如果大事务的结果超出机器的内存或Geode的容量，也可能发生这种情况。 这些限制因机器而异，因此两个成员可能不同步。
 
-#### 多站点部署指南
+**多站点部署指南**
 
 **优化套接字缓冲区大小**
 
@@ -5354,7 +5348,7 @@ Geode已经使用Log4j 2.11进行了测试。 Geode要求`log4j-api-2.11.0.jar`�
 - **分布式**. 报告系统成员之间的数据分布。 这些消息包括有关区域配置，条目创建和修改以及区域和条目失效和销毁的信息。
 - **缓存，区域和条目管理**. 缓存初始化，侦听器活动，锁定和解锁，区域初始化和条目更新。
 
-#### 日志消息的结构
+**日志消息的结构**
 
 每条日志消息包含：
 
@@ -5369,7 +5363,7 @@ Geode已经使用Log4j 2.11进行了测试。 Geode要求`log4j-api-2.11.0.jar`�
 Cache initialized using "file:/Samples/quickstart/xml/PushConsumer.xml".
 ```
 
-#### 日志文件名
+**日志文件名**
 
 在gemfire属性`log-file`设置中指定Geode系统成员的主日志。
 
@@ -5397,7 +5391,7 @@ Geode将此名称用于最新的日志文件，如果成员正在运行，则会
 
 要找出成员最近的活动，请查看`meta-`日志文件，如果不存在元文件，则查看主日志文件。
 
-#### 系统如何重命名日志
+**系统如何重命名日志**
 
 您指定的日志文件是用于所有日志记录和日志记录存档的基本名称。 如果启动时已存在具有指定名称的日志文件，则集群会在创建当前日志文件之前自动重命名该日志文件。 这是使用`log-file=system.log`进行几次运行后的典型目录列表：
 
@@ -5439,7 +5433,7 @@ bash-2.05$ ls -ltr stat* system*
 
 统计信息和日志文件使用两者都可用的下一个整数重命名，因此在这种情况下，日志文件序列会跳过间隙。
 
-#### 日志级别
+**日志级别**
 
 日志级别越高，消息越重要和越紧急。 如果您的系统出现问题，则第一级方法是降低日志级别（从而将更多详细消息发送到日志文件）并重新创建问题。 其他日志消息通常有助于发现源。
 
@@ -5573,7 +5567,7 @@ bash-2.05$ ls -ltr stat* system*
 
 管理和理解日志的最佳方法是让每个成员登录到自己的文件。
 
-#### 日志文件命名建议
+**日志文件命名建议**
 
 对于在同一台机器上运行的成员，您可以让它们通过在不同的工作目录中启动它们并使用相同的相对`log-file`规范来登录到它们自己的文件。 例如，您可以在`<commonDirectoryPath>/gemfire.properties`中设置它：
 
@@ -5589,7 +5583,7 @@ java -DgemfirePropertyFile=<commonDirectoryPath>/gemfire.properties
 
 这样，每个成员在其自己的工作目录下都有自己的日志文件。
 
-#### 搜索日志文件
+**搜索日志文件**
 
 要获得最清晰的描述，请使用`gfsh export logs`命令合并日志文件：
 
@@ -5603,7 +5597,7 @@ gfsh> export logs --dir=myDir --dir=myDir --merge-log=true
 - [error
 - [severe
 
-#### 创建自己的日志消息
+**创建自己的日志消息**
 
 除系统日志外，您还可以从Java代码中添加自己的应用程序日志。 有关向应用程序添加自定义日志记录的信息，请参阅`org.apache.geode.LogWriter`接口的联机Java文档。 根据您的日志记录配置设置输出和存储系统和应用程序日志记录。
 
@@ -5681,7 +5675,7 @@ Geode使用的默认`log4j2.xml`作为`log4j2-default.xml`存储在geode.jar中�
 
 如果指定了Java系统属性`log4j.configurationFile`，则Geode将不使用geode.jar中包含的`log4j2-default.xml`。 但是，如果配置了`alert-level`和`log-file`Geode属性，Geode仍将创建并注册AlertAppender和LogWriterAppender。 然后，您可以使用Geode LogWriter记录Geode的日志，或者从客户的应用程序和所有第三方库生成警报和接收日志语句。 或者，您可以使用配置为记录到Log4j 2的任何前端日志记录API。
 
-#### 使用不同的前端日志API登录到Log4j2
+**使用不同的前端日志API登录到Log4j2**
 
 您还可以配置Log4j 2以使用各种常用和常用的日志记录API。 要获取并配置最常用的前端日志记录API以登录到Log4j 2，请参阅Apache Log4j 2网站上的说明，网址为<http://logging.apache.org/log4j/2.x/>。
 
@@ -5697,7 +5691,7 @@ Geode使用的默认`log4j2.xml`作为`log4j2-default.xml`存储在geode.jar中�
 
 **注意:** Apache Geode已经使用Log4j 2.1进行了测试。 随着Log4j 2的新版本问世，您可以在该页面上的Previous Releases下找到2.1。
 
-#### 自定义您自己的log4j2.xml文件
+**自定义您自己的log4j2.xml文件**
 
 高级用户可能希望完全放弃设置`log-*`gemfire属性，而是使用`-Dlog4j.configurationFile`指定自己的`log4j2.xml`。
 
@@ -5808,7 +5802,7 @@ Geode包`org.apache.geode`包括以下用于定义和维护自己的统计信息
 
 您可以通过多种方式配置统计信息和统计信息归档。
 
-#### 配置集群或服务器统计信息
+**配置集群或服务器统计信息**
 
 在此过程中，假设您了解[基本配置和编程](http://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
 
@@ -5863,7 +5857,7 @@ gfsh>alter runtime --enable-statistics=true -–statistic-archive-file=myStatist
 
 如果启用了这些统计信息，则可以通过`gfsh show metrics`命令访问存档的统计信息。
 
-#### 配置瞬态区域和条目统计信息
+**配置瞬态区域和条目统计信息**
 
 在您需要的区域上启用瞬态区域和条目统计信息收集。 此配置与启用集群或服务器统计信息不同。
 
@@ -5898,7 +5892,7 @@ RegionAttributes attrs = this.currRegion.getAttributes();
   }
 ```
 
-#### 配置定制统计
+**配置定制统计**
 
 通过`cache.xml`和API创建和管理所需的任何自定义统计信息。
 
@@ -5933,7 +5927,7 @@ this.samplerStats.incInt(this.sampleCountId, 1);
 this.samplerStats.incLong(this.sampleTimeId, nanosSpentWorking / 1000000);
 ```
 
-#### 控制存档文件的大小
+**控制存档文件的大小**
 
 您可以使用gfsh`alter runtime`命令为统计信息指定存档文件的限制。 这些是控制领域：
 
@@ -6095,7 +6089,7 @@ Geode日志和统计信息是故障排除中使用的两个最重要的工件。
 - [无法获取Windows性能数据](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_F93DD765FF2A43439D3FF7936F8883DE)
 - [64位平台上的Java应用程序挂起或使用100％CPU](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_E70C332303A242BEAE9D2C0A2EE70E0A)
 
-#### 定位器无法启动
+**定位器无法启动**
 
 使用gfsh调用定位器失败，出现如下错误：
 
@@ -6129,7 +6123,7 @@ org.apache.geode.distributed.LocatorLauncher.start(LocatorLauncher.java:596)
 - 如果使用绑定地址，则必须使用数字地址作为定位器规范。 绑定地址不会解析为计算机的默认地址。
 - 如果您使用的是64位Linux系统，请检查您的系统是否遇到了闰秒错误。 有关详细信息，请参阅[64位平台上的Java应用程序挂起或使用100％CPU](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_E70C332303A242BEAE9D2C0A2EE70E0A)。
 
-#### 应用程序或缓存服务器进程无法启动
+**应用程序或缓存服务器进程无法启动**
 
 如果进程尝试启动然后静默消失，则在Windows上这表示存在内存问题。
 
@@ -6145,7 +6139,7 @@ org.apache.geode.distributed.LocatorLauncher.start(LocatorLauncher.java:596)
 
 - 如果这不起作用，请尝试重新启动。
 
-#### 应用程序或缓存服务器不加入集群
+**应用程序或缓存服务器不加入集群**
 
 解答: 检查这些可能的原因。
 
@@ -6158,14 +6152,14 @@ org.apache.geode.distributed.LocatorLauncher.start(LocatorLauncher.java:596)
   - 在多宿主主机上绑定地址设置不正确。 指定绑定地址时，请使用IP地址而不是主机名。 有时，多个网络适配器配置有相同的主机名。 有关使用绑定地址的详细信息，请参阅[拓扑和通信一般概念](http://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/chapter_overview.html#concept_7628F498DB534A2D8A99748F5DA5DC94)。
 - 错误的Geode版本。 版本不匹配可能导致进程挂起或崩溃。 使用gemfire version命令检查软件版本。
 
-#### 成员流程似乎挂了
+**成员流程似乎挂了**
 
 解答:
 
 - **初始化期间**—对于持久性区域，成员可能正在等待具有更新近数据的另一个成员从其磁盘存储启动和加载。 请参阅[磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html)。 等待初始化完成或超时。 这个过程可能很忙 - 有些缓存有数百万个条目，并且它们可能需要很长时间才能加载。 特别是对于缓存服务器，请查找它，因为它们的区域通常是副本，因此存储区域中的所有条目。 另一方面，应用程序通常仅存储条目的子集。 对于分区区域，如果初始化最终超时并产生异常，则系统架构师需要重新分区数据。
 - **对于正在运行的进程**—调查另一个成员是否正在初始化。 在某些可选的集群配置下，可能需要一个进程在其进行之前等待来自其他进程的响应。
 
-#### 成员进程不读取gemfire.properties文件中的设置
+**成员进程不读取gemfire.properties文件中的设置**
 
 进程无法找到配置文件，或者如果是应用程序，则可能正在进行编程配置。
 
@@ -6175,7 +6169,7 @@ org.apache.geode.distributed.LocatorLauncher.start(LocatorLauncher.java:596)
 - 确保该进程没有从搜索路径中较早的另一个`gemfire.properties`文件中获取设置。 Geode按顺序在当前工作目录，主目录和CLASSPATH中查找`gemfire.properties`文件。
 - 对于应用程序，请检查文档以查看它是否进行了编程配置。 如果是这样，则无法在`gemfire.properties`文件中重置以编程方式设置的属性。 有关配置更改，请参阅应用程序的客户支持组。
 
-#### 缓存创建失败 - 必须与模式定义根匹配
+**缓存创建失败 - 必须与模式定义根匹配**
 
 系统成员启动失败，出现如下错误：
 
@@ -6222,7 +6216,7 @@ Geode声明式缓存创建使用两个根元素对之一：`cache`或`client-cac
 </client-cache>
 ```
 
-#### 缓存配置不正确
+**缓存配置不正确**
 
 空缓存可以是正常情况。 某些应用程序以空缓存开始并以编程方式填充，但其他应用程序则设计为在初始化期间批量加载数据。
 
@@ -6233,7 +6227,7 @@ Geode声明式缓存创建使用两个根元素对之一：`cache`或`client-cac
 - **无区域**—如果缓存没有区域，则进程不会读取缓存配置文件。 检查缓存配置文件的名称和位置是否与`gemfire.properties`中cache-xml-file属性中配置的名称和位置相匹配。 如果它们匹配，则该过程可能不会读取`gemfire.properties`。 请参阅[成员进程不读取gemfire.properties文件中的设置](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_E3B4A6DB81AB4C659C6093D2D61EFD71).
 - **区域没有数据**—如果缓存以区域开头但没有数据，则此进程可能没有加入正确的集群。 检查日志文件以查找指示其他成员的消息。 如果您没有看到任何内容，则该进程可能在其自己的集群中单独运行。 在明显属于正确集群的过程中，没有数据的区域可能表示实现设计错误。
 
-#### keySetOnServer和containsKeyOnServer的意外结果
+**keySetOnServer和containsKeyOnServer的意外结果**
 
 如果您的服务器区域未配置为分区或复制区域，则客户机对keySetOnServer和containsKeyOnServer的调用可能会返回不完整或不一致的结果。
 
@@ -6256,7 +6250,7 @@ Geode声明式缓存创建使用两个根元素对之一：`cache`或`client-cac
 
 解答: 对服务器区域使用分区或复制数据策略。 这是为服务器数据集的客户端提供一致视图的唯一方法。 请参阅[区域数据存储和分配选项](http://geode.apache.org/docs/guide/17/developing/region_options/chapter_overview.html).
 
-#### 数据操作返回PartitionOfflineException
+**数据操作返回PartitionOfflineException**
 
 在持久保存到磁盘的分区区域中，如果有任何成员脱机，则分区区域仍然可用，但可能只有一些存储区仅在脱机磁盘存储区中表示。 在这种情况下，访问存储区条目的方法返回PartitionOfflineException，类似于：
 
@@ -6270,14 +6264,14 @@ created at timestamp 1270834766733 version 0]
 
 解答: 如果可能的话，将失踪的成员重新联机。 这会将存储桶还原到内存中，您可以再次使用它们。 如果丢失的成员无法重新联机，或者该成员的磁盘存储已损坏，则可能需要撤消该成员，这将允许系统在新成员中创建存储桶并使用这些条目恢复操作。 请参阅[处理丢失的磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores).
 
-#### 条目未按预期被逐出或过期
+**条目未按预期被逐出或过期**
 
 检查这些可能的原因。
 
 - 事务—如果它们涉及事务，则到期的条目可以保留在缓存中。 此外，事务永远不会超时，因此如果事务挂起，事务中涉及的条目将仍然停留在缓存中。 如果您有一个挂起事务的进程，则可能需要结束该进程以删除该事务。 在您的应用程序编程中，不要让事务处于开放状态。 将所有事务编程为以提交或回滚结束。
 - 分区区域—出于性能原因，逐出区域中的逐出和过期行为会有所不同，并且可能导致条目在您预期之前被删除。 参见[逐出](http://geode.apache.org/docs/guide/17/developing/eviction/chapter_overview.html) 和[过期](http://geode.apache.org/docs/guide/17/developing/expiration/chapter_overview.html)。
 
-#### 找不到日志文件
+**找不到日志文件**
 
 没有日志文件的操作可能是正常情况，因此该过程不会记录警告。
 
@@ -6286,7 +6280,7 @@ created at timestamp 1270834766733 version 0]
 - 检查`gemfire.properties`中是否配置了log-file属性。 如果没有，则日志记录默认为标准输出，而在Windows上可能根本不可见。
 - 如果正确配置了log-file，则该进程可能不会读取`gemfire.properties`。 请参阅[成员进程不读取gemfire.properties文件中的设置](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_E3B4A6DB81AB4C659C6093D2D61EFD71)。
 
-#### 内存溢出错误
+**内存溢出错误**
 
 如果应用程序需要的内存超过进程能够提供的内存，则会获得OutOfMemoryError。 消息包括java.lang.OutOfMemoryError。
 
@@ -6308,7 +6302,7 @@ created at timestamp 1270834766733 version 0]
 
 - 您还可以通过设置区域的输入限制来控制内存使用。
 
-#### 分区区域分布异常
+**分区区域分布异常**
 
 多次尝试完成分布式操作后Geode失败时，会出现org.apache.geode.cache.PartitionedRegionDistributionException。 此异常表示无法找到数据存储成员执行销毁，无效或获取操作。
 
@@ -6318,7 +6312,7 @@ created at timestamp 1270834766733 version 0]
 - 查看问题的整体安装，例如应用程序级别的操作设置为比Geode进程更高的优先级。
 - 如果您一直看到PartitionedRegionDistributionException，则应评估是否需要启动更多成员。
 
-#### 分区区域存储异常
+**分区区域存储异常**
 
 当Geode无法创建新条目时，将显示org.apache.geode.cache.PartitionedRegionStorageException。 此异常源于put和create操作缺少存储空间或者使用加载器进行get操作。 PartitionedRegionStorageException通常表示数据丢失或即将发生的数据丢失。
 
@@ -6335,13 +6329,13 @@ Ran out of retries attempting to allocate a bucket in the partitioned region....
 - 看是否存在问题，如设置成比的Geode处理更高优先级的应用程序级的操作整体安装。
 - 如果您继续看到PartitionedRegionStorageException，则应评估是否需要启动更多成员。
 
-#### 应用程序崩溃而不会产生异常
+**应用程序崩溃而不会产生异常**
 
 如果应用程序崩溃没有任何异常，这可能是由对象内存问题引起的。 该过程可能会达到其虚拟地址空间限制。 有关详细信息，请参阅[OutOfMemoryError](http://geode.apache.org/docs/guide/17/managing/troubleshooting/diagnosing_system_probs.html#diagnosing_system_probs__section_3CFAA7BA258B43A795AEAB09F9DD9AAB).
 
 解答: 通过设置区域的输入限制来控制内存使用。
 
-#### 超时警报
+**超时警报**
 
 如果分布式消息在指定时间内没有得到响应，它会发送一个警报，表示系统成员可能没有响应的问题。 警报将作为警告记录在发件人日志中。
 
@@ -6352,7 +6346,7 @@ Ran out of retries attempting to allocate a bucket in the partitioned region....
 - 如果您看到很多超时并且之前没有看过它们，请检查您的网络是否比较拥挤。
 - 如果在正常操作期间不断看到这些警报，请考虑将ack-wait-threshold提高到默认值15秒以上。
 
-#### 成员生成SocketTimeoutException
+**成员生成SocketTimeoutException**
 
 当客户端和服务器停止等待来自连接另一端的响应并关闭套接字时，它会产生SocketTimeoutException。 此异常通常发生在握手或建立回调连接时。
 
@@ -6360,7 +6354,7 @@ Ran out of retries attempting to allocate a bucket in the partitioned region....
 
 增加成员的默认套接字超时设置。 此超时是为客户端池单独设置的。 对于客户端/服务器配置，请按[](http://geode.apache.org/docs/guide/17/reference/topics/client-cache.html#cc-pool) 中所述调整“读取超时”值或使用`org.apache.geode.cache.client.PoolFactory.setReadTimeout`方法。
 
-#### 成员日志强制关闭ForcedDisconnectException，Cache和DistributedSystem
+**成员日志强制关闭ForcedDisconnectException，Cache和DistributedSystem**
 
 如果集群成员的Cache和DistributedSystem生病或者太慢而无法响应心跳请求，则会强制关闭集群成员的Cache和DistributedSystem。 发生这种情况时，侦听器会收到带有FORCED_DISCONNECT操作码的RegionDestroyed通知。 该成员的Geode日志文件显示带有该消息的ForcedDisconnectException
 
@@ -6373,7 +6367,7 @@ within member-timeout milliseconds
 
 为了最大限度地减少发生这种情况的可能性，可以增加DistributedSystem属性member-timeout。 但请注意，此设置还会控制注意网络故障所需的时间长度。 它不应该设置得太高。
 
-#### 成员们看不到对方
+**成员们看不到对方**
 
 怀疑网络问题或在运输用于存储器和发现的结构的问题。
 
@@ -6383,7 +6377,7 @@ within member-timeout milliseconds
 - 如果您使用的是多宿主主机，请确保为所有系统成员设置绑定地址并保持一致。 有关使用绑定地址的详细信息，请参阅[拓扑和通信一般概念](http://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/chapter_overview.html#concept_7628F498DB534A2D8A99748F5DA5DC94).
 - 检查所有应用程序和缓存服务器是否使用相同的定位器地址。
 
-#### 集群的一部分无法看到另一部分
+**集群的一部分无法看到另一部分**
 
 这种情况可能会使您的缓存处于不一致状态。 在网络圈中，这种网络中断被称为“裂脑问题”。
 
@@ -6395,7 +6389,7 @@ within member-timeout milliseconds
 
 另请参阅[了解和恢复网络中断](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_network_outages.html#rec_network_crash).
 
-#### 虽然成员进程正在运行，但数据分发已停止
+**虽然成员进程正在运行，但数据分发已停止**
 
 怀疑网络，定位器或多播配置存在问题，具体取决于您的集群使用的传输。
 
@@ -6424,7 +6418,7 @@ within member-timeout milliseconds
 
 - 在每个定位器主机上创建一个watchdog守护程序或服务，以在停止时重新启动定位器进程
 
-#### Distributed-ack操作需要很长时间才能完成
+**Distributed-ack操作需要很长时间才能完成**
 
 在具有大量distributed-no-ack操作的系统中可能会发生此问题。 也就是说，许多非ack操作的存在可能导致ack操作需要很长时间才能完成。
 
@@ -6432,7 +6426,7 @@ within member-timeout milliseconds
 
 有关缓解此问题的信息，请参阅[Slow distributed-ack Messages](http://geode.apache.org/docs/guide/17/managing/monitor_tune/slow_messages.html#slow_mess).
 
-#### 系统性能低下
+**系统性能低下**
 
 系统性能较慢有时是由于缓冲区大小太小而不能分配对象。
 
@@ -6440,7 +6434,7 @@ within member-timeout milliseconds
 
 如果您遇到性能下降并且正在发送大对象（多兆字节），请尝试增加系统中的套接字缓冲区大小设置。 有关更多信息，请参阅[套接字通信](http://geode.apache.org/docs/guide/17/managing/monitor_tune/socket_communication.html).
 
-#### 无法获取Windows性能数据
+**无法获取Windows性能数据**
 
 尝试在Windows上运行Geode的性能测量可能会产生以下错误消息：
 
@@ -6462,7 +6456,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib
 
 有关如何确保Geode进程可以访问与性能相关的注册表项的说明，请参阅<http://support.microsoft.com/kb/310426>和<http://support.microsoft.com/kb/146906>。。
 
-#### 64位平台上的Java应用程序挂起或使用100％CPU
+**64位平台上的Java应用程序挂起或使用100％CPU**
 
 如果您的Java应用程序突然开始使用100％CPU，您可能会遇到闰秒错误。 这个错误可以在Linux内核中找到，并且会严重影响Java程序。 特别是，您可能会注意到使用`Thread.sleep(n)`进行方法调用，其中`n`是一个小数字，实际上会比该方法定义的时间长得多。 要验证您是否遇到此错误，请检查主机的`dmesg`输出以获取以下消息：
 
@@ -6486,7 +6480,7 @@ prompt> date -s "$(date)"
 
 如果系统成员由于成员，主机或网络出现故障而不自觉地从集群中退出，则其他成员会自动适应丢失并继续运行。 集群不会遇到任何干扰，例如超时。
 
-#### 规划数据恢复
+**规划数据恢复**
 
 在规划数据恢复策略时，请考虑以下因素：
 
@@ -6499,7 +6493,7 @@ prompt> date -s "$(date)"
 
 本节的其余部分提供了各种系统故障的恢复说明。
 
-#### 网络分区，慢响应和成员删除警报
+**网络分区，慢响应和成员删除警报**
 
 当发生网络分区检测或响应缓慢时，会生成以下警报：
 
@@ -6511,7 +6505,7 @@ prompt> date -s "$(date)"
 
 有关配置系统成员以帮助避免出现网络故障时的网络分区配置条件或成员无法相互通信的信息，请参阅[了解和恢复网络中断](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_network_outages.html#rec_network_crash).
 
-#### 检测到网络分区
+**检测到网络分区**
 
 警报:
 
@@ -6533,8 +6527,7 @@ Exiting due to possible network partition event due to loss of {0} cache process
 
 检查列出的缓存进程的网络连接和运行状况。
 
-
-#### 成员太长时间没有回应
+**成员太长时间没有回应**
 
 警报:
 
@@ -6630,8 +6623,7 @@ ent(4592):33593/35174, ent(4600):33612/33183, ent(4593):33601/53393, ent(4605):3
 
 无.
 
-
-#### 找不到定位器
+**找不到定位器**
 
 **注意:** 使用定位器的所有进程可能会使用相同的消息退出。
 
@@ -6697,8 +6689,7 @@ Disconnected as a slow-receiver
 
 操作员应检查并重新启动断开连接的过程。
 
-
-#### 删除前的警告通知
+**删除前的警告通知**
 
 警报:
 
@@ -6729,8 +6720,7 @@ are on the same machine
 
 操作员可以通过将系统属性gemfire.disable-same-machine-warnings设置为true来关闭它。 但是，最好在与缓存进程不同的计算机上运行定位器进程，这些进程在启用网络分区检测时充当成员协调器。
 
-
-#### 成员被迫离开
+**成员被迫离开**
 
 警报:
 
@@ -6748,15 +6738,14 @@ find the reason.
 
 操作员应检查定位器进程和日志。
 
-
-#### 由于内存不足错误导致重新启动失败
+**由于内存不足错误导致重新启动失败**
 
 本节介绍停止的系统是使用持久性区域配置的系统时可能发生的重新启动失败。 特别：
 
 - 恢复系统的某些区域在运行时被配置为PERSISTENT区域，这意味着它们将数据保存到磁盘。
 - 至少一个持久区域被配置为通过将值溢出到磁盘来驱逐最近最少使用（LRU）的数据。
 
-#### 如何从持久区域恢复数据
+**如何从持久区域恢复数据**
 
 重启后，数据恢复始终会恢复keys。 您可以配置系统是否以及如何恢复与这些keys关联的值以填充系统缓存。
 
@@ -6770,11 +6759,11 @@ find the reason.
 
 当具有持久LRU区域的系统关闭时，系统不记录最近使用的值。 在后续启动时，如果将值恢复到LRU区域，则它们可能是最近最少使用的而不是最近使用的。 此外，如果在堆或堆外LRU区域上恢复LRU值，则可能会超出LRU内存限制，从而在恢复期间导致`OutOfMemoryException`。 由于这些原因，LRU值恢复可以与非LRU值不同地处理。
 
-#### 持久区域的默认恢复行为
+**持久区域的默认恢复行为**
 
 默认行为是系统恢复所有key，然后异步恢复所有数据值，使LRU值无法恢复。 此默认策略最适合大多数应用程序，因为它在恢复速度和缓存完整性之间取得了平衡。
 
-#### 配置持久区域的恢复
+**配置持久区域的恢复**
 
 三个Java系统参数允许开发人员控制持久区域的恢复行为：
 
@@ -6800,7 +6789,7 @@ find the reason.
 
 如果成员在一段时间内没有响应，或者如果网络分区将一个或多个成员分成太小而不能充当集群的组，则Geode成员可能被强制与Geode集群断开连接。
 
-#### 自动连接过程如何工作
+**自动连接过程如何工作**
 
 从集群断开连接后，Geode成员将关闭，默认情况下会自动重新启动到“重新连接”状态，同时通过联系已知定位器列表定期尝试重新加入集群。 如果成员成功重新连接到已知定位器，该成员将从现有成员重建其集群视图，并接收新的分布式成员标识。
 
@@ -6826,7 +6815,7 @@ enable-cluster-configuration = false
 
 有关更多信息，请参阅Geode`DistributedSystem`和`Cache` Java API文档。
 
-#### 管理自动连接过程
+**管理自动连接过程**
 
 默认情况下，Geode成员将尝试重新连接，直到通过使用`DistributedSystem.stopReconnecting()`或`Cache.stopReconnecting()`方法告知它停止。 您可以通过将`disable-auto-reconnect` Geode属性设置为“true”来完全禁用自动重新连接。
 
@@ -6843,7 +6832,7 @@ enable-cluster-configuration = false
 - `Cache.getReconnectedCache()` 返回重新连接的Cache。
 - `Cache.stopReconnecting()` 停止重新连接过程并确保DistributedSystem保持断开连接状态。
 
-#### 操作员干预
+**操作员干预**
 
 如果在网络连接被修复之前进程或硬件崩溃或以其他方式关闭，您可能需要干预自动连接过程。 在这种情况下，处于“重新连接”状态的成员将无法通过UDP探测器找到丢失的进程，并且在他们能够联系定位器之前不会重新加入系统。
 
@@ -6860,7 +6849,7 @@ enable-cluster-configuration = false
   在客户端/服务器配置中，首先使服务器再次作为集群的成员可用，然后尽快重新启动客户端。 客户端通过正常操作从其服务器恢复其数据。
 
 
-### 使用点对点配置从崩溃中恢复
+#### 使用点对点配置从崩溃中恢复
 
 当成员崩溃时，其余成员继续操作，就好像丢失的应用程序或缓存服务器从未存在过一样。 恢复过程因区域类型和范围以及数据冗余配置而异。
 
@@ -6898,13 +6887,13 @@ enable-cluster-configuration = false
 如果重新平衡失败，则客户端将故障转移到具有正常故障转移行为的活动服务器。
 
 
-### 使用客户端/服务器配置从崩溃中恢复
+#### 使用客户端/服务器配置从崩溃中恢复
 
 在客户端/服务器配置中，首先使服务器再次作为集群的成员可用，然后尽快重新启动客户端。 客户端通过正常操作从其服务器恢复其数据。
 
 客户端/服务器配置从应用程序或缓存服务器崩溃中恢复的程度取决于服务器可用性和客户端配置。通常，通过在足够的机器上运行足够的服务器来使服务器高度可用，以确保在网络，机器或服务器崩溃的情况下最小的覆盖范围。客户端通常配置为连接到主服务器和一些辅助服务器或冗余服务器。辅助服务器充当主服务器的热备份。对于客户端崩溃情况下的高可用性消息传递，客户端可能与其服务器具有持久连接。如果是这种情况，则部分或全部数据和数据事件将保留在服务器内存中并自动恢复，前提是您在配置的超时内重新启动客户端。有关持久消息传递的信息，请参阅[配置客户端/服务器事件消息传递](http://geode.apache.org/docs/guide/17/developing/events/configure_client_server_event_messaging.html#receiving_events_from_servers)。
 
-#### 从服务器故障中恢复
+**从服务器故障中恢复**
 
 从服务器故障中恢复有两部分：服务器恢复为集群成员，然后其客户端恢复其服务。
 
@@ -6923,7 +6912,7 @@ enable-cluster-configuration = false
 
 如果池配置了静态服务器列表，则客户端仅连接到列表中提供的特定地址的服务器。 要在新位置移动服务器或添加服务器，必须修改客户端的`cache.xml`文件中的<server>规范。 此更改仅会影响新启动的客户端。 要开始使用新服务器信息，请重新启动客户端或等待新客户端启动，具体取决于系统特征以及更改生效的速度。
 
-#### 从客户端故障中恢复
+**从客户端故障中恢复**
 
 当客户端崩溃时，以通常的方式尽快重新启动它。 客户端通过正常操作从其服务器恢复其数据。 一些数据可能会立即恢复，有些数据可能会在客户端请求时懒得恢复。 另外，服务器可以被配置为重放某些数据和某些客户端查询的事件。 这些是影响客户端恢复的不同配置：
 
@@ -6940,7 +6929,7 @@ enable-cluster-configuration = false
 
 其他计算机上的系统成员会收到通知，说明此计算机的成员已意外离开集群。
 
-#### 恢复程序
+**恢复程序**
 
 要从机器崩溃中恢复：
 
@@ -6951,7 +6940,7 @@ enable-cluster-configuration = false
 
 如果必须将定位器进程移动到其他计算机，则在更新`gemfire.properties`文件中的定位器列表并重新启动集群中的所有应用程序和缓存服务器之前，定位器无用。 但是，如果其他定位器正在运行，则不必立即重新启动系统。 有关正在使用的定位器的列表，请检查其中一个应用程序`gemfire.properties`文件中的locators属性。
 
-#### 分区区域的数据恢复
+**分区区域的数据恢复**
 
 无论数据存储重新加入的顺序如何，分区区域都会正确初始化。 应用程序和缓存服务器在返回活动工作时会自动重新创建数据。
 
@@ -6959,7 +6948,7 @@ enable-cluster-configuration = false
 
 如果分区区域没有冗余副本，则系统成员通过正常操作重新创建数据。 如果崩溃的成员是应用程序，请检查它是否设计为将其数据写入外部数据源。 如果是，请确定是否可以进行数据恢复，并且最好是从通过Geode集群生成的新数据开始。
 
-#### 分布式区域的数据恢复
+**分布式区域的数据恢复**
 
 应用程序和缓存服务器会自动重新创建数据。 通过副本，磁盘存储文件或新生成的数据进行恢复，如[分布式区域恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_p2p_crashes.html#rec_app_p2p_crash__section_19CFA40F5EE64C4F8062BFBF7A6C1571)中所述。
 
@@ -6967,7 +6956,7 @@ enable-cluster-configuration = false
 
 为了获得最大程度的数据保护，您可以在网络上设置重复的复制区域，每个复制区域都配置为将其数据备份到磁盘。 假设正确的重启顺序，这种架构显着增加了恢复每次更新的机会。
 
-#### 客户端/服务器配置中的数据恢复
+**客户端/服务器配置中的数据恢复**
 
 如果崩溃的机器托管了服务器，则服务器如何恢复其数据取决于区域是分区还是分布。 请参阅[分区区域的数据恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_machine_crashes.html#rec_system_crash__section_3D2B55C456024BBBBF2898EA4DDAFF5C)和[分布式区域的数据恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_machine_crashes.html#rec_system_crash__section_D3E3002D6C864853B1517A310BD05BDF)视情况而定。
 
@@ -6984,7 +6973,7 @@ enable-cluster-configuration = false
 
 以下部分描述了可能导致Geode中出现`ConflictingPersistentDataException`以及如何解决冲突的场景。
 
-#### 独立创建的副本
+**独立创建的副本**
 
 尝试将两个独立创建的集群合并到一个集群中将导致`ConflictingPersistentDataException`。
 
@@ -6995,7 +6984,7 @@ enable-cluster-configuration = false
 
 Geode不会自动合并同一区域的独立创建数据。 相反，您需要从其中一个系统导出数据并将其导入另一个系统。 有关如何从一个系统导出数据并将其导入的信息，请参阅[缓存和区域快照](http://geode.apache.org/docs/guide/17/managing/cache_snapshots/chapter_overview.html#concept_E6AC3E25404D4D7788F2D52D83EE3071) 。 
 
-#### 首先开始新成员
+**首先开始新成员**
 
 在使用持久数据启动旧成员之前启动没有持久数据的全新成员可能会导致`ConflictingPersistentDataException`。
 
@@ -7003,7 +6992,7 @@ Geode不会自动合并同一区域的独立创建数据。 相反，您需要�
 
 在这种情况下，修复只是移动或删除新成员的持久文件，关闭新成员，然后重新启动旧成员。 当旧成员完全恢复时，重新启动新成员。
 
-#### 发生网络故障并禁用网络分区检测
+**发生网络故障并禁用网络分区检测**
 
 当`enable-network-partition-detection`设置为默认值true时，Geode将检测网络分区并关闭无法访问的成员，以防止发生网络分区（“裂脑”）。 系统愈合时不会发生冲突。
 
@@ -7011,7 +7000,7 @@ Geode不会自动合并同一区域的独立创建数据。 相反，您需要�
 
 在某些情况下，可以在网络分区的各边之间进行选择，只需从分区的一侧保留数据即可。 否则，您可能需要抢救数据并将其导入新系统。
 
-#### 抢救数据
+**抢救数据**
 
 如果收到`ConflictingPersistentDataException`，您将无法启动所有成员并让它们加入同一个集群。 您有一些成员有冲突的数据。
 
@@ -7046,7 +7035,7 @@ gfsh> import data --region=/myregion --file=./outputdir/snapshot-snapshotTest-te
 
 当磁盘写入因磁盘已满而导致失败时，该成员将关闭并从集群中删除。
 
-#### 从磁盘完全错误中恢复
+**从磁盘完全错误中恢复**
 
 如果集群成员由于磁盘已满磁盘故障而失败，请添加或使其他磁盘容量可用，并尝试正常重新启动该成员。 如果该成员未重新启动并且其他成员上的磁盘存储中存在其区域的冗余副本，则可以使用以下步骤还原该成员：
 
@@ -7064,13 +7053,13 @@ gfsh> import data --region=/myregion --file=./outputdir/snapshot-snapshotTest-te
 
 但是，如果您很好地了解系统的体系结构，并且确定不会恢复旧数据，则可以选择性地重新启动。 至少，您必须重新启动网络故障一侧的所有成员，因为网络中断会导致无法自动重新加入的单独集群。
 
-#### 网络中断期间会发生什么
+**网络中断期间会发生什么**
 
 当连接集群成员的网络出现故障时，系统成员会将此视为机器崩溃。 网络故障每一方的成员通过从成员列表中删除另一方的成员来做出响应。 如果启用了网络分区检测（默认设置），则包含足够仲裁（基于成员权重的大于51％）的分区将继续运行，而具有足够仲裁的其他分区将关闭。 有关此检测系统如何运行的详细说明，请参阅[网络分区](http://geode.apache.org/docs/guide/17/managing/network_partitioning/chapter_overview.html#network_partitioning)。
 
 此外，通过网络分区或由于无响应而断开连接的成员将自动尝试重新连接到集群，除非另有配置。 请参阅[使用自动重新连接处理强制缓存断开连接](http://geode.apache.org/docs/guide/17/managing/member-reconnect.html)。
 
-#### 恢复程序
+**恢复程序**
 
 对于禁用网络分区检测和/或自动重新连接的部署，要从网络中断中恢复：
 
@@ -7080,19 +7069,19 @@ gfsh> import data --region=/myregion --file=./outputdir/snapshot-snapshotTest-te
 
 成员在返回活动工作时重新创建数据。 有关详细信息，请参阅[从应用程序和缓存服务器崩溃中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_app_crashes.html#rec_app_crash)。
 
-#### 网络故障对分区域的影响
+**网络故障对分区域的影响**
 
 集群的两端继续运行，就好像另一侧的成员没有运行一样。 如果参与分区区域的成员位于网络故障的两侧，则分区区域的两侧也继续运行，就好像另一侧的数据存储不存在一样。 实际上，您现在有两个分区区域。
 
 当网络恢复时，成员可能能够再次看到对方，但是他们无法一起合并到一个集群中并将他们的桶组合回一个分区区域。 您可以确定数据处于不一致状态。 无论您是否配置了数据冗余，您都不知道丢失了哪些数据，哪些数据没有丢失。 即使您有冗余副本并且它们幸存下来，条目的不同副本可能具有反映中断的工作流程和不可访问数据的不同值。
 
-#### 网络故障对分布式区域的影响
+**网络故障对分布式区域的影响**
 
 默认情况下，集群的两端继续运行，就好像另一侧的成员未运行一样。 但是，对于分布式区域，区域的可靠性策略配置可以更改此默认行为。
 
 当网络恢复时，成员可能能够再次看到对方，但是他们无法一起合并到单个集群中。
 
-#### 网络故障对持久性区域的影响
+**网络故障对持久性区域的影响**
 
 使用持久性区域时网络故障可能会导致持久数据发生冲突。 恢复系统时，成员启动时可能会遇到`ConflictingPersistentDataException`。
 
@@ -7100,7 +7089,7 @@ gfsh> import data --region=/myregion --file=./outputdir/snapshot-snapshotTest-te
 
 有关如何从`ConflictingPersistentDataException`错误中恢复的信息，请参阅[从ConfictingPersistentDataExceptions中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_conflicting_data_exceptions.html#topic_ghw_z2m_jq)。
 
-#### 网络故障对客户端/服务器安装的影响
+**网络故障对客户端/服务器安装的影响**
 
 如果客户端失去与其所有服务器的联系，则效果与崩溃时的效果相同。 您需要重新启动客户端。 请参阅[从客户端故障中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_24B1898202E64C1E808C59E39417891B)。 如果客户端与某些服务器（但不是所有服务器）失去联系，则对客户端的影响与无法访问的服务器崩溃时的影响相同。 请参阅[从服务器故障中恢复](http://geode.apache.org/docs/guide/17/managing/troubleshooting/recovering_from_cs_crashes.html#rec_app_cs_crash__section_2A598C85FAD44CDEA605646BF7BEE388)。
 

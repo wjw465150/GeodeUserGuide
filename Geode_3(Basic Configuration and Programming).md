@@ -46,7 +46,7 @@
 
 集群成员是连接到Geode集群的程序。 您将成员配置为属于单个集群，并且可以选择将它们配置为客户端或服务器以配置到其他集群中的成员，以及与其他集群通信。
 
-#### 成员概述
+**成员概述**
 
 集群成员（或简称“成员”）在创建Geode数据缓存时连接到Geode集群。 成员的集群通过Geode属性配置。 请参阅[gemfire.properties和gfsecurity.properties(Geode Properties)](http://geode.apache.org/docs/guide/17/reference/topics/gemfire_properties.html)。 Geode属性指定成员启动，初始化和通信的所有必要信息。
 
@@ -59,14 +59,14 @@
 - 哪个持久性配置或`cache.xml`文件用于缓存和数据区域初始化
 - 其他选项，包括事件合并，如何处理网络丢失和安全设置
 
-#### 成员资格和系统拓扑
+**成员资格和系统拓扑**
 
 每个Geode进程都是集群的成员，即使集群被定义为独立的，只有一个成员。 您可以单独运行单个集群，也可以组合集群进行垂直和水平缩放。 请参阅[拓扑和通信一般概念](http://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/chapter_overview.html)。
 
 - **Peer-to-Peer Clusters**. 定义相同成员发现属性的成员属于同一集群，并且彼此对等。
 - **Client/Server Installations**. 客户端/服务器拓扑使用您在多个集群的成员之间配置的关系。 您可以将一个集群中的部分或全部对等配置为从集群外部连接的客户端的缓存服务器。 每个服务器都可以托管许多客户端进程，在高效的垂直分层缓存配置中管理所有客户端的缓存访问。 您使用客户端缓存配置将客户端应用程序配置为连接到服务器。 客户端作为独立Geode集群的成员运行，没有对等体，因此所有数据更新和请求都将发送到服务器。
 
-#### 多站点安装
+**多站点安装**
 
 多站点拓扑使用您在多个集群的成员之间配置的关系。 通过此配置，您可以松散地耦合两个或更多集群以进行自动数据分发。 这通常针对地理位置不同的站点进行。 您可以使用网关发件人和/或网关接收器配置每个集群站点中的对等项子集，以管理在站点之间分发的事件。
 
@@ -206,7 +206,7 @@ Geode缓存是Geode缓存管理的入口点。 Geode提供不同的API和XML配�
 
 Geode有一种用于管理服务器和对等缓存的缓存类型，另一种用于管理客户端缓存。 缓存服务器进程在启动时自动创建其服务器缓存。 在应用程序进程中，缓存创建将返回服务器/对等或客户端缓存的实例。 从那时起，您可以通过应用程序中的API调用来管理缓存。
 
-#### 缓存API
+**缓存API**
 
 Geode的缓存API为不同的系统成员类型和安全设置提供专门的行为。
 
@@ -215,7 +215,7 @@ Geode的缓存API为不同的系统成员类型和安全设置提供专门的行
 - **org.apache.geode.cache.Cache**. 使用`Cache`接口来管理服务器和对等缓存。 每个服务器或对等进程都有一个`Cache`。 `Cache`扩展了`GemFireCache`并添加了服务器/对等缓存功能，如集群内的通信，区域创建，事务和查询以及缓存服务器功能。
 - **org.apache.geode≈setting_cache_initializer.cache.ClientCache**. 使用`ClientCache`接口管理客户端中的缓存。 每个客户端进程有一个`ClientCache`。 “ClientCache”扩展了“GemFireCache”并添加了客户端特定的缓存功能，如客户端区域创建，持久客户端的订阅保持活动管理，查询服务器和客户端层，以及RegionService创建，以便客户端内的多个用户进行安全访问。
 
-#### 缓存XML
+**缓存XML**
 
 您的`cache.xml`必须根据产品XML模式定义`cache-1.0.xsd`进行格式化。 架构定义文件位于<http://geode.apache.org/schema/cache/cache-1.0.xsd>。
 
@@ -248,7 +248,7 @@ Geode的缓存API为不同的系统成员类型和安全设置提供专门的行
 
 有关`cache.xml`文件的更多信息，请参阅[cache.xml](http://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_cache_xml.html#cache_xml)。
 
-#### 创建并关闭缓存
+**创建并关闭缓存**
 
 启动成员进程并创建每个成员的Geode缓存时，将初始化您的系统配置和缓存配置。 如果您使用的是集群配置服务，则成员进程可以从集群或组的当前配置中获取其缓存配置。 请参见[集群配置服务概述](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)。
 
@@ -263,13 +263,13 @@ XML示例可能不包含完整的`cache.xml`文件列表。 所有声明性缓�
 
 按照[缓存管理](http://geode.apache.org/docs/guide/17/basic_config/the_cache/chapter_overview.html#the_cache)下的子主题中的说明自定义缓存创建和关闭以满足您的应用程序需求。 您可能需要组合多个指令集。 例如，要在具有安全性的系统中创建客户端缓存，您可以按照创建和关闭客户端缓存以及在安全系统中创建和关闭缓存的说明进行操作。
 
-#### 导出和导入缓存快照
+**导出和导入缓存快照**
 
 为了帮助管理缓存数据并加快新环境的设置，您可以导出整个缓存（所有区域）的快照，然后将快照导入新缓存。 例如，您可以获取生产环境缓存的快照，以便将缓存的数据导入测试环境。
 
 有关导出和导入缓存快照的更多详细信息，请参阅[缓存和区域快照](http://geode.apache.org/docs/guide/17/managing/cache_snapshots/chapter_overview.html#concept_E6AC3E25404D4D7788F2D52D83EE3071)。
 
-#### 使用gfsh和集群配置服务进行缓存管理
+**使用gfsh和集群配置服务进行缓存管理**
 
 您可以使用gfsh命令管理服务器缓存。 有gfsh命令可用于创建区域，启动服务器以及创建队列和其他对象。 在发出这些命令时，Cluster Configuration Service会在定位器上保存cache.xml和gemfire.properties文件，并将这些配置分发给任何加入集群的新成员。 请参见[集群配置服务概述](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)。
 
@@ -452,7 +452,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
    ```
 
 
-### 管理多个安全用户的`RegionServices`
+### 管理多个安全用户的RegionServices
 
 在安全系统中，您可以通过与每个客户端的服务器建立多个安全连接来创建客户端。 最常见的用例是嵌入在应用服务器中的Geode客户端，该服务器支持来自许多用户的数据请求。 可以授权每个用户访问服务器上的数据子集。 例如，可以允许客户用户仅查看和更新他们自己的订单和货件。
 
@@ -492,7 +492,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
 2. 通过仅关闭“ClientCache”实例来关闭缓存。 不要先关闭`RegionService`实例。 这是持久的客户来说尤其重要。
 
-#### `RegionService`的要求和注意事项
+**`RegionService`的要求和注意事项**
 
 创建每个区域后，您可以通过`ClientCache`实例或`RegionService`实例对其执行操作，但不能同时对它们执行操作。
 
@@ -603,9 +603,9 @@ public class MyInitializer implements Declarable {
 
 **注意:** 如果更改定义区域的属性，则必须重新启动成员才能使更改生效。
 
-#### 创建区域
+**创建区域**
 
-##### 使用gfsh创建区域
+**使用gfsh创建区域**
 
 在Apache Geode缓存中创建数据区域的一种简单快捷的方法是使用`gfsh`command-line工具。
 
@@ -623,7 +623,7 @@ gfsh>create region --name=region1 --type=REPLICATE
 
 **注意:** 默认情况下启用的集群配置服务会自动将配置保存在集群中的定位器上。 使用`gfsh create region`命令后，您启动的任何连接到同一定位器的新服务器都会收到相同的配置。 您还可以通过在创建区域和启动服务器时指定组来在集群中创建备用配置。 请参见[集群配置服务概述](http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)。
 
-##### 通过cache.xml文件创建区域
+**通过cache.xml文件创建区域**
 
 在Apache Geode缓存中创建数据区域的常用方法是通过`cache.xml`声明。 使用`cache.xml`文件启动成员时，将创建该区域。
 
@@ -633,7 +633,7 @@ gfsh>create region --name=region1 --type=REPLICATE
 - 定义区域名称并使用区域快捷方式（如果适用）。
 - 根据需要添加其他属性以自定义区域的行为。
 
-##### cache.xml文件示例
+**cache.xml文件示例**
 
 名为Portfolios的复制区域的`region`声明：
 
@@ -678,7 +678,7 @@ gfsh>create region --name=region1 --type=REPLICATE
 </region>
 ```
 
-##### 通过API创建区域
+**通过API创建区域**
 
 Geode的区域API为不同的系统成员类型提供专门的行为。
 
@@ -741,7 +741,7 @@ Geode的区域API为不同的系统成员类型提供专门的行为。
 2. (可选的) 使用区域工厂进一步配置您的区域。
 3. 从配置的区域工厂创建您的区域。
 
-##### API 例子
+**API 例子**
 
 创建名为Portfolios的复制区域：
 
@@ -782,7 +782,7 @@ Region<String, String> region =
     cRegionFactory.setPoolName("Pool3").create("DATA");
 ```
 
-##### 创建和访问数据子区域
+**创建和访问数据子区域**
 
 单个区域可以包含多个子区域。 子区域是一项较旧的功能，在新设计和应用程序中无用。 它们用于在缓存中创建分层命名空间，提供与文件系统中的路径类似的命名。 以下是对次区域使用的限制：
 
@@ -827,7 +827,7 @@ Region<String, String> region =
 
 带有`recursive`参数的`Region`方法调用对给定的区域进行操作，然后对所有包含的子区域进行递归操作。
 
-#### 更新数据区域的配置
+**更新数据区域的配置**
 
 通过`alter region`命令，API或`cache.xml`文件声明更新您的区域属性和内容。
 
@@ -835,7 +835,7 @@ Region<String, String> region =
 - 在API中，使用`Cache`和`Region`方法来更改配置参数并修改区域结构和数据。
 - 使用`Cache.loadCacheXml`方法加载新的XML声明。 在可能的情况下，新的`cache.xml`文件中的声明将取代现有的定义。 例如，如果在`cache.xml`文件中声明的区域已经存在于缓存中，则根据文件声明修改其可变属性。 不可变属性不受影响。 如果某个区域尚不存在，则会创建该区域。 根据缓存状态和文件声明创建或更新条目和索引。
 
-#### 使区域无效
+**使区域无效**
 
 无效区域操作将删除区域的所有条目值，同时保持条目密钥不变。 只能通过“Region”实例上的API调用此操作。 发生事件通知。
 
@@ -851,7 +851,7 @@ API还提供了一种方法，仅使本地缓存中的条目无效。 此方法�
 Region.localInvalidateRegion(); 
 ```
 
-#### 清除区域
+**清除区域**
 
 清除区域操作将删除区域中的所有条目。 此操作不适用于分区区域。 可以通过`Region`实例上的API调用此操作：
 
@@ -868,7 +868,7 @@ gfsh>remove --region=Region1 --all
 
 清除区域操作发生事件通知。
 
-#### 销毁区域
+**销毁区域**
 
 销毁区域操作移除整个区域。 可以通过“Region”实例上的API调用此操作：
 
@@ -893,7 +893,7 @@ gfsh>destroy region --name=Region1
 
 边缘情况在通过从`cache.xml`文件中删除其规范来销毁持久区域（R-removed）时导致问题，并且区域R-removed与另一个持久区域（R-remain）共存。 出现此问题是因为R-remaining中包含的持久性信息与R-removed的（缺乏）规范不一致。 重新启动R-remain后，其持久化元数据将R-remove视为共置区域，R-remaining的启动依赖于已删除的区域。 因此，R-started的启动仍然无法完成。 该问题可能表现为R-still区域上的操作，例如查询，放置或获取，从未完成。 要解决此问题，请使用引用已删除区域的持久元数据关闭所有成员。 一旦这些成员处于脱机状态，使用`gfsh alter disk-store`命令和每个脱机成员上的`--remove`选项删除该区域。 然后，重新启动每个成员。
 
-#### 关闭区域
+**关闭区域**
 
 使用此选项可以在不关闭整个缓存的情况下停止持久和分区区域的本地缓存：
 
@@ -957,7 +957,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
    </region>
    ```
 
-#### 快捷方式属性选项
+**快捷方式属性选项**
 
 您可以从Geode在这些类中预定义的命名区域属性中选择最常用的区域属性设置：
 
@@ -970,7 +970,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 
 `org.apache.geode.cache.RegionShortcut` Javadocs提供了完整的选项列表。
 
-#### 对等和服务器的`RegionShortcuts`
+**对等和服务器的`RegionShortcuts`**
 
 这些是区域快捷方式设置中可用的主要选项。 列出的名称单独或组合显示在快捷方式标识符中，如“PARTITION”，“PARTITION_PROXY”和“PARTITION_REDUNDANT”中的“`PARTITION`”。
 
@@ -1020,7 +1020,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 - **PERSISTENT**. 除了将所有数据存储在内存中之外，还将所有数据备份到磁盘。
 - **OVERFLOW**. 当内存使用率过高时，将数据从内存中移出并移至磁盘上。
 
-#### 客户端的`ClientRegionShortcuts`
+**客户端的`ClientRegionShortcuts`**
 
 这些是客户端区域快捷方式设置中可用的主要选项。 列出的名称单独或组合出现在快捷方式标识符中，如“PROXY”和“CACHING_PROXY”中的“PROXY”。
 
@@ -1054,7 +1054,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 - 在API中，使用区域工厂创建中的标识符
 - 在`cache.xml`中，使用`<region>`或`<region-attribute>``refid`设置中的标识符。 为方便起见，`refid`在两个元素中都可用
 
-#### 例子
+**例子**
 
 **Example #1**
 
@@ -1110,7 +1110,7 @@ Region<String, String> region = regionFactory
 
 所有区域属性都具有默认设置，因此您只需使用区域属性来设置要覆盖的属性。 见[](http://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes)。
 
-#### 定义区域属性
+**定义区域属性**
 
 使用以下任一方法创建区域属性：
 
@@ -1161,7 +1161,7 @@ Region<String, String> region = regionFactory
 
 - 通过发出gfsh`create region`命令。
 
-#### 修改区域属性
+**修改区域属性**
 
 您可以在创建区域后修改区域的事件处理程序以及到期和逐出属性。
 
@@ -1233,7 +1233,7 @@ public class PortfolioDBWriter extends CacheWriterAdapter {
 }
 ```
 
-#### 限制和替代方案
+**限制和替代方案**
 
 用户属性不会分发给其他进程，因此如果需要在使用该区域或条目的每个进程中定义每个属性。 您需要单独更新该区域的每个实例。 用户属性不会存储到磁盘以进行区域持久性或溢出，因此无法恢复它们以重新初始化该区域。
 
@@ -1271,7 +1271,7 @@ public class PortfolioDBWriter extends CacheWriterAdapter {
 
 **注意:** 如果没有将缓存的`copy-on-read`属性设置为true，请不要更改从Java条目访问方法返回的对象。 而是创建对象的副本，然后修改副本并将其传递给Java`put`方法。 修改适当的值会绕过Geode提供的整个分发框架，包括缓存侦听器和到期活动，并可能产生不希望的结果。
 
-#### 基本创建和更新
+**基本创建和更新**
 
 要在缓存中创建或更新条目，请使用“Region.put”。 例如：
 
@@ -1285,7 +1285,7 @@ this.currRegion.put(name,value);
 
 如果只想创建条目（如果条目已存在，则为空值且方法失败），请改用`Region.create`。
 
-#### 批处理操作(getAll，putAll，removeAll)
+**批处理操作(getAll，putAll，removeAll)**
 
 Geode提供了三个API来对多个区域条目执行批处理操作：
 
@@ -1317,7 +1317,7 @@ void putAll(String command) throws CacheException
 
 `removeAll`方法获取一组键，并从该区域中删除指定键的所有条目。 对于指定集合中的每个键，此调用对此区域执行一次调用`destroy（Object）`。 如果条目不存在，则跳过该键。 不抛出`EntryNotFoundException`。 如果区域的范围未设置为`Scope.LOCAL`，则此操作将分发给其他缓存。
 
-#### 安全条目修改
+**安全条目修改**
 
 从缓存中获取条目值时，默认情况下，检索方法会返回对缓存对象的直接引用。 这样可以尽快提供值，但也会打开缓存以进行直接的就地更改。
 
@@ -1348,13 +1348,13 @@ void putAll(String command) throws CacheException
    region.put("stringBuf", s);
    ```
 
-#### 从代理成员中检索区域条目
+**从代理成员中检索区域条目**
 
 `Region.values`方法调用仅适用于本地区域实例。 如果使用PROXY快捷方式从客户区域调用`values`方法，则方法调用将不会重定向到服务器区域。 要从客户端获取Region中所有值的集合，您应该在ALL_KEYS上使用兴趣注册，或使用查询。
 
 如果从代理成员使用`Region.get`方法，则方法调用将重定向到服务器上的区域，如果它无法在本地找到密钥。
 
-#### 使用gfsh来`get`和`put`
+**使用gfsh来`get`和`put`**
 
 您可以使用gfsh`get`和`put`命令来管理数据。 见[get](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/get.html)和[put](http://geode.apache.org/docs/引导/17/tools_modules/gfsh/命令页/put.html)。
 
@@ -1383,7 +1383,7 @@ put --key=('100F') --value=('2146547689879658564')  --region=/region1/region12
 
 请遵循以下准则，为缓存的条目键和值使用自定义域类。
 
-#### CLASSPATH
+**CLASSPATH**
 
 每个成员的`CLASSPATH`必须包含成员访问的所有对象的类。
 
@@ -1398,13 +1398,13 @@ put --key=('100F') --value=('2146547689879658564')  --region=/region1/region12
 
 有关`PdxInstance`s的信息，请参阅[数据序列化](http://geode.apache.org/docs/guide/17/developing/data_serialization/chapter_overview.html#data_serialization)。
 
-#### 数据序列化
+**数据序列化**
 
 Geode序列化数据输入键和值以进行分发，因此Geode因任何原因移出本地缓存的所有数据都必须是可序列化的。 另外，分区区域以序列化形式存储数据。 几乎每个配置都需要序列化。
 
 有关数据序列化的要求和选项的信息，请参阅[数据序列化](http://geode.apache.org/docs/guide/17/developing/data_serialization/chapter_overview.html#data_serialization)。
 
-#### 用作键的类
+**用作键的类**
 
 该区域使用键上的散列。 如果您定义要用作键的自定义类，则对于该类，重写：
 
