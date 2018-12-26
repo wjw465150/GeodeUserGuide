@@ -1,205 +1,201 @@
-# Developing with Apache Geode
+# 使用Apache Geode进行开发
 
-*Developing with Apache Geode* explains main concepts of application programming with Apache Geode. It describes how to plan and implement regions, data serialization, event handling, delta propagation, transactions, and more.
+*使用Apache Geode进行开发*解释了使用Apache Geode进行应用程序编程的主要概念。 它描述了如何规划和实现区域，数据序列化，事件处理，增量传播，事务等。
 
-For information about Geode REST application development, see [Developing REST Applications for Apache Geode](https://geode.apache.org/docs/guide/17/rest_apps/book_intro.html).
+有关Geode REST应用程序开发的信息，请参阅[为Apache Geode开发REST应用程序](https://geode.apache.org/docs/guide/17/rest_apps/book_intro.html).
 
-- **Region Data Storage and Distribution**
+- **区域数据存储和分发**
 
-  The Apache Geode data storage and distribution models put your data in the right place at the right time. You should understand all the options for data storage in Geode before you start configuring your data regions.
+  Apache Geode数据存储和分发模型可以在适当的时间将您的数据放在正确的位置。 在开始配置数据区域之前，您应该了解Geode中数据存储的所有选项。
 
-- **Partitioned Regions**
+- **分区区域**
 
-  In addition to basic region management, partitioned regions include options for high availability, data location control, and data balancing across the cluster.
+  除基本区域管理外，分区区域还包括高可用性选项，数据位置控制以及跨集群的数据平衡。
 
-- **Distributed and Replicated Regions**
+- **分布式和复制区域**
 
-  In addition to basic region management, distributed and replicated regions include options for things like push and pull distribution models, global locking, and region entry versions to ensure consistency across Geode members.
+  除基本区域管理外，分布式和复制区域还包括推送和分发模型，全局锁定和区域条目版本等选项，以确保Geode成员之间的一致性。
 
-- **Consistency for Region Updates**
+- **区域更新的一致性**
 
-  Geode ensures that all copies of a region eventually reach a consistent state on all members and clients that host the region, including Geode members that distribute region events.
+  Geode确保区域的所有副本最终在托管该区域的所有成员和客户端上达到一致状态，包括分发区域事件的Geode成员。
 
-- **General Region Data Management**
+- **一般地区数据管理**
 
-  For all regions, you have options to control memory use, back up your data to disk, and keep stale data out of your cache.
+  对于所有区域，您可以选择控制内存使用，将数据备份到磁盘，并将过时数据保留在缓存之外。
 
-- **Data Serialization**
+- **数据序列化**
 
-  Data that you manage in Geode must be serialized and deserialized for storage and transmittal between processes. You can choose among several options for data serialization.
+  您在Geode中管理的数据必须序列化和反序列化，以便在进程之间进行存储和传输。 您可以选择多个数据序列化选项。
 
-- **Events and Event Handling**
+- **事件和事件处理**
 
-  Geode provides versatile and reliable event distribution and handling for your cached data and system member events.
+  Geode为缓存的数据和系统成员事件提供了通用且可靠的事件分发和处理。
 
-- **Delta Propagation**
+- **增量传播**
 
-  Delta propagation allows you to reduce the amount of data you send over the network by including only changes to objects rather than the entire object.
+  增量传播允许您通过仅包括对象而不是整个对象的更改来减少通过网络发送的数据量。
 
-- **Querying**
+- **查询**
 
-  Geode provides a SQL-like querying language called OQL that allows you to access data stored in Geode regions.
+  Geode提供了一种类似SQL的查询语言OQL，允许您访问存储在Geode区域中的数据。
 
-- **Continuous Querying**
+- **连续查询**
 
-  Continuous querying continuously returns events that match the queries you set up.
+  连续查询会不断返回与您设置的查询匹配的事件。
 
-- **Transactions**
+- **事务**
 
-  Geode provides a transactions API, with `begin`, `commit`, and `rollback` methods. These methods are much the same as the familiar relational database transactions methods.
+  Geode提供了一个事务API，使用`begin`，`commit`和`rollback`方法。 这些方法与熟悉的关系数据库事务方法非常相似。
 
-- **Function Execution**
+- **函数执行**
 
-  A function is a body of code that resides on a server and that an application can invoke from a client or from another server without the need to send the function code itself. The caller can direct a data-dependent function to operate on a particular dataset, or can direct a data-independent function to operate on a particular server, member, or member group.
+  函数是驻留在服务器上的代码体，应用程序可以从客户端或其他服务器调用，而无需自己发送函数代码。 调用者可以指示数据相关函数对特定数据集进行操作，或者可以指示与数据无关的函数在特定服务器，成员或成员组上操作。
 
 
+## 区域数据存储和分发
 
-## Region Data Storage and Distribution
+Apache Geode数据存储和分发模型可以在适当的时间将您的数据放在正确的位置。 在配置数据区域之前，您应该了解Geode中数据存储的所有选项。
 
-The Apache Geode data storage and distribution models put your data in the right place at the right time. You should understand all the options for data storage in Geode before you configure your data regions.
+- **存储和分配选项**
 
-- **Storage and Distribution Options**
+  Geode提供了多种数据存储和分发模型，包括分区或复制区域以及分布式或非分布式区域（本地缓存存储）。
 
-  Geode provides several models for data storage and distribution, including partitioned or replicated regions as well as distributed or non-distributed regions (local cache storage).
+- **区域类型**
 
-- **Region Types**
+  区域类型定义单个集群中的区域行为。 您可以使用各种区域数据存储和分发选项。
 
-  Region types define region behavior within a single cluster. You have various options for region data storage and distribution.
+- **区域数据存储和数据访问器**
 
-- **Region Data Stores and Data Accessors**
+  了解存储区域数据的成员与仅作为区域数据访问者的成员之间的区别。
 
-  Understand the difference between members that store data for a region and members that act only as data accessors to the region.
+- **动态创建区域**
 
-- **Creating Regions Dynamically**
+  您可以在应用程序代码中动态创建区域，并自动在集群成员上实例化它们。
 
-  You can dynamically create regions in your application code and automatically instantiate them on members of a cluster.
 
+### 存储和分配选项
 
+Geode提供了多种数据存储和分发模型，包括分区或复制区域以及分布式或非分布式区域（本地缓存存储）。
 
-### Storage and Distribution Options
+#### 点对点区域存储和分发
 
-Geode provides several models for data storage and distribution, including partitioned or replicated regions as well as distributed or non-distributed regions (local cache storage).
+最常见的是，数据管理意味着在应用程序需要的时间和地点提供当前数据。在正确配置的Geode安装中，您将数据存储在本地成员中，Geode会根据您的缓存配置设置自动将其分发给需要它的其他成员。您可能正在存储需要特殊考虑的非常大的数据对象，或者您可能需要仔细配置大量数据以保护应用程序的性能或内存使用。您可能需要能够在特定操作期间显式锁定某些数据。大多数数据管理功能都可以作为配置选项使用，您可以使用`gfsh`集群配置服务，`cache.xml`文件或API指定。配置完成后，Geode会自动管理数据。例如，这是您管理数据分发，磁盘存储，数据过期活动和数据分区的方式。通过API在运行时管理一些功能。
 
-#### Peer-to-Peer Region Storage and Distribution
+在体系结构级别，数据分发在单个群集中的对等体之间以及客户端和服务器之间运行。
 
-At its most general, data management means having current data available when and where your applications need it. In a properly configured Geode installation, you store your data in your local members and Geode automatically distributes it to the other members that need it according to your cache configuration settings. You may be storing very large data objects that require special consideration, or you may have a high volume of data requiring careful configuration to safeguard your application’s performance or memory use. You may need to be able to explicitly lock some data during particular operations. Most data management features are available as configuration options, which you can specify either using the `gfsh` cluster configuration service, `cache.xml` file or the API. Once configured, Geode manages the data automatically. For example, this is how you manage data distribution, disk storage, data expiration activities, and data partitioning. A few features are managed at run-time through the API.
+- 点对点提供核心分发和存储模型，这些模型被指定为数据区域上的属性。
+- 对于客户端/服务器，您可以选择在客户端和服务器层之间共享哪些数据区域。 然后，在每个区域内，您可以通过订阅子集来微调服务器自动发送到客户端的数据。
 
-At the architectural level, data distribution runs between peers in a single cluster and between clients and servers.
+任何类型的安装中的数据存储都基于每个群集的点对点配置。 数据和事件分发基于点对点和系统到系统配置的组合。
 
-- Peer-to-peer provides the core distribution and storage models, which are specified as attributes on the data regions.
-- For client/server, you choose which data regions to share between the client and server tiers. Then, within each region, you can fine-tune the data that the server automatically sends to the client by subscribing to subsets.
+存储和分发模型通过缓存和区域属性进行配置。 主要选择是分区，复制或仅分布式。 必须对所有服务器区域进行分区或复制。 每个区域的`data-policy`和`subscription-attributes`，如果它不是分区区域，它的`scope`进行交互以更好地控制数据分发。
 
-Data storage in any type of installation is based on the peer-to-peer configuration for each individual cluster. Data and event distribution is based on a combination of the peer-to-peer and system-to-system configurations.
+在本地缓存中存储数据
 
-Storage and distribution models are configured through cache and region attributes. The main choices are partitioned, replicated, or just distributed. All server regions must be partitioned or replicated. Each region’s `data-policy` and `subscription-attributes`, and its `scope` if it is not a partitioned region, interact for finer control of data distribution.
+要将数据存储在本地缓存中，请使用带有本地状态的`RegionShortcut`或`ClientRegionShortcut`的区域`refid`。 这些会自动将区域`data-policy`设置为非空策略。 没有存储的区域可以发送和接收事件分发，而无需在应用程序堆中存储任何内容。 使用其他设置，接收的所有输入操作都存储在本地。
 
-Storing Data in the Local Cache
 
-To store data in your local cache, use a region `refid` with a `RegionShortcut` or `ClientRegionShortcut` that has local state. These automatically set the region `data-policy` to a non-empty policy. Regions without storage can send and receive event distributions without storing anything in your application heap. With the other settings, all entry operations received are stored locally.
+### 区域类型
 
+区域类型定义单个集群中的区域行为。 您可以使用各种区域数据存储和分发选项。
 
+在Geode集群中，您可以定义分布式区域和非分布式区域，并且可以定义其数据分布在集群中的区域，以及其数据完全包含在单个成员中的区域。
 
-### Region Types
+您选择的区域类型部分取决于您运行的应用程序类型。 特别是，您需要为服务器和客户端使用特定的区域类型，以便在两个层之间进行有效通信：
 
-Region types define region behavior within a single cluster. You have various options for region data storage and distribution.
+- 服务器区域由服务器在`缓存`内创建，并由从服务器集群外部连接到服务器的客户端访问。 服务器区域必须具有分区或复制的区域类型。 服务器区域配置使用`RegionShortcut`枚举设置。
+- 客户端区域由客户端在`ClientCache`内创建，并配置为在客户端和服务器层之间分发数据和事件。 客户区域必须具有区域类型`local`。 客户端区域配置使用`ClientRegionShortcut`枚举设置。
+- 对等区域在`Cache`内创建。 对等区域可以是服务器区域，或者它们可以是客户端不访问的区域。 对等区域可以具有任何区域类型。 对等区域配置使用`RegionShortcut`枚举设置。
 
-Within a Geode cluster, you can define distributed regions and non-distributed regions, and you can define regions whose data is spread across the cluster, and regions whose data is entirely contained in a single member.
+使用`gfsh`或`cache.xml`文件配置服务器或对等区域时，可以使用*region shortcuts*来定义您所在区域的基本配置。 区域快捷方式提供了一组默认配置属性，这些属性是为各种类型的缓存体系结构设计的。 然后，您可以根据需要添加其他配置属性以自定义应用程序。 有关这些区域快捷方式的更多信息和完整参考，请参阅[区域快捷方式参考](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_lt4_54c_lk).
 
-Your choice of region type is governed in part by the type of application you are running. In particular, you need to use specific region types for your servers and clients for effective communication between the two tiers:
 
-- Server regions are created inside a `Cache` by servers and are accessed by clients that connect to the servers from outside the server’s cluster. Server regions must have region type partitioned or replicated. Server region configuration uses the `RegionShortcut` enum settings.
-- Client regions are created inside a `ClientCache` by clients and are configured to distribute data and events between the client and the server tier. Client regions must have region type `local`. Client region configuration uses the `ClientRegionShortcut` enum settings.
-- Peer regions are created inside a `Cache`. Peer regions may be server regions, or they may be regions that are not accessed by clients. Peer regions can have any region type. Peer region configuration uses the `RegionShortcut` enum settings.
+这些是每个数据区域的主要配置选择。
 
-When you configure a server or peer region using `gfsh` or with the `cache.xml` file, you can use *region shortcuts* to define the basic configuration of your region. A region shortcut provides a set of default configuration attributes that are designed for various types of caching architectures. You can then add additional configuration attributes as needed to customize your application. For more information and a complete reference of these region shortcuts, see [Region Shortcuts Reference](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_lt4_54c_lk).
+| 区域类型                   | 描述                                                         | 最适合...                                                    |
+| -------------------------- | ------------------------------------------------------------ | :----------------------------------------------------------- |
+| Partitioned                | 系统范围的数据集设置。 数据被划分为跨定义区域的成员的桶。 为了实现高可用性，请配置冗余副本，以便每个存储桶存储在多个成员中，其中一个成员持有主数据. | 服务器区域和对等区域: 1.非常大的数据集; 2.高可用性; 3.写性能; 4.分区事件监听器和数据加载器 |
+| Replicated (distributed)   | 保存分布式区域中的所有数据。 来自分布区域的数据被复制到成员副本区域中。 可以与非复制混合，一些成员持有副本，一些成员持有非副本。 | 服务器区域和对等区域: 1.阅读繁重的小型数据集; 2.异步分配; 3.查询性能 |
+| Distributed non-replicated | 数据分布在定义区域的成员之间。 每个成员只保留其表示感兴趣的数据。可以与复制混合，一些成员持有副本，一些成员持有非副本。 | 对等区域，但不是服务器区域和不是客户区域: 异步分配;查询性能  |
+| Non-distributed (local)    | 该区域仅对定义成员可见。                                     | 客户区域和对等区域: 1.应用程序之间未共享的数据               |
 
 
 
-These are the primary configuration choices for each data region.
+**分区区域**
 
-| Region Type                | Description                                                  | Best suited for…                                             |
-| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Partitioned                | System-wide setting for the data set. Data is divided into buckets across the members that define the region. For high availability, configure redundant copies so each bucket is stored in multiple members with one member holding the primary. | Server regions and peer regionsVery large data setsHigh availabilityWrite performancePartitioned event listeners and data loaders |
-| Replicated (distributed)   | Holds all data from the distributed region. The data from the distributed region is copied into the member replica region. Can be mixed with non-replication, with some members holding replicas and some holding non-replicas. | Server regions and peer regionsRead heavy, small datasetsAsynchronous distributionQuery performance |
-| Distributed non-replicated | Data is spread across the members that define the region. Each member holds only the data it has expressed interest in. Can be mixed with replication, with some members holding replicas and some holding non-replicas. | Peer regions, but not server regions and not client regionsAsynchronous distributionQuery performance |
-| Non-distributed (local)    | The region is visible only to the defining member.           | Client regions and peer regionsData that is not shared between applications |
+对于非常大的服务器区域，分区是一个不错的选择。 分区区域非常适用于数百GB甚至更多的数据集。
 
-Partitioned Regions
+**注意:** 分区区域通常需要比其他区域类型更多的JDBC连接，因为承载数据的每个成员必须具有连接。
 
-Partitioning is a good choice for very large server regions. Partitioned regions are ideal for data sets in the hundreds of gigabytes and beyond.
+分区区域将数据分组到存储桶中，每个存储桶都存储在所有系统成员的子集中。 存储桶中的数据位置不会影响逻辑视图 - 所有成员都会看到相同的逻辑数据集。
 
-**Note:** Partitioned regions generally require more JDBC connections than other region types because each member that hosts data must have a connection.
+使用分区：
 
-Partitioned regions group your data into buckets, each of which is stored on a subset of all of the system members. Data location in the buckets does not affect the logical view - all members see the same logical data set.
+- **大数据集**. 存储太大而无法放入单个成员的数据集，并且所有成员都将看到相同的逻辑数据集。 分区区域将数据划分为称为存储区的存储单元，这些存储区分为托管分区区域数据的成员，因此没有成员需要托管所有区域的数据。 Geode提供动态冗余恢复和分区区域的重新平衡，使其成为大规模数据容器的选择。 系统中的更多成员可以在所有主机成员之间实现更均匀的数据平衡，从而允许在添加新成员时扩展系统吞吐量（获取和放置）。
+- **高可用性**. 分区区域允许您配置Geode应该创建的数据副本数。 如果成员失败，您的数据将在不中断其他成员的情况下可用。 分区区域也可以持久保存到磁盘以获得额外的高可用性。
+- **可扩展性**. 分区区域可以扩展为大量数据，因为数据在可用于托管区域的成员之间划分。 只需添加新成员即可动态增加数据容量。 分区区域还允许您扩展处理能力。 由于您的条目分布在托管区域的成员中，因此对这些条目的读取和写入也会分散在这些成员中。
+- **良好的写性能**. 您可以配置数据的副本数量。 每次写入传输的数据量不会随着成员数量的增加而增加。 相反，对于复制区域，每个写入必须发送到具有复制区域的每个成员，因此每次写入传输的数据量随着成员数量的增加而增加。
 
-Use partitioning for:
+在分区区域中，您可以在存储桶内和多个分区区域内共存keys。 您还可以控制哪些成员存储哪些数据存储桶。
 
-- **Large data sets**. Store data sets that are too large to fit into a single member, and all members will see the same logical data set. Partitioned regions divide the data into units of storage called buckets that are split across the members hosting the partitioned region data, so no member needs to host all of the region’s data. Geode provides dynamic redundancy recovery and rebalancing of partitioned regions, making them the choice for large-scale data containers. More members in the system can accommodate more uniform balancing of the data across all host members, allowing system throughput (both gets and puts) to scale as new members are added.
-- **High availability**. Partitioned regions allow you configure the number of copies of your data that Geode should make. If a member fails, your data will be available without interruption from the remaining members. Partitioned regions can also be persisted to disk for additional high availability.
-- **Scalability**. Partitioned regions can scale to large amounts of data because the data is divided between the members available to host the region. Increase your data capacity dynamically by simply adding new members. Partitioned regions also allow you to scale your processing capacity. Because your entries are spread out across the members hosting the region, reads and writes to those entries are also spread out across those members.
-- **Good write performance**. You can configure the number of copies of your data. The amount of data transmitted per write does not increase with the number of members. By contrast, with replicated regions, each write must be sent to every member that has the region replicated, so the amount of data transmitted per write increases with the number of members.
+#### 复制区域
 
-In partitioned regions, you can colocate keys within buckets and across multiple partitioned regions. You can also control which members store which data buckets.
+复制区域在吞吐量和延迟方面提供最高性能。 对于中小型服务器区域，复制是一个不错的选择。
 
-#### Replicated Regions
+使用复制区域：
 
-Replicated regions provide the highest performance in terms of throughput and latency. Replication is a good choice for small to medium size server regions.
+- **集群的所有成员都需要少量数据**. For example, currency rate information and mortgage rates.
+- **可以完全包含在单个成员中的数据集**. 每个复制区域都包含该区域的完整数据集
+- **高性能数据访问**. 复制保证了堆对应用程序线程的本地访问，从而为数据访问提供尽可能低的延迟。
+- **异步分发**. 所有分布式区域（复制和非复制）都提供最快的分发速度。
 
-Use replicated regions for:
+#### 分布式，非复制区域
 
-- **Small amounts of data required by all members of the cluster**. For example, currency rate information and mortgage rates.
-- **Data sets that can be contained entirely in a single member**. Each replicated region holds the complete data set for the region
-- **High performance data access**. Replication guarantees local access from the heap for application threads, providing the lowest possible latency for data access.
-- **Asynchronous distribution**. All distributed regions, replicated and non-replicated, provide the fastest distribution speeds.
+分布式区域提供与复制区域相同的性能，但每个成员仅通过订阅来自其他成员的事件或通过在其缓存中定义数据条目来仅存储其表达兴趣的数据。
 
-#### Distributed, Non-Replicated Regions
+使用分布式，非复制区域：
 
-Distributed regions provide the same performance as replicated regions, but each member stores only data in which it has expressed an interest, either by subscribing to events from other members or by defining the data entries in its cache.
+- **对等区域，但不是服务器区域或客户区域**. 服务器的区域必须是复制或分区。 客户区域必须是本地的。
+- **数据集，其中各个成员仅需要通知和更新数据子集的更改**. 在非复制区域中，每个成员仅接收其在本地缓存中定义的数据条目的更新事件。
+- **异步分发**. 所有分布式区域（复制和非复制）都提供最快的分发速度。
 
-Use distributed, non-replicated regions for:
+#### 本地区域
 
-- **Peer regions, but not server regions or client regions**. Server regions must be either replicated or partitioned. Client regions must be local.
-- **Data sets where individual members need only notification and updates for changes to a subset of the data**. In non-replicated regions, each member receives only update events for the data entries it has defined in the local cache.
-- **Asynchronous distribution**. All distributed regions, replicated and non-replicated, provide the fastest distribution speeds.
+**注意:** 当使用`ClientRegionShortcut`设置创建时，客户端区域自动定义为本地，因为所有客户端分发活动都来自服务器层。
 
-#### Local Regions
+本地区域没有对等分发活动。
 
-**Note:** When created using the `ClientRegionShortcut` settings, client regions are automatically defined as local, since all client distribution activities go to and come from the server tier.
+使用本地地区:
 
-The local region has no peer-to-peer distribution activity.
+- **客户区域**. 分发仅在客户端和服务器层之间进行。
+- **定义成员的私有数据集**. 对等成员看不到本地区域。
 
-Use local regions for:
 
-- **Client regions**. Distribution is only between the client and server tier.
-- **Private data sets for the defining member**. The local region is not visible to peer members.
+### 区域数据存储和数据访问器
 
+了解存储区域数据的成员与仅作为区域数据访问者的成员之间的区别。
 
+在大多数情况下，在成员缓存中定义数据区域时，还要指定该成员是否为数据存储。 存储区域数据的成员称为数据存储或数据主机。 不存储数据的成员称为访问者成员或空成员。 定义区域的任何成员，存储或访问者都可以访问它，将数据放入其中，并从其他成员接收事件。 要配置区域以使成员是数据访问者，请使用不为该区域指定本地数据存储的配置。 否则，该成员是该区域的数据存储。
 
-### Region Data Stores and Data Accessors
+对于服务器区域，通过在名称中指定包含术语`PROXY`的区域快捷方式来抑制区域创建时的本地数据存储，例如`PARTITION_PROXY`或`REPLICATE_PROXY`。
 
-Understand the difference between members that store data for a region and members that act only as data accessors to the region.
+对于客户端区域，通过指定`PROXY`区域快捷方式来抑制区域创建时的本地数据存储。 不要使用`CACHING_PROXY`快捷方式，因为它允许本地数据存储。
 
-In most cases, when you define a data region in a member’s cache, you also specify whether the member is a data store. Members that store data for a region are referred to as data stores or data hosts. Members that do not store data are referred to as accessor members, or empty members. Any member, store or accessor, that defines a region can access it, put data into it, and receive events from other members. To configure a region so the member is a data accessor, you use configurations that specify no local data storage for the region. Otherwise, the member is a data store for the region.
 
-For server regions, suppress local data storage at region creation by specifying a region shortcut that contains the term “PROXY” in its name, such as `PARTITION_PROXY` or `REPLICATE_PROXY`.
+### 动态创建区域
 
-For client regions, suppress local data storage at region creation by specifying the `PROXY` region shortcut. Do not use the `CACHING_PROXY` shortcut for this purpose, as it allows local data storage.
+您可以在应用程序代码中动态创建区域，并自动在集群成员上实例化它们。
 
+如果您的应用程序不需要分区区域，则可以使用org.apache.geode.cache.DynamicRegionFactory类动态创建区域，也可以使用cache.xml中的`<dynamic-region-factory>`元素创建它们。 定义区域的文件。 见[](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#dynamic-region-factory).
 
+由于涉及的选项数量众多，大多数开发人员使用函数在其应用程序中动态创建区域，如本主题中所述。 也可以从`gfsh`命令行创建动态区域。
 
-### Creating Regions Dynamically
+有关使用Geode函数的完整讨论，请参阅[Function Execution](https://geode.apache.org/docs/guide/17/developing/function_exec/chapter_overview.html)。 函数使用org.apache.geode.cache.execute.FunctionService类。
 
-You can dynamically create regions in your application code and automatically instantiate them on members of a cluster.
+例如，以下Java类定义并使用函数来创建动态区域：
 
-If your application does not require partitioned regions, you can use the org.apache.geode.cache.DynamicRegionFactory class to dynamically create regions, or you can create them using the `<dynamic-region-factory>` element in the cache.xml file that defines the region. See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#dynamic-region-factory).
-
-Due to the number of options involved, most developers use functions to create regions dynamically in their applications, as described in this topic. Dynamic regions can also be created from the `gfsh` command line.
-
-For a complete discussion of using Geode functions, see [Function Execution](https://geode.apache.org/docs/guide/17/developing/function_exec/chapter_overview.html). Functions use the org.apache.geode.cache.execute.FunctionService class.
-
-For example, the following Java classes define and use a function for dynamic region creation:
-
-The CreateRegionFunction class defines a function invoked on a server by a client using the onServer() method of the FunctionService class. This function call initiates region creation by putting an entry into the region attributes metadata region. The entry key is the region name and the value is the set of region attributes used to create the region.
+CreateRegionFunction类定义客户端使用FunctionService类的onServer()方法在服务器上调用的函数。 此函数调用通过将条目放入区域属性元数据区域来启动区域创建。 条目key是区域名称，value是用于创建区域的区域属性集。
 
 ```java
 #CreateRegionFunction.java
@@ -302,7 +298,7 @@ public class CreateRegionFunction implements Function, Declarable {
 }
 ```
 
-The CreateRegionCacheListener class is a cache listener that implements two methods, afterCreate() and afterRegionCreate(). The afterCreate() method creates the region. The afterRegionCreate() method causes each new server to create all the regions defined in the metadata region.
+CreateRegionCacheListener类是一个缓存侦听器，它实现了两个方法：afterCreate()和afterRegionCreate()。 afterCreate()方法创建区域。 afterRegionCreate()方法使每个新服务器创建元数据区域中定义的所有区域。
 
 ```java
 #CreateRegionCacheListener.java
@@ -365,115 +361,111 @@ public class CreateRegionCacheListener
 ```
 
 
+## 分区区域
 
-## Partitioned Regions
+除基本区域管理外，分区区域还包括高可用性选项，数据位置控制以及跨群集的数据平衡。
 
-In addition to basic region management, partitioned regions include options for high availability, data location control, and data balancing across the cluster.
+- **了解分区**
 
-- **Understanding Partitioning**
+  要使用分区区域，您应该了解它们的工作方式以及管理它们的选项。
 
-  To use partitioned regions, you should understand how they work and your options for managing them.
+- **配置分区区域**
 
-- **Configuring Partitioned Regions**
+  规划主机和访问者成员的分区区域的配置和持续管理，并配置启动区域。
 
-  Plan the configuration and ongoing management of your partitioned region for host and accessor members and configure the regions for startup.
+- **配置分区区域的桶数**
 
-- **Configuring the Number of Buckets for a Partitioned Region**
-
-  Decide how many buckets to assign to your partitioned region and set the configuration accordingly.
+  确定要分配给分区区域的桶数，并相应地设置配置。
 
 - **Custom-Partitioning and Colocating Data**
 
-  You can customize how Apache Geode groups your partitioned region data with custom partitioning and data colocation.
+  您可以自定义Apache Geode如何使用自定义分区和数据同地对分区区域数据进行分组。
 
-- **Configuring High Availability for Partitioned Regions**
+- **配置分区区域的高可用性**
 
-  By default, Apache Geode stores only a single copy of your partitioned region data among the region’s data stores. You can configure Geode to maintain redundant copies of your partitioned region data for high availability.
+  默认情况下，Apache Geode仅在区域的数据存储中存储分区区域数据的单个副本。 您可以配置Geode以维护分区区域数据的冗余副本，以实现高可用性。
 
-- **Configuring Single-Hop Client Access to Server-Partitioned Regions**
+- **配置对服务器分区区域的单跳客户端访问**
 
-  Single-hop data access enables the client pool to track where a partitioned region’s data is hosted in the servers. To access a single entry, the client directly contacts the server that hosts the key, in a single hop.
+  单跳数据访问使客户端池能够跟踪分区区域的数据在服务器中的托管位置。 要访问单个条目，客户端将在一个跃点中直接联系承载key的服务器。
 
-- **Rebalancing Partitioned Region Data**
+- **重新平衡分区区域数据**
 
-  In a cluster with minimal contention to the concurrent threads reading or updating from the members, you can use rebalancing to dynamically increase or decrease your data and processing capacity.
+  在对成员读取或更新并发线程的争用最小的群集中，您可以使用重新平衡来动态增加或减少数据和处理容量。
 
-- **Checking Redundancy in Partitioned Regions**
+- **检查分区中的冗余**
 
-  Under some circumstances, it can be important to verify that your partitioned region data is redundant and that upon member restart, redundancy has been recovered properly across partitioned region members.
+  在某些情况下，验证分区区域数据是否为冗余并且在成员重新启动时，已跨分区区域成员正确恢复冗余非常重要。
 
-- **Moving Partitioned Region Data to Another Member**
+- **将分区区域数据移动到另一个成员**
 
-  You can use the `PartitionRegionHelper` `moveBucketByKey` and `moveData` methods to explicitly move partitioned region data from one member to another.
-
-
-
-### Understanding Partitioning
-
-To use partitioned regions, you should understand how they work and your options for managing them.
-
-During operation, a partitioned region looks like one large virtual region, with the same logical view held by all of the members where the region is defined. ![img](assets/how_partitioning_works_1.svg)
-
-For each member where you define the region, you can choose how much space to allow for region data storage, including no local storage at all. The member can access all region data regardless of how much is stored locally. ![img](assets/how_partitioning_works_2.svg)
-
-A cluster can have multiple partitioned regions, and it can mix partitioned regions with distributed regions and local regions. The usual requirement for unique region names, except for regions with local scope, still applies. A single member can host multiple partitioned regions.
-
-#### Data Partitioning
-
-Geode automatically determines the physical location of data in the members that host a partitioned region’s data. Geode breaks partitioned region data into units of storage known as buckets and stores each bucket in a region host member. Buckets are distributed in accordance to the member’s region attribute settings.
-
-When an entry is created, it is assigned to a bucket. Keys are grouped together in a bucket and always remain there. If the configuration allows, the buckets may be moved between members to balance the load.
-
-You must run the data stores needed to accommodate storage for the partitioned region’s buckets. You can start new data stores on the fly. When a new data store creates the region, it takes responsibility for as many buckets as allowed by the partitioned region and member configuration.
-
-You can customize how Geode groups your partitioned region data with custom partitioning and data colocation.
-
-#### Partitioned Region Operation
-
-A partitioned region operates much like a non-partitioned region with distributed scope. Most of the standard `Region` methods are available, although some methods that are normally local operations become distributed operations, because they work on the partitioned region as a whole instead of the local cache. For example, a `put` or `create` into a partitioned region may not actually be stored into the cache of the member that called the operation. The retrieval of any entry requires no more than one hop between members.
-
-Partitioned regions support the client/server model, just like other regions. If you need to connect dozens of clients to a single partitioned region, using servers greatly improves performance.
-
-#### Additional Information About Partitioned Regions
-
-Keep the following in mind about partitioned regions:
-
-- Partitioned regions never run asynchronously. Operations in partitioned regions always wait for acknowledgement from the caches containing the original data entry and any redundant copies.
-- A partitioned region needs a cache loader in every region data store (`local-max-memory` > 0).
-- Geode distributes the data buckets as evenly as possible across all members storing the partitioned region data, within the limits of any custom partitioning or data colocation that you use. The number of buckets allotted for the partitioned region determines the granularity of data storage and thus how evenly the data can be distributed. The number of buckets is a total for the entire region across the cluster.
-- In rebalancing data for the region, Geode moves buckets, but does not move data around inside the buckets.
-- You can query partitioned regions, but there are certain limitations. See [Querying Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/querying_basics/querying_partitioned_regions.html#querying_partitioned_regions) for more information.
+  您可以使用`PartitionRegionHelper`,`moveBucketByKey`和`moveData`方法将分区区域数据从一个成员显式移动到另一个成员。
 
 
+### 了解分区
 
-### Configuring Partitioned Regions
+要使用分区区域，您应该了解它们的工作方式以及管理它们的选项。
 
-Plan the configuration and ongoing management of your partitioned region for host and accessor members and configure the regions for startup.
+在操作期间，分区区域看起来像一个大的虚拟区域，具有定义区域的所有成员保持相同的逻辑视图。![img](assets/how_partitioning_works_1.svg)
 
-Before you begin, understand [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
+对于您定义区域的每个成员，您可以选择允许区域数据存储的空间，包括根本没有本地存储。 无论本地存储多少，该成员都可以访问所有区域数据。![img](assets/how_partitioning_works_2.svg)
 
-1. Start your region configuration using one of the `PARTITION` region shortcut settings. See [Region Shortcuts and Custom Named Region Attributes](https://geode.apache.org/docs/guide/17/basic_config/data_regions/region_shortcuts.html).
-2. If you need high availability for your partitioned region, configure for that. See [Configure High Availability for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
-3. Estimate the amount of space needed for the region. If you use redundancy, this is the max for all primary and secondary copies stored in the member. For example, with redundancy of one, each region data entry requires twice the space than with no redundancy, because the entry is stored twice. See [Memory Requirements for Cached Data](https://geode.apache.org/docs/guide/17/reference/topics/memory_requirements_for_cache_data.html#calculating_memory_requirements).
-4. Configure the total number of buckets for the region. This number must be the same for colocated regions. See [Configuring the Number of Buckets for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_bucket_for_pr.html#configuring_total_buckets).
-5. Configure your members’ data storage and data loading for the region:
-   1. You can have members with no local data storage and members with varying amounts of storage. Determine the max memory available in your different member types for this region. These will be set in the `partition-attributes` `local-max-memory`. This is the only setting in `partition-attributes` that can vary between members. Use these max values and your estimates for region memory requirements to help you figure how many members to start out with for the region.
-   2. For members that store data for the region (`local-max-memory` greater than 0), define a data loader. See [Implement a Data Loader](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/implementing_data_loaders.html#implementing_data_loaders).
-   3. If you have members with no local data storage (`local-max-memory` set to 0), review your system startup/shutdown procedures. Make sure there is always at least one member with local data storage running when any members with no storage are running.
-6. If you want to custom partition the data in your region or colocate data between multiple regions, code and configure accordingly. See [Understanding Custom Partitioning and Data Colocation](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/custom_partitioning_and_data_colocation.html#custom_partitioning_and_data_colocation).
-7. Plan your partition rebalancing strategy and configure and program for that. See [Rebalancing Partitioned Region Data](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/rebalancing_pr_data.html#rebalancing_pr_data).
+群集可以具有多个分区区域，并且可以将分区区域与分布区域和局部区域混合。 除了具有局部范围的区域之外，对于唯一区域名称的通常要求仍然适用。 单个成员可以托管多个分区区域。
 
-**Note:** To configure a partitioned region using gfsh, see [gfsh Command Help](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/gfsh_command_index.html#concept_C291647179C5407A876CC7FCF91CF756).
+#### 数据分区
+
+Geode自动确定托管分区区域数据的成员中数据的物理位置。 Geode将分区区域数据分解为称为存储区的存储单元，并将每个存储区存储在区域主机成员中。 存储桶根据成员的区域属性设置进行分配。
+
+创建条目时，会将其分配给存储桶。 key组合在一个桶中并始终保留在那里。 如果配置允许，则可以在构件之间移动桶以平衡负载。
+
+您必须运行所需的数据存储以适应分区区域的存储区。 您可以动态启动新的数据存储。 当新数据存储创建区域时，它负责分区区域和成员配置允许的桶数。
+
+您可以自定义Geode如何使用自定义分区和数据同地对分区区域数据进行分组。
+
+#### 分区区域操作
+
+分区区域的运行方式与分区范围的非分区区域非常相似。 大多数标准的`Region`方法都是可用的，尽管一些通常是本地操作的方法成为分布式操作，因为它们作为一个整体而不是本地缓存在分区区域上工作。 例如，分区区域中的`put`或`create`实际上可能不会存储到调用该操作的成员的高速缓存中。 检索任何条目只需要成员之间不超过一跳。
+
+与其他区域一样，分区区域支持客户端/服务器模型。 如果需要将数十个客户端连接到单个分区区域，则使用服务器可以大大提高性能。
+
+#### 有关分区区域的其他信息
+
+请记住有关分区区域的以下内容：
+
+- 分区区域永远不会异步运行。 分区区域中的操作始终等待来自包含原始数据条目和任何冗余副本的高速缓存的确认。
+- 分区区域需要每个区域数据存储中的缓存加载器（`local-max-memory`> 0）。
+- Geode在存储分区区域数据的所有成员之间尽可能均匀地分布数据桶，在您使用的任何自定义分区或数据同地的限制内。 分配区域分配的桶数决定了数据存储的粒度，从而决定了数据的均匀分布。 存储桶的数量是整个群集中整个区域的总数。
+- 在重新平衡该地区的数据时，Geode移动存储桶，但不会在存储桶内移动数据。
+- 您可以查询分区区域，但存在某些限制。 有关详细信息，请参阅[查询分区区域](https://geode.apache.org/docs/guide/17/developing/querying_basics/querying_partitioned_regions.html#querying_partitioned_regions) 。
 
 
+### 配置分区区域
 
-### Configuring the Number of Buckets for a Partitioned Region
+规划主机和访问者成员的分区区域的配置和持续管理，并配置启动区域。
 
-Decide how many buckets to assign to your partitioned region and set the configuration accordingly.
+在开始之前，请了解[基本配置和编程](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
 
-The total number of buckets for the partitioned region determines the granularity of data storage and thus how evenly the data can be distributed. Geode distributes the buckets as evenly as possible across the data stores. The number of buckets is fixed after region creation.
+1. 使用`PARTITION`区域快捷键设置之一启动区域配置。 请参见[区域快捷方式和自定义命名区域属性](https://geode.apache.org/docs/guide/17/basic_config/data_regions/region_shortcuts.html).
+2. 如果您需要分区区域的高可用性，请为此配置。 请参见[为分区区域配置高可用性](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
+3. 估算该地区所需的空间量。 如果使用冗余，则这是存储在成员中的所有主副本和副副本的最大值。 例如，冗余为1时，每个区域数据条目需要的空间是没有冗余的两倍，因为条目存储了两次。 请参阅[缓存数据的内存要求](https://geode.apache.org/docs/guide/17/reference/topics/memory_requirements_for_cache_data.html#calculating_memory_requirements).
+4. 配置该区域的桶总数。 对于同地区域，此数字必须相同。 请参见[配置分区区域的桶数](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_bucket_for_pr.html#configuring_total_buckets).
+5. 为区域配置成员的数据存储和数据加载：
+   1. 您可以让没有本地数据存储的成员和具有不同存储量的成员。 确定此区域的不同成员类型中可用的最大内存。 这些将在`partition-attributes` `local-max-memory`中设置。 这是`partition-attributes`中唯一可以在成员之间变化的设置。 使用这些最大值和您对区域内存要求的估计值来帮助您计算该区域开始的成员数量。
+   2. 对于存储区域数据的成员(`local-max-memory`大于0)，定义数据加载器。 请参阅[实现数据加载器](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/implementing_data_loaders.html#implementing_data_loaders).
+   3. 如果您的成员没有本地数据存储（`local-max-memory`设置为0），请检查系统启动/关闭过程。 当任何没有存储的成员正在运行时，请确保始终至少有一个成员具有本地数据存储。
+6. 如果要自定义对区域中的数据进行分区，或者在多个区域之间同地数据，请相应地进行编码和配置。 请参阅[了解自定义分区和数据同地](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/custom_partitioning_and_data_colocation.html#custom_partitioning_and_data_colocation).
+7. 规划您的分区重新平衡策略并为其配置和编程。 请参阅[重新平衡分区区域数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/rebalancing_pr_data.html#rebalancing_pr_data).
 
-The partition attribute `total-num-buckets` sets the number for the entire partitioned region across all participating members. Set it using one of the following:
+**注意:** 要使用gfsh配置分区区域，请参阅[gfsh命令帮助](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/gfsh_command_index.html#concept_C291647179C5407A876CC7FCF91CF756).
+
+
+### 配置分区区域的桶数
+
+确定要分配给分区区域的桶数，并相应地设置配置。
+
+分区区域的存储区总数决定了数据存储的粒度，从而决定了数据的均匀分布。 Geode在数据存储中尽可能均匀地分配存储桶。 区域创建后，桶的数量是固定的。
+
+分区属性`total-num-buckets`设置所有参与成员的整个分区区域的编号。 使用以下之一设置它：
 
 - XML:
 
@@ -496,146 +488,143 @@ The partition attribute `total-num-buckets` sets the number for the entire parti
 
 - gfsh:
 
-  Use the –total-num-buckets parameter of the `create region` command. For example:
+  使用`create region`命令的-total-num-buckets参数。 例如：
 
   ```
   gfsh>create region --name="PR1" --type=PARTITION --total-num-buckets=7
   ```
 
-#### Calculate the Total Number of Buckets for a Partitioned Region
+#### 计算分区区域的桶总数
 
-Follow these guidelines to calculate the total number of buckets for the partitioned region:
+请遵循以下准则来计算分区区域的存储区总数：
 
-- Use a prime number. This provides the most even distribution.
-- Make it at least four times as large as the number of data stores you expect to have for the region. The larger the ratio of buckets to data stores, the more evenly the load can be spread across the members. Note that there is a trade-off between load balancing and overhead, however. Managing a bucket introduces significant overhead, especially with higher levels of redundancy.
+- 使用素数。 这提供了最均匀的分布。
+- 使其至少是您期望为该地区拥有的数据存储数量的四倍。 存储桶与数据存储的比率越大，负载在成员之间的分布越均匀。 但请注意，在负载平衡和开销之间存在折衷。 管理存储桶会带来很大的开销，尤其是冗余级别更高。
 
-You are trying to avoid the situation where some members have significantly more data entries than others. For example, compare the next two figures. This figure shows a region with three data stores and seven buckets. If all the entries are accessed at about the same rate, this configuration creates a hot spot in member M3, which has about fifty percent more data than the other data stores. M3 is likely to be a slow receiver and potential point of failure.
+您试图避免某些成员拥有的数据条目明显多于其他成员的情况。 例如，比较接下来的两个数字。 该图显示了具有三个数据存储区和七个存储区的区域。 如果以大约相同的速率访问所有条目，则此配置在成员M3中创建热点，其具有比其他数据存储多大约50％的数据。 M3可能是一个缓慢的接收器和潜在的故障点。
 
 ![img](assets/partitioned_data_buckets_1.svg)
 
-Configuring more buckets gives you fewer entries in a bucket and a more balanced data distribution. This figure uses the same data as before but increases the number of buckets to 13. Now the data entries are distributed more evenly.
+配置更多存储桶可使存储桶中的条目更少，数据分布更均衡。 此图使用与以前相同的数据，但将桶数增加到13.现在数据条目的分布更均匀。
 
 ![img](assets/partitioned_data_buckets_2.svg)
 
 
+### 自定义分区和共享数据
 
-### Custom-Partitioning and Colocating Data
+您可以自定义Apache Geode如何使用自定义分区和数据同地对分区区域数据进行分组。
 
-You can customize how Apache Geode groups your partitioned region data with custom partitioning and data colocation.
+- **了解自定义分区和数据同地**
 
-- **Understanding Custom Partitioning and Data Colocation**
+  自定义分区和数据同地可以单独使用，也可以相互结合使用。
 
-  Custom partitioning and data colocation can be used separately or in conjunction with one another.
+- **标准自定义分区**
 
-- **Standard Custom Partitioning**
+  默认情况下，Geode使用key上的散列策略将每个数据条目分区到一个存储桶中。 此外，键值对的物理位置从应用程序中抽象出来。 您可以通过提供标准分区解析程序来更改分区区域的这些策略，该分区解析程序将条目映射到称为分区的一组存储区。
 
-  By default, Geode partitions each data entry into a bucket using a hashing policy on the key. Additionally, the physical location of the key-value pair is abstracted away from the application. You can change these policies for a partitioned region by providing a standard partition resolver that maps entries to a set of buckets called a partition.
+- **固定的自定义分区**
 
-- **Fixed Custom Partitioning**
+  默认情况下，Geode使用key上的散列策略将每个数据条目分区到一个存储桶中。 此外，键值对的物理位置从应用程序中抽象出来。 您可以通过提供固定分区解析程序来更改分区区域的这些策略，该解析程序不仅将条目映射到称为分区的一组存储区，还指定哪些成员承载哪些数据存储区。
 
-  By default, Geode partitions each data entry into a bucket using a hashing policy on the key. Additionally, the physical location of the key-value pair is abstracted away from the application. You can change these policies for a partitioned region by providing a fixed partition resolver that not only maps entries to a set of buckets called a partition, but also specifies which members host which data buckets.
+- **共享来自不同分区区域的数据**
 
-- **Colocate Data from Different Partitioned Regions**
-
-  By default, Geode allocates the data locations for a partitioned region independent of the data locations for any other partitioned region. You can change this policy for any group of partitioned regions, so that cross-region, related data is all hosted by the same member. Colocation is required for some operations, and it increases performance for others by reducing the number of data accesses to entries that are hosted on other cluster members.
-
+  默认情况下，Geode为独立于任何其他分区区域的数据位置的分区区域分配数据位置。 您可以为任何分区区域组更改此策略，以便跨区域相关数据全部由同一成员托管。 某些操作需要进行同地，并通过减少对其他集群成员上托管的条目的数据访问次数来提高其他操作的性能。
 
 
-#### Understanding Custom Partitioning and Data Colocation
+#### 了解自定义分区和数据同地
 
-Custom partitioning and data colocation can be used separately or in conjunction with one another.
+自定义分区和数据同地可以单独使用，也可以相互结合使用。
 
-##### Custom Partitioning
+##### 自定义分区
 
-Use custom partitioning to group like entries into region buckets within a region. By default, Geode assigns new entries to buckets based on the entry key’s hash code. With custom partitioning, you can assign your entries to buckets in whatever way you want.
+使用自定义分区将类似条目分组到区域内的区域存储桶中。 默认情况下，Geode根据条目键的哈希码为桶分配新条目。 通过自定义分区，您可以以任何方式将条目分配给存储桶。
 
-You can generally get better performance if you use custom partitioning to group similar data within a region. For example, a query run on all accounts created in January runs faster if all January account data is hosted by a single member. Grouping all data for a single customer can improve performance of data operations that work on customer data. Data aware function execution also takes advantage of custom partitioning.
+如果使用自定义分区对区域内的类似数据进行分组，通常可以获得更好的性能。 例如，如果所有1月帐户数据都由单个成员托管，则在1月创建的所有帐户上运行的查询运行得更快。 为单个客户分组所有数据可以提高处理客户数据的数据操作的性能。 数据感知功能执行还利用了自定义分区。
 
-With custom partitioning, you have two choices:
+使用自定义分区，您有两种选择：
 
-- **Standard custom partitioning**. With standard custom partitioning, you group entries into buckets, but you do not specify where the buckets reside. Geode always keeps the entries in the buckets you have specified, but may move the buckets around for load balancing. See [Standard Custom Partitioning](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/standard_custom_partitioning.html) for implementation and configuration details.
+- **标准自定义分区**. 使用标准自定义分区，您可以将条目分组到存储区中，但不指定存储区所在的位置。 Geode始终将条目保留在您指定的存储区中，但可以移动存储区以进行负载平衡。 请参阅[标准自定义分区](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/standard_custom_partitioning.html) for implementation and configuration details.
 
-- **Fixed custom partitioning**. With fixed custom partitioning, you specify the exact member where each region entry resides. You assign an entry to a partition and then to a bucket within that partition. You name specific members as primary and secondary hosts of each partition.
+- **固定的自定义分区**. 使用固定的自定义分区，您可以指定每个区域条目所在的确切成员。 您将条目分配给分区，然后分配给该分区中的存储桶。 您将特定成员命名为每个分区的主要和辅助主机。
 
-  This gives you complete control over the locations of your primary and any secondary buckets for the region. This can be useful when you want to store specific data on specific physical machines or when you need to keep data close to certain hardware elements.
+  这使您可以完全控制该区域的主要和任何辅助存储桶的位置。 当您希望在特定物理机器上存储特定数据或需要将数据保持在某些硬件元素附近时，这非常有用。
 
-  Fixed partitioning has these requirements and caveats:
+  固定分区具有以下要求和注意事项：
 
-  - Geode cannot rebalance fixed partition region data, because it cannot move the buckets around among the host members. You must carefully consider your expected data loads for the partitions you create.
-  - With fixed partitioning, the region configuration is different between host members. Each member identifies the named partitions it hosts, and whether it is hosting the primary copy or a secondary copy. You then program a fixed-partition resolver to return the partition id, so the entry is placed on the right members. Only one member can be primary for a particular partition name, and that member cannot be the partition’s secondary.
+  - Geode无法重新平衡固定分区区域数据，因为它无法在主机成员之间移动存储桶。 您必须仔细考虑您创建的分区的预期数据加载。
+  - 使用固定分区，主机成员之间的区域配置不同。 每个成员都标识它承载的命名分区，以及它是托管主副本还是主副本。 然后，您可以对固定分区解析程序进行编程以返回分区ID，因此该条目位于右侧成员上。 对于特定分区名称，只有一个成员可以是主要成员，并且该成员不能是该分区的辅助成员。
 
-  See [Fixed Custom Partitioning](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/fixed_custom_partitioning.html) for implementation and configuration details.
+  有关实现和配置细节,请参见[固定自定义分区](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/fixed_custom_partitioning.html) 。
 
-##### Data Colocation Between Regions
+##### 区域之间的数据同地
 
-With data colocation, Geode stores entries that are related across multiple data regions in a single member. Geode does this by storing all of the regions’ buckets with the same ID together in the same member. During rebalancing operations, Geode moves these bucket groups together or not at all.
+通过数据同地，Geode在单个成员中存储跨多个数据区域相关的条目。 Geode通过将具有相同ID的所有区域桶一起存储在同一成员中来实现此目的。 在重新平衡操作期间，Geode将这些桶组移动到一起或根本不移动。
 
-So, for example, if you have one region with customer contact information and another region with customer orders, you can use colocation to keep all contact information and all orders for a single customer in a single member. This way, any operation done for a single customer uses the cache of only a single member.
+因此，例如，如果您有一个区域包含客户联系信息，另一个区域包含客户订单，您可以使用托管将单个客户的所有联系信息和所有订单保存在一个成员中。 这样，对单个客户执行的任何操作都只使用单个成员的缓存。
 
-This figure shows two regions with data colocation where the data is partitioned by customer type.
+此图显示了具有数据同地的两个区域，其中数据按客户类型进行分区。
 
 ![img](assets/colocated_partitioned_regions.svg)
 
-Data colocation requires the same data partitioning mechanism for all of the colocated regions. You can use the default partitioning provided by Geode or any of the custom partitioning strategies.
+数据同地需要对所有同地区域使用相同的数据分区机制。 您可以使用Geode提供的默认分区或任何自定义分区策略。
 
-You must use the same high availability settings across your colocated regions.
+您必须在同地区域中使用相同的高可用性设置。
 
-See [Colocate Data from Different Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html) for implementation and configuration details.
+有关实施和配置详细信息，请参阅[来自不同分区区域的共存数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html)。
 
 
+#### 标准自定义分区
 
-#### Standard Custom Partitioning
+默认情况下，Geode使用key上的散列策略将每个数据条目分区到一个存储桶中。 此外，键值对的物理位置从应用程序中抽象出来。 您可以通过提供以自定义方式映射条目的标准自定义分区解析程序来更改分区区域的这些策略。
 
-By default, Geode partitions each data entry into a bucket using a hashing policy on the key. Additionally, the physical location of the key-value pair is abstracted away from the application. You can change these policies for a partitioned region by providing a standard custom partition resolver that maps entries in a custom manner.
+**注意:** 如果要同时进行区域数据和自定义分区，则所有同地区域必须使用相同的自定义分区机制。 请参阅[来自不同分区区域的共存数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data).
 
-**Note:** If you are both colocating region data and custom partitioning, all colocated regions must use the same custom partitioning mechanism. See [Colocate Data from Different Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data).
+要自定义分区您的区域数据，请执行以下两个步骤：
 
-To custom-partition your region data, follow two steps:
+- 实现接口
+- 配置区域
 
-- implement the interface
-- configure the regions
+**实现标准自定义分区**
 
-**Implementing Standard Custom Partitioning**
+- 以下列方式之一实现`org.apache.geode.cache.PartitionResolver`接口，在Geode使用的搜索顺序中列出：
 
-- Implement the `org.apache.geode.cache.PartitionResolver` interface in one of the following ways, listed here in the search order used by Geode:
+  - **使用自定义类**. 在类中实现`PartitionResolver`，然后在创建区域时将类指定为分区解析器。
+  - **使用key的类**. 让条目key的类实现`PartitionResolver`接口。
+  - **使用回调参数的类**. 让实现你的回调参数的类实现`PartitionResolver`接口。 使用此实现时，任何和所有`Region`操作必须是指定回调参数的操作。
 
-  - **Using a custom class**. Implement the `PartitionResolver` within your class, and then specify your class as the partition resolver during region creation.
-  - **Using the key’s class**. Have the entry key’s class implement the `PartitionResolver` interface.
-  - **Using the callback argument’s class**. Have the class that implements your callback argument implement the `PartitionResolver` interface. When using this implementation, any and all `Region` operations must be those that specify the callback argument.
+- 实现解析器的`getName`，`init`和`close`方法。
 
-- Implement the resolver’s `getName`, `init`, and `close` methods.
-
-  A simple implementation of `getName` is
+  `getName`的简单实现是
 
   ```
   return getClass().getName();
   ```
 
-  The `init` method does any initialization steps upon cache start that relate to the partition resolver’s task. This method is only invoked when using a custom class that is configured by `gfsh` or by XML (in a `cache.xml` file).
+  `init`方法在高速缓存启动时执行与分区解析器任务相关的任何初始化步骤。 仅当使用由`gfsh`或XML（在`cache.xml`文件中）配置的自定义类时才会调用此方法。
 
-  The `close` method accomplishes any clean up that must be accomplished before a cache close completes. For example, `close` might close files or connections that the partition resolver opened.
+  `close`方法完成在缓存关闭完成之前必须完成的任何清理。 例如，`close`可能会关闭分区解析器打开的文件或连接。
 
-- Implement the resolver’s `getRoutingObject` method to return the routing object for each entry. A hash of that returned routing object determines the bucket. Therefore, `getRoutingObject`should return an object that, when run through its `hashCode`, directs grouped objects to the desired bucket.
+- 实现解析器的`getRoutingObject`方法以返回每个条目的路由对象。 返回的路由对象的哈希值确定存储桶。 因此，`getRoutingObject`应该返回一个对象，该对象在通过其`hashCode`运行时，将分组对象定向到所需的存储桶。
 
-  **Note:** Only the key, as returned by `getKey`, should be used by `getRoutingObject`. Do not use the value associated with the key or any additional metadata in the implementation of `getRoutingObject`. Do not use `getOperation` or `getValue`.
+  **注意:** 只有`getKey`返回的键应该由`getRoutingObject`使用。 不要在`getRoutingObject`的实现中使用与键相关联的值或任何其他元数据。 不要使用`getOperation`或`getValue`。
 
-**Implementing the String Prefix Partition Resolver**
+**实现字符串前缀分区解析器**
 
-Geode provides an implementation of a string-based partition resolver in `org.apache.geode.cache.util.StringPrefixPartitionResolver`. This resolver does not require any further implementation. It groups entries into buckets based on a portion of the key. All keys must be strings, and each key must include a ’|’ character, which delimits the string. The substring that precedes the ’|’ delimiter within the key will be returned by `getRoutingObject`.
+Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了基于字符串的分区解析器的实现。 该解析器不需要任何进一步的实现。 它根据key的一部分将条目分组到存储桶中。 所有键必须是字符串，每个键必须包含一个’|’字符，用于分隔字符串。 在键中的’|’分隔符之前的子字符串将由`getRoutingObject`返回。
 
-**Configuring the Partition Resolver Region Attribute**
+**配置分区解析程序区域属性**
 
-Configure the region so Geode finds your resolver for all region operations.
+配置区域，以便Geode找到所有区域操作的解析器。
 
-- **Custom class**. Use one of these methods to specify the partition resolver region attribute:
+- **自定义类**. 使用以下方法之一指定分区解析程序区域属性：
 
   **gfsh:**
 
-  Add the option `--partition-resolver` to the `gfsh create region` command, specifying the package and class name of the standard custom partition resolver.
+  将选项`--partition-resolver`添加到`gfsh create region`命令，指定标准自定义分区解析程序的包和类名。
 
-  **gfsh for the String Prefix Partition Resolver:**
+  **字符串前缀分区解析器的gfsh:**
 
-  Add the option `--partition-resolver=org.apache.geode.cache.util.StringPrefixPartitionResolver`to the `gfsh create region` command.
+  将`--partition-resolver = org.apache.geode.cache.util.StringPrefixPartitionResolver`选项添加到`gfsh create region`命令。
 
   **Java API:**
 
@@ -652,7 +641,7 @@ Configure the region so Geode finds your resolver for all region operations.
       .create("trades");
   ```
 
-  **Java API for the String Prefix Partition Resolver:**
+  **字符串前缀分区解析器的Java API:**
 
   ```
   PartitionAttributes attrs = 
@@ -681,7 +670,7 @@ Configure the region so Geode finds your resolver for all region operations.
   </region>
   ```
 
-  **XML for the String Prefix Partition Resolver:**
+  **字符串前缀分区解析器的XML:**
 
   ```
   <region name="customers">
@@ -696,52 +685,51 @@ Configure the region so Geode finds your resolver for all region operations.
   </region>
   ```
 
-- If your colocated data is in a server system, add the `PartitionResolver` implementation class to the `CLASSPATH` of your Java clients. For Java single-hop access to work, the resolver class needs to have a zero-argument constructor, and the resolver class must not have any state; the `init`method is included in this restriction.
+- 如果您的同地数据位于服务器系统中，请将`PartitionResolver`实现类添加到Java客户端的`CLASSPATH`中。 对于Java单跳访问，解析器类需要具有零参数构造函数，并且解析器类不能具有任何状态; `init`方法包含在此限制中。
 
 
+#### 固定的自定义分区
 
-#### Fixed Custom Partitioning
+默认情况下，Geode使用密钥上的散列策略将每个数据条目分区到一个存储桶中。 此外，键值对的物理位置从应用程序中抽象出来。 您可以通过提供固定的自定义分区解析程序来更改分区区域的这些策略，该解析程序不仅将条目映射到称为分区的一组存储区，还指定哪些成员承载哪些数据存储区。
 
-By default, Geode partitions each data entry into a bucket using a hashing policy on the key. Additionally, the physical location of the key-value pair is abstracted away from the application. You can change these policies for a partitioned region by providing a fixed custom partition resolver that not only maps entries to a set of buckets called a partition, but also specifies which members host which data buckets.
+**注意:** 如果要同时进行区域数据和自定义分区，则所有同地区域必须使用相同的自定义分区机制。 请参阅[来自不同分区区域的同地数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data).
 
-**Note:** If you are both colocating region data and custom partitioning, all colocated regions must use the same custom partitioning mechanism. See [Colocate Data from Different Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data).
+要自定义分区您的区域数据，请执行以下两个步骤：
 
-To custom-partition your region data, follow two steps:
+- 实现接口
+- 配置区域
 
-- implement the interface
-- configure the regions
+这些步骤根据使用的分区解析程序而有所不同。
 
-These steps differ based on which partition resolver is used.
+**实现固定自定义分区**
 
-**Implementing Fixed Custom Partitioning**
+- 在以下位置之一中实现`org.apache.geode.cache.FixedPartitionResolver`接口，这些位置在Geode使用的搜索顺序中列出：
 
-- Implement the `org.apache.geode.cache.FixedPartitionResolver` interface within one of the following locations, listed here in the search order used by Geode:
+  - **自定义类**. 在区域创建期间将此类指定为分区解析程序。
+  - **条目 key**. 对于作为对象实现的键，定义键类的接口。
+  - **在缓存回调类中**. 在缓存回调的类中实现接口。 使用此实现时，任何和所有`Region`操作必须是将回调指定为参数的操作。
 
-  - **Custom class**. Specify this class as the partition resolver during region creation.
-  - **Entry key**. For keys implemented as objects, define the interface for the key’s class.
-  - **Within the cache callback class**. Implement the interface within a cache callback’s class. When using this implementation, any and all `Region` operations must be those that specify the callback as a parameter.
+- 实现解析器的`getName`，`init`和`close`方法。
 
-- Implement the resolver’s `getName`, `init`, and `close` methods.
-
-  A simple implementation of `getName` is
+  `getName`的简单实现是
 
   ```
   return getClass().getName();
   ```
 
-  The `init` method does any initialization steps upon cache start that relate to the partition resolver’s task.
+  `init`方法在高速缓存启动时执行与分区解析器任务相关的任何初始化步骤。
 
-  The `close` method accomplishes any clean up that must be accomplished before a cache close completes. For example, `close` might close files or connections that the partition resolver opened.
+  `close`方法完成在缓存关闭完成之前必须完成的任何清理。 例如，`close`可能会关闭分区解析器打开的文件或连接。
 
-- Implement the resolver’s `getRoutingObject` method to return the routing object for each entry. A hash of that returned routing object determines the bucket within a partition.
+- 实现解析器的`getRoutingObject`方法以返回每个条目的路由对象。 返回的路由对象的哈希值确定分区内的存储区。
 
-  This method can be empty for fixed partitioning where there is only one bucket per partition. That implementation assigns partitions to servers such that the application has full control of grouping entries on servers.
+  对于每个分区只有一个存储区的固定分区，此方法可以为空。 该实现将分区分配给服务器，以便应用程序完全控制服务器上的分组条目。
 
-  **Note:** Only fields on the key should be used when creating the routing object. Do not use the value or additional metadata for this purpose.
+  **注意:** 创建路由对象时，只应使用key上的字段。 不要为此目的使用值或其他元数据。
 
-- Implement the `getPartitionName` method to return the name of the partition for each entry, based on where you want the entries to reside. All entries within a partition will be on a single server.
+- 实现`getPartitionName`方法，根据您希望条目驻留的位置，为每个条目返回分区的名称。 分区中的所有条目都将位于单个服务器上。
 
-  This example places the data based on date, with a different partition name for each quarter-year and a different routing object for each month.
+  此示例根据日期放置数据，每个季度使用不同的分区名称，每个月使用不同的路由对象。
 
   ```
   /**
@@ -794,15 +782,15 @@ These steps differ based on which partition resolver is used.
   }
   ```
 
-**Configuring Fixed Custom Partitioning**
+**配置固定自定义分区**
 
-- Set the fixed-partition attributes for each member.
+- 为每个成员设置固定分区属性。
 
-  These attributes define the data stored for the region by the member and must be different for different members. See `org.apache.geode.cache.FixedPartitionAttributes` for definitions of the attributes. Define each `partition-name` in your data-host members for the region. For each partition name, in the member you want to host the primary copy, define it with `is-primary` set to `true`. In every member you want to host the secondary copy, define it with `is-primary` set to `false` (the default). The number of secondaries must match the number of redundant copies you have defined for the region. See [Configure High Availability for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
+  这些属性定义成员为区域存储的数据，并且对于不同的成员必须是不同的。 有关属性的定义，请参阅`org.apache.geode.cache.FixedPartitionAttributes`。 在区域的数据主机成员中定义每个`partition-name`。 对于每个分区名称，在要托管主副本的成员中，使用`is-primary`设置为`true`来定义它。 在要托管辅助副本的每个成员中，使用`is-primary`设置为`false`（默认值）来定义它。 辅助数量必须与您为该区域定义的冗余副本数相匹配。 请参见[为分区区域配置高可用性](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
 
-  **Note:** Buckets for a partition are hosted only by the members that have defined the partition name in their `FixedPartitionAttributes`.
+  **注意:** 分区的存储桶仅由已在其`FixedPartitionAttributes`中定义分区名称的成员托管。
 
-  These examples set the partition attributes for a member to be the primary host for the “Q1” partition data and a secondary host for “Q3” partition data.
+  这些示例将成员的分区属性设置为“Q1”分区数据的主要主机和“Q3”分区数据的辅助主机。
 
   - XML:
 
@@ -847,31 +835,29 @@ These steps differ based on which partition resolver is used.
 
   - gfsh:
 
-    You cannot specify a fixed partition resolver using gfsh.
+    您不能使用gfsh指定固定分区解析程序。
 
-- If your colocated data is in a server system, add the class that implements the `FixedPartitionResolver` interface to the `CLASSPATH` of your Java clients. For Java single-hop access to work, the resolver class needs to have a zero-argument constructor, and the resolver class must not have any state; the `init` method is included in this restriction.
-
-
-
-#### Colocate Data from Different Partitioned Regions
-
-By default, Geode allocates the data locations for a partitioned region independent of the data locations for any other partitioned region. You can change this policy for any group of partitioned regions, so that cross-region, related data is all hosted by the same member. Colocation is required for some operations, and it increases performance for others by reducing the number of data accesses to entries that are hosted on other cluster members.
+- 如果您的同地数据位于服务器系统中，请将实现`FixedPartitionResolver`接口的类添加到Java客户端的`CLASSPATH`中。 对于Java单跳访问，解析器类需要具有零参数构造函数，并且解析器类不能具有任何状态; `init`方法包含在此限制中。
 
 
+#### 共享来自不同分区区域的数据
 
-Data colocation between partitioned regions generally improves the performance of data-intensive operations. You can reduce network hops for iterative operations on related data sets. Compute-heavy applications that are data-intensive can significantly increase overall throughput. For example, a query run on a patient’s health records, insurance, and billing information is more efficient if all data is grouped in a single member. Similarly, a financial risk analytical application runs faster if all trades, risk sensitivities, and reference data associated with a single instrument are together.
+默认情况下，Geode为独立于任何其他分区区域的数据位置的分区区域分配数据位置。 您可以为任何分区区域组更改此策略，以便跨区域相关数据全部由同一成员托管。 某些操作需要进行同地，并通过减少对其他集群成员上托管的条目的数据访问次数来提高其他操作的性能。
 
-**Procedure**
 
-1. Identify one region as the central region, with which data in the other regions is explicitly colocated. If you use persistence for any of the regions, you must persist the central region.
+分区区域之间的数据同地通常可以提高数据密集型操作的性能。 您可以减少网络跃点，以便对相关数据集进行迭代操作。 数据密集型的计算密集型应用程序可以显着提高整体吞吐量。 例如，如果所有数据都分组在一个成员中，则对患者的健康记录，保险和账单信息运行的查询会更有效。 同样，如果所有交易，风险敏感度和与单个工具相关的参考数据在一起，则金融风险分析应用程序运行得更快。
 
-   1. Create the central region before you create the others, either in the `cache.xml` or your code. Regions in the XML are created before regions in the code, so if you create any of your colocated regions in the XML, you must create the central region in the XML before the others. Geode will verify its existence when the others are created and return `IllegalStateException` if the central region is not there. Do not add any colocation specifications to this central region.
+**步骤**
 
-   2. For all other regions, in the region partition attributes, provide the central region’s name in the `colocated-with` attribute. Use one of these methods:
+1. 将一个区域标识为中心区域，明确地将其他区域中的数据与其区分开来。 如果对任何区域使用持久性，则必须保留中心区域。
+
+   1. 在创建其他区域之前创建中心区域，可以在`cache.xml`或代码中创建。 XML中的区域是在代码中的区域之前创建的，因此如果在XML中创建任何共处区域，则必须先在XML中创建中心区域，然后再创建其他区域。 Geode将在其他人创建时验证其存在，如果中心区域不存在则返回`IllegalStateException`。 不要向此中心区域添加任何托管规范。
+
+   2. 对于所有其他区域，在区域分区属性中，在`colocated-with`属性中提供中心区域的名称。 使用以下方法之一：
 
       - XML:
 
-        ```
+        ```xml
         <cache> 
             <region name="trades"> 
                 <region-attributes> 
@@ -892,7 +878,7 @@ Data colocation between partitioned regions generally improves the performance o
 
       - Java:
 
-        ```
+        ```java
         PartitionAttributes attrs = ...
         Region trades = new RegionFactory().setPartitionAttributes(attrs)
             .create("trades");
@@ -910,18 +896,18 @@ Data colocation between partitioned regions generally improves the performance o
         gfsh> create region --name="trade_history" --colocated-with="trades"
         ```
 
-2. For each of the colocated regions, use the same values for these partition attributes related to bucket management:
+2. 对于每个同地区域，对与存储区管理相关的这些分区属性使用相同的值：
 
    - `recovery-delay`
    - `redundant-copies`
    - `startup-recovery-delay`
    - `total-num-buckets`
 
-3. If you custom partition your region data, specify the custom resolver for all colocated regions. This example uses the same partition resolver for both regions:
+3. 如果您自定义分区您的区域数据，请为所有同地区域指定自定义解析程序。 此示例对两个区域使用相同的分区解析程序：
 
    - XML:
 
-     ```
+     ```xml
      <cache> 
          <region name="trades"> 
              <region-attributes> 
@@ -946,7 +932,7 @@ Data colocation between partitioned regions generally improves the performance o
 
    - Java:
 
-     ```
+     ```java
      PartitionResolver resolver = new TradesPartitionResolver();
      PartitionAttributes attrs = 
          new PartitionAttributesFactory()
@@ -962,46 +948,43 @@ Data colocation between partitioned regions generally improves the performance o
 
    - gfsh:
 
-     Specify a partition resolver as described in the configuration section of [Custom-Partition Your Region Data](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/using_custom_partition_resolvers.html).
+     指定分区解析程序，如[自定义分区您的区域数据]的配置部分所述(https://geode.apache.org/docs/guide/17/developing/partitioned_regions/using_custom_partition_resolvers.html).
 
-4. If you want to persist data in the colocated regions, persist the central region and then persist the other regions as needed. Use the same disk store for all of the colocated regions that you persist.
-
-
-
-### Configuring High Availability for Partitioned Regions
-
-By default, Apache Geode stores only a single copy of your partitioned region data among the region’s data stores. You can configure Geode to maintain redundant copies of your partitioned region data for high availability.
-
-- **Understanding High Availability for Partitioned Regions**
-
-  With high availability, each member that hosts data for the partitioned region gets some primary copies and some redundant (secondary) copies.
-
-- **Configure High Availability for a Partitioned Region**
-
-  Configure in-memory high availability for your partitioned region. Set other high-availability options, like redundancy zones and redundancy recovery strategies.
+4. 如果要在同地区域中保留数据，请保留中心区域，然后根据需要保留其他区域。 对您保留的所有共存区域使用相同的磁盘存储。
 
 
+### 配置分区区域的高可用性
 
-#### Understanding High Availability for Partitioned Regions
+默认情况下，Apache Geode仅在区域的数据存储中存储分区区域数据的单个副本。 您可以配置Geode以维护分区区域数据的冗余副本，以实现高可用性。
 
-With high availability, each member that hosts data for the partitioned region gets some primary copies and some redundant (secondary) copies.
+- **了解分区区域的高可用性**
+
+  凭借高可用性，为分区区域托管数据的每个成员都会获得一些主副本和一些冗余（辅助）副本。
+
+- **配置分区区域的高可用性**
+
+  为分区区域配置内存中高可用性。 设置其他高可用性选项，例如冗余区域和冗余恢复策略。
 
 
+#### 了解分区区域的高可用性
 
-With redundancy, if one member fails, operations continue on the partitioned region with no interruption of service:
+凭借高可用性，为分区区域托管数据的每个成员都会获得一些主副本和一些冗余（辅助）副本。
 
-- If the member hosting the primary copy is lost, Geode makes a secondary copy the primary. This might cause a temporary loss of redundancy, but not a loss of data.
-- Whenever there are not enough secondary copies to satisfy redundancy, the system works to recover redundancy by assigning another member as secondary and copying the data to it.
 
-**Note:** You can still lose cached data when you are using redundancy if enough members go down in a short enough time span.
+使用冗余时，如果一个成员发生故障，则操作将在分区区域继续运行，而不会中断服务：
 
-You can configure how the system works to recover redundancy when it is not satisfied. You can configure recovery to take place immediately or, if you want to give replacement members a chance to start up, you can configure a wait period. Redundancy recovery is also automatically attempted during any partitioned data rebalancing operation. Use the `gemfire.MAX_PARALLEL_BUCKET_RECOVERIES` system property to configure the maximum number of buckets that are recovered in parallel. By default, up to 8 buckets are recovered in parallel any time the system attempts to recover redundancy.
+- 如果托管主副本的成员丢失，Geode会将辅助副本作为主副本。 这可能会导致暂时的冗余丢失，但不会导致数据丢失。
+- 只要没有足够的辅助副本来满足冗余，系统就会通过将另一个成员分配为辅助副本并将数据复制到其中来恢复冗余。
 
-Without redundancy, the loss of any of the region’s data stores causes the loss of some of the region’s cached data. Generally, you should not use redundancy when your applications can directly read from another data source, or when write performance is more important than read performance.
+**注意:** 如果足够的成员在足够短的时间内发生故障，您仍然可以在使用冗余时丢失缓存数据。
 
-##### Controlling Where Your Primaries and Secondaries Reside
+您可以配置系统在不满足时如何恢复冗余。 您可以将恢复配置为立即执行，或者，如果您希望为替换成员提供启动机会，则可以配置等待期。 在任何分区数据重新平衡操作期间，还会自动尝试冗余恢复。 使用`gemfire.MAX_PARALLEL_BUCKET_RECOVERIES`系统属性配置并行恢复的最大桶数。 默认情况下，系统尝试恢复冗余时，最多可并行恢复8个存储桶。
 
-By default, Geode places your primary and secondary data copies for you, avoiding placement of two copies on the same physical machine. If there are not enough machines to keep different copies separate, Geode places copies on the same physical machine. You can change this behavior, so Geode only places copies on separate machines.
+如果没有冗余，丢失任何区域的数据存储都会导致丢失某些区域的缓存数据。 通常，当应用程序可以直接从其他数据源读取，或者写入性能比读取性能更重要时，不应使用冗余。
+
+##### 控制你的初级和二级居住地
+
+默认情况下，Geode会为您放置主数据副本和辅助数据副本，从而避免在同一台物理计算机上放置两个副本。 如果没有足够的机器将不同的副本分开，Geode会将副本放在同一台物理计算机上。 您可以更改此行为，因此Geode仅将副本放在不同的计算机上。
 
 You can also control which members store your primary and secondary data copies. Geode provides two options:
 
@@ -1182,7 +1165,7 @@ Use the partition attribute `startup-recovery-delay` to specify member join redu
 
 Setting `startup-recovery-delay` to a value higher than the default of 0 allows multiple new members to join before redundancy recovery begins. With the multiple members present during recovery, the system will spread redundancy recovery among them. With no delay, if multiple members are started in close succession, the system may choose only the first member started for most or all of the redundancy recovery.
 
-**Note:** Satisfying redundancy is not the same as adding capacity. If redundancy is satisfied, new members do not take buckets until the invocation of a rebalance operation.
+**注意:** Satisfying redundancy is not the same as adding capacity. If redundancy is satisfied, new members do not take buckets until the invocation of a rebalance operation.
 
 The parallel recovery implementation recovers quickly. For this reason, it is even more important to configure `startup-recovery-delay` to an appropriate value when restarting multiple members at the same time. Set `startup-recovery-delay` to a value that ensures all members are up and available *before* redundancy recovery kicks in.
 
@@ -1236,7 +1219,7 @@ If you have a large installation with many clients, you may want to disable sing
 
 Without single hop, the client uses whatever server connection is available, the same as with all other operations. The server that receives the request determines the data location and contacts the host, which might be a different server. So more multiple-hop requests are made to the server system.
 
-**Note:** Single hop is used for the following operations: `put`, `get`, `destroy`, `putAll`, `getAll`, `removeAll` and `onRegion` function execution.
+**注意:** Single hop is used for the following operations: `put`, `get`, `destroy`, `putAll`, `getAll`, `removeAll` and `onRegion` function execution.
 
 Even with single hop access enabled, you will occasionally see some multiple-hop behavior. To perform single-hop data access, clients automatically get metadata from the servers about where the entry buckets are hosted. The metadata is maintained lazily. It is only updated after a single-hop operation ends up needing multiple hops, an indicator of stale metadata in the client.
 
@@ -1283,7 +1266,7 @@ Rebalancing is a member operation. It affects all partitioned regions defined by
 
 For efficiency, when starting multiple members, trigger the rebalance a single time, after you have added all members.
 
-**Note:** If you have transactions running in your system, be careful in planning your rebalancing operations. Rebalancing may move data between members, which could cause a running transaction to fail with a `TransactionDataRebalancedException`. Fixed custom partitioning prevents rebalancing altogether. All other data partitioning strategies allow rebalancing and can result in this exception unless you run your transactions and your rebalancing operations at different times.
+**注意:** If you have transactions running in your system, be careful in planning your rebalancing operations. Rebalancing may move data between members, which could cause a running transaction to fail with a `TransactionDataRebalancedException`. Fixed custom partitioning prevents rebalancing altogether. All other data partitioning strategies allow rebalancing and can result in this exception unless you run your transactions and your rebalancing operations at different times.
 
 Kick off a rebalance using one of the following:
 
@@ -1353,7 +1336,7 @@ You can simulate the rebalance operation before moving any actual data around by
 gfsh>rebalance --simulate
 ```
 
-**Note:** If you are using `heap_lru` for data eviction, you may notice a difference between your simulated results and your actual rebalancing results. This discrepancy can be due to the VM starting to evict entries after you execute the simulation. Then when you perform an actual rebalance operation, the operation will make different decisions based on the newer heap size.
+**注意:** If you are using `heap_lru` for data eviction, you may notice a difference between your simulated results and your actual rebalancing results. This discrepancy can be due to the VM starting to evict entries after you execute the simulation. Then when you perform an actual rebalance operation, the operation will make different decisions based on the newer heap size.
 
 ##### Automated Rebalancing
 
@@ -1455,7 +1438,7 @@ For more information on partitioned regions and rebalancing, see [Partitioned Re
 
 
 
-## Distributed and Replicated Regions
+## 分布式和复制区域
 
 In addition to basic region management, distributed and replicated regions include options for things like push and pull distribution models, global locking, and region entry versions to ensure consistency across Geode members.
 
@@ -1485,7 +1468,7 @@ In addition to basic region management, distributed and replicated regions inclu
 
 To use distributed and replicated regions, you should understand how they work and your options for managing them.
 
-**Note:** The management of replicated and distributed regions supplements the general information for managing data regions provided in [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html). See also `org.apache.geode.cache.PartitionAttributes`.
+**注意:** The management of replicated and distributed regions supplements the general information for managing data regions provided in [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html). See also `org.apache.geode.cache.PartitionAttributes`.
 
 A distributed region automatically sends entry value updates to remote caches and receives updates from them.
 
@@ -1617,7 +1600,7 @@ Locking of regions and entries is done in two ways:
 
 2. **Explicit**. You can use the API to explicitly lock the region and its entries. Do this to guarantee atomicity in tasks with multi-step distributed operations. The `Region` methods `org.apache.geode.cache.Region.getDistributedLock` and `org.apache.geode.cache.Region.getRegionDistributedLock` return instances of `java.util.concurrent.locks.Lock` for a region and a specified key.
 
-   **Note:** You must use the `Region` API to lock regions and region entries. Do not use the `DistributedLockService` in the `org.apache.geode.distributed` package. That service is available only for locking in arbitrary distributed applications. It is not compatible with the `Region`locking methods.
+   **注意:** You must use the `Region` API to lock regions and region entries. Do not use the `DistributedLockService` in the `org.apache.geode.distributed` package. That service is available only for locking in arbitrary distributed applications. It is not compatible with the `Region`locking methods.
 
 #### Lock Timeouts
 
@@ -1661,7 +1644,7 @@ The lock grantor is assigned as follows:
 
 You can request lock grantor status:
 
-1. At region creation through the `is-lock-grantor` attribute. You can retrieve this attribute through the region method, `getAttributes`, to see whether you requested to be lock grantor for the region. **Note:** The `is-lock-grantor` attribute does not change after region creation.
+1. At region creation through the `is-lock-grantor` attribute. You can retrieve this attribute through the region method, `getAttributes`, to see whether you requested to be lock grantor for the region. **注意:** The `is-lock-grantor` attribute does not change after region creation.
 2. After region creation through the region `becomeLockGrantor` method. Changing lock grantors should be done with care, however, as doing so takes cycles from other operations. In particular, be careful to avoid creating a situation where you have members vying for lock grantor status.
 
 #### Examples
@@ -1691,7 +1674,7 @@ HashMap lockedItemsMap = new HashMap();
 
 
 
-## Consistency for Region Updates
+## 区域更新的一致性
 
 Geode ensures that all copies of a region eventually reach a consistent state on all members and clients that host the region, including Geode members that distribute region events.
 
@@ -1754,7 +1737,7 @@ A client cache can disable consistency checking for a region even if server cach
 
 See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes).
 
-**Note:** Regions that do not enable consistency checking remain subject to race conditions. Concurrent updates may result in one or more members having different values for the same key. Network latency can result in older updates being applied to a key after more recent updates have occurred.
+**注意:** Regions that do not enable consistency checking remain subject to race conditions. Concurrent updates may result in one or more members having different values for the same key. Network latency can result in older updates being applied to a key after more recent updates have occurred.
 
 ### Overhead for Consistency Checks
 
@@ -1774,7 +1757,7 @@ A Geode member or client that receives an update message first compares the upda
 
 An identical version stamp indicates that multiple Geode members updated the same entry at the same time. To resolve a concurrent update, a Geode member always applies (or keeps) the region entry that has the highest membership ID; the region entry having the lower membership ID is discarded.
 
-**Note:** When a Geode member discards an update message (either for an out-of-order update or when resolving a concurrent update), it does not pass the discarded event to an event listener for the region. You can track the number of discarded updates for each member using the `conflatedEvents` statistic. See [Geode Statistics List](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list). Some members may discard an update while other members apply the update, depending on the order in which each member receives the update. For this reason, the `conflatedEvents` statistic differs for each Geode member. The example below describes this behavior in more detail.
+**注意:** When a Geode member discards an update message (either for an out-of-order update or when resolving a concurrent update), it does not pass the discarded event to an event listener for the region. You can track the number of discarded updates for each member using the `conflatedEvents` statistic. See [Geode Statistics List](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list). Some members may discard an update while other members apply the update, depending on the order in which each member receives the update. For this reason, the `conflatedEvents` statistic differs for each Geode member. The example below describes this behavior in more detail.
 
 The following example shows how a concurrent update is handled in a cluster of three Geode members. Assume that Members A, B, and C have membership IDs of 1, 2, and 3, respectively. Each member currently stores an entry, X, in their caches at version C2 (the entry was last updated by member C):
 
@@ -1806,7 +1789,7 @@ A tombstone in a client cache or a non-replicated region expires after 8 minutes
 
 A tombstone for a replicated or partitioned region expires after 10 minutes. Expired tombstones are eligible for garbage collection by the Geode member. Garbage collection is automatically triggered after 100,000 tombstones of any type have timed out in the local Geode member. You can optionally set the `gemfire.tombstone-gc-threshold` property to a value smaller than 100000 to perform garbage collection more frequently.
 
-**Note:** To avoid out-of-memory errors, a Geode member also initiates garbage collection for tombstones when the amount of free memory drops below 30 percent of total memory.
+**注意:** To avoid out-of-memory errors, a Geode member also initiates garbage collection for tombstones when the amount of free memory drops below 30 percent of total memory.
 
 You can monitor the total number of tombstones in a cache using the `tombstoneCount` statistic in `CachePerfStats`. The `tombstoneGCCount` statistic records the total number of tombstone garbage collection cycles that a member has performed. `replicatedTombstonesSize` and `nonReplicatedTombstonesSize` show the approximate number of bytes that are currently consumed by tombstones in replicated or partitioned regions, and in non-replicated regions, respectively. See [Geode Statistics List](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list).
 
@@ -1824,7 +1807,7 @@ The limitation for transactions on normal, preloaded or or empty regions is that
 
 
 
-## General Region Data Management
+## 一般地区数据管理
 
 For all regions, you have options to control memory use, back up your data to disk, and discard stale data from your cache.
 
@@ -1850,7 +1833,7 @@ For all regions, you have options to control memory use, back up your data to di
 
 You can persist data on disk for backup purposes and overflow it to disk to free up memory without completely removing the data from your cache.
 
-**Note:** This supplements the general steps for managing data regions provided in [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
+**注意:** This supplements the general steps for managing data regions provided in [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
 
 All disk storage uses Apache Geode [Disk Storage](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
 
@@ -1962,7 +1945,7 @@ Use the following steps to configure your data regions for persistence and overf
 
 When you start your members, overflow and persistence will be done automatically, with the disk stores and disk write behaviors.
 
-**Note:** You can also configure Regions and Disk Stores using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD) and [Disk Store Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_1ACC91B493EE446E89EC7DBFBBAE00EA).
+**注意:** You can also configure Regions and Disk Stores using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD) and [Disk Store Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_1ACC91B493EE446E89EC7DBFBBAE00EA).
 
 
 
@@ -2289,7 +2272,7 @@ The `jndi-name` attribute of the `jndi-binding` element is the key binding param
 
 Geode supports JDBC 2.0 and 3.0.
 
-**Note:** Include any data source JAR files in your CLASSPATH.
+**注意:** Include any data source JAR files in your CLASSPATH.
 
 **Example DataSource Configurations in cache.xml**
 
@@ -2596,7 +2579,7 @@ Because of the huge amounts of data they can handle, partitioned regions support
 
 If you depend on a JDBC connection, every data store must have a connection to the data source, as shown in the following figure. Here the three members require three connections. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html) for information on how to configure data sources.
 
-**Note:** Partitioned regions generally require more JDBC connections than distributed regions.
+**注意:** Partitioned regions generally require more JDBC connections than distributed regions.
 
 ![img](assets/cache_data_loader-1545192090096.svg)
 
@@ -2747,7 +2730,7 @@ quotes = rf.create("NASDAQ-Quotes");
 
 
 
-## Data Serialization
+## 数据序列化
 
 Data that you manage in Geode must be serialized and deserialized for storage and transmittal between processes. You can choose among several options for data serialization.
 
@@ -2783,7 +2766,7 @@ All data that Geode moves out of the local cache must be serializable. However, 
 - Regions that receive events from remote caches
 - Regions that provide function arguments and results
 
-**Note:** If you are storing objects with the [HTTP Session Management Modules](https://geode.apache.org/docs/guide/17/tools_modules/http_session_mgmt/chapter_overview.html), these objects must be serializable since they are serialized before being stored in the region.
+**注意:** If you are storing objects with the [HTTP Session Management Modules](https://geode.apache.org/docs/guide/17/tools_modules/http_session_mgmt/chapter_overview.html), these objects must be serializable since they are serialized before being stored in the region.
 
 To minimize the cost of serialization and deserialization, Geode avoids changing the data format whenever possible. This means your data might be stored in the cache in serialized or deserialized form, depending on how you use it. For example, if a server acts only as a storage location for data distribution between clients, it makes sense to leave the data in serialized form, ready to be transmitted to clients that request it. Partitioned region data is always initially stored in serialized form.
 
@@ -2809,7 +2792,7 @@ Geode Data serialization is about 25% faster than PDX serialization, however usi
 
 **Table 1.** Serialization Options: Comparison of Features
 
-**Note:** By default, you can use Geode delta propagation with PDX serialization. However, delta propagation will not work if you have set the Geode property `read-serialized` to “true”. In terms of deserialization, to apply a change delta propagation requires a domain class instance and the `fromDelta`method. If you have set `read-serialized` to true, then you will receive a `PdxInstance`instead of a domain class instance and `PdxInstance` does not have the `fromDelta` method required for delta propagation.
+**注意:** By default, you can use Geode delta propagation with PDX serialization. However, delta propagation will not work if you have set the Geode property `read-serialized` to “true”. In terms of deserialization, to apply a change delta propagation requires a domain class instance and the `fromDelta`method. If you have set `read-serialized` to true, then you will receive a `PdxInstance`instead of a domain class instance and `PdxInstance` does not have the `fromDelta` method required for delta propagation.
 
 **Differences between Geode Serialization (PDX or Data Serializable) and Java Serialization**
 
@@ -2927,7 +2910,7 @@ You can automatically serialize and deserialize domain objects without coding a 
 
 You can also extend the ReflectionBasedAutoSerializer to customize its behavior. For example, you could add optimized serialization support for BigInteger and BigDecimal types. See [Extending the ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279) for details.
 
-**Note:** Your custom PDX autoserializable classes cannot use the `org.apache.geode` package. If they do, the classes will be ignored by the PDX auto serializer.
+**注意:** Your custom PDX autoserializable classes cannot use the `org.apache.geode` package. If they do, the classes will be ignored by the PDX auto serializer.
 
 
 
@@ -3032,7 +3015,7 @@ In your application where you manage data from the cache, provide the following 
 
 For each domain class you provide, all fields are considered for serialization except those defined as `static` or `transient` and those you explicitly exclude using the class pattern strings.
 
-**Note:** The `ReflectionBasedAutoSerializer` traverses the given domain object’s class hierarchy to retrieve all fields to be considered for serialization. So if `DomainObjectB` inherits from `DomainObjectA`, you only need to register `DomainObjectB` to have all of `DomainObjectB` serialized.
+**注意:** The `ReflectionBasedAutoSerializer` traverses the given domain object’s class hierarchy to retrieve all fields to be considered for serialization. So if `DomainObjectB` inherits from `DomainObjectA`, you only need to register `DomainObjectB` to have all of `DomainObjectB` serialized.
 
 
 
@@ -3062,14 +3045,14 @@ com.company.DomainObject.*#identity=id.*#exclude=creationDate,
 com.company.special.Patient#identity=ssn
 ```
 
-**Note:** There is no association between the `identity` and `exclude` options, so the pattern above could also be expressed as:
+**注意:** There is no association between the `identity` and `exclude` options, so the pattern above could also be expressed as:
 
 ```
 com.company.DomainObject.*#identity=id.*, com.company.DomainObject.*#exclude=creationDate, 
 com.company.special.Patient#identity=ssn
 ```
 
-**Note:** The order of the patterns is not relevant. All defined class patterns are used when determining whether a field should be considered as an identity field or should be excluded.
+**注意:** The order of the patterns is not relevant. All defined class patterns are used when determining whether a field should be considered as an identity field or should be excluded.
 
 Examples:
 
@@ -3215,7 +3198,7 @@ With `PdxSerializer`, you leave your domain object as-is and handle the serializ
 
 If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoSerializer`, then the `PdxSerializer` needs to own the `ReflectionBasedAutoSerializer` and delegate to it. A Cache can only have a single `PdxSerializer` instance.
 
-**Note:** The `PdxSerializer` `toData` and `fromData` methods differ from those for `PdxSerializable`. They have different parameters and results.
+**注意:** The `PdxSerializer` `toData` and `fromData` methods differ from those for `PdxSerializable`. They have different parameters and results.
 
 **Procedure**
 
@@ -3265,7 +3248,7 @@ If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoS
          .create();
       ```
 
-   **Note:** You cannot specify a custom `pdx-serializer` class using gfsh, however the `configure pdx` command automatically configures the org.apache.geode.pdx.ReflectionBasedAutoSerializer class. See [configure pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh).
+   **注意:** You cannot specify a custom `pdx-serializer` class using gfsh, however the `configure pdx` command automatically configures the org.apache.geode.pdx.ReflectionBasedAutoSerializer class. See [configure pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh).
 
 3. Program `PdxSerializer.toData` to recognize, cast, and handle your domain object:
 
@@ -3438,11 +3421,11 @@ A `PdxInstance` is a light-weight wrapper around PDX serialized bytes. It provid
 
 You can configure your cache to return a `PdxInstance` when a PDX serialized object is deserialized instead of deserializing the object to a domain class. You can then program your application code that reads your entries to handle `PdxInstance`s fetched from the cache.
 
-**Note:** This applies only to entry retrieval that you explicitly code using methods like `EntryEvent.getNewValue` and `Region.get`, as you do inside functions or in cache listener code. This does not apply to querying because the query engine retrieves the entries and handles object access for you.
+**注意:** This applies only to entry retrieval that you explicitly code using methods like `EntryEvent.getNewValue` and `Region.get`, as you do inside functions or in cache listener code. This does not apply to querying because the query engine retrieves the entries and handles object access for you.
 
 If you configure your cache to allow PDX serialized reads, a fetch from the cache returns the data in the form it is found. If the object is not serialized, the fetch returns the domain object. If the object is serialized, the fetch returns the `PdxInstance` for the object.
 
-**Note:** If you are using `PdxInstance`s, you cannot use delta propagation to apply changes to PDX serialized objects.
+**注意:** If you are using `PdxInstance`s, you cannot use delta propagation to apply changes to PDX serialized objects.
 
 For example, in client/server applications that are programmed and configured to handle all data activity from the client, PDX serialized reads done on the server side will always return a `PdxInstance`. This is because all of data is serialized for transfer from the client, and you are not performing any server-side activities that would deserialize the objects in the server cache.
 
@@ -3511,7 +3494,7 @@ In your application where you fetch data from the cache, provide the following c
    ...
    ```
 
-   **Note:** Due to a limitation with PDX, if your PDX-enabled cache contains TreeSet domain objects, you should implement a Comparator that can handle both your domain objects and PdxInstance objects. You will also need to make the domain classes available on the server.
+   **注意:** Due to a limitation with PDX, if your PDX-enabled cache contains TreeSet domain objects, you should implement a Comparator that can handle both your domain objects and PdxInstance objects. You will also need to make the domain classes available on the server.
 
 
 
@@ -3596,7 +3579,7 @@ Geode allows you to persist PDX metadata to disk and specify the disk store to u
 **Procedure**
 
 1. Set the `<pdx>` attribute `persistent` to true in your cache configuration. This is required for caches that use PDX with persistent regions and with regions that use a gateway sender to distribute events across a WAN.. Otherwise, it is optional.
-2. (Optional) If you want to use a disk store that is not the Geode default disk store, set the `<pdx>`attribute `disk-store-name` to the name of your non-default disk store. **Note:** If you are using PDX serialized objects as region entry keys and you are using persistent regions, then you must configure your PDX disk store to be a different one than the disk store used by the persistent regions.
+2. (Optional) If you want to use a disk store that is not the Geode default disk store, set the `<pdx>`attribute `disk-store-name` to the name of your non-default disk store. **注意:** If you are using PDX serialized objects as region entry keys and you are using persistent regions, then you must configure your PDX disk store to be a different one than the disk store used by the persistent regions.
 3. (Optional) If you later want to rename the PDX types that are persisted to disk, you can do so on your offline disk-stores by executing the `pdx rename` command. See [pdx rename](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/pdx.html).
 
 **Example cache.xml:**
@@ -3673,7 +3656,7 @@ Mixing `DataSerializable` with `Serializable` or `PdxSerializable` use on the sa
 
 
 
-## Events and Event Handling
+## 事件和事件处理
 
 Geode provides versatile and reliable event distribution and handling for your cached data and system member events.
 
@@ -3725,7 +3708,7 @@ There are two categories of events and event handlers.
 
 Both kinds of events can be generated by a single member operation.
 
-**Note:** You can handle one of these categories of events in a single system member. You cannot handle both cache and administrative events in a single member.
+**注意:** You can handle one of these categories of events in a single system member. You cannot handle both cache and administrative events in a single member.
 
 Because Geode maintains the order of administrative events and the order of cache events separately, using cache events and administrative events in a single process can cause unexpected results.
 
@@ -3738,7 +3721,7 @@ The following steps describe the event cycle:
    - An object of type `Operation` that describes the method that triggered the event.
    - An event object that describes the event, such as the member and region where the operation originated.
 3. The event handlers that can handle the event are called and passed the event objects. Different event types require different handler types in different locations. If there is no matching event handler, that does not change the effect of the operation, which happens as usual.
-4. When the handler receives the event, it triggers the handler’s callback method for this event. The callback method can hand off the event object as input to another method. Depending on the type of event handler, the callbacks can be triggered before or after the operation. The timing depends on the event handler, not on the event itself. **Note:** For transactions, after-operation listeners receive the events after the transaction has committed.
+4. When the handler receives the event, it triggers the handler’s callback method for this event. The callback method can hand off the event object as input to another method. Depending on the type of event handler, the callbacks can be triggered before or after the operation. The timing depends on the event handler, not on the event itself. **注意:** For transactions, after-operation listeners receive the events after the transaction has committed.
 5. If the operation is distributed, so that it causes follow-on operations in other members, those operations generate their own events, which can be handled by their listeners in the same way.
 
 **Event Objects**
@@ -3766,7 +3749,7 @@ During a cache operation, event handlers are called at various stages of the ope
 - `CacheWriter` and `AsyncEventListener` always receive events in the order in which they are applied on region.
 - `CacheListener` and `CqListener` can receive events in a different order than the order in which they were applied on the region.
 
-**Note:** An `EntryEvent` contains both the old value and the new value of the entry, which helps to indicate the value that was replaced by the cache operation on a particular key.
+**注意:** An `EntryEvent` contains both the old value and the new value of the entry, which helps to indicate the value that was replaced by the cache operation on a particular key.
 
 
 
@@ -3849,7 +3832,7 @@ Client to server distribution uses the client pool connections to send updates t
 | Distributed entry destroy                           | Entry destroy. The destroy call is propagated to the server even if the entry is not in the client cache. |
 | Distributed region destroy/clear (distributed only) | Region destroy/clear                                         |
 
-**Note:** Invalidations on the client side are not forwarded to the server.
+**注意:** Invalidations on the client side are not forwarded to the server.
 
 **Server-to-Client Event Distribution**
 
@@ -3867,7 +3850,7 @@ This figure shows the complete event subscription event distribution for interes
 
 Server-side distributed operations are all operations that originate as a distributed operation in the server or one of its peers. Region invalidation in the server is not forwarded to the client.
 
-**Note:** To maintain a unified set of data in your servers, do not do local entry invalidation in your server regions.
+**注意:** To maintain a unified set of data in your servers, do not do local entry invalidation in your server regions.
 
 **Server-to-Client Message Tracking**
 
@@ -3907,9 +3890,9 @@ When a server hosting a subscription queue fails, the queueing responsibilities 
 
 - **HA failover:** If your client pool is configured with redundancy and a secondary server is available at the time the primary fails, the failover is invisible to the client. The secondary server resumes queueing activities as soon as the primary loss is detected. The secondary might resend a few events, which are discarded automatically by the client message tracking activities.
 
-  **Note:** There is a very small potential for message loss during HA server failover. The risk is not present for failover to secondaries that have fully initialized their subscription queue data. The risk is extremely low in healthy systems that use at least two secondary servers. The risk is higher in unstable systems where servers often fail and where secondaries do not have time to initialize their subscription queue data before becoming primaries. To minimize the risk, the failover logic chooses the longest-lived secondary as the new primary.
+  **注意:** There is a very small potential for message loss during HA server failover. The risk is not present for failover to secondaries that have fully initialized their subscription queue data. The risk is extremely low in healthy systems that use at least two secondary servers. The risk is higher in unstable systems where servers often fail and where secondaries do not have time to initialize their subscription queue data before becoming primaries. To minimize the risk, the failover logic chooses the longest-lived secondary as the new primary.
 
-  **Note:** Redundancy management is handled by the client, so when a durable client is disconnected from the server, client event redundancy is not maintained. Even if the servers fail one at a time, so that running clients have time to fail over and pick new secondary servers, an offline durable client cannot fail over. As a result, the client loses its queued messages.
+  **注意:** Redundancy management is handled by the client, so when a durable client is disconnected from the server, client event redundancy is not maintained. Even if the servers fail one at a time, so that running clients have time to fail over and pick new secondary servers, an offline durable client cannot fail over. As a result, the client loses its queued messages.
 
 
 
@@ -3983,7 +3966,7 @@ Use either cache handlers or membership handlers in any single application. Do n
 | `GatewayConflictResolver`            | `TimestampedEntryEvent`                               | Decides whether to apply a potentially conflicting event to a region that is distributed over a WAN configuration. This event handler is called only when the distributed system ID of an update event is different from the ID that last updated the region entry. |
 | `MembershipListener`                 | `MembershipEvent`                                     | Use this interface to receive membership events only about peers. This listener’s callback methods are invoked when peer members join or leave the cluster. Callback methods include `memberCrashed`, `memberJoined`, and `memberLeft`(graceful exit). |
 | `RegionMembershipListener`           | `RegionEvent`                                         | Provides after-event notification when a region with the same name has been created in another member and when other members hosting the region join or leave the cluster. Extends `CacheCallback` and `CacheListener`. Installed in region as a `CacheListener`. |
-| `TransactionListener`                | `TransactionEvent` with embedded list of `EntryEvent` | Tracks the outcome of transactions and changes to data entries in the transaction.**Note:**Multiple transactions on the same cache can cause concurrent invocation of `TransactionListener`methods, so implement methods that do the appropriate synchronizing of the multiple threads for thread-safe operation.Extends `CacheCallback`interface. Installed in cache using transaction manager. Works with region-level listeners if needed. |
+| `TransactionListener`                | `TransactionEvent` with embedded list of `EntryEvent` | Tracks the outcome of transactions and changes to data entries in the transaction.**注意:**Multiple transactions on the same cache can cause concurrent invocation of `TransactionListener`methods, so implement methods that do the appropriate synchronizing of the multiple threads for thread-safe operation.Extends `CacheCallback`interface. Installed in cache using transaction manager. Works with region-level listeners if needed. |
 | `TransactionWriter`                  | `TransactionEvent` with embedded list of `EntryEvent` | Receives events for *pending*transaction commits. Has the ability to abort the transaction. Extends `CacheCallback`interface. Installed in cache using transaction manager. At most one writer is called per transaction. Install a writer in every transaction host. |
 | `UniversalMembershipListenerAdapter` | `MembershipEvent` and `ClientMembershipEvent`         | One of the interfaces that replaces the deprecated Admin APIs. Provides a wrapper for MembershipListener and ClientMembershipListener callbacks for both clients and peers. |
 
@@ -4033,7 +4016,7 @@ Depending on your installation and configuration, cache events can come from loc
 
 For each type of handler, Geode provides a convenience class with empty stubs for the interface callback methods.
 
-**Note:** Write-behind cache listeners are created by extending the `AsyncEventListener` interface, and they are configured with an `AsyncEventQueue` that you assign to one or more regions.
+**注意:** Write-behind cache listeners are created by extending the `AsyncEventListener` interface, and they are configured with an `AsyncEventQueue` that you assign to one or more regions.
 
 **Procedure**
 
@@ -4049,7 +4032,7 @@ For each type of handler, Geode provides a convenience class with empty stubs fo
 
    3. Implement the handler’s callback methods as needed by your application.
 
-      **Note:** Improperly programmed event handlers can block your distributed system. Cache events are synchronous. To modify your cache or perform distributed operations based on events, avoid blocking your system by following the guidelines in [How to Safely Modify the Cache from an Event Handler Callback](https://geode.apache.org/docs/guide/17/developing/events/writing_callbacks_that_modify_the_cache.html#writing_callbacks_that_modify_the_cache).
+      **注意:** Improperly programmed event handlers can block your distributed system. Cache events are synchronous. To modify your cache or perform distributed operations based on events, avoid blocking your system by following the guidelines in [How to Safely Modify the Cache from an Event Handler Callback](https://geode.apache.org/docs/guide/17/developing/events/writing_callbacks_that_modify_the_cache.html#writing_callbacks_that_modify_the_cache).
 
       Example:
 
@@ -4334,7 +4317,7 @@ To configure a write-behind cache listener, you first configure an asynchronous 
    AsyncEventQueue asyncQueue = factory.create("sampleQueue", listener);
    ```
 
-2. If you are using a parallel `AsyncEventQueue`, the gfsh example above requires no alteration, as gfsh applies to all members. If using cache.xml or the Java API to configure your `AsyncEventQueue`, repeat the above configuration in each Geode member that will host the region. Use the same ID and configuration settings for each queue configuration. **Note:** You can ensure other members use the sample configuration by using the cluster configuration service available in gfsh. See [Overview of the Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
+2. If you are using a parallel `AsyncEventQueue`, the gfsh example above requires no alteration, as gfsh applies to all members. If using cache.xml or the Java API to configure your `AsyncEventQueue`, repeat the above configuration in each Geode member that will host the region. Use the same ID and configuration settings for each queue configuration. **注意:** You can ensure other members use the sample configuration by using the cluster configuration service available in gfsh. See [Overview of the Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
 
 3. On each Geode member that hosts the `AsyncEventQueue`, assign the queue to each region that you want to use with the `AsyncEventListener` implementation.
 
@@ -4380,7 +4363,7 @@ To configure a write-behind cache listener, you first configure an asynchronous 
 
    See the [Geode API documentation](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/AttributesMutator.html) for more information.
 
-4. Optionally configure persistence and conflation for the queue. **Note:** You must configure your AsyncEventQueue to be persistent if you are using persistent data regions. Using a non-persistent queue with a persistent region is not supported.
+4. Optionally configure persistence and conflation for the queue. **注意:** You must configure your AsyncEventQueue to be persistent if you are using persistent data regions. Using a non-persistent queue with a persistent region is not supported.
 
 5. Optionally configure multiple dispatcher threads and the ordering policy for the queue using the instructions in [Configuring Dispatcher Threads and Order Policy for Event Distribution](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html).
 
@@ -4602,7 +4585,7 @@ Peer distribution is done according to the region’s configuration.
 
   For partitioned regions, this only affects the receipt of events, as the data is stored according to the region partitioning. Partitioned regions with interest policy of `all` can create network bottlenecks, so if you can, run listeners in every member that hosts the partitioned region data and use the `cache-content` interest policy.
 
-**Note:** You can also configure Regions using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD).
+**注意:** You can also configure Regions using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD).
 
 
 
@@ -4622,7 +4605,7 @@ To receive entry events in the client from the server:
 
 2. Program the client to register interest in the entries you need.
 
-   **Note:** This must be done through the API.
+   **注意:** This must be done through the API.
 
    Register interest in all keys, a key list, individual keys, or by comparing key strings to regular expressions. By default, no entries are registered to receive updates. Specify whether the server is to send values with entry update events. Interest registration is only available through the API.
 
@@ -4831,7 +4814,7 @@ CqQuery myCq = queryService.newCq(cqName, queryString, cqAttributes, true);
 
 Save only critical messages while the client is disconnected by only indicating durability for critical subscriptions and CQs. When the client is connected to its servers, it receives messages for all keys and queries reqistered. When the client is disconnected, non-durable interest registrations and CQs are discontinued but all messages already in the queue for them remain there.
 
-**Note:** For a single durable client ID, you must maintain the same durability of your registrations and queries between client runs.
+**注意:** For a single durable client ID, you must maintain the same durability of your registrations and queries between client runs.
 
 **Program the Client to Manage Durable Messaging**
 
@@ -4892,7 +4875,7 @@ Program your durable client to be durable-messaging aware when it disconnects, r
 
    3. Run all interest registration calls.
 
-      **Note:** Registering interest with `InterestResultPolicy.KEYS_VALUES` initializes the client cache with the *current* values of specified keys. If concurrency checking is enabled for the region, any earlier (older) region events that are replayed to the client are ignored and are not sent to configured listeners. If your client must process all replayed events for a region, register with `InterestResultPolicy.KEYS` or `InterestResultPolicy.NONE` when reconnecting. Or, disable concurrency checking for the region in the client cache. See [Consistency for Region Updates](https://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045).
+      **注意:** Registering interest with `InterestResultPolicy.KEYS_VALUES` initializes the client cache with the *current* values of specified keys. If concurrency checking is enabled for the region, any earlier (older) region events that are replayed to the client are ignored and are not sent to configured listeners. If your client must process all replayed events for a region, register with `InterestResultPolicy.KEYS` or `InterestResultPolicy.NONE` when reconnecting. Or, disable concurrency checking for the region in the client cache. See [Consistency for Region Updates](https://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045).
 
    4. Call `ClientCache.readyForEvents` so the server will replay stored events. If the ready message is sent earlier, the client may lose events.
 
@@ -5001,7 +4984,7 @@ Conflation is particularly useful when a single entry is updated often and the i
 
 ![img](assets/ClientServerAdvancedTopics-7.gif)
 
-**Note:** This method of conflation is different from the one used for multi-site gateway sender queue conflation. It is the same as the method used for the conflation of peer-to-peer distribution messages within a single cluster.
+**注意:** This method of conflation is different from the one used for multi-site gateway sender queue conflation. It is the same as the method used for the conflation of peer-to-peer distribution messages within a single cluster.
 
 
 
@@ -5057,7 +5040,7 @@ These are options for limiting the amount of server memory the subscription queu
     cacheServer.start(); 
     ```
 
-    **Note:** With this setting, one slow client can slow the server and all of its other clients because this blocks the threads that write to the queues. All operations that add messages to the queue block until the queue size drops to an acceptable level. If the regions feeding these queues are partitioned or have `distributed-ack` or `global` scope, operations on them remain blocked until their event messages can be added to the queue. If you are using this option and see stalling on your server region operations, your queue capacity might be too low for your application behavior.
+    **注意:** With this setting, one slow client can slow the server and all of its other clients because this blocks the threads that write to the queues. All operations that add messages to the queue block until the queue size drops to an acceptable level. If the regions feeding these queues are partitioned or have `distributed-ack` or `global` scope, operations on them remain blocked until their event messages can be added to the queue. If you are using this option and see stalling on your server region operations, your queue capacity might be too low for your application behavior.
 
 
 
@@ -5117,7 +5100,7 @@ You must configure the event queue to use persistence if you are using persisten
 
 When you enable persistence for a queue, the `maximum-queue-memory` attribute determines how much memory the queue can consume before it overflows to disk. By default, this value is set to 100MB.
 
-**Note:** If you configure a parallel queue and/or you configure multiple dispatcher threads for a queue, the values that are defined in the `maximum-queue-memory` and `disk-store-name` attributes apply to each instance of the queue.
+**注意:** If you configure a parallel queue and/or you configure multiple dispatcher threads for a queue, the values that are defined in the `maximum-queue-memory` and `disk-store-name` attributes apply to each instance of the queue.
 
 In the example below the gateway sender queue uses “diskStoreA” for persistence and overflow, and the queue has a maximum queue memory of 100MB:
 
@@ -5348,13 +5331,13 @@ The following examples show how to set dispatcher threads and ordering policy fo
 
 Conflating a queue improves distribution performance. When conflation is enabled, only the latest queued value is sent for a particular key.
 
-**Note:** Do not use conflation if your receiving applications depend on the specific ordering of entry modifications, or if they need to be notified of every change to an entry.
+**注意:** Do not use conflation if your receiving applications depend on the specific ordering of entry modifications, or if they need to be notified of every change to an entry.
 
 Conflation is most useful when a single entry is updated frequently, but other sites only need to know the current value of the entry (rather than the value of each update). When an update is added to a queue that has conflation enabled, if there is already an update message in the queue for the entry key, then the existing message assumes the value of the new update and the new update is dropped, as shown here for key A.
 
 ![img](assets/MultiSite-4.gif)
 
-**Note:** This method of conflation is different from the one used for server-to-client subscription queue conflation and peer-to-peer distribution within a cluster.
+**注意:** This method of conflation is different from the one used for server-to-client subscription queue conflation and peer-to-peer distribution within a cluster.
 
 **Examples—Configuring Conflation for a Gateway Sender Queue**
 
@@ -5453,7 +5436,7 @@ The following examples show how to configure conflation for an asynchronous even
 
 
 
-## Delta Propagation
+## 增量传播
 
 Delta propagation allows you to reduce the amount of data you send over the network by including only changes to objects rather than the entire object.
 
@@ -5507,7 +5490,7 @@ This figure shows delta propagation for a change to an entry with key, k, and va
 
 To use the delta propagation feature, all updates on a key in a region must have value types that implement the `Delta` interface. You cannot mix object types for an entry key where some of the types implement delta and some do not. This is because, when a type implementing the delta interface is received for an update, the existing value for the key is cast to a `Delta` type to apply the received delta. If the existing type does not also implement the `Delta` interface, the operation throws a `ClassCastException`.
 
-**Note:** Only the object itself being placed in the cache can implement the `Delta` interface and propagate changes. Any sub-objects of the cache object do not propagate their changes.
+**注意:** Only the object itself being placed in the cache can implement the `Delta` interface and propagate changes. Any sub-objects of the cache object do not propagate their changes.
 
 Sometimes `fromDelta` cannot be invoked because there is no object to apply the delta to in the receiving cache. When this happens, the system automatically does a full value distribution to the receiver. These are the possible scenarios: 1. If the system can determine beforehand that the receiver does not have a local copy, it sends the initial message with the full value. This is possible when regions are configured with no local data storage, such as with the region shortcut settings `PARTITION_PROXY` and `REPLICATE_PROXY`. These configurations are used to accomplish things like provide data update information to listeners and to pass updates forward to clients. 2. In less obvious cases, such as when an entry has been locally deleted, first the delta is sent, then the receiver requests a full value and that is sent. Whenever the full value is received, any further distributions to the receiver’s peers or clients uses the full value.
 
@@ -5802,7 +5785,7 @@ public class SimpleDelta implements Delta, Serializable {
 
 
 
-## Querying
+## 查询
 
 Geode provides a SQL-like querying language called OQL that allows you to access data stored in Geode regions.
 
@@ -6494,7 +6477,7 @@ Refer to the following JavaDocs for specific APIs:
 - [Query package](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/package-summary.html)
 - [QueryService](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/QueryService.html)
 
-**Note:** You can also perform queries using the gfsh `query` command. See [query](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html).
+**注意:** You can also perform queries using the gfsh `query` command. See [query](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html).
 
 
 
@@ -6775,7 +6758,7 @@ SELECT * FROM /exampleRegion portfolio1, portfolio1.positions.values positions1,
 
 Geode offers limited support for the LIKE predicate. LIKE can be used to mean 'equals to’. If you terminate the string with a wildcard (’%’), it behaves like 'starts with’. You can also place a wildcard (either ’%’ or ’_’) at any other position in the comparison string. You can escape the wildcard characters to represent the characters themselves.
 
-**Note:** The ’*’ wildcard is not supported in OQL LIKE predicates.
+**注意:** The ’*’ wildcard is not supported in OQL LIKE predicates.
 
 You can also use the LIKE predicate when an index is present.
 
@@ -7060,7 +7043,7 @@ Use the DISTINCT keyword if you want to limit the results set to unique rows. No
 SELECT DISTINCT * FROM /exampleRegion
 ```
 
-**Note:** If you are using DISTINCT queries, you must implement the equals and hashCode methods for the objects that you query.
+**注意:** If you are using DISTINCT queries, you must implement the equals and hashCode methods for the objects that you query.
 
 **LIMIT**
 
@@ -7092,7 +7075,7 @@ The following query sorts the results in descending order:
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID desc
 ```
 
-**Note:** If you are using ORDER BY queries, you must implement the equals and hashCode methods for the objects that you query.
+**注意:** If you are using ORDER BY queries, you must implement the equals and hashCode methods for the objects that you query.
 
 **Preset Query Functions**
 
@@ -8327,7 +8310,7 @@ QueryService qs = cache.getQueryService();
 </region>
 ```
 
-**Note:** If you do not specify the type of index in cache.xml, the type defaults to “range”.
+**注意:** If you do not specify the type of index in cache.xml, the type defaults to “range”.
 
 **Listing Indexes**
 
@@ -8385,7 +8368,7 @@ There are two issues to note with key indexes:
 - The key index is not sorted. Without sorting, you can only do equality tests. Other comparisons are not possible. To obtain a sorted index on your primary keys, create a functional index on the attribute used as the primary key.
 - The query service is not automatically aware of the relationship between the region values and keys. For this, you must create the key index.
 
-**Note:** Using a key-index with an explicit type=‘range’ in the cache.xml will lead to an exception. Key indexes will not be used in 'range’ queries.
+**注意:** Using a key-index with an explicit type=‘range’ in the cache.xml will lead to an exception. Key indexes will not be used in 'range’ queries.
 
 **Examples of Creating a Key Index**
 
@@ -8413,7 +8396,7 @@ gfsh> create index --name=myKeyIndex --expression=id --region=/exampleRegion
 </region>
 ```
 
-**Note:** If you do not specify the type of index when defining indexes using cache.xml, the type defaults to “range”.
+**注意:** If you do not specify the type of index when defining indexes using cache.xml, the type defaults to “range”.
 
 
 
@@ -8505,7 +8488,7 @@ gfsh>create index --name="IndexName" --expression="p.positions[*]" --region="/po
 
 In order to create or query a map index, you must use the bracket notation to list the map field keys you wish to index or query. For example: `[*]`, `['keyX1','keyX2’]`. Note that using `p.pos.get('keyX1')` will not create or query the map index.
 
-**Note:** You can still query against Map or HashMap fields without querying against a map index. For example, you can always create a regular range query on a single key in any Map or HashMap field. However, note that subsequent query lookups will be limited to a single key.
+**注意:** You can still query against Map or HashMap fields without querying against a map index. For example, you can always create a regular range query on a single key in any Map or HashMap field. However, note that subsequent query lookups will be limited to a single key.
 
 
 
@@ -8679,7 +8662,7 @@ To use an index with an equi-join query:
 
 1. Create an index for each side of the equi-join condition. The query engine can quickly evaluate the query’s equi-join condition by iterating over the keys of the left-side and right-side indexes for an equality match.
 
-   **Note:** Equi-join queries require regular indexes. Key indexes are not applied to equi-join queries.
+   **注意:** Equi-join queries require regular indexes. Key indexes are not applied to equi-join queries.
 
    For this query:
 
@@ -8882,7 +8865,7 @@ FROM /exampleRegion
 
 
 
-## Continuous Querying
+## 连续查询
 
 Continuous querying continuously returns events that match the queries you set up.
 
@@ -9024,7 +9007,7 @@ Before you begin, you should be familiar with [Querying](https://geode.apache.or
 
 3. Write your CQ listeners to handle CQ events from the server. Implement `org.apache.geode.cache.query.CqListener` in each event handler you need. In addition to your main CQ listeners, you might have listeners that you use for all CQs to track statistics or other general information.
 
-   **Note:** Be especially careful if you choose to update your cache from your `CqListener`. If your listener updates the region that is queried in its own CQ and that region has a `Pool` named, the update will be forwarded to the server. If the update on the server satisfies the same CQ, it may be returned to the same listener that did the update, which could put your application into an infinite loop. This same scenario could be played out with multiple regions and multiple CQs, if the listeners are programmed to update each other’s regions.
+   **注意:** Be especially careful if you choose to update your cache from your `CqListener`. If your listener updates the region that is queried in its own CQ and that region has a `Pool` named, the update will be forwarded to the server. If the update on the server satisfies the same CQ, it may be returned to the same listener that did the update, which could put your application into an infinite loop. This same scenario could be played out with multiple regions and multiple CQs, if the listeners are programmed to update each other’s regions.
 
    This example outlines a `CqListener` that might be used to update a display screen with current data from the server. The listener gets the `queryOperation` and entry key and value from the `CqEvent` and then updates the screen according to the type of `queryOperation`.
 
@@ -9240,7 +9223,7 @@ If a CQ is executed using the `ExecuteWithInitialResults` method, the returned r
 
 
 
-## Transactions
+## 事务
 
 This section describes Geode transactions. Geode offers an API for client applications that do transactional work. Geode implements optimistic transactions, with the familiar `begin`, `commit`, and `rollback` methods that implement the same operations as in relational database transactions methods.
 
@@ -9546,7 +9529,7 @@ This property causes read operations to succeed only when they read a consistent
 
 
 
-## Function Execution
+## 函数执行
 
 A function is a body of code that resides on a server and that an application can invoke from a client or from another server without the need to send the function code itself. The caller can direct a data-dependent function to operate on a particular dataset, or can direct a data-independent function to operate on a particular server, member, or member group.
 
@@ -9699,12 +9682,12 @@ Code the methods you need for the function. These steps do not have to be done i
 - If the function should be run with an authorization level other than the default of `DATA:WRITE`, implement an override of the `Function.getRequiredPermissions()` method. See [Authorization of Function Execution](https://geode.apache.org/docs/guide/17/managing/security/implementing_authorization.html#AuthorizeFcnExecution) for details on this method.
 - Code the `execute` method to perform the work of the function.
   1. Make `execute` thread safe to accommodate simultaneous invocations.
-  2. For high availability, code `execute` to accommodate multiple identical calls to the function. Use the `RegionFunctionContext` `isPossibleDuplicate` to determine whether the call may be a high-availability re-execution. This boolean is set to true on execution failure and is false otherwise. **Note:** The `isPossibleDuplicate` boolean can be set following a failure from another member’s execution of the function, so it only indicates that the execution might be a repeat run in the current member.
+  2. For high availability, code `execute` to accommodate multiple identical calls to the function. Use the `RegionFunctionContext` `isPossibleDuplicate` to determine whether the call may be a high-availability re-execution. This boolean is set to true on execution failure and is false otherwise. **注意:** The `isPossibleDuplicate` boolean can be set following a failure from another member’s execution of the function, so it only indicates that the execution might be a repeat run in the current member.
   3. Use the function context to get information about the execution and the data:
      - The context holds the function ID, the `ResultSender` object for passing results back to the originator, and function arguments provided by the member where the function originated.
      - The context provided to the function is the `FunctionContext`, which is automatically extended to `RegionFunctionContext` if you get the `Execution` object through a `FunctionService` `onRegion` call.
      - For data dependent functions, the `RegionFunctionContext` holds the `Region` object, the `Set` of key filters, and a boolean indicating multiple identical calls to the function, for high availability implementations.
-     - For partitioned regions, the `PartitionRegionHelper` provides access to additional information and data for the region. For single regions, use `getLocalDataForContext`. For colocated regions, use `getLocalColocatedRegions`. **Note:** When you use `PartitionRegionHelper.getLocalDataForContext`, `putIfAbsent` may not return expected results if you are working on local data set instead of the region.
+     - For partitioned regions, the `PartitionRegionHelper` provides access to additional information and data for the region. For single regions, use `getLocalDataForContext`. For colocated regions, use `getLocalColocatedRegions`. **注意:** When you use `PartitionRegionHelper.getLocalDataForContext`, `putIfAbsent` may not return expected results if you are working on local data set instead of the region.
   4. To propagate an error condition or exception back to the caller of the function, throw a FunctionException from the `execute` method. Geode transmits the exception back to the caller as if it had been thrown on the calling side. See the Java API documentation for [FunctionException](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/execute/FunctionException.html) for more information.
 
 Example function code:
@@ -9806,7 +9789,7 @@ Register your function using one of these methods:
   FunctionService.registerFunction(myFun);
   ```
 
-  **Note:** Modifying a function instance after registration has no effect on the registered function. If you want to execute a new function, you must register it with a different identifier.
+  **注意:** Modifying a function instance after registration has no effect on the registered function. If you want to execute a new function, you must register it with a different identifier.
 
 **Run the Function**
 
@@ -9838,7 +9821,7 @@ See [Function Execution Commands](https://geode.apache.org/docs/guide/17/tools_m
    - Provide function arguments to `setArguments`. You can retrieve these in your `Function` `execute` method through `FunctionContext.getArguments`.
    - Define a custom `ResultCollector`
 3. Call the `Execution` object to `execute` method to run the function.
-4. If the function returns results, call `getResult` from the results collector returned from `execute`and code your application to do whatever it needs to do with the results. **Note:** For high availability, you must call the `getResult` method.
+4. If the function returns results, call `getResult` from the results collector returned from `execute`and code your application to do whatever it needs to do with the results. **注意:** For high availability, you must call the `getResult` method.
 
 Example of running the function - for executing members:
 
