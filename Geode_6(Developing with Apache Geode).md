@@ -986,74 +986,72 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
 默认情况下，Geode会为您放置主数据副本和辅助数据副本，从而避免在同一台物理计算机上放置两个副本。 如果没有足够的机器将不同的副本分开，Geode会将副本放在同一台物理计算机上。 您可以更改此行为，因此Geode仅将副本放在不同的计算机上。
 
-You can also control which members store your primary and secondary data copies. Geode provides two options:
+您还可以控制哪些成员存储主数据副本和辅助数据副本。 Geode提供两种选择：
 
-- **Fixed custom partitioning**. This option is set for the region. Fixed partitioning gives you absolute control over where your region data is hosted. With fixed partitioning, you provide Geode with the code that specifies the bucket and data store for each data entry in the region. When you use this option with redundancy, you specify the primary and secondary data stores. Fixed partitioning does not participate in rebalancing because all bucket locations are fixed by you.
-- **Redundancy zones**. This option is set at the member level. Redundancy zones let you separate primary and secondary copies by member groups, or zones. You assign each data host to a zone. Then Geode places redundant copies in different redundancy zones, the same as it places redundant copies on different physical machines. You can use this to split data copies across different machine racks or networks, This option allows you to add members on the fly and use rebalancing to redistribute the data load, with redundant data maintained in separate zones. When you use redundancy zones, Geode will not place two copies of the data in the same zone, so make sure you have enough zones.
+- **固定自定义分区**. 为该区域设置此选项。 固定分区使您可以绝对控制托管区域数据的位置。 通过固定分区，您可以为Geode提供代码，该代码为区域中的每个数据条目指定存储桶和数据存储。 将此选项与冗余配合使用时，可以指定主数据存储和辅助数据存储。 固定分区不参与重新平衡，因为您固定了所有存储桶位置。
+- **冗余区域**. 此选项在成员级别设置。 冗余区域允许您按成员组或区域分隔主副本副本。 您将每个数据主机分配给区域。 然后Geode将冗余副本放在不同的冗余区域中，就像在不同的物理机器上放置冗余副本一样。 您可以使用此选项在不同的机架或网络中拆分数据副本。此选项允许您动态添加成员并使用重新平衡来重新分配数据负载，并在单独的区域中维护冗余数据。 使用冗余区域时，Geode不会在同一区域中放置两个数据副本，因此请确保您有足够的区域。
 
-##### Running Processes in Virtual Machines
+##### 在虚拟机中运行进程
 
-By default, Geode stores redundant copies on different machines. When you run your processes in virtual machines, the normal view of the machine becomes the VM and not the physical machine. If you run multiple VMs on the same physical machine, you could end up storing partitioned region primary buckets in separate VMs, but on the same physical machine as your secondaries. If the physical machine fails, you can lose data. When you run in VMs, you can configure Geode to identify the physical machine and store redundant copies on different physical machines.
+默认情况下，Geode将冗余副本存储在不同的计算机上。 在虚拟机中运行进程时，计算机的常规视图将成为VM而非物理计算机。 如果在同一台物理计算机上运行多个VM，则最终可能会将分区区域主存储区存储在单独的VM中，但与第二个存储区位于同一物理计算机上。 如果物理机出现故障，您可能会丢失数据。 在VM中运行时，可以将Geode配置为标识物理计算机并将冗余副本存储在不同的物理计算机上。
 
-##### Reads and Writes in Highly-Available Partitioned Regions
+##### 在高可用分区区域中进行读写
 
-Geode treats reads and writes differently in highly-available partitioned regions than in other regions because the data is available in multiple members:
+Geode在高可用性分区区域中对读取和写入的处理方式与在其他区域中不同，因为数据在多个成员中可用：
 
-- Write operations (like `put` and `create`) go to the primary for the data keys and then are distributed synchronously to the redundant copies. Events are sent to the members configured with `subscription-attributes` `interest-policy` set to `all`.
-- Read operations go to any member holding a copy of the data, with the local cache favored, so a read intensive system can scale much better and handle higher loads.
+- 写操作（如`put`和`create`）转到数据键的主要操作，然后同步分发到冗余副本。 事件被发送到配置了`subscription-attributes` `intece-policy`设置为`all`的成员。
+- 读操作会转到任何持有数据副本的成员，并且本地缓存很受欢迎，因此读取密集型系统可以更好地扩展并处理更高的负载。
 
-In this figure, M1 is reading W, Y, and Z. It gets W directly from its local copy. Since it doesn’t have a local copy of Y or Z, it goes to a cache that does, picking the source cache at random.
+在此图中，M1正在读取W，Y和Z.它直接从其本地副本获取W. 由于它没有Y或Z的本地副本，因此它会进入缓存，随机选择源缓存。
 
 ![img](assets/partitioned_data_HA.svg)
 
 
+#### 配置分区区域的高可用性
 
-#### Configure High Availability for a Partitioned Region
+为分区区域配置内存中高可用性。 设置其他高可用性选项，例如冗余区域和冗余恢复策略。
 
-Configure in-memory high availability for your partitioned region. Set other high-availability options, like redundancy zones and redundancy recovery strategies.
+以下是为分区区域配置高可用性的主要步骤。 请参阅后面的部分了解详情
 
-Here are the main steps for configuring high availability for a partitioned region. See later sections for details.
+1. 设置系统应保留区域数据的冗余副本数。 请参阅[设置冗余份数](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_pr_redundancy.html#set_pr_redundancy).
+2. （可选）如果要将数据存储成员分组到冗余区域，请相应地进行配置。 请参见[为成员配置冗余区域](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_redundancy_zones.html#set_redundancy_zones).
+3. （可选）如果希望Geode仅将冗余副本放在不同的物理计算机上，请为此配置。 请参阅[设置强制唯一主机](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_enforce_unique_host.html#set_pr_redundancy).
+4. 决定如何管理冗余恢复并根据需要更改Geode的默认行为。
+   - **成员崩溃后**. 如果要进行自动冗余恢复，请更改其配置。 请参见[为分区区域配置成员崩溃冗余恢复](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_crash_redundancy_recovery.html#set_crash_redundancy_recovery).
+   - **成员加入后**. 如果您*不*希望立即进行自动冗余恢复，请更改配置。 请参见[为分区区域配置成员加入冗余恢复](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_join_redundancy_recovery.html#set_join_redundancy_recovery).
+5. 确定Geode在执行冗余恢复时应尝试并行恢复的桶数。 默认情况下，系统最多可并行恢复8个存储桶。 使用`gemfire.MAX_PARALLEL_BUCKET_RECOVERIES`系统属性可以在执行冗余恢复时增加或减少并行恢复的最大桶数。
+6. 对于除固定分区区域之外的所有区域，请查看启动重新平衡的点。 冗余恢复在任何重新平衡开始时自动完成。 如果在成员崩溃或加入后没有自动恢复运行，这是最重要的。 请参阅[重新平衡分区区域数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/rebalancing_pr_data.html#rebalancing_pr_data).
 
-1. Set the number of redundant copies the system should maintain of the region data. See [Set the Number of Redundant Copies](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_pr_redundancy.html#set_pr_redundancy).
-2. (Optional) If you want to group your data store members into redundancy zones, configure them accordingly. See [Configure Redundancy Zones for Members](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_redundancy_zones.html#set_redundancy_zones).
-3. (Optional) If you want Geode to only place redundant copies on different physical machines, configure for that. See [Set Enforce Unique Host](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_enforce_unique_host.html#set_pr_redundancy).
-4. Decide how to manage redundancy recovery and change Geode’s default behavior as needed.
-   - **After a member crashes**. If you want automatic redundancy recovery, change the configuration for that. See [Configure Member Crash Redundancy Recovery for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_crash_redundancy_recovery.html#set_crash_redundancy_recovery).
-   - **After a member joins**. If you do *not* want immediate, automatic redundancy recovery, change the configuration for that. See [Configure Member Join Redundancy Recovery for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/set_join_redundancy_recovery.html#set_join_redundancy_recovery).
-5. Decide how many buckets Geode should attempt to recover in parallel when performing redundancy recovery. By default, the system recovers up to 8 buckets in parallel. Use the `gemfire.MAX_PARALLEL_BUCKET_RECOVERIES` system property to increase or decrease the maximum number of buckets to recover in parallel any time redundancy recovery is performed.
-6. For all but fixed partitioned regions, review the points at which you kick off rebalancing. Redundancy recovery is done automatically at the start of any rebalancing. This is most important if you run with no automated recovery after member crashes or joins. See [Rebalancing Partitioned Region Data](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/rebalancing_pr_data.html#rebalancing_pr_data).
+在运行时，您可以通过添加区域的新成员来添加容量。 对于不使用固定分区的区域，您还可以启动重新平衡操作以在所有成员之间传播区域存储桶。
 
-During runtime, you can add capacity by adding new members for the region. For regions that do not use fixed partitioning, you can also kick off a rebalancing operation to spread the region buckets among all members.
+- **设置冗余副本数**
 
-- **Set the Number of Redundant Copies**
+  通过指定要在区域数据存储中维护的辅助副本数，为分区区域配置内存中高可用性。
 
-  Configure in-memory high availability for your partitioned region by specifying the number of secondary copies you want to maintain in the region’s data stores.
+- **为成员配置冗余区域**
 
-- **Configure Redundancy Zones for Members**
+  将成员分组到冗余区域，以便Geode将冗余数据副本分成不同的区域。
 
-  Group members into redundancy zones so Geode will separate redundant data copies into different zones.
+- **设置强制唯一主机**
 
-- **Set Enforce Unique Host**
+  将Geode配置为仅使用唯一的物理机器来分区区域数据的冗余副本。
 
-  Configure Geode to use only unique physical machines for redundant copies of partitioned region data.
+- **为分区区域配置成员崩溃冗余恢复**
 
-- **Configure Member Crash Redundancy Recovery for a Partitioned Region**
+  配置成员崩溃后是否以及如何在分区区域中恢复冗余。
 
-  Configure whether and how redundancy is recovered in a partition region after a member crashes.
+- **为分区区域配置成员加入冗余恢复**
 
-- **Configure Member Join Redundancy Recovery for a Partitioned Region**
-
-  Configure whether and how redundancy is recovered in a partition region after a member joins.
-
+  配置成员加入后是否以及如何在分区区域中恢复冗余。
 
 
-##### Set the Number of Redundant Copies
+##### 设置冗余副本数
 
-Configure in-memory high availability for your partitioned region by specifying the number of secondary copies you want to maintain in the region’s data stores.
+通过指定要在区域数据存储中维护的辅助副本数，为分区区域配置内存中高可用性。
 
-Specify the number of redundant copies you want for your partitioned region data in the partition attribute `redundant-copies` setting. The default setting is 0.
+在分区属性`redundant-copies`设置中指定分区区域数据所需的冗余副本数。 默认设置为0。
 
-For example:
+例如:
 
 - XML:
 
@@ -1078,53 +1076,49 @@ For example:
   gfsh>create region --name="PR1" --type=PARTITION --redundant-copies=1
   ```
 
+##### 为成员配置冗余区域
 
-##### Configure Redundancy Zones for Members
+将成员分组到冗余区域，以便Geode将冗余数据副本分成不同的区域。
 
-Group members into redundancy zones so Geode will separate redundant data copies into different zones.
+了解如何设置成员的'gemfire.properties`设置。 见[参考](https://geode.apache.org/docs/guide/17/reference/book_intro.html#reference).
 
-Understand how to set a member’s `gemfire.properties` settings. See [Reference](https://geode.apache.org/docs/guide/17/reference/book_intro.html#reference).
+使用`gemfire.properties`设置`redundancy-zone`将分区区域主机分组到冗余区域。
 
-Group your partition region hosts into redundancy zones with the `gemfire.properties` setting `redundancy-zone`.
+例如，如果将冗余设置为1，那么每个数据条目都有一个主副本和一个副副本，则可以通过为每个机架定义一个冗余区域，在两个计算机机架之间拆分主数据副本和辅助数据副本。 为此，您可以在`gemfire.properties`中为在一个机架上运行的所有成员设置此区域：`pre redundancy-zone = rack1`
 
-For example, if you had redundancy set to 1, so you have one primary and one secondary copy of each data entry, you could split primary and secondary data copies between two machine racks by defining one redundancy zone for each rack. To do this, you set this zone in the `gemfire.properties` for all members that run on one rack: `pre redundancy-zone=rack1`
+你可以为另一个机架上的所有成员设置这个区域`gemfire.properties`：`pre redundancy-zone = rack2`
 
-You would set this zone `gemfire.properties` for all members on the other rack: `pre redundancy-zone=rack2`
-
-Each secondary copy would be hosted on the rack opposite the rack where its primary copy is hosted.
-
+每个辅助副本都将托管在托管其主要副本的机架对面的机架上。
 
 
-##### Set Enforce Unique Host
+##### 设置强制唯一主机
 
-Configure Geode to use only unique physical machines for redundant copies of partitioned region data.
+将Geode配置为仅使用唯一的物理机器来分区区域数据的冗余副本。
 
 Understand how to set a member’s `gemfire.properties` settings. See [Reference](https://geode.apache.org/docs/guide/17/reference/book_intro.html#reference).
 
-Configure your members so Geode always uses different physical machines for redundant copies of partitioned region data using the `gemfire.properties` setting `enforce-unique-host`. The default for this setting is false.
+配置您的成员，以便Geode始终使用不同的物理机器使用`gemfire.properties`设置`enforce-unique-host`来分区区域数据的冗余副本。 此设置的默认值为false。
 
-Example:
+例子:
 
 ```
 enforce-unique-host=true
 ```
 
+##### 为分区区域配置成员崩溃冗余恢复
 
+配置成员崩溃后是否以及如何在分区区域中恢复冗余。
 
-##### Configure Member Crash Redundancy Recovery for a Partitioned Region
+使用partition属性`recovery-delay`指定成员崩溃冗余恢复。
 
-Configure whether and how redundancy is recovered in a partition region after a member crashes.
+| 恢复延迟分区属性 | 会员失败后的效果                             |
+| ---------------- | -------------------------------------------- |
+| -1               | 成员失败后无法自动恢复冗余。 这是默认值。    |
+| 大于或等于0      | 在恢复冗余之前成员发生故障后要等待的毫秒数。 |
 
-Use the partition attribute `recovery-delay` to specify member crash redundancy recovery.
+默认情况下，成员崩溃后不会恢复冗余。 如果您希望快速重新启动大多数崩溃的成员，将此默认设置与成员加入冗余恢复相结合可以帮助您在成员关闭时避免不必要的数据重排。 通过等待丢失的成员重新加入，使用新启动的成员完成冗余恢复，并且使用较少的处理来更好地平衡分区。
 
-| recovery-delay partition attribute | Effect following a member failure                            |
-| ---------------------------------- | ------------------------------------------------------------ |
-| -1                                 | No automatic recovery of redundancy following a member failure. This is the default. |
-| long greater than or equal to 0    | Number of milliseconds to wait after a member failure before recovering redundancy. |
-
-By default, redundancy is not recovered after a member crashes. If you expect to quickly restart most crashed members, combining this default setting with member join redundancy recovery can help you avoid unnecessary data shuffling while members are down. By waiting for lost members to rejoin, redundancy recovery is done using the newly started members and partitioning is better balanced with less processing.
-
-Set crash redundancy recovery using one of the following:
+使用以下方法之一设置崩溃冗余恢复：
 
 - XML:
 
@@ -1151,29 +1145,28 @@ Set crash redundancy recovery using one of the following:
   ```
 
 
+##### 为分区区域配置成员加入冗余恢复
 
-##### Configure Member Join Redundancy Recovery for a Partitioned Region
+本节介绍配置成员加入后是否以及如何在分区区域中恢复冗余。
 
-This section covers configuring whether and how redundancy is recovered in a partitioned region, after a member joins.
+使用partition属性`startup-recovery-delay`指定成员加入冗余恢复。
 
-Use the partition attribute `startup-recovery-delay` to specify member join redundancy recovery.
-
-| value of `startup-recovery-delay` | Effect following a member join                               |
+| `startup-recovery-delay`的值 | 成员加入后的效果                                             |
 | --------------------------------- | ------------------------------------------------------------ |
-| -1                                | No automatic recovery of redundancy after a new member comes online. With this value and the default `recovery-delay` setting, redundancy recovery is only achieved by a rebalance operation. |
-| long >= 0                         | Number of milliseconds to wait after a member joins before recovering redundancy. The default is 0 (zero), which causes immediate redundancy recovery whenever a member that hosts the partitioned region joins. |
+| -1                                | 新成员上线后无法自动恢复冗余。 使用此值和默认的`recovery-delay`设置，冗余恢复仅通过重新平衡操作来实现。 |
+| long >= 0                         | 成员加入恢复冗余之前等待的毫秒数。 默认值为0（零），只要承载分区区域的成员加入，就会立即执行冗余恢复。 |
 
-Setting `startup-recovery-delay` to a value higher than the default of 0 allows multiple new members to join before redundancy recovery begins. With the multiple members present during recovery, the system will spread redundancy recovery among them. With no delay, if multiple members are started in close succession, the system may choose only the first member started for most or all of the redundancy recovery.
+将`startup-recovery-delay`设置为高于默认值0的值允许多个新成员在冗余恢复开始之前加入。 在恢复期间存在多个成员时，系统将在它们之间扩展冗余恢复。 如果没有延迟，如果紧密连续启动多个成员，则系统可以仅选择为大多数或所有冗余恢复启动的第一个成员。
 
-**注意:** Satisfying redundancy is not the same as adding capacity. If redundancy is satisfied, new members do not take buckets until the invocation of a rebalance operation.
+**注意:** 满足冗余与增加容量不同。 如果满足冗余，则新成员在调用重新平衡操作之前不会获取桶。
 
-The parallel recovery implementation recovers quickly. For this reason, it is even more important to configure `startup-recovery-delay` to an appropriate value when restarting multiple members at the same time. Set `startup-recovery-delay` to a value that ensures all members are up and available *before* redundancy recovery kicks in.
+并行恢复实施迅速恢复。 因此，在同时重新启动多个成员时，将`startup-recovery-delay`配置为适当的值更为重要。 将`startup-recovery-delay`设置为一个值，确保所有成员在冗余恢复启动*之前*都已启动并可用。
 
-Set join redundancy recovery using one of the following:
+使用以下方法之一设置加入冗余恢复：
 
 - XML:
 
-  ```
+  ```xml
   // Wait 5 seconds after a new member joins before  
   // recovering redundancy
   <region name="PR1"> 
@@ -1196,91 +1189,87 @@ Set join redundancy recovery using one of the following:
   ```
 
 
+### 配置对服务器分区区域的单跳客户端访问
 
-### Configuring Single-Hop Client Access to Server-Partitioned Regions
+单跳数据访问使客户端池能够跟踪分区区域的数据在服务器中的托管位置。 要访问单个条目，客户端将在一个跃点中直接联系承载key的服务器。
 
-Single-hop data access enables the client pool to track where a partitioned region’s data is hosted in the servers. To access a single entry, the client directly contacts the server that hosts the key, in a single hop.
+- **了解客户端对服务器分区区域的单跳访问**
 
-- **Understanding Client Single-Hop Access to Server-Partitioned Regions**
+  通过单跳访问，客户端连接到每个服务器，因此通常使用更多连接。 这适用于较小的安装，但是缩放的障碍。
 
-  With single-hop access the client connects to every server, so more connections are generally used. This works fine for smaller installations, but is a barrier to scaling.
+- **配置客户端对服务器分区区域的单跳访问**
 
-- **Configure Client Single-Hop Access to Server-Partitioned Regions**
-
-  Configure your client/server system for direct, single-hop access to partitioned region data in the servers.
-
+  配置客户端/服务器系统，以便直接，单跳访问服务器中的分区区域数据。
 
 
-#### Understanding Client Single-Hop Access to Server-Partitioned Regions
+#### 了解客户端对服务器分区区域的单跳访问
 
-With single-hop access the client connects to every server, so more connections are generally used. This works fine for smaller installations, but is a barrier to scaling.
+通过单跳访问，客户端连接到每个服务器，因此通常使用更多连接。 这适用于较小的安装，但是缩放的障碍。
 
-If you have a large installation with many clients, you may want to disable single hop by setting the pool attribute, `pr-single-hop-enabled` to false in your pool declarations.
+如果您具有包含许多客户端的大型安装，则可能需要通过在池声明中将池属性`pr-single-hop-enabled`设置为false来禁用单跳。
 
-Without single hop, the client uses whatever server connection is available, the same as with all other operations. The server that receives the request determines the data location and contacts the host, which might be a different server. So more multiple-hop requests are made to the server system.
+如果没有单跳，客户端将使用任何可用的服务器连接，与所有其他操作相同。 接收请求的服务器确定数据位置并与主机联系，主机可能是不同的服务器。 因此，对服务器系统进行了更多的多跳请求。
 
-**注意:** Single hop is used for the following operations: `put`, `get`, `destroy`, `putAll`, `getAll`, `removeAll` and `onRegion` function execution.
+**注意:** 单跳用于以下操作：`put`，`get`，`destroy`，`putAll`，`getAll`，`removeAll`和`onRegion`函数执行。
 
-Even with single hop access enabled, you will occasionally see some multiple-hop behavior. To perform single-hop data access, clients automatically get metadata from the servers about where the entry buckets are hosted. The metadata is maintained lazily. It is only updated after a single-hop operation ends up needing multiple hops, an indicator of stale metadata in the client.
+即使启用了单跳访问，您偶尔也会看到一些多跳行为。 要执行单跳数据访问，客户端会自动从服务器获取有关托管条目所在位置的元数据。 元数据是懒惰的。 它仅在单跳操作最终需要多跳之后更新，这是客户端中陈旧元数据的指示。
 
-##### Single Hop and the Pool max-connections Setting
+##### 单跳和池最大连接设置
 
-Do not set the pool’s `max-connections` setting with single hop enabled. Limiting the pool’s connections with single hop can cause connection thrashing, throughput loss, and server log bloat.
+不要在启用单跳的情况下设置池的`max-connections`设置。 使用单跳限制池的连接可能会导致连接抖动，吞吐量丢失和服务器日志膨胀。
 
-If you need to limit the pool’s connections, either disable single hop or keep a close watch on your system for these negative effects.
+如果您需要限制池的连接，请禁用单跳或密切关注系统中的这些负面影响。
 
-Setting no limit on connections, however, can result in too many connections to your servers, possibly causing you to run up against your system’s file handle limits. Review your anticipated connection use and make sure your servers are able to accommodate it.
+但是，对连接设置无限制可能会导致与服务器的连接过多，从而可能导致您遇到系统的文件句柄限制。 检查您预期的连接使用情况，并确保您的服务器能够容纳它。
 
-##### Balancing Single-Hop Server Connection Use
+##### 平衡单跳服务器连接使用
 
-Single-hop gives the biggest benefits when data access is well balanced across your servers. In particular, the loads for client/server connections can get out of balance if you have these in combination:
+当您的服务器之间的数据访问平衡良好时，单跳可带来最大的好处。 特别是，如果您将这些负载组合在一起，客户端/服务器连接的负载可能会失去平衡：
 
-- Servers that are empty data accessors or that do not host the data the clients access through single-key operations
-- Many single-key operations from the clients
+- 作为空数据访问器或不承载客户端通过单键操作访问的数据的服务器
+- 来自客户的许多单键操作
 
-If data access is greatly out of balance, clients can thrash trying to get to the data servers. In this case, it might be faster to disable single hop and go through servers that do not host the data.
-
-
-
-#### Configure Client Single-Hop Access to Server-Partitioned Regions
-
-Configure your client/server system for direct, single-hop access to partitioned region data in the servers.
-
-This requires a client/server installation that uses one or more partitioned regions on the server.
-
-1. Verify the client’s pool attribute, `pr-single-hop-enabled` is not set or is set to true. It is true by default.
-2. If possible, leave the pool’s `max-connections` at the default unlimited setting (-1).
-3. If possible, use a custom data resolver to partition your server region data according to your clients’ data use patterns. See [Custom-Partition Your Region Data](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/using_custom_partition_resolvers.html). Include the server’s partition resolver implementation in the client’s `CLASSPATH`. The server passes the name of the resolver for each custom partitioned region, so the client uses the proper one. If the server does not use a partition resolver, the default partitioning between server and client matches, so single hop works.
-4. Add single-hop considerations to your overall server load balancing plan. Single-hop uses data location rather than least loaded server to pick the servers for single-key operations. Poorly balanced single-hop data access can affect overall client/server load balancing. Some counterbalancing is done automatically because the servers with more single-key operations become more loaded and are less likely to be picked for other operations.
+如果数据访问大大失衡，客户端可能会尝试访问数据服务器。 在这种情况下，禁用单跳并通过不托管数据的服务器可能会更快。
 
 
+#### 配置客户端对服务器分区区域的单跳访问
 
-#### Rebalancing Partitioned Region Data
+配置客户端/服务器系统，以便直接，单跳访问服务器中的分区区域数据。
 
-In a cluster with minimal contention to the concurrent threads reading or updating from the members, you can use rebalancing to dynamically increase or decrease your data and processing capacity.
+这需要在服务器上使用一个或多个分区区域的客户端/服务器安装。
 
-Rebalancing is a member operation. It affects all partitioned regions defined by the member, regardless of whether the member hosts data for the regions. The rebalancing operation performs two tasks:
+1. 验证客户端的池属性，未设置`pr-single-hop-enabled`或设置为true。 默认情况下是这样。
+2. 如果可能，将池的`max-connections`保留为默认的无限设置（-1）。
+3. 如果可能，请使用自定义数据解析程序根据客户端的数据使用模式对服务器区域数据进行分区。 请参阅[自定义 - 分区您的区域数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/using_custom_partition_resolvers.html). 在客户端的`CLASSPATH`中包含服务器的分区解析器实现。 服务器为每个自定义分区区域传递解析程序的名称，因此客户端使用正确的分区。 如果服务器不使用分区解析器，则服务器和客户端之间的默认分区匹配，因此单跳工作。
+4. 将单跳注意事项添加到整个服务器负载平衡计划中。 单跳使用数据位置而不是最少加载的服务器来选择服务器以进行单键操作。 不均衡的单跳数据访问会影响整体客户端/服务器负载平衡。 一些平衡是自动完成的，因为具有更多单键操作的服务器变得更加负载，并且不太可能被挑选用于其他操作。
 
-1. If the configured partition region redundancy is not satisfied, rebalancing does what it can to recover redundancy. See [Configure High Availability for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
-2. Rebalancing moves the partitioned region data buckets between host members as needed to establish the most fair balance of data and behavior across the cluster.
 
-For efficiency, when starting multiple members, trigger the rebalance a single time, after you have added all members.
+#### 重新平衡分区区域数据
 
-**注意:** If you have transactions running in your system, be careful in planning your rebalancing operations. Rebalancing may move data between members, which could cause a running transaction to fail with a `TransactionDataRebalancedException`. Fixed custom partitioning prevents rebalancing altogether. All other data partitioning strategies allow rebalancing and can result in this exception unless you run your transactions and your rebalancing operations at different times.
+在对成员读取或更新并发线程的争用最小的群集中，您可以使用重新平衡来动态增加或减少数据和处理容量。
 
-Kick off a rebalance using one of the following:
+重新平衡是一项成员操作。 它会影响成员定义的所有分区区域，无论成员是否承载区域的数据。 重新平衡操作执行两项任务：
 
-- `gfsh` command. First, starting a `gfsh` prompt and connect to the cluster. Then type the following command:
+1. 如果不满足配置的分区区域冗余，则重新平衡会尽其所能来恢复冗余。 请参见[为分区区域配置高可用性](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
+2. 重新平衡根据需要在主机成员之间移动分区区域数据桶，以在集群中建立最公平的数据和行为平衡。
+
+为了提高效率，在启动多个成员时，在添加所有成员后，一次触发重新平衡。
+
+**注意:** 如果您的系统中正在运行事务，请务必规划重新平衡操作。 重新平衡可能会在成员之间移动数据，这可能会导致正在运行的事务失败并出现`TransactionDataRebalancedException`。 修复了自定义分区，完全阻止了重新平衡。 除非您在不同时间运行事务和重新平衡操作，否则所有其他数据分区策略都允许重新平衡并导致此异常。
+
+使用以下方法之一启动重新平衡：
+
+- `gfsh`命令。 首先，启动`gfsh`提示并连接到集群。 然后键入以下命令：
 
   ```
   gfsh>rebalance
   ```
 
-  Optionally, you can specify regions to include or exclude from rebalancing, specify a time-out for the rebalance operation or just [simulate a rebalance operation](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/rebalancing_pr_data.html#rebalancing_pr_data__section_495FEE48ED60433BADB7D36C73279C89). Type `help rebalance` or see [rebalance](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/rebalance.html) for more information.
+  （可选）您可以指定要在重新平衡中包含或排除的区域，为重新平衡操作指定超时或仅[模拟重新平衡操作](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/rebalancing_pr_data.html#rebalancing_pr_data__section_495FEE48ED60433BADB7D36C73279C89). 输入`help rebalance`或查看[rebalance](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/rebalance.html) 以获取更多信息。
 
-- API call:
+- API 调用:
 
-  ```
+  ```java
   ResourceManager manager = cache.getResourceManager(); 
   RebalanceOperation op = manager.createRebalanceFactory().start(); 
   //Wait until the rebalance is complete and then get the results
@@ -1290,9 +1279,9 @@ Kick off a rebalance using one of the following:
   System.out.println("Transfered " + results.getTotalBucketTransferBytes()+ "bytes\n");
   ```
 
-You can also just simulate a rebalance through the API, to see if it’s worth it to run:
+您还可以通过API模拟重新平衡，以查看是否值得运行：
 
-```
+```java
 ResourceManager manager = cache.getResourceManager(); 
 RebalanceOperation op = manager.createRebalanceFactory().simulate(); 
 RebalanceResults results = op.getResults(); 
@@ -1300,61 +1289,60 @@ System.out.println("Rebalance would transfer " + results.getTotalBucketTransferB
 System.out.println(" and create " + results.getTotalBucketCreatesCompleted() + " buckets.\n");
 ```
 
-##### How Partitioned Region Rebalancing Works
+##### 分区区域重新平衡的工作原理
 
-The rebalancing operation runs asynchronously.
+重新平衡操作以异步方式运行。
 
-By default, rebalancing is performed on one partitioned region at a time. For regions that have colocated data, the rebalancing works on the regions as a group, maintaining the data colocation between the regions.
+默认情况下，一次在一个分区区域上执行重新平衡。 对于具有共处置数据的区域，重新平衡作为一个组在区域上工作，维护区域之间的数据共置。
 
-You can optionally rebalance multiple regions in parallel by setting the `gemfire.resource.manager.threads` system property. Setting this property to a value greater than 1 enables Geode to rebalance multiple regions in parallel, any time a rebalance operation is initiated using the API.
+您可以选择通过设置`gemfire.resource.manager.threads`系统属性来并行重新平衡多个区域。 将此属性设置为大于1的值可使Geode在使用API启动重新平衡操作时并行重新平衡多个区域。
 
-You can continue to use your partitioned regions normally while rebalancing is in progress. Read operations, write operations, and function executions continue while data is moving. If a function is executing on a local data set, you may see a performance degradation if that data moves to another host during function execution. Future function invocations are routed to the correct member.
+在重新平衡正在进行时，您可以继续正常使用分区区域。 数据移动时，继续执行读操作，写操作和函数执行。 如果函数正在本地数据集上执行，则在函数执行期间，如果该数据移动到另一个主机，则可能会出现性能下降。 将来的函数调用将路由到正确的成员。
 
-Geode tries to ensure that each member has the same percentage of its available space used for each partitioned region. The percentage is configured in the `partition-attributes` `local-max-memory` setting.
+Geode尝试确保每个成员具有与每个分区区域相同的可用空间百分比。 百分比在`partition-attributes`和`local-max-memory`设置中配置。
 
-Partitioned region rebalancing:
+分区重新平衡：
 
-- Does not allow the `local-max-memory` setting to be exceeded unless LRU eviction is enabled with overflow to disk.
-- Places multiple copies of the same bucket on different host IP addresses whenever possible.
-- Resets entry time to live and idle time statistics during bucket migration.
-- Replaces offline members.
+- 除非通过溢出到磁盘启用LRU驱逐，否则不允许超出`local-max-memory`设置。
+- 尽可能将同一存储桶的多个副本放在不同的主机IP地址上。
+- 在存储桶迁移期间重置实时和空闲时间统计信息的输入时间。
+- 替换离线成员。
 
-##### When to Rebalance a Partitioned Region
+##### 何时重新平衡分区区域
 
-You typically want to trigger rebalancing when capacity is increased or reduced through member startup, shut down or failure.
+您通常希望在成员启动，关闭或失败时增加或减少容量时触发重新平衡。
 
-You may also need to rebalance when:
+您可能还需要在以下时间重新平衡：
 
-- You use redundancy for high availability and have configured your region to not automatically recover redundancy after a loss. In this case, Geode only restores redundancy when you invoke a rebalance. See [Configure High Availability for a Partitioned Region](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
-- You have uneven hashing of data. Uneven hashing can occur if your keys do not have a hash code method, which ensures uniform distribution, or if you use a `PartitionResolver` to colocate your partitioned region data (see [Colocate Data from Different Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data)). In either case, some buckets may receive more data than others. Rebalancing can be used to even out the load between data stores by putting fewer buckets on members that are hosting large buckets.
+- 您使用冗余实现高可用性，并将您的区域配置为在丢失后不自动恢复冗余。 在这种情况下，Geode仅在您调用重新平衡时恢复冗余。 请参见[为分区区域配置高可用性](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/configuring_ha_for_pr.html).
+- 您有不均匀的数据散列。 如果您的key没有哈希代码方法（确保均匀分布），或者如果使用`PartitionResolver`来分配分区区域数据(请参阅[来自不同分区区域的共存数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data))，则可能会出现不均匀的哈希。在任何一种情况下，一些桶可能比其他桶接收更多数据。 通过在托管大型存储桶的成员上放置更少的存储桶，可以使用重新平衡来平衡数据存储之间的负载。
 
-##### How to Simulate Region Rebalancing
+##### 如何模拟区域重新平衡
 
-You can simulate the rebalance operation before moving any actual data around by executing the `rebalance` command with the following option:
+您可以通过使用以下选项执行`rebalance`命令来移动任何实际数据之前模拟重新平衡操作：
 
 ```
 gfsh>rebalance --simulate
 ```
 
-**注意:** If you are using `heap_lru` for data eviction, you may notice a difference between your simulated results and your actual rebalancing results. This discrepancy can be due to the VM starting to evict entries after you execute the simulation. Then when you perform an actual rebalance operation, the operation will make different decisions based on the newer heap size.
+**注意:** 如果您使用`heap_lru`进行数据驱逐，您可能会注意到模拟结果与实际重新平衡结果之间存在差异。 这种差异可能是由于VM在您执行模拟后开始逐出条目。 然后，当您执行实际的重新平衡操作时，操作将根据较新的堆大小做出不同的决定。
 
-##### Automated Rebalancing
+##### 自动重新平衡
 
-The experimental [automated rebalance feature](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/automated_rebalance.html) triggers a rebalance operation based on a time schedule.
+实验[自动重新平衡功能](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/automated_rebalance.html) 会根据时间表触发重新平衡操作。
 
 
+#### 检查分区中的冗余
 
-#### Checking Redundancy in Partitioned Regions
+在某些情况下，验证分区区域数据是否为冗余并且在成员重新启动时，已跨分区区域成员正确恢复冗余非常重要。
 
-Under some circumstances, it can be important to verify that your partitioned region data is redundant and that upon member restart, redundancy has been recovered properly across partitioned region members.
-
-You can verify partitioned region redundancy by making sure that the `numBucketsWithoutRedundancy`statistic is **zero** for all your partitioned regions. To check this statistic, use the following `gfsh`command:
+您可以通过确保所有分区区域的`numBucketsWithoutRedundancy`统计数值为**零**来验证分区区域冗余。 要检查此统计信息，请使用以下`gfsh`命令：
 
 ```
 gfsh>show metrics --categories=partition --region=region_name
 ```
 
-For example:
+例如:
 
 ```
 gfsh>show metrics --categories=partition --region=posts
@@ -1374,19 +1362,18 @@ partition | putLocalRate                | 0
           | averageBucketSize           | 1
 ```
 
-If you have `start-recovery-delay=-1` configured for your partitioned region, you will need to perform a rebalance on your region after you restart any members in your cluster in order to recover redundancy.
+如果为分区区域配置了`start-recovery-delay=-1`，则需要在重新启动群集中的任何成员后对区域执行重新平衡，以便恢复冗余。
 
-If you have `start-recovery-delay` set to a low number, you may need to wait extra time until the region has recovered redundancy.
+如果将`start-recovery-delay`设置为较低的数字，则可能需要等待额外的时间，直到该区域恢复冗余。
 
 
+#### 将分区区域数据移动到另一个成员
 
-#### Moving Partitioned Region Data to Another Member
+您可以使用`PartitionRegionHelper` `moveBucketByKey`和`moveData`方法将分区区域数据从一个成员显式移动到另一个成员。
 
-You can use the `PartitionRegionHelper` `moveBucketByKey` and `moveData` methods to explicitly move partitioned region data from one member to another.
+`moveBucketByKey`方法将包含指定键的存储桶从源成员移动到目标成员。 例如，您可以使用该方法将流行的产品项移动到新的空成员，以减少源成员的负载。
 
-The `moveBucketByKey` method moves the bucket that contains the specified key from a source member to a destination member. For example, you could use the method to move a popular product item to a new, empty member to reduce load on the source member.
-
-For example:
+例如:
 
 ```
 Object product = ...
@@ -1412,11 +1399,11 @@ source = sourceMembers.iterator().next();
 PartitionRegionHelper.moveBucketByKey(r, source, destination, product);
 ```
 
-See the Java API documentation for `org.apache.geode.cache.partition.PartitionRegionHelper.moveBucketByKey` for more details.
+有关更多详细信息，请参阅`org.apache.geode.cache.partition.PartitionRegionHelper.moveBucketByKey`的Java API文档。
 
-The `moveData` method moves data up to a given percentage (measured in bytes) from a source member to a destination member. For example, you could use this method to move a specified percentage of data from an overloaded member to another member to improve distribution.
+`moveData`方法将数据从源成员移动到目标成员的给定百分比（以字节为单位）。 例如，您可以使用此方法将指定百分比的数据从重载成员移动到另一个成员以改进分发。
 
-For example:
+例如:
 
 ```
 Region r = ...
@@ -1432,181 +1419,176 @@ DistributedMember destination = ds.findDistributedMember(destName);
 PartitionRegionHelper.moveData(r, source, destination, 20);
 ```
 
-See the Java API documentation for `org.apache.geode.cache.partition.PartitionRegionHelper.moveData` for more details.
+有关更多详细信息，请参阅`org.apache.geode.cache.partition.PartitionRegionHelper.moveData`的Java API文档。
 
-For more information on partitioned regions and rebalancing, see [Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/chapter_overview.html).
-
+有关分区区域和重新平衡的更多信息，请参阅[分区区域](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/chapter_overview.html).
 
 
 ## 分布式和复制区域
 
-In addition to basic region management, distributed and replicated regions include options for things like push and pull distribution models, global locking, and region entry versions to ensure consistency across Geode members.
+除基本区域管理外，分布式和复制区域还包括推送和分配模型，全局锁定和区域条目版本等选项，以确保Geode成员之间的一致性。
 
-- **How Distribution Works**
+- **分布式如何运作**
 
-  To use distributed and replicated regions, you should understand how they work and your options for managing them.
+  要使用分布式和复制区域，您应该了解它们的工作方式以及管理它们的选项。
 
-- **Options for Region Distribution**
+- **区域分布选项**
 
-  You can use distribution with and without acknowledgment, or global locking for your region distribution. Regions that are configured for distribution with acknowledgment can also be configured to resolve concurrent updates consistently across all Geode members that host the region.
+  您可以使用包含和不包含确认的分发，或使用区域分布的全局锁定。 配置为通过确认分发的区域也可以配置为在托管该区域的所有Geode成员之间一致地解析并发更新。
 
-- **How Replication and Preloading Work**
+- **复制和预加载的工作原理**
 
-  To work with replicated and preloaded regions, you should understand how their data is initialized and maintained in the cache.
+  要使用复制和预加载区域，您应该了解如何在缓存中初始化和维护其数据。
 
-- **Configure Distributed, Replicated, and Preloaded Regions**
+- **配置分布式，复制和预加载区域**
 
-  Plan the configuration and ongoing management of your distributed, replicated, and preloaded regions, and configure the regions.
+  规划分布式，复制和预加载区域的配置和持续管理，并配置区域。
 
-- **Locking in Global Regions**
+- **锁定全局区域**
 
-  In global regions, the system locks entries and the region during updates. You can also explicitly lock the region and its entries as needed by your application. Locking includes system settings that help you optimize performance and locking behavior between your members.
+  在全局区域中，系统在更新期间锁定条目和区域。 您还可以根据应用程序的需要显式锁定区域及其条目。 锁定包括系统设置，可帮助您优化性能并锁定成员之间的行为。
 
 
+### 分布式如何运作
 
-### How Distribution Works
+要使用分布式和复制区域，您应该了解它们的工作方式以及管理它们的选项。
 
-To use distributed and replicated regions, you should understand how they work and your options for managing them.
+**注意:** 复制和分布式区域的管理补充了[基本配置和编程](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html)中提供的用于管理数据区域的一般信息。 另请参见`org.apache.geode.cache.PartitionAttributes`。
 
-**注意:** The management of replicated and distributed regions supplements the general information for managing data regions provided in [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html). See also `org.apache.geode.cache.PartitionAttributes`.
+分布式区域自动将条目值更新发送到远程高速缓存并从它们接收更新。
 
-A distributed region automatically sends entry value updates to remote caches and receives updates from them.
+- 分布式条目更新来自`Region` `put`和`create`操作（具有非null值的条目的创建被视为已经具有条目key的远程缓存的更新）。 条目更新是有选择地分发的 - 仅限于已定义条目key的高速缓存。 与您通过复制获得的推送模型相比，这提供了拉动模型。
+- 仅分发不会导致从远程缓存复制新条目。
+- 分布式区域跨群集共享缓存加载器和缓存编写器应用程序事件处理程序插件。
 
-- Distributed entry updates come from the `Region` `put` and `create` operations (the creation of an entry with a non-null value is seen as an update by remote caches that already have the entry key). Entry updates are distributed selectively - only to caches where the entry key is already defined. This provides a pull model of distribution, compared to the push model that you get with replication.
-- Distribution alone does not cause new entries to be copied from remote caches.
-- A distributed region shares cache loader and cache writer application event handler plug-ins across the cluster.
+在分布式区域中，新的和更新的条目值会自动分发到已定义条目的远程缓存中。
 
-In a distributed region, new and updated entry values are automatically distributed to remote caches that already have the entries defined.
-
-**Step 1:** The application updates or creates the entry. At this point, the entry in the M1 cache may not yet exist.
+**步骤 1:** 应用程序更新或创建条目。 此时，M1缓存中的条目可能尚不存在。
 
 ![img](assets/distributed_how_1.svg)
 
-**Step 2:** The new value is automatically distributed to caches holding the entry.
+**步骤 2:** 新值自动分发给持有条目的缓存。
 
 ![img](assets/distributed_how_2.svg)
 
-**Step 3:** The entry’s value is the same throughout the cluster.
+**步骤 3:** 整个群集中条目的值相同。
 
 ![img](assets/distributed_how_3.svg)
 
 
+### 区域分布是选项
 
-### Options for Region Distribution
+您可以使用包含和不包含确认的分发，或使用区域分布的全局锁定。 配置为通过确认分发的区域也可以配置为在托管该区域的所有Geode成员之间一致地解析并发更新。
 
-You can use distribution with and without acknowledgment, or global locking for your region distribution. Regions that are configured for distribution with acknowledgment can also be configured to resolve concurrent updates consistently across all Geode members that host the region.
+每个分布式区域必须在整个群集中具有相同的范围和并发检查设置。
 
-Each distributed region must have the same scope and concurrency checking setting throughout the cluster.
+分布式范围分为三个级别：
 
-Distributed scope is provided at three levels:
+- **distributed-no-ack**. 分发操作返回时无需等待其他缓存的响应。 此范围提供最佳性能并使用最少的开销，但它也最容易出现由网络问题引起的不一致。 例如，网络传输层的临时中断可能导致在将更新分发到远程机器上的缓存时失败，同时本地缓存继续更新。
 
-- **distributed-no-ack**. Distribution operations return without waiting for a response from other caches. This scope provides the best performance and uses the least amount of overhead, but it is also most prone to having inconsistencies caused by network problems. For example, a temporary disruption of the network transport layer could cause a failure in distributing updates to a cache on a remote machine, while the local cache continues being updated.
+- **distributed-ack**. 发布在继续之前等待来自其他缓存的确认。 这比`distributed-no-ack`慢，但涵盖了简单的通信问题，例如临时网络中断。
 
-- **distributed-ack**. Distribution waits for acknowledgment from other caches before continuing. This is slower than `distributed-no-ack`, but covers simple communication problems such as temporary network disruptions.
+  在存在许多`distributed-no-ack`操作的系统中，`distributed-ack`操作可能需要很长时间才能完成。 群集具有可配置的时间，等待对任何`distributed-ack`消息的确认，然后向日志发送有关无响应成员可能出现的问题的警报。 无论等待多长时间，发送方都会等待以遵守分布式ack区域设置。 管理它的`gemfire.properties`属性是`ack-wait-threshold`。
 
-  In systems where there are many `distributed-no-ack` operations, it is possible for `distributed-ack` operations to take a long time to complete. The cluster has a configurable time to wait for acknowledgment to any `distributed-ack` message before sending alerts to the logs about a possible problem with the unresponsive member. No matter how long the wait, the sender keeps waiting in order to honor the distributed-ack region setting. The `gemfire.properties` attribute governing this is `ack-wait-threshold`.
-
-- **global**. Entries and regions are automatically locked across the cluster during distribution operations. All load, create, put, invalidate, and destroy operations on the region and its entries are performed with a distributed lock. The global scope enforces strict consistency across the cluster, but it is the slowest mechanism for achieving consistency. In addition to the implicit locking performed by distribution operations, regions with global scope and their contents can be explicitly locked through the application APIs. This allows applications to perform atomic, multi-step operations on regions and region entries.
-
+- **global**. 在分发操作期间，条目和区域会在群集中自动锁定。 对区域及其条目的所有加载，创建，放置，无效和销毁操作都使用分布式锁执行。 全局范围在整个集群中实施严格一致性，但它是实现一致性的最慢机制。 除了分发操作执行的隐式锁定之外，还可以通过应用程序API显式锁定具有全局范围及其内容的区域。 这允许应用程序对区域和区域条目执行原子，多步操作。
 
 
-### How Replication and Preloading Work
+### 复制和预加载的工作原理
 
-To work with replicated and preloaded regions, you should understand how their data is initialized and maintained in the cache.
+要使用复制和预加载区域，您应该了解如何在缓存中初始化和维护其数据。
 
-Replicated and preloaded regions are configured by using one of the `REPLICATE` region shortcut settings, or by setting the region attribute `data-policy` to `replicate`, `persistent-replicate`, or `preloaded`.
+通过使用`REPLICATE`区域快捷方式设置之一，或通过将region属性`data-policy`设置为`replicate`，`persistent-replicate`或`preloaded`来配置复制和预加载区域。
 
-#### Initialization of Replicated and Preloaded Regions
+#### 复制和预加载区域的初始化
 
-At region creation, the system initializes the preloaded or replicated region with the most complete and up-to-date data set it can find. The system uses these data sources to initialize the new region, following this order of preference:
+在区域创建时，系统使用可以找到的最完整和最新的数据集初始化预加载或复制的区域。 系统使用这些数据源按照此优先顺序初始化新区域：
 
-1. Another replicated region that is already defined in the cluster.
-2. For persistent replicate only. Disk files, followed by a union of all copies of the region in the distributed cache.
-3. For preloaded region only. Another preloaded region that is already defined in the cluster.
-4. The union of all copies of the region in the distributed cache.
+1. 另一个已在集群中定义的复制区域。
+2. 仅用于持久复制。 磁盘文件，后跟分布式缓存中区域的所有副本的并集。
+3. 仅适用于预加载区域。 另一个已在集群中定义的预加载区域。
+4. 分布式缓存中区域的所有副本的并集。
 
 ![img](assets/distributed_replica_preload.svg)
 
-While a region is being initialized from a replicated or preloaded region, if the source region crashes, the initialization starts over.
+在从复制或预加载区域初始化区域时，如果源区域崩溃，则初始化将重新开始。
 
-If a union of regions is used for initialization, as in the figure, and one of the individual source regions goes away during the initialization (due to cache closure, member crash, or region destruction), the new region may contain a partial data set from the crashed source region. When this happens, there is no warning logged or exception thrown. The new region still has a complete set of the remaining members’ regions.
+如果区域联合用于初始化，如图所示，并且其中一个单独的源区域在初始化期间消失（由于缓存关闭，成员崩溃或区域破坏），新区域可能包含部分数据集 来自坠毁的源区域。 发生这种情况时，不会记录任何警告或抛出异常。 新区域仍然有一整套剩余的成员区域。
 
-#### Behavior of Replicated and Preloaded Regions After Initialization
+#### 初始化后复制和预加载区域的行为
 
-Once initialized, the preloaded region operates like the region with a `normal` `data-policy`, receiving distributions only for entries it has defined in the local cache.
+初始化后，预加载区域的操作类似于具有`normal`和`data-policy`数据策略的区域，仅接收它在本地缓存中定义的条目的分布。
 
 ![img](assets/distributed_preload.svg)
 
-If the region is configured as a replicated region, it receives all new creations in the distributed region from the other members. This is the push distribution model. Unlike the preloaded region, the replicated region has a contract that states it will hold all entries that are present anywhere in the distributed region.
+如果区域配置为复制区域，则它将从其他成员接收分布式区域中的所有新创建。 这是推送分发模型。 与预加载区域不同，复制区域具有一个契约，表明它将保存分布式区域中任何位置的所有条目。
 
 ![img](assets/distributed_replica.svg)
 
-### Configure Distributed, Replicated, and Preloaded Regions
+### 配置分布式，复制和预加载区域
 
-Plan the configuration and ongoing management of your distributed, replicated, and preloaded regions, and configure the regions.
+规划分布式，复制和预加载区域的配置和持续管理，并配置区域。
 
-Before you begin, understand [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
+在开始之前，请了解[基本配置和编程](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
 
-1. Choose the region shortcut setting that most closely matches your region configuration. See **org.apache.geode.cache.RegionShortcut** or [Region Shortcuts](https://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_regionshortcuts.html#concept_ymp_rkz_4dffhdfhk). To create a replicated region, use one of the `REPLICATE` shortcut settings. To create a preloaded region, set your region `data-policy` to `preloaded`. This `cache.xml` declaration creates a replicated region:
+1. 选择与您的区域配置最匹配的区域快捷方式设置。 请参阅** org.apache.geode.cache.RegionShortcut **或[Region Shortcuts](https://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_regionshortcuts.html#concept_ymp_rkz_4dffhdfhk). 要创建复制区域，请使用`REPLICATE`快捷方式设置之一。 要创建预加载区域，请将您的区域`data-policy`设置为`preloaded`。 这个`cache.xml`声明创建了一个复制区域：
 
    ```
    <region-attributes refid="REPLICATE"> 
    </region-attributes>
    ```
 
-   You can also use gfsh to configure a region. For example:
+   您还可以使用gfsh配置区域。 例如：
 
    ```
    gfsh>create region --name=regionA --type=REPLICATE
    ```
 
-   See [Region Types](https://geode.apache.org/docs/guide/17/developing/region_options/region_types.html#region_types).
+   参见[区域类型](https://geode.apache.org/docs/guide/17/developing/region_options/region_types.html#region_types).
 
-2. Choose the level of distribution for your region. The region shortcuts in `RegionShortcut` for distributed regions use `distributed-ack` scope. If you need a different scope, set the `region-attributes` `scope` to `distributed-no-ack` or `global`.
+2. 选择您所在地区的分布式级别。 `RegionShortcut`中分布式区域的区域快捷方式使用`distributed-ack`范围。 如果需要不同的范围，请将`region-attributes` `scope`设置为`distributed-no-ack`或`global`。
 
-   Example:
+   例子:
 
    ```
    <region-attributes refid="REPLICATE" scope="distributed-no-ack"> 
    </region-attributes>
    ```
 
-3. If you are using the `distributed-ack` scope, optionally enable concurrency checks for the region.
+3. 如果您使用`distributed-ack`范围，则可以选择启用该区域的并发检查。
 
-   Example:
+   例子:
 
    ```
    <region-attributes refid="REPLICATE" scope="distributed-ack" concurrency-checks-enabled="true"> 
    </region-attributes>
    ```
 
-4. If you are using `global` scope, program any explicit locking you need in addition to the automated locking provided by Geode.
+4. 如果您正在使用`global`范围，除了Geode提供的自动锁定外，还需要编程您需要的任何显式锁定。
 
-#### Local Destroy and Invalidate in the Replicated Region
+#### 复制区域中的本地销毁和无效
 
-Of all the operations that affect the local cache only, only local region destroy is allowed in a replicated region. Other operations are not configurable or throw exceptions. For example, you cannot use local destroy as the expiration action on a replicated region. This is because local operations like entry invalidation and destruction remove data from the local cache only. A replicated region would no longer be complete if data were removed locally but left intact.
+在仅影响本地缓存的所有操作中，在复制区域中仅允许本地区域销毁。 其他操作不可配置或抛出异常。 例如，您不能将本地destroy用作复制区域上的到期操作。 这是因为诸如条目失效和破坏之类的本地操作仅从本地缓存中删除数据。 如果数据在本地删除但保持不变，则复制区域将不再完整。
 
 
+### 锁定全局区域
 
-### Locking in Global Regions
+在全局区域中，系统在更新期间锁定条目和区域。 您还可以根据应用程序的需要显式锁定区域及其条目。 锁定包括系统设置，可帮助您优化性能并锁定成员之间的行为。
 
-In global regions, the system locks entries and the region during updates. You can also explicitly lock the region and its entries as needed by your application. Locking includes system settings that help you optimize performance and locking behavior between your members.
+在具有全局范围的区域中，锁定有助于确保缓存一致性
 
-In regions with global scope, locking helps ensure cache consistency.
+区域和条目的锁定有两种方式：
 
-Locking of regions and entries is done in two ways:
+1. **Implicit(隐式)**. Geode在大多数操作期间自动锁定全局区域及其数据条目。 区域失效和销毁不会获取锁定。
 
-1. **Implicit**. Geode automatically locks global regions and their data entries during most operations. Region invalidation and destruction do not acquire locks.
+2. **Explicit(明确)**. 您可以使用API显式锁定区域及其条目。 这样做是为了保证具有多步分布式操作的任务的原子性。 `Region`方法`org.apache.geode.cache.Region.getDistributedLock`和`org.apache.geode.cache.Region.getRegionDistributedLock`为区域和指定的键返回`java.util.concurrent.locks.Lock`的实例。
 
-2. **Explicit**. You can use the API to explicitly lock the region and its entries. Do this to guarantee atomicity in tasks with multi-step distributed operations. The `Region` methods `org.apache.geode.cache.Region.getDistributedLock` and `org.apache.geode.cache.Region.getRegionDistributedLock` return instances of `java.util.concurrent.locks.Lock` for a region and a specified key.
+   **注意:** 您必须使用`Region` API来锁定区域和区域条目。 不要在`org.apache.geode.distributed`包中使用`DistributedLockService`。 该服务仅适用于锁定任意分布式应用程序。 它与`Region`的locking方法不兼容。
 
-   **注意:** You must use the `Region` API to lock regions and region entries. Do not use the `DistributedLockService` in the `org.apache.geode.distributed` package. That service is available only for locking in arbitrary distributed applications. It is not compatible with the `Region`locking methods.
+#### 锁定超时
 
-#### Lock Timeouts
+获取区域或条目的锁定是获取实体的锁定实例然后使用实例设置锁定的两步过程。 锁定后，持有它进行操作，然后将其释放给其他人使用。 您可以设置等待获取锁定所花费的时间限制以及持有锁定所花费的时间。 隐式和显式锁定操作都受超时影响：
 
-Getting a lock on a region or entry is a two-step process of getting a lock instance for the entity and then using the instance to set the lock. Once you have the lock, you hold it for your operations, then release it for someone else to use. You can set limits on the time spent waiting to get a lock and the time spent holding it. Both implicit and explicit locking operations are affected by the timeouts:
-
-- The lock timeout limits the wait to get a lock. The cache attribute `lock-timeout` governs implicit lock requests. For explicit locking, specify the wait time through your calls to the instance of `java.util.concurrent.locks.Lock` returned from the `Region` API. You can wait a specific amount of time, return immediately either with or without the lock, or wait indefinitely.
+- 锁定超时限制等待获取锁定。 缓存属性`lock-timeout`控制隐式锁请求。 对于显式锁定，通过调用从`Region` API返回的`java.util.concurrent.locks.Lock`实例来指定等待时间。 您可以等待一段特定的时间，无论是否有锁，都可以立即返回，或者无限期地等待。
 
   ```
   <cache lock-timeout="60"> 
@@ -1619,7 +1601,7 @@ Getting a lock on a region or entry is a two-step process of getting a lock inst
   gfsh>alter runtime --lock-timeout=60 
   ```
 
-- The lock lease limits how long a lock can be held before it is automatically released. A timed lock allows the application to recover when a member fails to release an obtained lock within the lease time. For all locking, this timeout is set with the cache attribute `lock-lease`.
+- 锁定租约限制锁定在自动释放之前可以保持多长时间。 定时锁允许应用程序在成员未能在租用时间内释放获得的锁时进行恢复。 对于所有锁定，此超时使用缓存属性`lock-lease`设置。
 
   ```
   <cache lock-lease="120"> </cache>
@@ -1631,27 +1613,27 @@ Getting a lock on a region or entry is a two-step process of getting a lock inst
   gfsh>alter runtime --lock-lease=120
   ```
 
-#### Optimize Locking Performance
+#### 优化锁定性能
 
-For each global region, one of the members with the region defined will be assigned the job of lock grantor. The lock grantor runs the lock service that receives lock requests from system members, queues them as needed, and grants them in the order received.
+对于每个全局区域，将为已定义区域的成员之一分配锁定授予者的作业。 锁定授予者运行锁定服务，该服务接收来自系统成员的锁定请求，根据需要对它们进行排队，并按接收的顺序授予它们。
 
-The lock grantor is at a slight advantage over other members as it is the only one that does not have to send a message to request a lock. The grantor’s requests cost the least for the same reason. Thus, you can optimize locking in a region by assigning lock grantor status to the member that acquires the most locks. This may be the member that performs the most puts and thus requires the most implicit locks or this may be the member that performs many explicit locks.
+锁定授予者比其他成员略有优势，因为它是唯一一个不必发送消息来请求锁定的成员。 出于同样的原因，设保人的要求成本最低。 因此，您可以通过将锁定授予者状态分配给获取最多锁定的成员来优化区域中的锁定。 这可能是执行最多put的成员，因此需要最隐式锁，或者这可能是执行许多显式锁的成员。
 
-The lock grantor is assigned as follows:
+锁定授予者分配如下：
 
-- Any member with the region defined that requests lock grantor status is assigned it. Thus at any time, the most recent member to make the request is the lock grantor.
-- If no member requests lock grantor status for a region, or if the current lock grantor goes away, the system assigns a lock grantor from the members that have the region defined in their caches.
+- 任何具有区域定义的成员都会为其分配请求锁定授予者状态。 因此，在任何时候，发出请求的最新成员是锁定授予者。
+- 如果没有成员请求区域的锁定授予者状态，或者当前锁定授予者消失，则系统从具有在其高速缓存中定义的区域的成员分配锁定授予者。
 
-You can request lock grantor status:
+您可以申请锁定设备状态：
 
-1. At region creation through the `is-lock-grantor` attribute. You can retrieve this attribute through the region method, `getAttributes`, to see whether you requested to be lock grantor for the region. **注意:** The `is-lock-grantor` attribute does not change after region creation.
-2. After region creation through the region `becomeLockGrantor` method. Changing lock grantors should be done with care, however, as doing so takes cycles from other operations. In particular, be careful to avoid creating a situation where you have members vying for lock grantor status.
+1. 在区域创建时通过`is-lock-grantor`属性。 您可以通过region方法`getAttributes`检索此属性，以查看您是否要求成为该区域的锁定授予者。 **注意:** 区域创建后，`is-lock-grantor`属性不会更改。
+2. 通过区域`becomeLockGrantor`方法创建区域后。 但是，应该谨慎地更改锁定授予者，因为这样做需要从其他操作开始循环。 特别是，要小心避免创建一个成员争夺锁定授予者状态的情况。
 
-#### Examples
+#### 例子
 
-These two examples show entry locking and unlocking. Note how the entry’s `Lock` object is obtained and then its lock method invoked to actually set the lock. The example program stores the entry lock information in a hash table for future reference.
+这两个示例显示了条目锁定和解锁。 注意如何获取条目的`Lock`对象，然后调用其锁定方法来实际设置锁。 示例程序将条目锁定信息存储在哈希表中以供将来参考。
 
-```
+```java
 /* Lock a data entry */ 
 HashMap lockedItemsMap = new HashMap(); 
 ...
@@ -1673,247 +1655,241 @@ HashMap lockedItemsMap = new HashMap();
 ```
 
 
-
 ## 区域更新的一致性
 
-Geode ensures that all copies of a region eventually reach a consistent state on all members and clients that host the region, including Geode members that distribute region events.
+Geode确保区域的所有副本最终在托管该区域的所有成员和客户端上达到一致状态，包括分发区域事件的Geode成员。
 
-- **Consistency Checking by Region Type**
+- **按地区类型检查一致性**
 
-  Geode performs different consistency checks depending on the type of region you have configured.
+  Geode根据您配置的区域类型执行不同的一致性检查。
 
-- **Configuring Consistency Checking**
+- **配置一致性检查**
 
-  Geode enables consistency checking by default. You cannot disable consistency checking for persistent regions. For all other regions, you can explicitly enable or disable consistency checking by setting the `concurrency-checks-enabled` region attribute in `cache.xml` to “true” or “false.”
+  Geode默认启用一致性检查。 您无法禁用持久性区域的一致性检查。 对于所有其他区域，您可以通过将`cache.xml`中的`concurrency-checks-enabled` 区域属性设置为“true”或“false”来显式启用或禁用一致性检查。
 
-- **Overhead for Consistency Checks**
+- **一致性检查的开销**
 
-  Consistency checking requires additional overhead for storing and distributing version and timestamp information, as well as for maintaining destroyed entries for a period of time to meet consistency requirements.
+  一致性检查需要额外的开销来存储和分发版本和时间戳信息，以及在一段时间内维护销毁的条目以满足一致性要求。
 
-- **How Consistency Checking Works for Replicated Regions**
+- **一致性检查如何适用于复制区域**
 
-  Each region stores version and timestamp information for use in conflict detection. Geode members use the recorded information to detect and resolve conflicts consistently before applying a distributed update.
+  每个区域都存储用于冲突检测的版本和时间戳信息。 在应用分布式更新之前，Geode成员使用记录的信息一致地检测和解决冲突。
 
-- **How Destroy and Clear Operations Are Resolved**
+- **如何解决Destroy和Clear操作**
 
-  When consistency checking is enabled for a region, a Geode member does not immediately remove an entry from the region when an application destroys the entry. Instead, the member retains the entry with its current version stamp for a period of time in order to detect possible conflicts with operations that have occurred. The retained entry is referred to as a *tombstone*. Geode retains tombstones for partitioned regions and non-replicated regions as well as for replicated regions, in order to provide consistency.
+  为区域启用一致性检查时，当应用程序销毁该条目时，Geode成员不会立即从该区域中删除条目。 相反，成员将条目保留其当前版本标记一段时间，以便检测可能与已发生的操作发生冲突。 保留的条目称为*墓碑*。 为了提供一致性，Geode保留了分区区域和非复制区域以及复制区域的逻辑删除。
 
-- **Transactions with Consistent Regions**
+- **具有一致性区域的事务**
 
-  A transaction that modifies a region having consistency checking enabled generates all necessary version information for region updates when the transaction commits.
+  修改启用了一致性检查的区域的事务会在事务提交时生成区域更新的所有必要版本信息。
 
 
+### 按地区类型检查一致性
 
-### Consistency Checking by Region Type
+Geode根据您配置的区域类型执行不同的一致性检查。
 
-Geode performs different consistency checks depending on the type of region you have configured.
+**分区区域的一致性**
 
-**Partitioned Region Consistency**
+对于分区区域，Geode通过将给定key上的所有更新路由到保存该key主副本的Geode成员来维护一致性。 该成员持有对key的锁定，同时将更新分发给承载key副本的其他成员。 由于分区区域的所有更新都在主要Geode成员上序列化，因此所有成员都以相同的顺序应用更新，并始终保持一致性。 请参阅[了解分区](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/how_partitioning_works.html).
 
-For a partitioned region, Geode maintains consistency by routing all updates on a given key to the Geode member that holds the primary copy of that key. That member holds a lock on the key while distributing updates to other members that host a copy of the key. Because all updates to a partitioned region are serialized on the primary Geode member, all members apply the updates in the same order and consistency is maintained at all times. See [Understanding Partitioning](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/how_partitioning_works.html).
+**复制区域一致性**
 
-**Replicated Region Consistency**
+对于复制区域，托管该区域的任何成员都可以更新key并将该更新分发给其他成员，而无需锁定key。 两个成员可能同时更新相同的key（并发更新）。 由于网络等待时间，一个成员的更新也可能在稍后时间分配给其他成员，之后这些成员已经对key应用了更新的更新（无序更新）。 默认情况下，Geode成员在应用区域更新之前执行冲突检查，以便检测并一致地解决并发和无序更新。 冲突检查可确保区域数据最终在托管该区域的所有成员上保持一致。 复制区域的冲突检查行为总结如下：
 
-For a replicated region, any member that hosts the region can update a key and distribute that update to other members without locking the key. It is possible that two members can update the same key at the same time (a concurrent update). It is also possible that, due to network latency, an update in one member is distributed to other members at a later time, after those members have already applied more recent updates to the key (an out-of-order update). By default, Geode members perform conflict checking before applying region updates in order to detect and consistently resolve concurrent and out-of-order updates. Conflict checking ensures that region data eventually becomes consistent on all members that host the region. The conflict checking behavior for replicated regions is summarized as follows:
+- 如果两个成员同时更新同一个key，则冲突检查会确保所有成员最终应用相同的值，即两个并发更新之一的值。
+- 如果成员收到无序更新（在应用一个或多个最新更新后收到的更新），则冲突检查可确保丢弃无序更新，而不应用于缓存。
 
-- If two members update the same key at the same time, conflict checking ensures that all members eventually apply the same value, which is the value of one of the two concurrent updates.
-- If a member receives an out-of-order update (an update that is received after one or more recent updates were applied), conflict checking ensures that the out-of-order update is discarded and not applied to the cache.
+[一致性检查如何适用于复制区域](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_C5B74CCDD909403C815639339AA03758) 和 [如何解决Destroy和Clear操作](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_321B05044B6641FCAEFABBF5066BD399) 提供有关Geode在应用更新时如何执行冲突检查的更多详细信息。
 
-[How Consistency Checking Works for Replicated Regions](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_C5B74CCDD909403C815639339AA03758) and [How Destroy and Clear Operations Are Resolved](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_321B05044B6641FCAEFABBF5066BD399) provide more details about how Geode performs conflict checking when applying an update.
+**非复制区域和客户端缓存一致性**
 
-**Non-Replicated Regions and Client Cache Consistency**
+当成员收到非复制区域中的条目的更新并应用更新时，它将以与复制区域相同的方式执行冲突检查。 但是，如果成员对区域中不存在的条目启动操作，则它首先将该操作传递给承载复制的成员。 承载副本的成员生成并提供后续冲突检查所需的版本信息。 请参见[一致性检查如何为复制区域工作](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_C5B74CCDD909403C815639339AA03758).
 
-When a member receives an update for an entry in a non-replicated region and applies an update, it performs conflict checking in the same way as for a replicated region. However, if the member initiates an operation on an entry that is not present in the region, it first passes that operation to a member that hosts a replicate. The member that hosts the replica generates and provides the version information necessary for subsequent conflict checking. See [How Consistency Checking Works for Replicated Regions](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_C5B74CCDD909403C815639339AA03758).
+客户端缓存在收到区域条目的更新时也以相同的方式执行一致性检查。 但是，首先将源自客户端缓存的所有区域操作传递到可用的Geode服务器，该服务器生成后续冲突检查所需的版本信息。
 
-Client caches also perform consistency checking in the same way when they receive an update for a region entry. However, all region operations that originate in the client cache are first passed onto an available Geode server, which generates the version information necessary for subsequent conflict checking.
+### 配置一致性检查
 
-### Configuring Consistency Checking
+Geode默认启用一致性检查。 您无法禁用持久性区域的一致性检查。 对于所有其他区域，您可以通过将`cache.xml`中的`concurrency-checks-enabled` 区域属性设置为“true”或“false”来显式启用或禁用一致性检查。
 
-Geode enables consistency checking by default. You cannot disable consistency checking for persistent regions. For all other regions, you can explicitly enable or disable consistency checking by setting the `concurrency-checks-enabled` region attribute in `cache.xml` to “true” or “false.”
+承载区域的所有Geode成员必须对该区域使用相同的`concurrency-checks-enabled`设置。
 
-All Geode members that host a region must use the same `concurrency-checks-enabled` setting for that region.
+即使服务器缓存启用了对同一区域的一致性检查，客户端缓存也可以禁用区域的一致性检查。 此配置可确保客户端查看该区域的所有事件，但不会阻止客户端缓存区域与服务器缓存不同步。
 
-A client cache can disable consistency checking for a region even if server caches enable consistency checking for the same region. This configuration ensures that the client sees all events for the region, but it does not prevent the client cache region from becoming out-of-sync with the server cache.
+参见 [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes).
 
-See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes).
+**注意:** 不启用一致性检查的区域仍然受竞争条件的影响。 并发更新可能导致一个或多个成员具有相同key的不同值。 网络延迟可能导致在发生更新后将旧更新应用于key。
 
-**注意:** Regions that do not enable consistency checking remain subject to race conditions. Concurrent updates may result in one or more members having different values for the same key. Network latency can result in older updates being applied to a key after more recent updates have occurred.
+### 一致性检查的开销
 
-### Overhead for Consistency Checks
+一致性检查需要额外的开销来存储和分发版本和时间戳信息，以及在一段时间内维护销毁的条目以满足一致性要求。
 
-Consistency checking requires additional overhead for storing and distributing version and timestamp information, as well as for maintaining destroyed entries for a period of time to meet consistency requirements.
+为了提供一致性检查，每个区域条目使用额外的16个字节。 删除条目时，会创建并维护大约13个字节的逻辑删除条目，直到逻辑删除过期或在成员中进行垃圾收集。 （当一个条目被销毁时，该成员临时保留该条目及其当前版本标记，以检测可能与已发生的操作的冲突。保留的条目称为墓碑。）参见[如何解决销毁和清除操作](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_321B05044B6641FCAEFABBF5066BD399).
 
-To provide consistency checking, each region entry uses an additional 16 bytes. When an entry is deleted, a tombstone entry of approximately 13 bytes is created and maintained until the tombstone expires or is garbage-collected in the member. (When an entry is destroyed, the member temporarily retains the entry with its current version stamp to detect possible conflicts with operations that have occurred. The retained entry is referred to as a tombstone.) See [How Destroy and Clear Operations Are Resolved](https://geode.apache.org/docs/guide/17/developing/distributed_regions/how_region_versioning_works.html#topic_321B05044B6641FCAEFABBF5066BD399).
+如果您无法支持部署中的额外开销，则可以通过为每个区域设置`concurrency-checks-enabled`为“false”来禁用一致性检查。 请参阅[区域更新的一致性](https://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045).
 
-If you cannot support the additional overhead in your deployment, you can disable consistency checks by setting `concurrency-checks-enabled` to “false” for each region. See [Consistency for Region Updates](https://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045).
+### 一致性检查如何适用于复制区域
 
-### How Consistency Checking Works for Replicated Regions
+每个区域都存储用于冲突检测的版本和时间戳信息。 在应用分布式更新之前，Geode成员使用记录的信息一致地检测和解决冲突。
 
-Each region stores version and timestamp information for use in conflict detection. Geode members use the recorded information to detect and resolve conflicts consistently before applying a distributed update.
+默认情况下，区域中的每个条目都存储上次更新条目的Geode成员的ID，以及每次更新发生时递增的条目的版本标记。 版本信息存储在每个本地条目中，并且在更新本地条目时将版本标记分发给其他Geode成员。
 
-By default, each entry in a region stores the ID of the Geode member that last updated the entry, as well as a version stamp for the entry that is incremented each time an update occurs. The version information is stored in each local entry, and the version stamp is distributed to other Geode members when the local entry is updated.
+接收更新消息的Geode成员或客户端首先将更新版本标记与其本地高速缓存中记录的版本标记进行比较。 如果更新版本标记较大，则表示该条目的较新版本，因此接收成员在本地应用更新并更新版本信息。 较小的更新版本标记表示无序更新，将被丢弃。
 
-A Geode member or client that receives an update message first compares the update version stamp with the version stamp recorded in its local cache. If the update version stamp is larger, it represents a newer version of the entry, so the receiving member applies the update locally and updates the version information. A smaller update version stamp indicates an out-of-order update, which is discarded.
+相同的版本标记表示多个Geode成员同时更新了相同的条目。 要解决并发更新，Geode成员始终应用（或保留）具有最高成员身份ID的区域条目; 具有较低成员资格ID的区域条目被丢弃。
 
-An identical version stamp indicates that multiple Geode members updated the same entry at the same time. To resolve a concurrent update, a Geode member always applies (or keeps) the region entry that has the highest membership ID; the region entry having the lower membership ID is discarded.
+**注意:** 当Geode成员丢弃更新消息时（无论是无序更新还是解析并发更新），它都不会将丢弃的事件传递给该区域的事件侦听器。 您可以使用`conflatedEvents`统计信息跟踪每个成员的丢弃更新数。 参见[Geode统计列表](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list). 某些成员可能会在其他成员应用更新时丢弃更新，具体取决于每个成员收到更新的顺序。 因此，每个Geode成员的`conflatedEvents`统计信息都不同。 以下示例更详细地描述了此行为。
 
-**注意:** When a Geode member discards an update message (either for an out-of-order update or when resolving a concurrent update), it does not pass the discarded event to an event listener for the region. You can track the number of discarded updates for each member using the `conflatedEvents` statistic. See [Geode Statistics List](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list). Some members may discard an update while other members apply the update, depending on the order in which each member receives the update. For this reason, the `conflatedEvents` statistic differs for each Geode member. The example below describes this behavior in more detail.
+以下示例显示如何在三个Geode成员的集群中处理并发更新。 假设成员A，B和C的成员资格ID分别为1,2和3。 每个成员当前在其版本C2的缓存中存储条目X（该条目最后由成员C更新）：
 
-The following example shows how a concurrent update is handled in a cluster of three Geode members. Assume that Members A, B, and C have membership IDs of 1, 2, and 3, respectively. Each member currently stores an entry, X, in their caches at version C2 (the entry was last updated by member C):
-
-**Step 1:** An application updates entry X on Geode member A at the same time another application updates entry X on member C. Each member increments the version stamp for the entry and records the version stamp with their member ID in their local caches. In this case the entry was originally at version C2, so each member updates the version to 3 (A3 and C3, respectively) in their local caches.
+**步骤 1:** 应用程序更新Geode成员A上的条目X，同时另一个应用程序更新成员C上的条目X.每个成员递增条目的版本标记，并在其本地缓存中记录带有其成员标识的版本标记。 在这种情况下，条目最初是在C2版本，因此每个成员在其本地缓存中将版本更新为3（分别为A3和C3）。
 
 ![img](assets/region_entry_versions_1.svg)
 
-**Step 2:** Member A distributes its update message to members B and C.
+**步骤 2:** 成员A将其更新消息分发给成员B和C.
 
-Member B compares the update version stamp (3) to its recorded version stamp (2) and applies the update to its local cache as version A3. In this member, the update is applied for the time being, and passed on to configured event listeners.
+成员B将更新版本标记（3）与其记录的版本标记（2）进行比较，并将更新作为版本A3应用于其本地高速缓存。 在此成员中，更新将暂时应用，并传递给已配置的事件侦听器。
 
-Member C compares the update version stamp (3) to its recorded version stamp (3) and identifies a concurrent update. To resolve the conflict, member C next compares the membership ID of the update to the membership ID stored in its local cache. Because the distributed system ID the update (A3) is lower than the ID stored in the cache (C3), member C discards the update (and increments the `conflatedEvents` statistic).
+成员C将更新版本标记（3）与其记录的版本标记（3）进行比较，并标识并发更新。 为解决冲突，成员C接下来将更新的成员身份ID与存储在其本地缓存中的成员身份ID进行比较。 因为更新（A3）的分布式系统ID低于存储在高速缓存（C3）中的ID，所以成员C丢弃更新（并增加`conflatedEvents`统计信息）。
 
 ![img](assets/region_entry_versions_2.svg)
 
-**Step 3:** Member C distributes the update message to members A and B.
+**步骤 3:** 成员C将更新消息分发给成员A和B.
 
-Members A and B compare the update version stamp (3) to their recorded version stamps (3) and identify the concurrent update. To resolve the conflict, both members compare the membership ID of the update with the membership ID stored in their local caches. Because the distributed system ID of A in the cache value is less than the ID of C in the update, both members record the update C3 in their local caches, overwriting the previous value.
+成员A和B将更新版本标记（3）与其记录的版本标记（3）进行比较，并识别并发更新。 为了解决冲突，两个成员都将更新的成员身份ID与存储在其本地缓存中的成员身份ID进行比较。 由于缓存值中A的分布式系统ID小于更新中的C的ID，因此两个成员都会在其本地缓存中记录更新C3，从而覆盖先前的值。
 
-At this point, all members that host the region have achieved a consistent state for the concurrent updates on members A and C.
+此时，托管该区域的所有成员都已成为成员A和C上的并发更新的一致状态。
 
 ![img](assets/region_entry_versions_3.svg)
 
-### How Destroy and Clear Operations Are Resolved
+### 如何解决Destroy和Clear操作
 
-When consistency checking is enabled for a region, a Geode member does not immediately remove an entry from the region when an application destroys the entry. Instead, the member retains the entry with its current version stamp for a period of time in order to detect possible conflicts with operations that have occurred. The retained entry is referred to as a *tombstone*. Geode retains tombstones for partitioned regions and non-replicated regions as well as for replicated regions, in order to provide consistency.
+为区域启用一致性检查时，当应用程序销毁该条目时，Geode成员不会立即从该区域中删除条目。 相反，成员将条目保留其当前版本标记一段时间，以便检测可能与已发生的操作发生冲突。 保留的条目称为*墓碑*。 为了提供一致性，Geode保留了分区区域和非复制区域以及复制区域的逻辑删除。
 
-A tombstone in a client cache or a non-replicated region expires after 8 minutes, at which point the tombstone is immediately removed from the cache.
+客户端缓存或非复制区域中的逻辑删除在8分钟后到期，此时逻辑删除立即从缓存中删除。
 
-A tombstone for a replicated or partitioned region expires after 10 minutes. Expired tombstones are eligible for garbage collection by the Geode member. Garbage collection is automatically triggered after 100,000 tombstones of any type have timed out in the local Geode member. You can optionally set the `gemfire.tombstone-gc-threshold` property to a value smaller than 100000 to perform garbage collection more frequently.
+复制或分区区域的墓碑在10分钟后到期。 过期的墓碑有资格由Geode成员进行垃圾收集。 任何类型的100,000个墓碑在本地Geode成员中超时后，将自动触发垃圾收集。 您可以选择将`gemfire.tombstone-gc-threshold`属性设置为小于100000的值，以更频繁地执行垃圾回收。
 
-**注意:** To avoid out-of-memory errors, a Geode member also initiates garbage collection for tombstones when the amount of free memory drops below 30 percent of total memory.
+**注意:** 为了避免内存不足错误，当可用内存量低于总内存的30％时，Geode成员还会启动逻辑删除的垃圾回收。
 
-You can monitor the total number of tombstones in a cache using the `tombstoneCount` statistic in `CachePerfStats`. The `tombstoneGCCount` statistic records the total number of tombstone garbage collection cycles that a member has performed. `replicatedTombstonesSize` and `nonReplicatedTombstonesSize` show the approximate number of bytes that are currently consumed by tombstones in replicated or partitioned regions, and in non-replicated regions, respectively. See [Geode Statistics List](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list).
+您可以使用`CachePerfStats`中的`tombstoneCount`统计信息来监视缓存中的逻辑删除总数。 `tombstoneGCCount`统计信息记录成员执行的逻辑删除垃圾收集周期的总数。 `replicatedTombstonesSize`和`nonReplicatedTombstonesSize`分别显示复制或分区区域和非复制区域中墓碑当前消耗的大致字节数。 参见[Geode统计列表](https://geode.apache.org/docs/guide/17/reference/statistics_list.html#statistics_list).
 
-**About Region.clear() Operations**
+**关于Region.clear()操作**
 
-Region entry version stamps and tombstones ensure consistency only when individual entries are destroyed. A `Region.clear()` operation, however, operates on all entries in a region at once. To provide consistency for `Region.clear()` operations, Geode obtains a distributed read/write lock for the region, which blocks all concurrent updates to the region. Any updates that were initiated before the clear operation are allowed to complete before the region is cleared.
+区域条目版本标记和逻辑删除仅在单个条目被销毁时确保一致性。 但是，`Region.clear()`操作一次对区域中的所有条目进行操作。 为了为`Region.clear()`操作提供一致性，Geode获得该区域的分布式读/写锁，该锁阻止对该区域的所有并发更新。 在清除区域之前允许在清除操作之前启动的任何更新。
 
-### Transactions with Consistent Regions
+### 具有一致性区域的事务
 
-A transaction that modifies a region having consistency checking enabled generates all necessary version information for region updates when the transaction commits.
+修改启用了一致性检查的区域的事务会在事务提交时生成区域更新的所有必要版本信息。
 
-If a transaction modifies a normal, preloaded or empty region, the transaction is first delegated to a Geode member that holds a replicate for the region. This behavior is similar to the transactional behavior for partitioned regions, where the partitioned region transaction is forwarded to a member that hosts the primary for the partitioned region update.
+如果事务修改了正常区域，预加载区域或空区域，则事务首先委托给保存区域复制的Geode成员。 此行为类似于分区区域的事务行为，其中分区区域事务将转发到承载分区区域更新主节点的成员。
 
-The limitation for transactions on normal, preloaded or or empty regions is that, when consistency checking is enabled, a transaction cannot perform a `localDestroy` or `localInvalidate` operation against the region. Geode throws an `UnsupportedOperationInTransactionException` exception in such cases. An application should use a `Destroy` or `Invalidate` operation in place of a `localDestroy` or `localInvalidate` when consistency checks are enabled.
-
+正常，预加载或空区域上的事务限制是，当启用一致性检查时，事务不能对该区域执行`localDestroy`或`localInvalidate`操作。 在这种情况下，Geode会抛出`UnsupportedOperationInTransactionException`异常。 当启用一致性检查时，应用程序应使用`Destroy`或`Invalidate`操作代替`localDestroy`或`localInvalidate`。
 
 
 ## 一般地区数据管理
 
-For all regions, you have options to control memory use, back up your data to disk, and discard stale data from your cache.
+对于所有区域，您可以选择控制内存使用，将数据备份到磁盘，以及从缓存中丢弃过时数据。
 
-- **Persistence and Overflow**
+- **Persistence and Overflow(持久性和溢出)**
 
-  You can persist data on disk for backup purposes and overflow it to disk to free up memory without completely removing the data from your cache.
+  您可以将数据保留在磁盘上以进行备份，并将其溢出到磁盘以释放内存，而无需从缓存中完全删除数据。
 
-- **Eviction**
+- **Eviction(驱逐)**
 
-  Use eviction to control data region size. Eviction actions are triggered by space-based thresholds.
+  使用逐出来控制数据区域大小。 驱逐行动由基于空间的阈值触发。
 
-- **Expiration**
+- **Expiration(到期)**
 
-  Use expiration to keep data current and to reduce region size by removing stale entries. Expiration actions are triggered by time-based thresholds.
+  使用到期可以保持数据最新并通过删除过时条目来减小区域大小。 到期操作由基于时间的阈值触发。
 
-- **Keeping the Cache in Sync with Outside Data Sources**
+- **保持缓存与外部数据源同步**
 
-  Keep your distributed cache in sync with an outside data source by programming and installing application plug-ins for your region.
-
-
-
-### Persistence and Overflow
-
-You can persist data on disk for backup purposes and overflow it to disk to free up memory without completely removing the data from your cache.
-
-**注意:** This supplements the general steps for managing data regions provided in [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
-
-All disk storage uses Apache Geode [Disk Storage](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
-
-- **How Persistence and Overflow Work**
-
-  To use Geode persistence and overflow, you should understand how they work with your data.
-
-- **Configure Region Persistence and Overflow**
-
-  Plan persistence and overflow for your data regions and configure them accordingly.
-
-- **Overflow Configuration Examples**
-
-  The `cache.xml` examples show configuration of region and server subscription queue overflows.
+  通过编程和安装适用于您所在地区的应用程序插件，使分布式缓存与外部数据源保持同步。
 
 
+### Persistence and Overflow((持久性和溢出))
 
-#### How Persistence and Overflow Work
+您可以将数据保留在磁盘上以进行备份，并将其溢出到磁盘以释放内存，而无需从缓存中完全删除数据。
 
-To use Geode persistence and overflow, you should understand how they work with your data.
+**注意:** 这补充了[基本配置和编程](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html)中提供的管理数据区域的一般步骤.
 
-Geode persists and overflows several types of data. You can persist or overflow the application data in your regions. In addition, Geode persists and overflows messaging queues, to manage memory consumption and provide high availability.
+所有磁盘存储都使用Apache Geode [磁盘存储](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
 
-Persistent data outlives the member where the region resides and can be used to initialize the region at creation. Overflow acts only as an extension of the region in memory.
+- **持久性和溢出如何工作**
 
-The data is written to disk according to the configuration of Geode disk stores. For any disk option, you can specify the name of the disk store to use or use the Geode default disk store. See [Disk Storage](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
+  要使用Geode持久性和溢出，您应该了解它们如何处理您的数据。
 
-**How Data Is Persisted and Overflowed**
+- **配置区域持久性和溢出**
 
-For persistence, the entry keys and values are copied to disk. For overflow, only the entry values are copied. Other data, such as statistics and user attributes, are retained in memory only.
+  计划数据区域的持久性和溢出并相应地进行配置。
 
-- Data regions are overflowed to disk by least recently used (LRU) entries because those entries are deemed of least interest to the application and therefore less likely to be accessed.
-- Server subscription queues overflow most recently used (MRU) entries. These are the messages that are at the end of the queue and so are last in line to be sent to the client.
+- **溢出配置示例**
 
-**Persistence**
+  `cache.xml`示例显示了区域和服务器订阅队列溢出的配置。
 
-Persistence provides a disk backup of region entry data. The keys and values of all entries are saved to disk, like having a replica of the region on disk. Region entry operations such as put and destroy are carried out in memory and on disk.
+
+#### 持久性和溢出如何工作
+
+要使用Geode持久性和溢出，您应该了解它们如何处理您的数据。
+
+Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出您所在地区的应用程序数据。 此外，Geode持续存在并溢出消息队列，以管理内存消耗并提供高可用性。
+
+持久性数据比区域所在的成员更长，并且可用于在创建时初始化区域。 溢出仅作为内存中区域的扩展。
+
+根据Geode磁盘存储的配置将数据写入磁盘。 对于任何磁盘选项，您可以指定要使用的磁盘存储的名称或使用Geode默认磁盘存储。 参见[磁盘存储](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
+
+**数据如何保持和溢出**
+
+对于持久性，将条目键和值复制到磁盘。 对于溢出，仅复制条目值。 其他数据（如统计信息和用户属性）仅保留在内存中。
+
+- 数据区域通过最近最少使用（LRU）条目溢出到磁盘，因为这些条目被认为是应用程序最不感兴趣的，因此不太可能被访问。
+- 服务器订阅队列溢出最近使用的（MRU）条目。 这些是位于队列末尾的消息，因此最后排队发送到客户端。
+
+**Persistence(持久化)**
+
+持久性提供区域条目数据的磁盘备份。 所有条目的键和值都保存到磁盘，就像在磁盘上具有该区域的副本一样。 区域输入操作（如put和destroy）在内存和磁盘上执行。
 
 ![img](assets/developing_persistence.svg)
 
-When the member stops for any reason, the region data on disk remains. In partitioned regions, where data buckets are divided among members, this can result in some data only on disk and some on disk and in memory. The disk data can be used at member startup to populate the same region.
+当成员因任何原因停止时，磁盘上的区域数据仍然存在。 在分区区域中，数据存储区在成员之间划分，这可能导致某些数据仅在磁盘上，某些数据在磁盘上和内存中。 磁盘数据可以在成员启动时使用以填充相同的区域。
 
-**Overflow**
+**Overflow(溢出)**
 
-Overflow limits region size in memory by moving the values of least recently used (LRU) entries to disk. Overflow basically uses disk as a swap space for entry values. If an entry is requested whose value is only on disk, the value is copied back up into memory, possibly causing the value of a different LRU entry to be moved to disk. As with persisted entries, overflowed entries are maintained on disk just as they are in memory.
+溢出通过将最近最少使用（LRU）条目的值移动到磁盘来限制内存中的区域大小。 溢出基本上使用磁盘作为条目值的交换空间。 如果请求的条目的值仅在磁盘上，则该值将被复制回内存，可能导致将不同LRU条目的值移动到磁盘。 与持久化条目一样，溢出条目在磁盘上维护，就像它们在内存中一样。
 
-In this figure, the value of entry X has been moved to disk to make space in memory. The key for X remains in memory. From the distributed system perspective, the value on disk is as much a part of the region as the data in memory.
+在此图中，条目X的值已移至磁盘以在内存中腾出空间。 X的键仍然在内存中。 从分布式系统的角度来看，磁盘上的值与内存中的数据一样是区域的一部分。
 
 ![img](assets/developing_overflow.svg)
 
-**Persistence and Overflow Together**
+**持久性和溢出在一起**
 
-Used together, persistence and overflow keep all entry keys and values on disk and only the most active entry values in memory. The removal of an entry value from memory due to overflow has no effect on the disk copy as all entries are already on disk.
+一起使用，持久性和溢出将所有条目键和值保留在磁盘上，并且只保留内存中最活跃的条目值。 由于溢出而从内存中删除条目值对磁盘副本没有影响，因为所有条目都已在磁盘上。
 
 ![img](assets/developing_persistence_and_overflow.svg)
 
-**Persistence and Multi-Site Configurations**
+**持久性和多站点配置**
 
-Multi-site gateway sender queues overflow most recently used (MRU) entries. These are the messages that are at the end of the queue and so are last in line to be sent to the remote site. You can also configure gateway sender queues to persist for high availability.
+多站点网关发送方队列溢出最近使用的（MRU）条目。 这些是队列末尾的消息，因此最后排队发送到远程站点。 您还可以配置网关发件人队列以保持高可用性。
 
 
+#### 配置区域持久性和溢出
 
-#### Configure Region Persistence and Overflow
+计划数据区域的持久性和溢出并相应地进行配置。
 
-Plan persistence and overflow for your data regions and configure them accordingly.
+使用以下步骤为持久性和溢出配置数据区域：
 
-Use the following steps to configure your data regions for persistence and overflow:
-
-1. Configure your disk stores as needed. See [Designing and Configuring Disk Stores](https://geode.apache.org/docs/guide/17/managing/disk_storage/using_disk_stores.html#defining_disk_stores). The cache disk store defines where and how the data is written to disk.
+1. 根据需要配置磁盘存储。 请参阅[设计和配置磁盘存储](https://geode.apache.org/docs/guide/17/managing/disk_storage/using_disk_stores.html#defining_disk_stores)。 缓存磁盘存储区定义数据写入磁盘的位置和方式。
 
    ```
    <disk-store name="myPersistentStore" . . . >
    <disk-store name="myOverflowStore" . . . >
    ```
 
-2. Specify the persistence and overflow criteria for the region. If you are not using the default disk store, provide the disk store name in your region attributes configuration. To write asynchronously to disk, specify `disk-synchronous="false"`.
+2. 指定区域的持久性和溢出条件。 如果未使用默认磁盘存储，请在区域属性配置中提供磁盘存储名称。 要异步写入磁盘，请指定`disk-synchronous=“false”`。
 
-   - For overflow, specify the overflow criteria in the region’s `eviction-attributes` and name the disk store to use.
+   - 对于溢出，请在区域的'eviction-attributes`中指定溢出条件，并命名要使用的磁盘存储。
 
-     Example:
+     例子:
 
      ```
      <region name="overflowRegion" . . . >
@@ -1929,11 +1905,11 @@ Use the following steps to configure your data regions for persistence and overf
 
      gfsh:
 
-     You cannot configure `lru-memory-size` using gfsh.
+     你不能使用gfsh配置`lru-memory-size`。
 
-   - For persistence, set the `data-policy` to `persistent-replicate` and name the disk store to use.
+   - 对于持久性，将`data-policy`设置为`persistent-replicate`并命名要使用的磁盘存储。
 
-     Example:
+     例子:
 
      ```
      <region name="partitioned_region" refid="PARTITION_PERSISTENT">
@@ -1943,31 +1919,29 @@ Use the following steps to configure your data regions for persistence and overf
      </region> 
      ```
 
-When you start your members, overflow and persistence will be done automatically, with the disk stores and disk write behaviors.
+启动成员时，将使用磁盘存储和磁盘写入行为自动执行溢出和持久性。
 
-**注意:** You can also configure Regions and Disk Stores using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD) and [Disk Store Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_1ACC91B493EE446E89EC7DBFBBAE00EA).
+**注意:** 您还可以使用gfsh命令行界面配置区域和磁盘存储。 参见[地区命令](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD) 和 [磁盘存储命令](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_1ACC91B493EE446E89EC7DBFBBAE00EA).
 
 
-
-| Related Topics                                               |
+| 相关话题                                               |
 | ------------------------------------------------------------ |
-| `org.apache.geode.cache.RegionAttributes` for data region persistence information |
-| `org.apache.geode.cache.EvictionAttributes` for data region overflow information |
+| `org.apache.geode.cache.RegionAttributes` 用于数据区域持久性信息 |
+| `org.apache.geode.cache.EvictionAttributes` 用于数据区域溢出信息 |
 | `org.apache.geode.cache.server.ClientSubscriptionConfig`     |
 
 
+#### 溢出配置示例
 
-#### Overflow Configuration Examples
+`cache.xml`示例显示了区域和服务器订阅队列溢出的配置。
 
-The `cache.xml` examples show configuration of region and server subscription queue overflows.
+根据以下因素之一配置溢出条件：
 
-Configure overflow criteria based on one of these factors:
+- 条目计数
+- 绝对内存消耗
+- 内存消耗占应用程序堆的百分比（不适用于服务器订阅队列）
 
-- Entry count
-- Absolute memory consumption
-- Memory consumption as a percentage of the application heap (not available for server subscription queues)
-
-Configuration of region overflow:
+区域溢出配置：
 
 ```
 <!-- Overflow when the region goes over 10000 entries -->
@@ -1978,7 +1952,7 @@ Configuration of region overflow:
 </region-attributes>
 ```
 
-Configuration of server’s client subscription queue overflow:
+服务器客户端订阅队列溢出的配置：
 
 ```
 <!-- Overflow the server's subscription queues when the queues reach 1 Mb of memory -->
@@ -1990,85 +1964,83 @@ Configuration of server’s client subscription queue overflow:
 ```
 
 
+### Eviction(逐出)
 
-### Eviction
+使用逐出来控制数据区域大小。 驱逐行动由基于空间的阈值触发。
 
-Use eviction to control data region size. Eviction actions are triggered by space-based thresholds.
+- **逐出如何运作**
 
-- **How Eviction Works**
+  逐出设置会导致Apache Geode通过删除最近最少使用（LRU）条目来为新条目腾出空间，从而使区域的资源在指定级别下保持使用。
 
-  Eviction settings cause Apache Geode to work to keep a region’s resource use under a specified level by removing least recently used (LRU) entries to make way for new entries.
+- **配置数据逐出**
 
-- **Configure Data Eviction**
-
-  Configure a region’s `eviction-attributes` settings to keep your region within a specified limit.
-
+  配置区域的'eviction-attributes`设置以使您的区域保持在指定的限制内。
 
 
-#### How Eviction Works
+#### 驱逐如何运作
 
-Eviction keeps a region’s resource use under a specified level by removing least recently used (LRU) entries to make way for new entries. You can choose whether expired entries are overflowed to disk or destroyed. See [Persistence and Overflow](https://geode.apache.org/docs/guide/17/developing/storing_data_on_disk/chapter_overview.html).
+驱逐通过删除最近最少使用（LRU）条目来为新条目让路，从而使区域的资源在指定级别下保持使用。 您可以选择过期的条目是溢出到磁盘还是已销毁。 参见[持久性和溢出](https://geode.apache.org/docs/guide/17/developing/storing_data_on_disk/chapter_overview.html).
 
-Eviction is triggered when a size-based threshold is exceeded. A region’s eviction threshold can be based on:
+当超过基于大小的阈值时触发驱逐。 区域的逐出阈值可以基于：
 
-- entry count
-- absolute memory usage
-- percentage of available heap
+- 条目计数
+- 绝对内存使用量
+- 可用堆的百分比
 
-These eviction algorithms are mutually exclusive; only one can be in effect for a given region.
+这些驱逐算法是互斥的; 只有一个可以对给定区域有效。
 
-When Geode determines that adding or updating an entry would take the region over the specified level, it overflows or removes enough older entries to make room. For entry count eviction, this means a one-to-one trade of an older entry for the newer one. For the memory settings, the number of older entries that need to be removed to make space depends on the sizes of the older and newer entries.
+当Geode确定添加或更新条目会使区域超过指定级别时，它会溢出或删除足够的旧条目以腾出空间。 对于条目计数驱逐，这意味着较新条目的一对一交易。 对于内存设置，需要删除以创建空间的旧条目数取决于较旧和较新条目的大小。
 
-For efficiency, the selection of items for removal is not strictly LRU, but does choose eviction candidates from among the region’s oldest entries. As a result, eviction may leave older entries for the region in the local data store.
+为了提高效率，移除物品的选择不是严格的LRU，而是从该地区最古老的条目中选择驱逐候选者。 因此，逐出可能会在本地数据存储中留下该区域的旧条目。
 
-**Eviction Actions**
+**驱逐行动**
 
-Apache Geode provides the following eviction actions:
+Apache Geode提供以下驱逐操作：
 
-- **local destroy** - Removes the entry from the local cache, but does not distribute the removal operation to remote members. This action can be applied to an entry in a partitioned region, but it not recommended if redundancy is enabled (redundant-copies > 0), as it introduces inconsistencies between the redundant buckets. When applied to an entry in a replicated region, Geode silently changes the region type to “preloaded” to accommodate the local modification.
-- **overflow to disk** - The entry’s value is overflowed to disk and set to null in memory. The entry’s key is retained in the cache. This is the only eviction action fully supported for partitioned regions.
+- **当地销毁** - 从本地缓存中删除条目，但不将删除操作分发给远程成员。 此操作可以应用于分区区域中的条目，但如果启用了冗余（冗余副本> 0），则不建议这样做，因为它会引入冗余存储区之间的不一致。 当应用于复制区域中的条目时，Geode会将区域类型静默更改为`预加载`以适应本地修改。
+- **溢出到磁盘** - 条目的值溢出到磁盘并在内存中设置为null。 条目的key保留在缓存中。 这是分区区域唯一完全支持的驱逐操作。
 
-**Eviction in Partitioned Regions**
+**分区中的驱逐**
 
-In partitioned regions, Geode removes the oldest entry it can find *in the bucket where the new entry operation is being performed*. Geode maintains LRU entry information on a bucket-by-bucket basis, as the cost of maintaining information across the partitioned region would slow the system’s performance.
+在分区区域中，Geode会删除正在执行新条目操作的存储桶中可找到的最旧条目。 Geode在逐桶的基础上维护LRU条目信息，因为跨分区区域维护信息的成本会降低系统的性能。
 
-- For memory and entry count eviction, LRU eviction is done in the bucket where the new entry operation is being performed until the overall size of the combined buckets in the member has dropped enough to perform the operation without going over the limit.
-- For heap eviction, each partitioned region bucket is treated as if it were a separate region, with each eviction action only considering the LRU for the bucket, and not the partitioned region as a whole.
+- 对于存储器和入口计数驱逐，LRU驱逐在正在执行新的条目操作的桶中完成，直到成员中的组合桶的总体大小已经下降到足以执行操作而不超过限制。
+- 对于堆驱逐，每个分区区域桶被视为它是一个单独的区域，每个驱逐操作仅考虑桶的LRU，而不是整个分区区域。
 
 
-#### Configure Data Eviction
+#### 配置数据驱逐
 
-Configure a region’s `eviction-attributes` settings to keep your region within a specified limit.
+配置区域的'eviction-attributes`设置以使您的区域保持在指定的限制内。
 
-Configure data eviction as follows. You do not need to perform these steps in the sequence shown.
+配置数据驱逐如下。 您无需按所示顺序执行这些步骤。
 
-1. Decide whether to evict based on:
-   - Entry count (useful if your entry sizes are relatively uniform).
-   - Total bytes used. In partitioned regions, this is set using `local-max-memory`. In non-partitioned regions, it is set in `eviction-attributes`.
-   - Percentage of application heap used. This uses the Geode resource manager. When the manager determines that eviction is required, the manager orders the eviction controller to start evicting from all regions where the eviction algorithm is set to `lru-heap-percentage`. Eviction continues until the manager calls a halt. Geode evicts the least recently used entry hosted by the member for the region. See [Managing Heap and Off-heap Memory](https://geode.apache.org/docs/guide/17/managing/heap_use/heap_management.html#resource_manager).
-2. Decide what action to take when the limit is reached:
-   - Locally destroy the entry.
-   - Overflow the entry data to disk. See [Persistence and Overflow](https://geode.apache.org/docs/guide/17/developing/storing_data_on_disk/chapter_overview.html).
-3. Decide the maximum amount of data to allow in the member for the eviction measurement indicated. This is the maximum for all storage for the region in the member. For partitioned regions, this is the total for all buckets stored in the member for the region, including any secondary buckets used for redundancy.
-4. Decide whether to program a custom sizer for your region. If you are able to provide such a class, it might be faster than the standard sizing done by Geode. Your custom class must follow the guidelines for defining custom classes and, additionally, must implement `org.apache.geode.cache.util.ObjectSizer`. See [Requirements for Using Custom Classes in Data Caching](https://geode.apache.org/docs/guide/17/basic_config/data_entries_custom_classes/using_custom_classes.html).
+1. 决定是否根据以下方式逐出：
+   - 条目计数（如果您的条目大小相对均匀，则非常有用）。
+   - 使用的总字节数。 在分区区域中，使用`local-max-memory`设置。 在非分区区域中，它在`eviction-attributes`中设置。
+   - 使用的应用程序堆的百分比。 这使用Geode资源管理器。 当管理器确定需要驱逐时，管理器命令驱逐控制器开始从驱逐算法设置为`lru-heap-percentage`的所有区域驱逐。 驱逐出去，直到管理器停止。 Geode驱逐该成员为该地区托管的最近最少使用的条目。 请参阅[管理堆和堆外内存](https://geode.apache.org/docs/guide/17/managing/heap_use/heap_management.html#resource_manager).
+2. 确定达到限制时要采取的操作：
+   - 在本地销毁该条目。
+   - 将条目数据溢出到磁盘。 参见[持久性和溢出](https://geode.apache.org/docs/guide/17/developing/storing_data_on_disk/chapter_overview.html).
+3. 确定成员中允许的最大数据量，用于指示的驱逐测量。 这是成员中区域的所有存储的最大值。 对于分区区域，这是存储在区域成员中的所有存储区的总数，包括用于冗余的任何辅助存储区。
+4. 决定是否为您所在的地区编制自定义sizer。 如果您能够提供这样的类，它可能比Geode完成的标准大小更快。 您的自定义类必须遵循定义自定义类的准则，另外，必须实现`org.apache.geode.cache.util.ObjectSizer`。 请参见[在数据缓存中使用自定义类的要求](https://geode.apache.org/docs/guide/17/basic_config/data_entries_custom_classes/using_custom_classes.html).
 
-**Examples:**
+**例子:**
 
-Set an LRU memory eviction threshold of 1000 MB. Use a custom class for measuring the size of each object in the region:
+设置LRU内存驱逐阈值为1000 MB。 使用自定义类来测量区域中每个对象的大小：
 
 ```
 gfsh>create region --name=myRegion --type=REPLICATE --eviction-max-memory=1000 \
 --eviction-action=overflow-to-disk --eviction-object-sizer=com.myLib.MySizer
 ```
 
-Create an eviction threshold on a partitioned region with a maximum entry count of 512:
+在分区区域上创建逐出阈值，最大条目数为512：
 
 ```
 gfsh>create region --name=myRegion --type=PARTITION --eviction-entry-count=512 \
 --eviction-action=overflow-to-disk 
 ```
 
-To configure a partitioned region for heap LRU eviction, first configure the resource manager on server startup, then create a region with eviction enabled:
+要为堆LRU驱逐配置分区区域，首先在服务器启动时配置资源管理器，然后创建启用了驱逐的区域：
 
 ```
 gfsh>start server --name=Server1 --eviction-heap-percentage=80
@@ -2077,81 +2049,78 @@ gfsh>create region --name=myRegion --type=PARTITION --eviction-action=overflow-t
 ```
 
 
+### Expiration(到期)
 
-### Expiration
+使用到期可以保持数据最新并通过删除过时条目来减小区域大小。 到期操作由基于时间的阈值触发。
 
-Use expiration to keep data current and to reduce region size by removing stale entries. Expiration actions are triggered by time-based thresholds.
+- **过期如何运作**
 
-- **How Expiration Works**
+  到期删除您未使用的旧条目和条目。 您可以选择是否使过期的条目失效或销毁。
 
-  Expiration removes old entries and entries that you are not using. You can choose whether expired entries are invalidated or destroyed.
+- **配置数据过期**
 
-- **Configure Data Expiration**
-
-  Configure the type of expiration and the expiration action to use.
-
+  配置到期类型和要使用的到期操作。
 
 
-#### How Expiration Works
+#### 过期如何运作
 
-Expiration keeps a region’s data fresh by removing old entries and entries that you are not using. You can choose whether expired entries are invalidated or destroyed.
+到期通过删除您未使用的旧条目和条目来保持区域数据的新鲜。 您可以选择是否使过期的条目失效或销毁。
 
-Expiration activities in distributed regions can be distributed or local. Thus, one cache could control expiration for a number of caches in the system.
+分布式区域中的过期活动可以是分布式的或本地的。 因此，一个高速缓存可以控制系统中的多个高速缓存的到期。
 
-This figure shows two basic expiration settings for a client/server system. The server (on the right) populates the region from a database and the data is automatically distributed throughout the system. The data is valid for only one hour, so the server performs a distributed destroy on entries that are an hour old. The client applications are consumers. The clients free up space in their caches by removing their local copies of the entries for which there is no local interest (idle-time expiration). Requests for entries that have expired on the clients will be forwarded to the server.
+此图显示了客户端/服务器系统的两个基本过期设置。 服务器（右侧）从数据库填充区域，数据自动分布在整个系统中。 数据仅在一小时内有效，因此服务器对一小时的条目执行分布式销毁。 客户端应用程序是消费者。 客户端通过删除没有本地利益的条目的本地副本（空闲时间到期）来释放其缓存中的空间。 对客户端已过期的条目的请求将转发到服务器。
 
 ![img](assets/expiration.png)
 
-**Expiration Types**
+**到期类型**
 
-Apache Geode provides two types of expiration, each triggered by a time-based threshold. These can co-exist; they are not mutually exclusive.
+Apache Geode提供两种类型的到期，每种类型都由基于时间的阈值触发。 这些可以共存; 它们不是相互排斥的。
 
-- **Time to live (TTL)**. The amount of time, in seconds, the object may remain in the cache after the last creation or update. For entries, the counter is set to zero for create and put operations. Region counters are reset when the region is created and when an entry has its counter reset. The TTL expiration attributes are `region-time-to-live` and `entry-time-to-live`.
-- **Idle timeout**. The amount of time, in seconds, the object may remain in the cache after the last access. The idle timeout counter for an object is reset any time its TTL counter is reset. In addition, an entry’s idle timeout counter is reset any time the entry is accessed through a get operation or a netSearch . The idle timeout counter for a region is reset whenever the idle timeout is reset for one of its entries. Idle timeout expiration attributes are: `region-idle-time`and `entry-idle-time`.
+- **Time to live (TTL)**. 在上次创建或更新后，对象可能保留在缓存中的时间量（以秒为单位）。 对于条目，对于创建和放置操作，计数器设置为零。 创建区域时以及当条目的计数器重置时，区域计数器将复位。 TTL到期属性是`region-time-to-live`和`entry-time-to-live`。
+- **Idle timeout**. 在上次访问后，对象可能保留在缓存中的时间量（以秒为单位）。 只要TTL计数器复位，对象的空闲超时计数器就会复位。 此外，只要通过get操作或netSearch访问条目，就会重置条目的空闲超时计数器。 只要为其中一个条目重置空闲超时，就会重置区域的空闲超时计数器。 空闲超时到期属性是：`region-idle-time`和`entry-idle-time`。
 
-**Expiration Actions**
+**到期行动**
 
-Apache Geode provides the following expiration actions:
+Apache Geode提供以下过期操作：
 
-- **invalidate (default)** - The data item’s value is deleted, but the key remains in the cache. Applies to all distributed members in which the data item is replicated.
-- **destroy** - The data item’s key and value are both deleted. Applies to all distributed members in which the data item is replicated.
-- **local invalidate** - Deletes the data item’s value. Applies only to the local member.
-- **local destroy** - Deletes the data item’s key and value. Applies only to the local member.
+- **invalidate (default)** - 数据项的值将被删除，但key仍保留在缓存中。 适用于复制数据项的所有分布式成员。
+- **destroy** - 数据项的键和值都被删除。 适用于复制数据项的所有分布式成员。
+- **local invalidate** - 删除数据项的值。 仅适用于本地成员。
+- **local destroy** - 删除数据项的键和值。 仅适用于本地成员。
 
-You cannot use `local-destroy` or `local-invalidate` expiration actions in replicated or partitioned regions. You can use the local options only on distributed regions with a data-policy of empty, normal or preloaded.
+您不能在复制或分区区域中使用`local-destroy`或`local-invalidate`到期操作。 您只能在分布式区域上使用本地选项，其数据策略为`空`，`正常`或`预加载`。
 
-**Entry Expiration in Replicated Regions and Partitioned Regions**
+**复制区域和分区区域中的条目到期**
 
-In replicated regions, entry updates are performed in the most convenient available copy of the data, then replicated to the other members, resetting their last-updated statistics to the same time. In partitioned regions, entry updates are always done in the primary copy, resetting the primary copy’s last-updated and last-accessed statistics, then the secondary copies are updated to match.
+在复制区域中，条目更新在最方便可用的数据副本中执行，然后复制到其他成员，同时重置其上次更新的统计信息。 在分区区域中，始终在主副本中完成条目更新，重置主副本的上次更新和最后访问的统计信息，然后更新辅助副本以匹配。
 
-In both replicated and partitioned regions, entry retrieval uses the most convenient available copy of the data, which may be any of the distributed copies. Retrievals are not propagated to other members. Differences in last-access times are reconciled when the data item is considered for expiration.
+在复制区域和分区区域中，条目检索使用最方便的可用数据副本，其可以是任何分布式副本。 检索不会传播给其他成员。 当数据项被考虑到期时，将协调上次访问时间的差异。
 
-Expiration can be triggered in any copy of a replicated region, if the time elapsed since the last update or read access exceeds the established threshold. Expiration in partitioned regions is executed in the primary copy, based on the primary’s last-accessed and last-updated statistics. In both cases, the expiration mechanism checks the last-accessed dates of all copies of the data item and updates the last-access date of all copies to the most recent last-accessed date. Then, if the elapsed time still puts the data item over the expiration threshold, the item is deleted in accordance with the expiration action specified for the region.
+如果自上次更新或读取访问后经过的时间超过建立的阈值，则可以在复制区域的任何副本中触发到期。 分区区域中的到期在主副本中执行，基于主要的上次访问和最后更新的统计信息。 在这两种情况下，到期机制都会检查数据项的所有副本的最后访问日期，并将所有副本的最后访问日期更新为最近的最后访问日期。 然后，如果经过的时间仍然使数据项超过到期阈值，则根据为该区域指定的到期动作删除该项。
 
-**Interaction Between Expiration Settings and netSearch**
+**到期设置和netSearch之间的交互**
 
-Before `netSearch` retrieves an entry value from a remote cache, it validates the *remote* entry’s statistics against the *local* region’s expiration settings. Entries that would have already expired in the local cache are passed over. Once validated, the entry is brought into the local cache and the local access and update statistics are updated for the local copy. The last-accessed time is reset and the last-modified time is updated to the time in the remote cache, with corrections made for system clock differences. Thus the local entry is assigned the true last time the entry was modified in the cluster. The `netSearch` operation has no effect on the expiration counters in remote caches.
+在`netSearch`从远程缓存中检索条目值之前，它根据*local*区域的到期设置验证*remote*条目的统计信息。 已经过期的本地缓存中的条目将被传递。 验证后，该条目将进入本地缓存，并为本地副本更新本地访问和更新统计信息。 重置最后访问的时间，并将最后修改的时间更新为远程高速缓存中的时间，并对系统时钟差异进行更正。 因此，为本地条目分配了在集群中修改条目的真实最后时间。 `netSearch`操作对远程缓存中的到期计数器没有影响。
 
-The `netSearch` method operates only on distributed regions with a data-policy of empty, normal and preloaded.
+`netSearch`方法仅在分布式区域上运行，其数据策略为空，正常和预加载。
 
 
+#### 配置数据过期
 
-#### Configure Data Expiration
+配置到期类型和要使用的到期操作。
 
-Configure the type of expiration and the expiration action to use.
+- 到期操作需要将`statistics-enabled`的region属性设置为`true`。 这可以在`cache.xml`文件的region元素，`gfsh`命令行或通过API完成。
+- 使用到期类型设置到期属性，包括最大时间和到期操作。 查看区域属性列表中的`entry-time-to-live`，`entry-idle-time`，`region-time-to-live`和`region-idle-time` 在 [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes).
 
-- Expiration actions require setting the region attribute of `statistics-enabled` to `true`. This can be done in the region element of a `cache.xml` file, the `gfsh` command line, or through the API.
-- Set the expiration attributes by expiration type, with the max times and expiration actions. See the region attributes listings for `entry-time-to-live`, `entry-idle-time`, `region-time-to-live`, and `region-idle-time` in [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes).
+用于到期的统计信息可通过`Region`和`Region.Entry` `getStatistics`方法返回的`CacheStatistics`对象直接提供给应用程序。 `CacheStatistics`对象还提供了重置统计计数器的方法。
 
-The statistics used for expiration are available directly to the application through the `CacheStatistics` object returned by the `Region` and `Region.Entry` `getStatistics` methods. The `CacheStatistics` object also provides a method for resetting the statistics counters.
+**对于分区区域:**
 
-**For partitioned regions:**
+- 在分区区域上，仅对区域的条目支持到期，而不支持区域本身。 区域范围的到期属性，例如`region-time-to-live`和`region-idle-time`不适用于分区区域中的数据项。
+- 要在使用分区区域时确保可靠的读取行为，请使用`entry-time-to-live`属性，而不是`entry-idle-time`属性。
+- 您不能在分区区域中使用`local-destroy`或`local-invalidate`到期操作。
 
-- On a partitioned region, expiration is supported only for the region’s entries, not for the region itself. Region-wide expiration attributes, such as `region-time-to-live` and `region-idle-time` do not apply to the data items in partitioned regions.
-- To ensure reliable read behavior when working with partitioned regions, use the `entry-time-to-live` attribute, not the `entry-idle-time` attribute.
-- You cannot use `local-destroy` or `local-invalidate` expiration actions in partitioned regions.
-
-**Replicated regions example:**
+**复制区域示例:**
 
 ```
 // Setting standard expiration on an entry
@@ -2162,9 +2131,9 @@ The statistics used for expiration are available directly to the application thr
 </region-attributes> 
 ```
 
-- Override the region-wide settings for specific entries, if required by your application. To do this:
+- 如果应用程序需要，请覆盖特定条目的区域范围设置。 去做这个:
 
-  1. Program a custom expiration class that implements `org.apache.geode.cache.CustomExpiry`. Example:
+  1. 编写实现`org.apache.geode.cache.CustomExpiry`的自定义过期类。 例如:
 
      ```
      // Custom expiration class
@@ -2183,7 +2152,7 @@ The statistics used for expiration are available directly to the application thr
      }
      ```
 
-  2. Define the class inside the expiration attributes settings for the region. Example:
+  2. 在区域的到期属性设置中定义类。 例如：
 
      ```
      <!-- Set default entry idle timeout expiration for the region --> 
@@ -2199,94 +2168,91 @@ The statistics used for expiration are available directly to the application thr
      </region-attributes>
      ```
 
-  The gfsh equivalent of the above XML is:
+  上述XML的gfsh等价物是：
 
   ```
   gfsh> create region --name=region1 --type=REPLICATE --enable-statistics \
   --entry-idle-time-expiration=60 --entry-idle-time-custom-expiry=com.company.mypackage.MyClass
   ```
 
-- When the primary expires entries, it requests last-accessed statistics from the secondaries. The primary adopts the most recent access time and reschedules the expiration, if warranted. This is done only for distributed expiration actions, and applies to both partitioned and replicated regions.
+- 当主要过期条目时，它会从辅助节点请求最后访问的统计信息。 如果有必要，主要采用最近的访问时间并重新安排到期时间。 这仅针对分布式到期操作执行，并且适用于分区和复制区域。
 
-You can also configure regions using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD).
+您还可以使用gfsh命令行界面配置区域。 参见[区域命令](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD).
 
-**Configuring the Number of Threads for Expiration**
+**配置到期的线程数**
 
-You can use the `gemfire.EXPIRY_THREADS` system property to increase the number of threads that handle expiration. By default, one thread handles expiration, and it is possible for the thread to become overloaded when entries expire faster than the thread can expire them. If a single thread is handling too many expirations, it can result in an OOME. Set the gemfire.EXPIRY_THREADS system property to the desired number when starting the cache server.
-
-
-
-### Keeping the Cache in Sync with Outside Data Sources
-
-Keep your distributed cache in sync with an outside data source by programming and installing application plug-ins for your region.
-
-- **Overview of Outside Data Sources**
-
-  Apache Geode has application plug-ins to read data into the cache and write it out.
-
-- **Configuring Database Connections Using JNDI**.
-
-  Use JNDI to maintain a connection pool that includes outside data sources.
-
-- **How Data Loaders Work**
-
-  By default, a region has no data loader defined. Plug an application-defined loader into any region by setting the region attribute cache-loader on the members that host data for the region.
-
-- **Implement a Data Loader**
-
-  Program a data loader and configure your region to use it.
+您可以使用`gemfire.EXPIRY_THREADS`系统属性来增加处理到期的线程数。 默认情况下，一个线程处理到期，当条目到期的速度超过线程可以使它们到期时，线程可能会变得过载。 如果单个线程处理过多的过期，则可能导致OOME。 启动缓存服务器时，将gemfire.EXPIRY_THREADS系统属性设置为所需的数字。
 
 
+### 保持缓存与外部数据源同步
 
-#### Overview of Outside Data Sources
+通过编程和安装适用于您所在地区的应用程序插件，使分布式缓存与外部数据源保持同步。
 
-Apache Geode has application plug-ins to read data into the cache and write it out.
+- **外部数据源概述**
 
-The application plug-ins:
+  Apache Geode具有应用程序插件，可将数据读入缓存并将其写出。
 
-1. Load data on cache misses using an implementation of a `org.apache.geode.cache.CacheLoader`. The `CacheLoader.load` method is called when the `get` operation can’t find the value in the cache. The value returned from the loader is put into the cache and returned to the `get`operation. You might use this in conjunction with data expiration to get rid of old data, and your other data loading applications, which might be prompted by events in the outside data source. See [Configure Data Expiration](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html).
+- **使用JNDI配置数据库连接**.
 
-2. Write data out to the data source using the cache event handlers, `CacheWriter` and `CacheListener`. For implementation details, see [Implementing Cache Event Handlers](https://geode.apache.org/docs/guide/17/developing/events/implementing_cache_event_handlers.html).
+  使用JNDI维护包含外部数据源的连接池。
 
-   Implementing Cache Event Handlers
+- **数据加载器的工作原理**
 
-   - `CacheWriter` is run synchronously. Before performing any operation on a region entry, if any cache writers are defined for the region in the cluster, the system invokes the most convenient writer. In partitioned and distributed regions, cache writers are usually defined in only a subset of the caches holding the region - often in only one cache. The cache writer can abort the region entry operation.
-   - `CacheListener` is run synchronously after the cache is updated. This listener works only on local cache events, so install your listener in every cache where you want it to handle events. You can install multiple cache listeners in any of your caches.
+  默认情况下，区域没有定义数据加载器。 通过在托管区域数据的成员上设置region属性cache-loader，将应用程序定义的加载程序插入任何区域。
 
-In addition to using application plug-ins, you can also configure external JNDI database sources in your cache.xml and use these data sources in transactions. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html) for more information.
+- **实现数据加载器**
+
+  编程数据加载器并配置您的区域以使用它。
 
 
+#### 外部数据源概述
 
-#### Configuring Database Connections Using JNDI
+Apache Geode具有应用程序插件，可将数据读入缓存并将其写出。
 
-To connect to external databases, for example when using JTA transactions, you can configure database JNDI data sources in `cache.xml`. The `DataSource` object points to either a JDBC connection or, more commonly, a JDBC connection pool. The connection pool is usually preferred, because a program can use and reuse a connection as long as necessary and then free it for another thread to use.
+应用程序插件：
 
-The following list shows `DataSource` connection types used in JTA transactions:
+1. 使用`org.apache.geode.cache.CacheLoader`的实现加载有关缓存未命中的数据。 当`get`操作无法在缓存中找到值时，将调用`CacheLoader.load`方法。 从加载器返回的值被放入缓存并返回到`get`operation。 您可以将此与数据到期结合使用以清除旧数据和其他数据加载应用程序，这些应用程序可能由外部数据源中的事件提示。 请参阅[配置数据过期](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html).
 
-- **XAPooledDataSource**. Pooled SQL connections.
-- **ManagedDataSource**. JNDI binding type for the J2EE Connector Architecture (JCA) ManagedConnectionFactory.
-- **PooledDataSource**. Pooled SQL connections.
-- **SimpleDataSource**. Single SQL connection. No pooling of SQL connections is done. Connections are generated on the fly and cannot be reused.
+2. 使用缓存事件处理程序`CacheWriter`和`CacheListener`将数据写入数据源。 有关实现的详细信息，请参阅[实现缓存事件处理程序](https://geode.apache.org/docs/guide/17/developing/events/implementing_cache_event_handlers.html).
 
-The `jndi-name` attribute of the `jndi-binding` element is the key binding parameter. If the value of `jndi-name` is a DataSource, it is bound as `java:/`*myDatabase*, where *myDatabase* is the name you assign to your data source. If the data source cannot be bound to JNDI at runtime, Geode logs a warning. For information on the `DataSource` interface, see: <http://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html>
+   实现缓存事件处理程序
 
-Geode supports JDBC 2.0 and 3.0.
+   - `CacheWriter` 同步运行。 在对区域条目执行任何操作之前，如果为群集中的区域定义了任何缓存编写器，则系统将调用最方便的编写器。 在分区和分布式区域中，缓存编写器通常仅在包含该区域的高速缓存的子集中定义 - 通常仅在一个高速缓存中。 缓存写入器可以中止区域输入操作。
+   - `CacheListener` 在更新缓存后同步运行。 此侦听器仅适用于本地缓存事件，因此请将侦听器安装在您希望它处理事件的每个缓存中。 您可以在任何缓存中安装多个缓存侦听器。
 
-**注意:** Include any data source JAR files in your CLASSPATH.
+除了使用应用程序插件外，还可以在cache.xml中配置外部JNDI数据库源，并在事务中使用这些数据源。 有关详细信息，请参阅[使用JNDI配置数据库连接](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html)。
 
-**Example DataSource Configurations in cache.xml**
 
-The following sections show example `cache.xml` files configured for each of the `DataSource`connection types.
+#### 使用JNDI配置数据库连接
 
-**XAPooledDataSource cache.xml Example (Derby)**
+要连接到外部数据库，例如在使用JTA事务时，可以在`cache.xml`中配置数据库JNDI数据源。 `DataSource`对象指向JDBC连接，或者更常见的是JDBC连接池。 连接池通常是首选，因为程序可以根据需要使用和重用连接，然后释放它以供另一个线程使用。
 
-The example shows a `cache.xml` file configured for a pool of `XAPooledDataSource` connections connected to the data resource `newDB`.
+以下列表显示了JTA事务中使用的`DataSource`连接类型：
 
-The log-in and blocking timeouts are set lower than the defaults. The connection information, including `user-name` and `password`, is set in the `cache.xml` file, instead of waiting until connection time. The password is not encrypted.
+- **XAPooledDataSource**. XA池化SQL连接。
+- **ManagedDataSource**. J2EE连接器体系结构（JCA）ManagedConnectionFactory的JNDI绑定类型。
+- **PooledDataSource**. 池化SQL连接。
+- **SimpleDataSource**. 单个SQL连接。 没有完成SQL连接池。 连接是动态生成的，无法重复使用。
 
-When specifying the configuration properties for JCA-implemented database drivers that support XA transactions (in other words, **XAPooledDataSource**), you must use configuration properties to define the datasource connection instead of the `connection-url` attribute of the `<jndi-binding>`element. Configuration properties differ depending on your database vendor. Specify JNDI binding properties through the `config-property` tag, as shown in this example. You can add as many `config-property` tags as required.
+`jndi-binding`元素的`jndi-name`属性是键绑定参数。 如果`jndi-name`的值是DataSource，则它被绑定为`java:/`*myDatabase**，其中*myDatabase*是您为数据源指定的名称。 如果数据源无法在运行时绑定到JNDI，则Geode会记录警告。 有关`DataSource`接口的信息，请参阅: <http://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html>
 
-```
+Geode支持JDBC 2.0和3.0。
+
+**注意:** 在CLASSPATH中包含任何数据源JAR文件。
+
+**cache.xml中的示例DataSource配置**
+
+以下部分显示为每个`DataSource`连接类型配置的示例`cache.xml`文件。
+
+**XAPooledDataSource cache.xml示例(Derby)**
+
+该示例显示了为连接到数据资源`newDB`的`XAPooledDataSource`连接池配置的`cache.xml`文件。
+
+登录和阻止超时设置低于默认值。 连接信息，包括`user-name`和`password`，在`cache.xml`文件中设置，而不是等到连接时间。 密码未加密。
+
+在为支持XA事务的JCA实现的数据库驱动程序指定配置属性时（换句话说，**XAPooledDataSource**），必须使用配置属性来定义数据源连接，而不是`connection-url`元素的`<jndi-binding>`属性。 配置属性因数据库供应商而异。 通过`config-property`标记指定JNDI绑定属性，如本例所示。 您可以根据需要添加尽可能多的`config-property`标签。
+
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <cache
     xmlns="http://geode.apache.org/schema/cache"
@@ -2331,9 +2297,9 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 </cache>
 ```
 
-**JNDI Binding Configuration Properties for Different XAPooledDataSource Connections**
+**不同XAPooledDataSource连接的JNDI绑定配置属性**
 
-The following are some example data source configurations for different databases. Consult your vendor database’s documentation for additional details.
+以下是不同数据库的一些示例数据源配置。 有关其他详细信息，请参阅供应商数据库的文档。
 
 **MySQL**
 
@@ -2426,11 +2392,11 @@ The following are some example data source configurations for different database
 </jndi-bindings>
 ```
 
-**ManagedDataSource Connection Example (Derby)**
+**ManagedDataSource连接示例（Derby）**
 
-`ManagedDataSource` connections for the JCA `ManagedConnectionFactory` are configured as shown in the example. This configuration is similar to `XAPooledDataSource` connections, except the type is `ManagedDataSource`, and you specify a `managed-conn-factory-class` instead of an `xa-datasource-class`.
+JCA的`ManagedConnectionFactory`的`ManagedDataSource`连接的配置如示例所示。 这种配置类似于`XAPooledDataSource`连接，除了类型是`ManagedDataSource`，你指定`managed-conn-factory-class`而不是`xa-datasource-class`。
 
-```
+```xml
 <?xml version="1.0"?>
 <cache xmlns="http://geode.apache.org/schema/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -2476,11 +2442,11 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
  </cache>
 ```
 
-**PooledDataSource Example (Derby)**
+**PooledDataSource示例（Derby）**
 
-Use the `PooledDataSource` and `SimpleDataSource` connections for operations executed outside of any transaction. This example shows a `cache.xml` file configured for a pool of `PooledDataSource`connections to the data resource `newDB`. For this non-transactional connection pool, the log-in and blocking timeouts are set higher than for the transactional connection pools in the two previous examples. The connection information, including `user-name` and `password`, is set in the `cache.xml` file, instead of waiting until connection time. The password is not encrypted.
+对于在任何事务之外执行的操作，使用`PooledDataSource`和`SimpleDataSource`连接。 此示例显示了一个`cache.xml`文件，该文件是为数据资源`newDB`的`PooledDataSource`连接池配置的。 对于此非事务性连接池，登录和阻止超时设置为高于前两个示例中的事务连接池。 连接信息，包括`user-name`和`password`，在`cache.xml`文件中设置，而不是等到连接时间。 密码未加密。
 
-```
+```xml
 <?xml version="1.0"?>
 <cache xmlns="http://geode.apache.org/schema/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -2527,11 +2493,11 @@ initial-capacity="16" load-factor="0.75" concurrency-level="16" statistics-enabl
 </cache>
 ```
 
-**SimpleDataSource Connection Example (Derby)**
+**SimpleDataSource连接示例（Derby）**
 
-The example below shows a very basic configuration in the `cache.xml` file for a `SimpleDataSource`connection to the data resource `oldDB`. You only need to configure a few properties like a `jndi-name` for this connection pool, `oldDB1`, and the `databaseName`, `oldDB`. This password is in clear text.
+下面的示例显示`cache.xml`文件中的一个非常基本的配置，用于与数据资源`oldDB`的`SimpleDataSource`连接。 您只需要为此连接池配置一些属性，如`jndi-name`，`oldDB1`和`databaseName`，`oldDB`。 此密码为明文。
 
-A simple data source connection does not generally require vendor-specific property settings. If you need them, add `config-property` tags as shown in the earlier examples.
+简单的数据源连接通常不需要特定于供应商的属性设置。 如果需要，请添加`config-property`标签，如前面的示例所示。
 
 ```
 <?xml version="1.0"?>
@@ -2562,56 +2528,54 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 ```
 
 
+#### 数据加载器的工作原理
 
-#### How Data Loaders Work
+默认情况下，区域没有定义数据加载器。 通过在托管区域数据的成员上设置region属性cache-loader，将应用程序定义的加载程序插入任何区域。
 
-By default, a region has no data loader defined. Plug an application-defined loader into any region by setting the region attribute cache-loader on the members that host data for the region.
+在get操作期间，加载器在高速缓存未命中时被调用，除了将值返回给调用线程之外，它还使用新的条目值填充高速缓存。
 
-The loader is called on cache misses during get operations, and it populates the cache with the new entry value in addition to returning the value to the calling thread.
+可以将加载程序配置为从外部数据存储将数据加载到Geode缓存中。 要执行反向操作，将数据从Geode缓存写入外部数据存储，请使用缓存编写器事件处理程序。 请参见[实现缓存事件处理程序](https://geode.apache.org/docs/guide/17/developing/events/implementing_cache_event_handlers.html).
 
-A loader can be configured to load data into the Geode cache from an outside data store. To do the reverse operation, writing data from the Geode cache to an outside data store, use a cache writer event handler. See [Implementing Cache Event Handlers](https://geode.apache.org/docs/guide/17/developing/events/implementing_cache_event_handlers.html).
+如何安装缓存加载器取决于区域的类型。
 
-How to install your cache loader depends on the type of region.
+**分区区域中的数据加载**
 
-**Data Loading in Partitioned Regions**
+由于它们可以处理大量数据，因此分区区域支持分区加载。 每个缓存加载器仅加载定义加载器的成员中的数据条目。 如果配置了数据冗余，则仅在成员拥有主副本时才加载数据。 因此，您必须在分区属性`local-max-memory`不为零的每个成员中安装缓存加载器。
 
-Because of the huge amounts of data they can handle, partitioned regions support partitioned loading. Each cache loader loads only the data entries in the member where the loader is defined. If data redundancy is configured, data is loaded only if the member holds the primary copy. So you must install a cache loader in every member where the partitioned attributes `local-max-memory` is not zero.
+如果依赖于JDBC连接，则每个数据存储都必须与数据源建立连接，如下图所示。 这三个成员需要三个连接。 有关如何配置数据源的信息，请参阅[使用JNDI配置数据库连接](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html)。
 
-If you depend on a JDBC connection, every data store must have a connection to the data source, as shown in the following figure. Here the three members require three connections. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html) for information on how to configure data sources.
-
-**注意:** Partitioned regions generally require more JDBC connections than distributed regions.
+**注意:** 分区区域通常需要比分布式区域更多的JDBC连接。
 
 ![img](assets/cache_data_loader-1545192090096.svg)
 
 
-**Data Loading in Distributed Regions**
+**分布式区域中的数据加载**
 
-In a non-partitioned distributed region, a cache loader defined in one member is available to all members that have the region defined. Loaders are usually defined in just a subset of the caches holding the region. When a loader is needed, all available loaders for the region are invoked, starting with the most convenient loader, until the data is loaded or all loaders have been tried.
+在非分区的分布式区域中，一个成员中定义的缓存加载器可供所有已定义区域的成员使用。 加载器通常仅定义在包含该区域的高速缓存的子集中。 当需要加载器时，将调用该区域的所有可用加载器，从最方便的加载器开始，直到加载数据或尝试所有加载器。
 
-In the following figure, these members of one cluster can be running on different machines. Loading for the distributed region is performed from M1.
+在下图中，一个群集的这些成员可以在不同的计算机上运行。 从M1执行对分布区域的加载。
 
 ![img](assets/cache_data_loader_2-1545192090106.svg)
 
-**Data Loading in Local Regions**
+**本地区域的数据加载**
 
-For local regions, the cache loader is available only in the member where it is defined. If a loader is defined, it is called whenever a value is not found in the local cache.
+对于本地区域，缓存加载器仅在定义它的成员中可用。 如果定义了加载程序，则只要在本地缓存中找不到值，就会调用它。
 
 
+#### 实现数据加载器
 
-#### Implement a Data Loader
+要使用数据加载器：
 
-To use a data loader:
+1. 实现`org.apache.geode.cache.CacheLoader`接口。
+2. 配置和部署实施。
 
-1. Implement the `org.apache.geode.cache.CacheLoader` interface.
-2. Configure and deploy the implementation.
+**实现CacheLoader接口**
 
-**Implement the CacheLoader Interface**
+对于get操作，如果键不在缓存中，则为get操作提供服务的线程将调用`CacheLoader.load`方法。 实现`load`以返回键的值，除了返回给调用者之外，它还将被放入该区域。
 
-For a get operation, if the key is not in the cache, the thread serving the get operation invokes the `CacheLoader.load` method. Implement `load` to return the value for the key, which will be placed into the region in addition to being returned to the caller.
+`org.apache.geode.cache.CacheLoader`继承自`Declarable`，因此如果你的`CacheLoader`实现需要用一些参数初始化，那么实现`Declarable.initialize`方法。 在`cache.xml`文件或gfsh`create region`或`alter region`命令中指定所需的参数。 不要定义`Declarable.init()`方法; 它已被弃用。
 
-`org.apache.geode.cache.CacheLoader` inherits from `Declarable`, so implement the `Declarable.initialize` method if your `CacheLoader` implementation needs to be initialized with some arguments. Specify the required arguments either in your `cache.xml` file or in a gfsh `create region` or `alter region` command. Do not define the `Declarable.init()` method; it is deprecated.
-
-Here is an example implementation:
+这是一个示例实现：
 
 ```
 public class SimpleCacheLoader implements CacheLoader {
@@ -2625,15 +2589,15 @@ public class SimpleCacheLoader implements CacheLoader {
 }
 ```
 
-If you need to run `Region` API calls from your implementation, spawn separate threads for them. Do not make direct calls to `Region` methods from your `load` method, as it could cause the cache loader to block, hurting the performance of the cluster.
+如果需要从实现中运行`Region` API调用，则为它们生成单独的线程。 不要从`load`方法直接调用`Region`方法，因为它可能导致缓存加载器阻塞，从而损害集群的性能。
 
-**Configure and Deploy**
+**配置和部署**
 
-Use one of these three ways to configure and deploy the cache loader:
+使用以下三种方法之一配置和部署缓存加载器：
 
-**Option 1:** If configuring a cluster by defining a `cache.xml` file, deploy by adding the cache loader to the classpath when starting servers.
+**选项 1:** 如果通过定义`cache.xml`文件来配置集群，则在启动服务器时通过将缓存加载器添加到类路径来进行部署。
 
-Here is an example configuration within the `cache.xml` file that specifies the loader without arguments:
+这是`cache.xml`文件中的一个示例配置，它指定不带参数的加载器：
 
 ```
 <region-attributes>
@@ -2643,7 +2607,7 @@ Here is an example configuration within the `cache.xml` file that specifies the 
 </region-attributes>
 ```
 
-Or, here is an example configuration within the `cache.xml` file that specifies the loader with an argument:
+或者，这是`cache.xml`文件中的一个示例配置，它指定带有参数的加载器：
 
 ```
 <cache-loader>
@@ -2654,73 +2618,73 @@ Or, here is an example configuration within the `cache.xml` file that specifies 
 </cache-loader>
 ```
 
-To deploy the JAR file, add the cache loader JAR file to the classpath when starting servers. For example:
+要部署JAR文件，请在启动服务器时将缓存加载器JAR文件添加到类路径中。 例如：
 
 ```
 gfsh>start server --name=s2 --classpath=/var/data/lib/myLoader.jar
 ```
 
-**Option 2:** If deploying the JAR file at server startup, add the JAR file to the classpath and use gfsh to apply the configuration to the region.
+**选项 2:** 如果在服务器启动时部署JAR文件，请将JAR文件添加到类路径并使用gfsh将配置应用于该区域。
 
-To deploy the JAR file, add the cache loader JAR file to the classpath when starting servers. For example:
+要部署JAR文件，请在启动服务器时将缓存加载器JAR文件添加到类路径中。 例如：
 
 ```
 gfsh>start server --name=s2 --classpath=/var/data/lib/myLoader.jar
 ```
 
-Use gfsh to apply the configuration of the `CacheLoader` implementation to the region with `gfsh create region` or `gfsh alter region`. Here is an example of region creation without arguments:
+使用gfsh将`CacheLoader`实现的配置应用于具有`gfsh create region`或`gfsh alter region`的区域。 以下是不带参数的区域创建示例：
 
 ```
 gfsh>create region --name=r3 --cache-loader=com.example.appname.myCacheLoader
 ```
 
-Here is an example of region creation with an argument:
+以下是使用参数创建区域的示例：
 
 ```
 gfsh>create region --name=r3 \
 --cache-loader=com.example.appname.myCacheLoader{'URL':'jdbc:cloudscape:rmi:MyData'}
 ```
 
-Here is an example of altering a region:
+以下是更改区域的示例：
 
 ```
 gfsh>alter region --name=r3 --cache-loader=com.example.appname.myCacheLoader
 ```
 
-**Option 3 applies to partitioned regions:** If deploying the JAR file with the gfsh deploy command after servers have been started, use gfsh to apply the configuration to the region.
+**选项 3 适用于分区区域:** 如果在启动服务器后使用gfsh deploy命令部署JAR文件，请使用gfsh将配置应用于该区域。
 
-After server creation use gfsh to deploy the JAR file to all the servers. For example:
+创建服务器后，使用gfsh将JAR文件部署到所有服务器。 例如：
 
 ```
 gfsh>deploy --jars=/var/data/lib/myLoader.jar
 ```
 
-We do not generally use the gfsh deploy command when the servers host replicated regions, as detailed in [How Data Loaders Work](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/how_data_loaders_work.html).
+当服务器托管复制区域时，我们通常不使用gfsh deploy命令，详见[数据加载器如何工作](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/how_data_loaders_work.html).
 
-Use gfsh to apply the configuration of the `CacheLoader` implementation to the region with `gfsh create region` or `gfsh alter region`. Here is an example of region creation without arguments:
+使用gfsh将`CacheLoader`实现的配置应用于具有`gfsh create region`或`gfsh alter region`的区域。 以下是不带参数的区域创建示例：
 
 ```
 gfsh>create region --name=r3 --cache-loader=com.example.appname.myCacheLoader
 ```
 
-Here is an example of region creation with an argument:
+以下是使用参数创建区域的示例：
 
 ```
 gfsh>create region --name=r3 \
 --cache-loader=com.example.appname.myCacheLoader{'URL':'jdbc:cloudscape:rmi:MyData'}
 ```
 
-Here is an example of altering a region:
+以下是更改区域的示例：
 
 ```
 gfsh>alter region --name=r3 --cache-loader=com.example.appname.myCacheLoader
 ```
 
-**Implementing a Server or Peer with a Cache Loader**
+**使用缓存加载器实现服务器或对等**
 
-Servers and peers with an embedded cache can configure a cache loader in only the members where it makes sense to do so. The design might, for example, assign the job of loading from a database to one or two members for a region hosted by many more members. This can be done to reduce the number of connections when the outside source is a database.
+具有嵌入式缓存的服务器和对等体可以仅在有意义的成员中配置缓存加载器。 例如，设计可以将从数据库加载的作业分配给由更多成员托管的区域的一个或两个成员。 当外部源是数据库时，可以这样做以减少连接数。
 
-Implement the `org.apache.geode.cache.CacheLoader` interface. Region creation configures the the cache loader as in this example:
+实现`org.apache.geode.cache.CacheLoader`接口。 区域创建配置缓存加载器，如下例所示：
 
 ```
 RegionFactory<String,Object> rf = cache.createRegionFactory(REPLICATE);
@@ -2729,219 +2693,212 @@ quotes = rf.create("NASDAQ-Quotes");
 ```
 
 
-
 ## 数据序列化
 
-Data that you manage in Geode must be serialized and deserialized for storage and transmittal between processes. You can choose among several options for data serialization.
+您在Geode中管理的数据必须序列化和反序列化，以便在进程之间进行存储和传输。 您可以选择多个数据序列化选项。
 
-- **Overview of Data Serialization**
+- **数据序列化概述**
 
-  Geode offers serialization options other than Java serialization that give you higher performance and greater flexibility for data storage, transfers, and language types.
+  Geode提供除Java序列化之外的序列化选项，为数据存储，传输和语言类型提供更高的性能和更大的灵活性。
 
-- **Geode PDX Serialization**
+- **Geode PDX 序列化**
 
-  Geode’s Portable Data eXchange (PDX) is a cross-language data format that can reduce the cost of distributing and serializing your objects. PDX stores data in named fields that you can access individually, to avoid the cost of deserializing the entire data object. PDX also allows you to mix versions of objects where you have added or removed fields.
+  Geode的便携式数据交换（PDX）是一种跨语言数据格式，可以降低分发和序列化对象的成本。 PDX将数据存储在您可以单独访问的命名字段中，以避免反序列化整个数据对象的成本。 PDX还允许您混合已添加或删除字段的对象版本。
 
-- **Geode Data Serialization (DataSerializable and DataSerializer)**
+- **Geode 数据序列化 (DataSerializable and DataSerializer)**
 
-  Geode’s `DataSerializable` interface gives you quick serialization of your objects.
+  Geode的`DataSerializable`接口为您提供了对象的快速序列化。
 
-- **Standard Java Serialization**
+- **标准的 Java 序列化**
 
-  You can use standard Java serialization for data you only distribute between Java applications. If you distribute your data between non-Java clients and Java servers, you need to do additional programming to get the data between the various class formats.
-
-
-
-### Overview of Data Serialization
-
-Geode offers serialization options other than Java serialization that give you higher performance and greater flexibility for data storage, transfers, and language types.
-
-All data that Geode moves out of the local cache must be serializable. However, you do not necessarily need to implement `java.io.Serializable` since other serialization options are available in Geode. Region data that must be serializable falls under the following categories:
-
-- Partitioned regions
-- Distributed regions
-- Regions that are persisted or overflowed to disk
-- Server or client regions in a client/server installation
-- Regions configured with a gateway sender for distributing events in a multi-site installation
-- Regions that receive events from remote caches
-- Regions that provide function arguments and results
-
-**注意:** If you are storing objects with the [HTTP Session Management Modules](https://geode.apache.org/docs/guide/17/tools_modules/http_session_mgmt/chapter_overview.html), these objects must be serializable since they are serialized before being stored in the region.
-
-To minimize the cost of serialization and deserialization, Geode avoids changing the data format whenever possible. This means your data might be stored in the cache in serialized or deserialized form, depending on how you use it. For example, if a server acts only as a storage location for data distribution between clients, it makes sense to leave the data in serialized form, ready to be transmitted to clients that request it. Partitioned region data is always initially stored in serialized form.
-
-**Data Serialization Options**
-
-With Geode, you have the option to serialize your domain objects automatically or to implement serialization using one of Geode’s interfaces. Enabling automatic serialization means that domain objects are serialized and deserialized without your having to make any code changes to those objects. This automatic serialization is performed by registering your domain objects with a custom `PdxSerializer` called the `ReflectionBasedAutoSerializer`, which uses Java reflection to infer which fields to serialize.
-
-If autoserialization does not meet your needs, you can serialize your objects by implementing one of the Geode interfaces, `PdxSerializable` or `DataSerializable`. You can use these interfaces to replace any standard Java data serialization for better performance. If you cannot or do not want to modify your domain classes, each interface has an alternate serializer class, `PdxSerializer` and `DataSerializer`. To use these, you create your custom serializer class and then associate it with your domain class in the Geode cache configuration.
-
-Geode Data serialization is about 25% faster than PDX serialization, however using PDX serialization will help you to avoid the even larger costs of performing deserialization.
+  您可以对仅在Java应用程序之间分发的数据使用标准Java序列化。 如果在非Java客户端和Java服务器之间分发数据，则需要执行其他编程以获取各种类格式之间的数据。
 
 
+### 数据序列化概述
 
-| Capability                                                   | Geode Data Serializable | Geode PDX Serializable |
+Geode提供除Java序列化之外的序列化选项，为数据存储，传输和语言类型提供更高的性能和更大的灵活性。
+
+Geode移出本地缓存的所有数据都必须是可序列化的。 但是，您不一定需要实现`java.io.Serializable`，因为Geode中提供了其他序列化选项。 必须可序列化的区域数据属于以下类别：
+
+- 分区区域
+- 分布式区域
+- 持久存储或溢出到磁盘的区域
+- 客户端/服务器安装中的服务器或客户端区域
+- 配置了网关发件人的区域，用于在多站点安装中分发事件
+- 从远程缓存接收事件的区域
+- 提供函数参数和结果的区域
+
+**注意:** 如果使用[HTTP会话管理模块](https://geode.apache.org/docs/guide/17/tools_modules/http_session_mgmt/chapter_overview.html)存储对象，则这些对象必须是可序列化的，因为它们在被序列化之前 存储在该地区。
+
+为了最大限度地降低序列化和反序列化的成本，Geode尽可能避免更改数据格式。 这意味着您的数据可能以序列化或反序列化的形式存储在缓存中，具体取决于您使用它的方式。 例如，如果服务器仅充当客户端之间数据分发的存储位置，则将数据保留为序列化形式，准备传输给请求它的客户端是有意义的。 分区区域数据最初始终以序列化形式存储。
+
+**数据序列化选项**
+
+使用Geode，您可以选择自动序列化域对象或使用Geode的一个接口实现序列化。 启用自动序列化意味着域对象被序列化和反序列化，而无需对这些对象进行任何代码更改。 这种自动序列化是通过使用名为`ReflectionBasedAutoSerializer`的自定义`PdxSerializer`注册域对象来执行的，该自定义`PdxSerializer`使用Java反射来推断要序列化的字段。
+
+如果autoserialization不能满足您的需求，您可以通过实现Geode接口之一，`PdxSerializable`或`DataSerializable`来序列化您的对象。 您可以使用这些接口替换任何标准Java数据序列化以获得更好的性能。 如果你不能或不想修改你的域类，每个接口都有一个备用的序列化器类，`PdxSerializer`和`DataSerializer`。 要使用这些，请创建自定义序列化程序类，然后将其与Geode缓存配置中的域类相关联。
+
+Geode数据序列化比PDX序列化快约25％，但使用PDX序列化将帮助您避免执行反序列化的更高成本。
+
+
+
+| 性能                                                   | Geode Data Serializable | Geode PDX Serializable |
 | ------------------------------------------------------------ | ----------------------- | ---------------------- |
 | Implements Java Serializable.                                | X                       |                        |
-| Handles multiple versions of application domain objects, providing the versions differ by the addition or subtraction of fields. |                         | X                      |
-| Provides single field access of serialized data, without full deserialization - supported also for OQL querying. |                         | X                      |
-| Automatically ported to other languages by Geode             |                         | X                      |
+| 处理多个版本的应用程序域对象，通过添加或减少字段来提供不同的版本. |                         | X                      |
+| 提供序列化数据的单字段访问，无需完全反序列化 - 也支持OQL查询. |                         | X                      |
+| Geode自动移植到其他语言             |                         | X                      |
 | Works with .NET clients.                                     | X                       | X                      |
 | Works with C++ clients.                                      | X                       | X                      |
 | Works with Geode delta propagation.                          | X                       | X (See note below.)    |
 
-**Table 1.** Serialization Options: Comparison of Features
+**表 1.** 序列化选项：功能比较
 
-**注意:** By default, you can use Geode delta propagation with PDX serialization. However, delta propagation will not work if you have set the Geode property `read-serialized` to “true”. In terms of deserialization, to apply a change delta propagation requires a domain class instance and the `fromDelta`method. If you have set `read-serialized` to true, then you will receive a `PdxInstance`instead of a domain class instance and `PdxInstance` does not have the `fromDelta` method required for delta propagation.
+**注意:** 默认情况下，您可以将Geode delta传播与PDX序列化一起使用。 但是，如果已将Geode属性`read-serialized`设置为“true”，则delta传播将不起作用。 在反序列化方面，要应用更改增量传播，需要域类实例和`fromDelta`方法。 如果你将`read-serialized`设置为true，那么你将收到一个`PdxInstance`而不是一个域类实例，而'PdxInstance`没有delta传播所需的`fromDelta`方法。
 
-**Differences between Geode Serialization (PDX or Data Serializable) and Java Serialization**
+**Geode序列化（PDX或数据可序列化）和Java序列化之间的差异**
 
-Geode serialization (either PDX Serialization or Data Serialization) does not support circular object graphs whereas Java serialization does. In Geode serialization, if the same object is referenced more than once in an object graph, the object is serialized for each reference, and deserialization produces multiple copies of the object. By contrast in this situation, Java serialization serializes the object once and when deserializing the object, it produces one instance of the object with multiple references.
+Geode序列化（PDX序列化或数据序列化）不支持循环对象图，而Java序列化则支持循环对象图。 在Geode序列化中，如果在对象图中多次引用同一对象，则为每个引用序列化对象，并且反序列化生成对象的多个副本。 相比之下，在这种情况下，Java序列化将对象序列化一次，并且在反序列化对象时，它会生成具有多个引用的对象的一个实例。
 
 
+### Geode PDX序列化
 
-### Geode PDX Serialization
+Geode的便携式数据交换（PDX）是一种跨语言数据格式，可以降低分发和序列化对象的成本。 PDX将数据存储在您可以单独访问的命名字段中，以避免反序列化整个数据对象的成本。 PDX还允许您混合已添加或删除字段的对象版本。
 
-Geode’s Portable Data eXchange (PDX) is a cross-language data format that can reduce the cost of distributing and serializing your objects. PDX stores data in named fields that you can access individually, to avoid the cost of deserializing the entire data object. PDX also allows you to mix versions of objects where you have added or removed fields.
+- **Geode PDX序列化功能**
 
-- **Geode PDX Serialization Features**
+  Geode PDX序列化在功能方面具有多项优势。
 
-  Geode PDX serialization offers several advantages in terms of functionality.
+- **使用PDX序列化的高级步骤**
 
-- **High Level Steps for Using PDX Serialization**
+  要使用PDX序列化，您可以配置和使用Geode基于反射的自动化程序，也可以使用PDX接口和类对对象的序列化进行编程。
 
-  To use PDX serialization, you can configure and use Geode’s reflection-based autoserializer, or you can program the serialization of your objects by using the PDX interfaces and classes.
+- **使用基于自动反射的PDX序列化**
 
-- **Using Automatic Reflection-Based PDX Serialization**
+  您可以将缓存配置为自动序列化和反序列化域对象，而无需向其添加任何额外代码。
 
-  You can configure your cache to automatically serialize and deserialize domain objects without having to add any extra code to them.
+- **使用PdxSerializer序列化您的域对象**
 
-- **Serializing Your Domain Object with a PdxSerializer**
+  对于您不能或不想修改的域对象，请使用`PdxSerializer`类来序列化和反序列化对象的字段。 您对整个缓存使用一个`PdxSerializer`实现，为您以这种方式处理的所有域对象编程。
 
-  For a domain object that you cannot or do not want to modify, use the `PdxSerializer` class to serialize and deserialize the object’s fields. You use one `PdxSerializer` implementation for the entire cache, programming it for all of the domain objects that you handle in this way.
+- **在域对象中实现PdxSerializable**
 
-- **Implementing PdxSerializable in Your Domain Object**
+  对于可以修改源的域对象，在对象中实现`PdxSerializable`接口，并使用其方法序列化和反序列化对象的字段。
 
-  For a domain object with source that you can modify, implement the `PdxSerializable` interface in the object and use its methods to serialize and deserialize the object’s fields.
+- **编写应用程序以使用PdxInstances**
 
-- **Programming Your Application to Use PdxInstances**
+  `PdxInstance`是PDX序列化字节周围的轻量级包装器。 它为应用程序提供对PDX序列化对象字段的运行时访问。
 
-  A `PdxInstance` is a light-weight wrapper around PDX serialized bytes. It provides applications with run-time access to fields of a PDX serialized object.
+- **将JSON文档添加到Geode缓存**
 
-- **Adding JSON Documents to the Geode Cache**
+  `JSONFormatter` API允许您将JSON格式的文档放入区域，然后通过将文档作为PdxInstances存储在内部来检索它们。
 
-  The `JSONFormatter` API allows you to put JSON formatted documents into regions and retrieve them later by storing the documents internally as PdxInstances.
+- **使用PdxInstanceFactory创建PdxInstances**
 
-- **Using PdxInstanceFactory to Create PdxInstances**
+  当域类在服务器上不可用时，您可以使用`PdxInstanceFactory`接口从原始数据创建`PdxInstance`。
 
-  You can use the `PdxInstanceFactory` interface to create a `PdxInstance` from raw data when the domain class is not available on the server.
+- **将PDX元数据保留到磁盘**
 
-- **Persisting PDX Metadata to Disk**
+  Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存储。
 
-  Geode allows you to persist PDX metadata to disk and specify the disk store to use.
-
-- **Using PDX Objects as Region Entry Keys**
+- **使用PDX对象作为区域条目键**
 
   Using PDX objects as region entry keys is highly discouraged.
 
 
+#### Geode PDX序列化功能
 
-#### Geode PDX Serialization Features
+Geode PDX序列化在功能方面具有多项优势。
 
-Geode PDX serialization offers several advantages in terms of functionality.
+**PDX域对象的应用程序版本控制**
 
-**Application Versioning of PDX Domain Objects**
+域对象随应用程序代码一起发展。 您可以创建一个具有两个地址行的地址对象，然后稍后实现某些情况下需要第三行。 或者您可能会意识到某个特定字段未被使用并且想要摆脱它。 使用PDX，如果版本因添加或删除字段而不同，则可以在群集中一起使用旧版本和新版本的域对象。 通过此兼容性，您可以逐步将已修改的代码和数据引入群集，而无需关闭群集。
 
-Domain objects evolve along with your application code. You might create an address object with two address lines, then realize later that a third line is required for some situations. Or you might realize that a particular field is not used and want to get rid of it. With PDX, you can use old and new versions of domain objects together in a cluster if the versions differ by the addition or removal of fields. This compatibility lets you gradually introduce modified code and data into the cluster, without bringing the cluster down.
+Geode维护PDX域对象元数据的中央注册表。 无论字段是否已定义，Geode都使用注册表保留每个成员缓存中的字段。 当成员收到具有该成员不知道的注册字段的对象时，该成员不会访问该字段，而是保留该字段并将其与整个对象一起传递给其他成员。 当成员根据成员的版本收到缺少一个或多个字段的对象时，Geode会将字段类型的Java默认值分配给缺少的字段。
 
-Geode maintains a central registry of the PDX domain object metadata. Using the registry, Geode preserves fields in each member’s cache regardless of whether the field is defined. When a member receives an object with a registered field that the member is not aware of, the member does not access the field, but preserves it and passes it along with the entire object to other members. When a member receives an object that is missing one or more fields according to the member’s version, Geode assigns the Java default values for the field types to the missing fields.
+**PDX可序列化对象的可移植性**
 
-**Portability of PDX Serializable Objects**
+使用PDX序列化对象时，Geode将对象的类型信息存储在中央注册表中。 信息在客户端和服务器，对等端和集群之间传递。
 
-When you serialize an object using PDX, Geode stores the object’s type information in the central registry. The information is passed among clients and servers, peers, and clusters.
+对象类型信息的这种集中对于客户端/服务器安装是有利的，其中客户端和服务器以不同语言编写。 客户端在存储PDX序列化对象时会自动将注册表信息传递给服务器。 客户端可以针对服务器中的数据运行查询和功能，而无需服务器和存储对象之间的兼容性。 一个客户端可以将数据存储在服务器上以供另一个客户端检索，而服务器部分没有要求。
 
-This centralization of object type information is advantageous for client/server installations in which clients and servers are written in different languages. Clients pass registry information to servers automatically when they store a PDX serialized object. Clients can run queries and functions against the data in the servers without compatibility between server and the stored objects. One client can store data on the server to be retrieved by another client, with no requirements on the part of the server.
+**减少序列化对象的反序列化**
 
-**Reduced Deserialization of Serialized Objects**
+PDX序列化对象的访问方法允许您检查域对象的特定字段，而无需反序列化整个对象。 根据您的对象使用情况，您可以显着降低序列化和反序列化成本。
 
-The access methods of PDX serialized objects allow you to examine specific fields of your domain object without deserializing the entire object. Depending on your object usage, you can reduce serialization and deserialization costs significantly.
-
-Java and other clients can run queries and execute functions against the objects in the server caches without deserializing the entire object on the server side. The query engine automatically recognizes PDX objects, retrieves the `PdxInstance` of the object and uses only the fields it needs. Likewise, peers can access only the necessary fields from the serialized object, keeping the object stored in the cache in serialized form.
-
+Java和其他客户端可以针对服务器缓存中的对象运行查询和执行函数，而无需反序列化服务器端的整个对象。 查询引擎自动识别PDX对象，检索对象的`PdxInstance`并仅使用它需要的字段。 同样，对等体只能访问序列化对象中的必要字段，从而使对象以序列化形式保存在缓存中。
 
 
-#### High Level Steps for Using PDX Serialization
+#### 使用PDX序列化的高级步骤
 
-To use PDX serialization, you can configure and use Geode’s reflection-based autoserializer, or you can program the serialization of your objects by using the PDX interfaces and classes.
+要使用PDX序列化，您可以配置和使用Geode基于反射的自动化程序，也可以使用PDX接口和类对对象的序列化进行编程。
 
-Optionally, program your application code to deserialize individual fields out of PDX representations of your serialized objects. You may also need to persist your PDX metadata to disk for recovery on startup.
+（可选）对应用程序代码进行编程，以便对序列化对象的PDX表示中的各个字段进行反序列化。 您可能还需要将PDX元数据保留到磁盘以便在启动时进行恢复。
 
-**Procedure**
+**步骤**
 
-1. Use one of these serialization options for each object type that you want to serialize using PDX serialization:
+1. 对于要使用PDX序列化序列化的每种对象类型，请使用以下序列化选项之一：
 
-   - [Using Automatic Reflection-Based PDX Serialization](https://geode.apache.org/docs/guide/17/developing/data_serialization/auto_serialization.html)
-   - [Serializing Your Domain Object with a PdxSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializer.html)
-   - [Implementing PdxSerializable in Your Domain Object](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializable.html)
+   - [使用基于自动反射的PDX序列化](https://geode.apache.org/docs/guide/17/developing/data_serialization/auto_serialization.html)
+   - [使用PdxSerializer序列化您的域对象](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializer.html)
+   - [在域对象中实现PdxSerializable](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializable.html)
 
-2. To ensure that your servers do not need to load the application classes, set the `pdx` `read-serialized` attribute to true. In gfsh, execute the following command before starting up your servers:
+2. 要确保服务器不需要加载应用程序类，请将`pdx` `read-serialized`属性设置为true。 在gfsh中，在启动服务器之前执行以下命令：
 
    ```
    gfsh>configure pdx --read-serialized=true
    ```
 
-   By using gfsh, this configuration can propagated across the cluster through the [Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html). Alternately, you would need to configure `pdx read-serialized` in each server’s `cache.xml` file.
+   通过使用gfsh，此配置可以通过[集群配置服务](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)在群集中传播。 或者，您需要在每个服务器的`cache.xml`文件中配置`pdx read-serialized`。
 
-3. If you are storing any Geode data on disk, then you must configure PDX serialization to use persistence. See [Persisting PDX Metadata to Disk](https://geode.apache.org/docs/guide/17/developing/data_serialization/persist_pdx_metadata_to_disk.html) for more information.
+3. 如果要将任何Geode数据存储在磁盘上，则必须配置PDX序列化以使用持久性。 有关详细信息，请参阅[将PDX元数据保留到磁盘](https://geode.apache.org/docs/guide/17/developing/data_serialization/persist_pdx_metadata_to_disk.html) 。
 
-4. (Optional) Wherever you run explicit application code to retrieve and manage your cached entries, you may want to manage your data objects without using full deserialization. To do this, see [Programming Your Application to Use PdxInstances](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
+4. （可选）无论您在何处运行显式应用程序代码来检索和管理缓存条目，您都可能希望在不使用完全反序列化的情况下管理数据对象。 要执行此操作，请参阅[编写应用程序以使用Pdx实例](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
 
-**PDX and Multi-Site (WAN) Deployments**
+**PDX和多站点（WAN）部署**
 
-For multisite (WAN) installations only– if you will use PDX serialization in any of your WAN-enabled regions, for each cluster, you must choose a unique integer between 0 (zero) and 255 and set the `distributed-system-id` in every member’s `gemfire.properties` file. See [Configuring a Multi-site (WAN) System](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html).
-
-
-
-#### Using Automatic Reflection-Based PDX Serialization
-
-You can configure your cache to automatically serialize and deserialize domain objects without having to add any extra code to them.
-
-You can automatically serialize and deserialize domain objects without coding a `PdxSerializer`class. You do this by registering your domain objects with a custom `PdxSerializer` called `ReflectionBasedAutoSerializer` that uses Java reflection to infer which fields to serialize.
-
-You can also extend the ReflectionBasedAutoSerializer to customize its behavior. For example, you could add optimized serialization support for BigInteger and BigDecimal types. See [Extending the ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279) for details.
-
-**注意:** Your custom PDX autoserializable classes cannot use the `org.apache.geode` package. If they do, the classes will be ignored by the PDX auto serializer.
+仅对于多站点（WAN）安装 - 如果要在任何启用WAN的区域中使用PDX序列化，则对于每个群集，必须选择介于0（零）和255之间的唯一整数并设置`distributed-system-id` 在每个成员的`gemfire.properties`文件中。 请参见[配置多站点（WAN）系统](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html).
 
 
+#### 使用基于自动反射的PDX序列化
 
-**Prerequisites**
+您可以将缓存配置为自动序列化和反序列化域对象，而无需向其添加任何额外代码。
 
-- Understand generally how to configure the Geode cache.
-- Understand how PDX serialization works and how to configure your application to use `PdxSerializer`.
+您可以自动序列化和反序列化域对象，而无需编写`PdxSerializer`类。 您可以通过使用名为`ReflectionBasedAutoSerializer`的自定义`PdxSerializer`注册域对象来执行此操作，该自定义`PdxSerializer`使用Java反射来推断要序列化的字段。
 
-**Procedure**
+您还可以扩展ReflectionBasedAutoSerializer以自定义其行为。 例如，您可以为BigInteger和BigDecimal类型添加优化的序列化支持。 有关详细信息，请参阅[扩展ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279) 。
 
-In your application where you manage data from the cache, provide the following configuration and code as appropriate:
+**注意:** 您的自定义PDX autoserializable类不能使用`org.apache.geode`包。 如果是这样，PDX自动序列化器将忽略这些类。
 
-1. In the domain classes that you wish to autoserialize, make sure each class has a zero-arg constructor. For example:
+
+**先决条件**
+
+- 一般了解如何配置Geode缓存。
+- 了解PDX序列化的工作原理以及如何配置应用程序以使用`PdxSerializer`。
+
+**步骤**
+
+在从缓存管理数据的应用程序中，根据需要提供以下配置和代码：
+
+1. 在您希望自动化的域类中，确保每个类都有一个零参数构造函数。 例如：
 
    ```
    public PortfolioPdx(){}
    ```
 
-2. Using one of the following methods, set the PDX serializer to `ReflectionBasedAutoSerializer`.
+2. 使用以下方法之一，将PDX序列化程序设置为`ReflectionBasedAutoSerializer`。
 
-   1. In gfsh, execute the following command prior to starting up any members that host data:
+   1. 在gfsh中，在启动托管数据的任何成员之前执行以下命令：
 
       ```
       gfsh>configure pdx --auto-serializable-classes=com\.company\.domain\..*
       ```
 
-      By using gfsh, this configuration can propagated across the cluster through the [Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
+      通过使用gfsh，此配置可以通过[Cluster Configuration Service]在群集中传播(https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
 
-   2. Alternately, in `cache.xml`:
+   2. 或者，在`cache.xml`中：
 
-      ```
+      ```xml
       <!-- Cache configuration configuring auto serialization behavior -->
       <cache>
         <pdx>
@@ -2958,9 +2915,9 @@ In your application where you manage data from the cache, provide the following 
       </cache>
       ```
 
-      The parameter, `classes`, takes a comma-separated list of class patterns to define the domain classes to serialize. If your domain object is an aggregation of other domain classes, you need to register the domain object and each of those domain classes explicitly for the domain object to be serialized completely.
+      参数`classes`采用逗号分隔的类模式列表来定义要序列化的域类。 如果您的域对象是其他域类的聚合，则需要明确注册域对象和每个域类，以便完全序列化域对象。
 
-   3. Using the Java API:
+   3. 使用 Java API:
 
       ```
       Cache c = new CacheFactory()
@@ -2968,24 +2925,24 @@ In your application where you manage data from the cache, provide the following 
         .create();
       ```
 
-3. Customize the behavior of the `ReflectionBasedAutoSerializer` using one of the following mechanisms:
+3. 使用以下机制之一自定义`ReflectionBasedAutoSerializer`的行为：
 
-   - By using a class pattern string to specify the classes to auto-serialize and customize how the classes are serialized. Class pattern strings can be specified in the API by passing strings to the `ReflectionBasedAutoSerializer` constructor or by specifying them in cache.xml. See [Customizing Serialization with Class Pattern Strings](https://geode.apache.org/docs/guide/17/developing/data_serialization/autoserialization_with_class_pattern_strings.html#concept_9B67BBE94B414B7EA63BD7E8D61D0312) for details.
-   - By creating a subclass of `ReflectionBasedAutoSerializer` and overriding specific methods. See [Extending the ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279) for details.
+   - 通过使用类模式字符串来指定要自动序列化的类，并自定义类的序列化方式。 可以通过将字符串传递给`ReflectionBasedAutoSerializer`构造函数或在cache.xml中指定类模式字符串来指定类模式字符串。 有关详细信息，请参阅[使用类模式字符串自定义序列化](https://geode.apache.org/docs/guide/17/developing/data_serialization/autoserialization_with_class_pattern_strings.html#concept_9B67BBE94B414B7EA63BD7E8D61D0312)。
+   - 通过创建`ReflectionBasedAutoSerializer`的子类并覆盖特定方法。 有关详细信息，请参阅[扩展ReflectionBasedAutoSerializer](https://geode.apache.org/docs/guide/17/developing/data_serialization/extending_the_autoserializer.html#concept_9E020566EE794A81A48A90BA798EC279)。
 
-4. If desired, configure the `ReflectionBasedAutoSerializer` to check the portability of the objects it is passed before it tries to autoserialize them. When this flag is set to true, the `ReflectionBasedAutoSerializer` will throw a `NonPortableClassException` error when trying to autoserialize a non-portable object. To set this, use the following configuration:
+4. 如果需要，配置`ReflectionBasedAutoSerializer`以检查它在尝试自动化之前传递的对象的可移植性。 当此标志设置为true时，`ReflectionBasedAutoSerializer`将在尝试自动化非可移植对象时抛出`NonPortableClassException`错误。 要设置此项，请使用以下配置：
 
-   - In gfsh, use the following command:
+   - 在gfsh中，使用以下命令：
 
      ```
      gfsh>configure pdx --portable-auto-serializable-classes=com\.company\.domain\..*
      ```
 
-     By using gfsh, this configuration can propagated across the cluster through the [Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
+     通过使用gfsh，此配置可以通过[Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)在群集中传播。
 
-   - In cache.xml:
+   - 在cache.xml中:
 
-     ```
+     ```xml
      <!-- Cache configuration configuring auto serialization behavior -->
      <cache>
        <pdx>
@@ -3005,7 +2962,7 @@ In your application where you manage data from the cache, provide the following 
      </cache>
      ```
 
-   - Using the Java API:
+   - 使用 Java API:
 
      ```
      Cache c = new CacheFactory()
@@ -3013,50 +2970,49 @@ In your application where you manage data from the cache, provide the following 
        .create();
      ```
 
-For each domain class you provide, all fields are considered for serialization except those defined as `static` or `transient` and those you explicitly exclude using the class pattern strings.
+对于您提供的每个域类，除了那些定义为`static`或`transient`的字段以及使用类模式字符串明确排除的字段外，所有字段都被视为序列化。
 
-**注意:** The `ReflectionBasedAutoSerializer` traverses the given domain object’s class hierarchy to retrieve all fields to be considered for serialization. So if `DomainObjectB` inherits from `DomainObjectA`, you only need to register `DomainObjectB` to have all of `DomainObjectB` serialized.
+**注意:** `ReflectionBasedAutoSerializer`遍历给定域对象的类层次结构，以检索要考虑进行序列化的所有字段。 因此，如果`DomainObjectB`继承自`DomainObjectA`，则只需注册`DomainObjectB`即可将所有`DomainObjectB`序列化。
 
 
+##### 使用类模式字符串自定义序列化
 
-##### Customizing Serialization with Class Pattern Strings
+使用类模式字符串命名要使用Geode基于反射的自动传感器序列化的类，并指定对象标识字段并指定要从序列化中排除的字段。
 
-Use class pattern strings to name the classes that you want to serialize using Geode’s reflection-based autoserializer and to specify object identity fields and to specify fields to exclude from serialization.
-
-The class pattern strings used to configured the `ReflectionBasedAutoSerializer` are standard regular expressions. For example, this expression would select all classes defined in the `com.company.domain` package and its subpackages:
+用于配置`ReflectionBasedAutoSerializer`的类模式字符串是标准正则表达式。 例如，此表达式将选择`com.company.domain`包及其子包中定义的所有类：
 
 ```
 com\.company\.domain\..*
 ```
 
-You can augment the pattern strings with a special notation to define fields to exclude from serialization and to define fields to mark as PDX identity fields. The full syntax of the pattern string is:
+您可以使用特殊符号扩充模式字符串，以定义要从序列化中排除的字段，并定义要标记为PDX标识字段的字段。 模式字符串的完整语法是：
 
 ```
 <class pattern> [# (identity|exclude) = <field pattern>]... [, <class pattern>...]
 ```
 
-The following example pattern string sets these PDX serialization criteria:
+以下示例模式字符串设置这些PDX序列化条件：
 
-- Classes with names matching the pattern `com.company.DomainObject.*` are serialized. In those classes, fields beginning with `id` are marked as identity fields and fields named `creationDate`are not serialized.
-- The class `com.company.special.Patient` is serialized. In the class, the field, `ssn` is marked as an identity field
+- 名称与模式`com.company.DomainObject.*`匹配的类被序列化。 在这些类中，以`id`开头的字段标记为标识字段，名为`creationDate`的字段未标记为序列化。
+- 类`com.company.special.Patient`被序列化。 在类中，字段`ssn`被标记为标识字段
 
 ```
 com.company.DomainObject.*#identity=id.*#exclude=creationDate, 
 com.company.special.Patient#identity=ssn
 ```
 
-**注意:** There is no association between the `identity` and `exclude` options, so the pattern above could also be expressed as:
+**注意:** `identity`和`exclude`选项之间没有关联，因此上面的模式也可以表示为：
 
 ```
 com.company.DomainObject.*#identity=id.*, com.company.DomainObject.*#exclude=creationDate, 
 com.company.special.Patient#identity=ssn
 ```
 
-**注意:** The order of the patterns is not relevant. All defined class patterns are used when determining whether a field should be considered as an identity field or should be excluded.
+**注意:** 模式的顺序无关紧要。 在确定字段是应该被视为标识字段还是应该被排除时，使用所有定义的类模式。
 
-Examples:
+例子:
 
-- This XML uses the example pattern shown above:
+- 此XML使用上面显示的示例模式：
 
   ```
   <parameter name="classes">
@@ -3065,14 +3021,14 @@ Examples:
   </parameter>
   ```
 
-- This application code sets the same pattern:
+- 此应用程序代码设置相同的模式：
 
   ```
   classPatterns.add("com.company.DomainObject.*#identity=id.*#exclude=creationDate,
      com.company.special.Patient#identity=ssn");
   ```
 
-- This application code has the same effect:
+- 此应用程序代码具有相同的效果：
 
   ```
    Cache c = new CacheFactory().set("cache-xml-file", cacheXmlFileName)
@@ -3082,8 +3038,7 @@ Examples:
   ```
 
 
-
-##### Extending the ReflectionBasedAutoSerializer
+##### 扩展ReflectionBasedAutoSerializer
 
 You can extend the `ReflectionBasedAutoSerializer` to handle serialization in a customized manner. This section provides an overview of the available method-based customization options and an example of extending the serializer to support BigDecimal and BigInteger types.
 
