@@ -3040,40 +3040,40 @@ com.company.special.Patient#identity=ssn
 
 ##### 扩展ReflectionBasedAutoSerializer
 
-You can extend the `ReflectionBasedAutoSerializer` to handle serialization in a customized manner. This section provides an overview of the available method-based customization options and an example of extending the serializer to support BigDecimal and BigInteger types.
+您可以扩展`ReflectionBasedAutoSerializer`以自定义方式处理序列化。 本节概述了可用的基于方法的自定义选项以及扩展序列化程序以支持BigDecimal和BigInteger类型的示例。
 
-**Reasons to Extend the ReflectionBasedAutoSerializer**
+**扩展ReflectionBasedAutoSerializer的原因**
 
-One of the main use cases for extending the `ReflectionBasedAutoSerializer` is that you want it to handle an object that would currently need to be handled by standard Java serialization. There are several issues with having to use standard Java serialization that can be addressed by extending the PDX `ReflectionBasedAutoSerializer`.
+扩展`ReflectionBasedAutoSerializer`的主要用例之一是，您希望它处理当前需要由标准Java序列化处理的对象。 必须使用标准Java序列化有几个问题，可以通过扩展PDX`ReflectionBasedAutoSerializer`来解决。
 
-- Each time we transition from a Geode serialized object to an object that will be Java I/O serialized, extra data must get serialized. This can cause a great deal of serialization overhead. This is why it is worth extending the `ReflectionBasedAutoSerializer` to handle any classes that normally would have to be Java I/O serialized.
-- Expanding the number of classes that can use the `ReflectionBasedAutoSerializer` is beneficial when you encounter object graphs. After we use Java I/O serialization on an object, any objects under that object in the object graph will also have to be Java I/O serialized. This includes objects that normally would have been serialized using PDX or `DataSerializable`.
-- If standard Java I/O serialization is done on an object and you have enabled check-portability, then an exception will be thrown. Even if you are not concerned with the object’s portability, you can use this flag to find out what classes would use standard Java serialization (by getting an exception on them) and then enhancing your auto serializer to handle them.
+- 每次我们从Geode序列化对象转换为将被Java I/O序列化的对象时，必须序列化额外数据。 这可能会导致大量的序列化开销。 这就是为什么值得扩展`ReflectionBasedAutoSerializer`以处理通常必须是Java I/O序列化的任何类的原因。
+- 当遇到对象图时，扩展可以使用`ReflectionBasedAutoSerializer`的类的数量是有益的。 在对象上使用Java I/O序列化之后，对象图中该对象下的任何对象也必须是Java I/O序列化的。 这包括通常使用PDX或`DataSerializable`序列化的对象。
+- 如果在对象上完成标准Java I/O序列化并且您启用了检查可移植性，则将引发异常。 即使您不关心对象的可移植性，也可以使用此标志来查找哪些类将使用标准Java序列化（通过获取它们的异常），然后增强自动序列化程序来处理它们。
 
-**Overriding ReflectionBasedAutoSerializer Behavior**
+**覆盖ReflectionBasedAutoSerializer行为**
 
-You can customize the specific behaviors in `ReflectionBasedAutoSerializer` by overriding the following methods:
+您可以通过覆盖以下方法来自定义`ReflectionBasedAutoSerializer`中的特定行为：
 
-- **isClassAutoSerialized** customizes which classes to autoserialize.
-- **isFieldIncluded** specifies which fields of a class to autoserialize.
-- **getFieldName** defines the specific field names that will be generated during autoserialization.
-- **isIdentifyField** controls which field is marked as the identity field. Identity fields are used when a PdxInstance computes its hash code to determine whether it is equal to another object.
-- **getFieldType** determines the field type that will be used when autoserializing the given field.
-- **transformFieldValue** controls whether specific field values of a PDX object can be transformed during serialization.
-- **writeTransform** controls what field value is written during auto serialization.
-- **readTransform** controls what field value is read during auto deserialization.
+- **isClassAutoSerialized** 自定义要自动化的类。
+- **isFieldIncluded** 指定要自动化的类的哪些字段。
+- **getFieldName** 定义将在autoserialization期间生成的特定字段名称。
+- **isIdentifyField** 控制哪个字段标记为标识字段。 当PdxInstance计算其哈希码以确定它是否等于另一个对象时，将使用标识字段。
+- **getFieldType** 确定自动化给定字段时将使用的字段类型。
+- **transformFieldValue** 控制是否可以在序列化期间转换PDX对象的特定字段值。
+- **writeTransform** 控制在自动序列化期间写入的字段值。
+- **readTransform** 控制在自动反序列化期间读取的字段值。
 
-These methods are only called the first time the `ReflectionBasedAutoSerializer` sees a new class. The results will be remembered and used the next time the same class is seen.
+这些方法仅在`ReflectionBasedAutoSerializer`第一次看到新类时调用。 结果会被记住和使用的下一次同样的类被看见。
 
-For details on these methods and their default behaviors, see the JavaDocs on [ReflectionBasedAutoSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/pdx/ReflectionBasedAutoSerializer.html) for details.
+有关这些方法及其默认行为的详细信息，请参阅[ReflectionBasedAutoSerializer]上的JavaDocs(https://geode.apache.org/releases/latest/javadoc/org/apache/geode/pdx/ReflectionBasedAutoSerializer.html) 以获取详细信息。
 
-**Example of Optimizing Autoserialization of BigInteger and BigDecimal Types**
+**优化BigInteger和BigDecimal类型的自动化的示例**
 
-This section provides an example of extending the `ReflectionBasedAutoSerializer` to optimize the automatic serialization of BigInteger and BigDecimal types.
+本节提供了扩展`ReflectionBasedAutoSerializer`以优化BigInteger和BigDecimal类型的自动序列化的示例。
 
-The following code sample illustrates a subclass of the `ReflectionBasedAutoSerializer` that optimizes BigInteger and BigDecimal autoserialization:
+下面的代码示例说明了`ReflectionBasedAutoSerializer`的子类，它优化了BigInteger和BigDecimal autoserialization：
 
-```
+```java
 public static class BigAutoSerializer extends ReflectionBasedAutoSerializer {
    public BigAutoSerializer(Boolean checkPortability, string… patterns) {
     super(checkPortability, patterns);
@@ -3144,30 +3144,29 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 ```
 
 
+#### 使用PdxSerializer序列化您的域对象
 
-#### Serializing Your Domain Object with a PdxSerializer
+对于您不能或不想修改的域对象，请使用`PdxSerializer`类来序列化和反序列化对象的字段。 您对整个缓存使用一个`PdxSerializer`实现，为您以这种方式处理的所有域对象编程。
 
-For a domain object that you cannot or do not want to modify, use the `PdxSerializer` class to serialize and deserialize the object’s fields. You use one `PdxSerializer` implementation for the entire cache, programming it for all of the domain objects that you handle in this way.
+使用`PdxSerializer`，您可以按原样保留域对象，并在单独的序列化程序中处理序列化和反序列化。 您在缓存PDX配置中注册序列化程序。 对序列化程序进行编程以处理所需的所有域对象。
 
-With `PdxSerializer`, you leave your domain object as-is and handle the serialization and deserialization in the separate serializer. You register the serializer in your cache PDX configuration. Program the serializer to handle all of the domain objects you need.
+如果您编写自己的`PdxSerializer`并且还使用`ReflectionBasedAutoSerializer`，那么`PdxSerializer`需要拥有`ReflectionBasedAutoSerializer`并委托给它。 Cache只能有一个`PdxSerializer`实例。
 
-If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoSerializer`, then the `PdxSerializer` needs to own the `ReflectionBasedAutoSerializer` and delegate to it. A Cache can only have a single `PdxSerializer` instance.
+**注意:** `PdxSerializer``toData`和`fromData`方法与`PdxSerializable`的方法不同。 它们具有不同的参数和结果。
 
-**注意:** The `PdxSerializer` `toData` and `fromData` methods differ from those for `PdxSerializable`. They have different parameters and results.
+**步骤**
 
-**Procedure**
-
-1. In the domain classes that you wish to PDX serialize, make sure each class has a zero-arg constructor. For example:
+1. 在您希望PDX序列化的域类中，确保每个类都有一个零参数构造函数。 例如：
 
    ```
    public PortfolioPdx(){}
    ```
 
-2. If you have not already implemented `PdxSerializer` for some other domain object, perform these steps:
+2. 如果您还没有为其他域对象实现`PdxSerializer`，请执行以下步骤：
 
-   1. Create a new class as your cache-wide serializer and make it implement `PdxSerializer`. If you want to declare your new class in the `cache.xml` file, have it also implement `Declarable`.
+   1. 创建一个新类作为缓存范围的序列化程序，并使其实现`PdxSerializer`。 如果要在`cache.xml`文件中声明新类，请让它实现`Declarable`。
 
-      Example:
+      例子:
 
       ```
       import org.apache.geode.cache.Declarable;
@@ -3179,11 +3178,11 @@ If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoS
       ...
       ```
 
-   2. In your cache pdx configuration, register the serializer class in the cache’s `<pdx>` `<pdx-serializer>` `<class-name>` attribute.
+   2. 在高速缓存pdx配置中，在高速缓存的`<pdx>` `<pdx-serializer>` `<class-name>`属性中注册序列化器类。
 
-      Example:
+      例子:
 
-      ```
+      ```xml
       // Configuration setting PDX serializer for the cache
       <cache>
         <pdx>
@@ -3195,27 +3194,27 @@ If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoS
       </cache>
       ```
 
-      Or use the `CacheFactory.setPdxSerializer` API.
+      或者使用`CacheFactory.setPdxSerializer` API。
 
-      ```
+      ```java
       Cache c = new CacheFactory
          .setPdxSerializer(new ExamplePdxSerializer())
          .create();
       ```
 
-   **注意:** You cannot specify a custom `pdx-serializer` class using gfsh, however the `configure pdx` command automatically configures the org.apache.geode.pdx.ReflectionBasedAutoSerializer class. See [configure pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh).
+   **注意:** 您不能使用gfsh指定自定义`pdx-serializer`类，但`configure pdx`命令会自动配置org.apache.geode.pdx.ReflectionBasedAutoSerializer类。 见[configure pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh).
 
-3. Program `PdxSerializer.toData` to recognize, cast, and handle your domain object:
+3. 编程`PdxSerializer.toData`来识别，强制转换和处理你的域对象：
 
-   1. Write each standard Java data field of your domain class using the `PdxWriter` write methods.
-   2. Call the `PdxWriter` `markIdentityField` method for each field you want to have Geode use to identify your object. Put this after the field’s write method. Geode uses this information to compare objects for operations like distinct queries. If you do not set as least one identity field, then the `equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well. It is important that the fields used by your `equals` and `hashCode` implementations are the same fields that you mark as identity fields.
-   3. For a particular version of your class, you need to consistently write the same named field each time. The field names or number of fields must not change from one instance to another for the same class version.
-   4. For best performance, do fixed width fields first and then variable length fields.
-   5. If desired, you can check the portability of the object before serializing it by adding the `checkPortability` parameter when using the`PdxWriter` `writeObject`, `writeObjectArray`, and `writeField` methods.
+   1. 使用`PdxWriter`写入方法编写域类的每个标准Java数据字段。
+   2. 为你希望Geode用来识别你的对象的每个字段调用`PdxWriter` `markIdentityField`方法。 把它放在字段的写方法之后。 Geode使用此信息来比较不同查询等操作的对象。 如果你没有设置至少一个身份字段，那么`equals`和`hashCode`方法将使用所有PDX字段来比较对象，因此也不会执行。 重要的是，`equals`和`hashCode`实现使用的字段与您标记为标识字段的字段相同。
+   3. 对于类的特定版本，您需要每次始终写入相同的命名字段。 对于相同的类版本，字段名称或字段数不得从一个实例更改为另一个实例。
+   4. 为获得最佳性能，首先是固定宽度字段，然后是可变长度字段。
+   5. 如果需要，可以在序列化之前检查对象的可移植性，方法是在使用`ppxWriter` `writeObject`，`writeObjectArray`和`writeField`方法时添加`checkPortability`参数。
 
-   Example `toData` code:
+   示例`toData`代码:
 
-   ```
+   ```java
    public boolean toData(Object o, PdxWriter writer)
      {
        if(!(o instanceof PortfolioPdx)) {
@@ -3238,15 +3237,15 @@ If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoS
      }
    ```
 
-   1. Program `PdxSerializer.fromData` to create an instance of your class, read your data fields from the serialized form into the object’s fields using the `PdxReader` read methods, and return the created object.
+   1. 编写`PdxSerializer.fromData`来创建类的实例，使用`PdxReader`读取方法将序列化表单中的数据字段读入对象的字段，并返回创建的对象。
 
-      Provide the same names that you did in `toData` and call the read operations in the same order as you called the write operations in your `toData` implementation.
+      提供与`toData`中相同的名称，并以与调用`toData`实现中的写操作相同的顺序调用读操作。
 
-      Geode provides the domain class type and `PdxReader` to the `fromData` method.
+      Geode为`fromData`方法提供了域类类型和`PdxReader`。
 
-      Example `fromData` code:
+      示例`fromData`代码:
 
-      ```
+      ```java
         public Object fromData(Class<?> clazz, PdxReader reader)
         {
           if(!clazz.equals(PortfolioPdx.class)) {
@@ -3267,19 +3266,18 @@ If you write your own `PdxSerializer` and you also use the `ReflectionBasedAutoS
         }
       ```
 
-4. If desired, you can also enable extra validation in your use of `PdxWriter`. You can set this by setting the system property `gemfire.validatePdxWriters` to **true**. Note that you should only set this option if you are debugging new code as this option can decrease system performance.
+4. 如果需要，您还可以在使用`PdxWriter`时启用额外验证。 您可以通过将系统属性`gemfire.validatePdxWriters`设置为**true**来设置此项。 请注意，如果要调试新代码，则只应设置此选项，因为此选项会降低系统性能。
 
 
+#### 在域对象中实现PdxSerializable
 
-#### Implementing PdxSerializable in Your Domain Object
+对于可以修改源的域对象，在对象中实现`PdxSerializable`接口，并使用其方法序列化和反序列化对象的字段。
 
-For a domain object with source that you can modify, implement the `PdxSerializable` interface in the object and use its methods to serialize and deserialize the object’s fields.
+**步骤**
 
-**Procedure**
+1. 在您的域类中，实现`PdxSerializable`，导入所需的`org.apache.geode.pdx`类。
 
-1. In your domain class, implement `PdxSerializable`, importing the required `org.apache.geode.pdx` classes.
-
-   For example:
+   例如:
 
    ```
    import org.apache.geode.pdx.PdxReader;
@@ -3290,25 +3288,25 @@ For a domain object with source that you can modify, implement the `PdxSerializa
      ...
    ```
 
-2. If your domain class does not have a zero-arg constructor, create one for it.
+2. 如果您的域类没有零参数构造函数，请为其创建一个。
 
-   For example:
+   例如:
 
    ```
    public PortfolioPdx(){}
    ```
 
-3. Program `PdxSerializable.toData.`
+3. 程序`PdxSerializable.toData`
 
-   1. Write each standard Java data field of your domain class using the `PdxWriter` write methods. Geode automatically provides `PdxWriter` to the `toData` method for `PdxSerializable` objects.
+   1. 使用`PdxWriter`写入方法编写域类的每个标准Java数据字段。 Geode自动为`PdxSerializable`对象的`toData`方法提供`PdxWriter`。
 
-   2. Call the `PdxWriter` `markIdentifyField` method for each field you want to have Geode use to identify your object. Put this after the field’s write method. Geode uses this information to compare objects for operations like distinct queries. If you do not set as least one identity field, then the `equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well. It is important that the fields used by your `equals` and `hashCode` implementations are the same fields that you mark as identity fields.
+   2. 为你希望Geode用来识别你的对象的每个字段调用`PdxWriter` `markIdentifyField`方法。 把它放在字段的写方法之后。 Geode使用此信息来比较不同查询等操作的对象。 如果你没有设置至少一个身份字段，那么`equals`和`hashCode`方法将使用所有PDX字段来比较对象，因此也不会执行。 重要的是，`equals`和`hashCode`实现使用的字段与您标记为标识字段的字段相同。
 
-   3. For a particular version of your class, you need to consistently write the same named field each time. The field names or number of fields must not change from one instance to another for the same class version.
+   3. 对于类的特定版本，您需要每次始终写入相同的命名字段。 对于相同的类版本，字段名称或字段数不得从一个实例更改为另一个实例。
 
-   4. For best performance, do fixed width fields first and then variable length fields.
+   4. 为获得最佳性能，首先是固定宽度字段，然后是可变长度字段。
 
-      Example `toData` code:
+      示例`toData`代码：
 
       ```
       // PortfolioPdx fields
@@ -3338,15 +3336,15 @@ For a domain object with source that you can modify, implement the `PdxSerializa
         }
       ```
 
-4. Program `PdxSerializable.fromData` to read your data fields from the serialized form into the object’s fields using the `PdxReader` read methods.
+4. 编程`PdxSerializable.fromData`使用`PdxReader`读取方法将序列化形式的数据字段读入对象的字段。
 
-   Provide the same names that you did in `toData` and call the read operations in the same order as you called the write operations in your `toData` implementation.
+   提供与`toData`中相同的名称，并以与调用`toData`实现中的写操作相同的顺序调用读操作。
 
-   Geode automatically provides `PdxReader` to the `fromData` method for `PdxSerializable`objects.
+   Geode自动为`PdxSerializable`objects的`fromData`方法提供`PdxReader`。
 
-   Example `fromData` code:
+   示例`fromData`代码：
 
-   ```
+   ```java
    public void fromData(PdxReader reader)
      {
        id = reader.readInt("id");
@@ -3364,47 +3362,44 @@ For a domain object with source that you can modify, implement the `PdxSerializa
      }
    ```
 
-**What to do next**
+**接下来做什么**
 
-- As needed, configure and program your Geode applications to use `PdxInstance` for selective object deserialization. See [Programming Your Application to Use PdxInstances](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
-
-
-
-#### Programming Your Application to Use PdxInstances
-
-A `PdxInstance` is a light-weight wrapper around PDX serialized bytes. It provides applications with run-time access to fields of a PDX serialized object.
-
-You can configure your cache to return a `PdxInstance` when a PDX serialized object is deserialized instead of deserializing the object to a domain class. You can then program your application code that reads your entries to handle `PdxInstance`s fetched from the cache.
-
-**注意:** This applies only to entry retrieval that you explicitly code using methods like `EntryEvent.getNewValue` and `Region.get`, as you do inside functions or in cache listener code. This does not apply to querying because the query engine retrieves the entries and handles object access for you.
-
-If you configure your cache to allow PDX serialized reads, a fetch from the cache returns the data in the form it is found. If the object is not serialized, the fetch returns the domain object. If the object is serialized, the fetch returns the `PdxInstance` for the object.
-
-**注意:** If you are using `PdxInstance`s, you cannot use delta propagation to apply changes to PDX serialized objects.
-
-For example, in client/server applications that are programmed and configured to handle all data activity from the client, PDX serialized reads done on the server side will always return a `PdxInstance`. This is because all of data is serialized for transfer from the client, and you are not performing any server-side activities that would deserialize the objects in the server cache.
-
-In mixed situations, such as where a server cache is populated from client operations and also from data loads done on the server side, fetches done on the server can return a mix of `PdxInstance`s and domain objects.
-
-When fetching data in a cache with PDX serialized reads enabled, the safest approach is to code to handle both types, receiving an `Object` from the fetch operation, checking the type and casting as appropriate. However, if you know that the class is not available in the JVM, then you can avoid performing the type check.
-
-`PdxInstance` overrides any custom implementation you might have coded for your object’s `equals` and `hashcode` methods. Make sure you have marked at least one identity field when writing PDX serialized objects. If you do not set as least one identity field, then the PdxInstance`equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well.
+- 根据需要，配置和编程Geode应用程序以使用`PdxInstance`进行选择性对象反序列化。 请参阅[编写应用程序以使用Pdx实例](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
 
 
+#### 编写应用程序以使用PdxInstances
 
-**Prerequisites**
+`PdxInstance`是PDX序列化字节周围的轻量级包装器。 它为应用程序提供对PDX序列化对象字段的运行时访问。
 
-- Understand generally how to configure the Geode cache. See [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html#basic_config_management).
+您可以将缓存配置为在反序列化PDX序列化对象时返回`PdxInstance`，而不是将对象反序列化为域类。 然后，您可以编写读取条目的应用程序代码，以处理从缓存中获取的`PdxInstance`。
+
+**注意:** 这仅适用于使用诸如`EntryEvent.getNewValue`和`Region.get`之类的方法显式编码的条目检索，就像在函数内部或缓存侦听器代码中一样。 这不适用于查询，因为查询引擎会检索条目并为您处理对象访问。
+
+如果将高速缓存配置为允许PDX序列化读取，则从高速缓存中获取将以找到的形式返回数据。 如果对象未序列化，则fetch返回域对象。 如果对象是序列化的，则fetch返回对象的`PdxInstance`。
+
+**注意:** 如果您使用的是`PdxInstance`，则无法使用增量传播将更改应用于PDX序列化对象。
+
+例如，在编程和配置为处理来自客户端的所有数据活动的客户端/服务器应用程序中，在服务器端完成的PDX序列化读取将始终返回`PdxInstance`。 这是因为所有数据都被序列化以便从客户端传输，并且您没有执行任何服务器端活动来反序列化服务器缓存中的对象。
+
+在混合情况下，例如从客户端操作填充服务器缓存以及在服务器端完成的数据加载，在服务器上完成的提取可以返回`PdxInstance`和域对象的混合。
+
+在启用PDX序列化读取的高速缓存中获取数据时，最安全的方法是编码以处理这两种类型，从获取操作接收`对象`，检查类型并在适当时进行转换。 但是，如果您知道该类在JVM中不可用，则可以避免执行类型检查。
+
+`PdxInstance`会覆盖您为对象的`equals`和`hashcode`方法编写的任何自定义实现。 编写PDX序列化对象时，请确保至少标记了一个标识字段。 如果您没有设置至少一个标识字段，那么PdxInstance`equals`和`hashCode`方法将使用所有PDX字段来比较对象，因此也不会执行。
 
 
+**先决条件**
 
-**Procedure**
+- 一般了解如何配置Geode缓存。 参见[基本配置和编程](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html#basic_config_management).
 
-In your application where you fetch data from the cache, provide the following configuration and code as appropriate:
 
-1. In the cache.xml file of the member where entry fetches are run, set the `<pdx>` `read-serialized` attribute to true. Data is not necessarily accessed on the member that you have coded for it. For example, if a client application runs a function on a server, the actual data access is done on the server, so you set `read-serialized` to true on the server.
+**步骤**
 
-   For example:
+在从缓存中获取数据的应用程序中，根据需要提供以下配置和代码：
+
+1. 在运行条目提取的成员的cache.xml文件中，将`<pdx>` `read-serialized`属性设置为true。 不必在您为其编码的成员上访问数据。 例如，如果客户端应用程序在服务器上运行某个函数，则实际的数据访问是在服务器上完成的，因此您在服务器上将`read-serialized`设置为true。
+
+   例如:
 
    ```
    // Cache configuration setting PDX read behavior 
@@ -3414,9 +3409,9 @@ In your application where you fetch data from the cache, provide the following c
    </cache>
    ```
 
-2. Write the application code that fetches data from the cache to handle a `PdxInstance`. If you are sure you will only retrieve `PdxInstance`s from the cache, you can code only for that. In many cases, a `PdxInstance` or a domain object may be returned from your cache entry retrieval operation, so you should check the object type and handle each possible type.
+2. 编写从缓存中获取数据的应用程序代码来处理`PdxInstance`。 如果您确定只从缓存中检索`PdxInstance`，则只能为此编码。 在许多情况下，可能会从缓存条目检索操作返回`PdxInstance`或域对象，因此您应检查对象类型并处理每种可能的类型。
 
-   For example:
+   例如:
 
    ```
    // put/get code with serialized read behavior
@@ -3449,59 +3444,57 @@ In your application where you fetch data from the cache, provide the following c
    ...
    ```
 
-   **注意:** Due to a limitation with PDX, if your PDX-enabled cache contains TreeSet domain objects, you should implement a Comparator that can handle both your domain objects and PdxInstance objects. You will also need to make the domain classes available on the server.
+   **注意:** 由于PDX的限制，如果启用PDX的缓存包含TreeSet域对象，则应实现可以处理域对象和PdxInstance对象的Comparator。 您还需要在服务器上提供域类。
 
 
+#### 将JSON文档添加到Geode缓存
 
-#### Adding JSON Documents to the Geode Cache
+`JSONFormatter` API允许您将JSON格式的文档放入区域，然后通过将文档作为PdxInstances存储在内部来检索它们。
 
-The `JSONFormatter` API allows you to put JSON formatted documents into regions and retrieve them later by storing the documents internally as PdxInstances.
+Geode本身支持使用JSON格式的文档。 将JSON文档添加到Geode缓存时，可以调用JSONFormatter API将它们转换为PDX格式（作为`PdxInstance`），这使Geode能够在字段级别理解JSON文档。
 
-Geode supports the use of JSON formatted documents natively. When you add a JSON document to a Geode cache, you call the JSONFormatter APIs to transform them into the PDX format (as a `PdxInstance`), which enables Geode to understand the JSON document at a field level.
+在查询和索引方面，由于文档在内部存储为PDX，因此应用程序可以对JSON文档中包含的任何字段（包括任何嵌套字段（在JSON对象或JSON数组中）进行索引。）对这些存储文档运行的任何查询都将返回PdxInstances 作为结果。 要更新存储在Geode中的JSON文档，可以在PdxInstance上执行一个函数。
 
-In terms of querying and indexing, because the documents are stored internally as PDX, applications can index on any field contained inside the JSON document including any nested field (within JSON objects or JSON arrays.) Any queries run on these stored documents will return PdxInstances as results. To update a JSON document stored in Geode , you can execute a function on the PdxInstance.
+然后，您可以使用`JSONFormatter`将PdxInstance结果转换回JSON文档。
 
-You can then use the `JSONFormatter` to convert the PdxInstance results back into the JSON document.
+`JSONFormatter`使用流解析器（[Jackson](http://wiki.fasterxml.com/JacksonHome)，JSON处理器）将JSON文档转换为优化的PDX格式。 要使用JSONFormatter，请确保应用程序的CLASSPATH中有`lib/geode-dependencies.jar`。
 
-`JSONFormatter` uses a streaming parser ([Jackson](http://wiki.fasterxml.com/JacksonHome), JSON processor) to turn JSON documents into the optimized PDX format. To use the JSONFormatter, make sure that `lib/geode-dependencies.jar` is available in your application’s CLASSPATH.
+`JSONFormatter`类有四个静态方法，用于将JSON文档转换为PdxInstances，然后将这些PdxInstances转换回JSON文档。
 
-The `JSONFormatter` class has four static methods that are used to convert JSON document into PdxInstances and then to convert those PdxInstances back into JSON document.
+在将任何JSON文档放入Geode区域之前，需要调用以下方法：
 
-You need to call the following methods before putting any JSON document into the Geode region:
+- `fromJSON`. 从JSON字节数组创建PdxInstance。 返回PdxInstance。
+- `fromJSON`. 从JSON字符串创建PdxInstance。 返回PdxInstance。
 
-- `fromJSON`. Creates a PdxInstance from a JSON byte array. Returns the PdxInstance.
-- `fromJSON`. Creates a PdxInstance from a JSON string. Returns the PdxInstance.
+将JSON文档作为PdxInstance放入区域后，您可以执行标准Geode查询并在JSON文档上创建索引，方法与查询或索引任何其他Geode PdxInstance的方式相同。
 
-After putting the JSON document into a region as a PdxInstance, you can execute standard Geode queries and create indexes on the JSON document in the same manner you would query or index any other Geode PdxInstance.
+执行Geode查询或调用`region.get`后，您可以使用以下方法将PdxInstance转换回JSON格式：
 
-After executing a Geode query or calling `region.get`, you can use the following methods to convert a PdxInstance back into the JSON format:
+- `toJSON`. 读取PdxInstance并返回JSON字符串。
+- `toJSONByteArray`. 读取PdxInstance并返回JSON字节数组。
 
-- `toJSON`. Reads a PdxInstance and returns a JSON string.
-- `toJSONByteArray`. Reads a PdxInstance and returns a JSON byte array.
+有关使用JSONFormatter的更多信息，请参阅`org.apache.geode.pdx.JSONFormatter`的Java API文档。
 
-For more information on using the JSONFormatter, see the Java API documentation for `org.apache.geode.pdx.JSONFormatter`.
+**序列化JSON字段的排序行为**
 
-**Sorting Behavior of Serialized JSON Fields**
+默认情况下，Geode序列化为每个唯一的JSON文档创建唯一的pdx typeID，即使JSON文档之间的唯一区别是其字段的指定顺序。
 
-By default, Geode serialization creates a unique pdx typeID for each unique JSON document, even if the only difference between the JSON documents is the order in which their fields are specified.
-
-If you prefer that JSON documents which differ only in the order in which their fields are specified map to the same typeID, set the property `gemfire.pdx.mapper.sort-json-field-names` to `true`. This tells the system to sort the JSON fields prior to serialization, allowing the system to identify matching entries, and helps reduce the number of pdx typeIDs that are generated by the serialization mechanism.
-
+如果您希望仅按指定字段顺序不同的JSON文档映射到相同的typeID，请将属性`gemfire.pdx.mapper.sort-json-field-names`设置为“true”。 这告诉系统在序列化之前对JSON字段进行排序，允许系统识别匹配的条目，并有助于减少序列化机制生成的pdx typeID的数量。
 
 
-#### Using PdxInstanceFactory to Create PdxInstances
+#### 使用PdxInstanceFactory创建PdxInstances
 
-You can use the `PdxInstanceFactory` interface to create a `PdxInstance` from raw data when the domain class is not available on the server.
+当域类在服务器上不可用时，您可以使用`PdxInstanceFactory`接口从原始数据创建`PdxInstance`。
 
-This can be particularly useful when you need an instance of a domain class for plug in code such as a function or a loader. If you have the raw data for the domain object (the class name and each field’s type and data), then you can explicitly create a `PdxInstance`. The `PdxInstanceFactory` is very similar to the `PdxWriter` except that after writing each field, you need to call the create method which returns the created PdxInstance.
+当您需要一个域类的实例来插入代码（如函数或加载器）时，这可能特别有用。 如果您拥有域对象的原始数据（类名和每个字段的类型和数据），那么您可以显式创建`PdxInstance`。 `PdxInstanceFactory`与`PdxWriter`非常相似，只是在写完每个字段后，需要调用create方法返回创建的PdxInstance。
 
-To create a factory call `RegionService.createPdxInstanceFactory`. A factory can only create a single instance. To create multiple instances create multiple factories or use `PdxInstance.createWriter()`to create subsequent instances. Using `PdxInstance.createWriter()` is usually faster.
+创建工厂调用`RegionService.createPdxInstanceFactory`。 工厂只能创建单个实例。 要创建多个实例，请创建多个工厂或使用`PdxInstance.createWriter()`来创建后续实例。 使用`PdxInstance.createWriter()`通常更快。
 
-When you create a PdxInstance, set as least one identity field using the `markIndentityField`method. If you do not mark an identity field, the PdxInstance`equals` and `hashCode` methods will use all PDX fields to compare objects and consequently, will not perform as well. It is important that the fields used by your `equals` and `hashCode` implementations are the same fields that you mark as identity fields.
+创建PdxInstance时，使用`markIndentityField`方法设置至少一个标识字段。 如果不标记标识字段，则PdxInstance`equals`和`hashCode`方法将使用所有PDX字段来比较对象，因此也不会执行。 重要的是，`equals`和`hashCode`实现使用的字段与您标记为标识字段的字段相同。
 
-The following is a code example of using `PdxInstanceFactory`:
+以下是使用`PdxInstanceFactory`的代码示例：
 
-```
+```java
 PdxInstance pi = cache.createPdxInstanceFactory("com.company.DomainObject")
    .writeInt("id", 37)
    .markIdentityField("id")
@@ -3510,36 +3503,35 @@ PdxInstance pi = cache.createPdxInstanceFactory("com.company.DomainObject")
    .create();
 ```
 
-For more information, see `PdxInstanceFactory` in the Java API documentation.
+有关更多信息，请参阅Java API文档中的`PdxInstanceFactory`。
 
-**Enum Objects as PdxInstances**
+**枚举对象为PdxInstances**
 
-You can now work with enum objects as PdxInstances. When you fetch an enum object from the cache, you can now deserialize it as a `PdxInstance`. To check whether a `PdxInstance` is an enum, use the `PdxInstance.isEnum` method. An enum `PdxInstance` will have one field named “name” whose value is a String that corresponds to the enum constant name.
+您现在可以使用枚举对象作为PdxInstances。 从缓存中获取枚举对象时，现在可以将其反序列化为`PdxInstance`。 要检查`PdxInstance`是否为枚举，请使用`PdxInstance.isEnum`方法。 枚举`PdxInstance`将有一个名为`name`的字段，其值是与枚举常量名称对应的String。
 
-An enum `PdxInstance` is not writable; if you call `createWriter` it will throw an exception.
+枚举`PdxInstance`不可写; 如果你调用`createWriter`它将抛出异常。
 
-The `RegionService` has a method that allows you to create a `PdxInstance` that represents an enum. See `RegionService.createPdxEnum` in the Java API documentation.
+`RegionService`有一个方法，允许你创建一个表示枚举的`PdxInstance`。 请参阅Java API文档中的`RegionService.createPdxEnum`。
 
 
+#### 将PDX元数据保留到磁盘
 
-#### Persisting PDX Metadata to Disk
+Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存储。
 
-Geode allows you to persist PDX metadata to disk and specify the disk store to use.
+**先决条件**
 
-**Prerequisites**
+- 一般了解如何配置Geode缓存。 参见[基本配置和编程](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
+- 了解Geode磁盘存储的工作原理。 参见[磁盘存储](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
 
-- Understand generally how to configure the Geode cache. See [Basic Configuration and Programming](https://geode.apache.org/docs/guide/17/basic_config/book_intro.html).
-- Understand how Geode disk stores work. See [Disk Storage](https://geode.apache.org/docs/guide/17/managing/disk_storage/chapter_overview.html).
+**步骤**
 
-**Procedure**
+1. 在缓存配置中将`<pdx>`属性`persistent`设置为true。 对于将PDX与持久区域一起使用的缓存以及使用网关发送方通过WAN分发事件的区域，这是必需的。否则，它是可选的。
+2. （可选）如果要使用不是Geode默认磁盘存储的磁盘存储，请将`<pdx>`属性`disk-store-name`设置为非默认磁盘存储的名称。 **注意:**如果您使用PDX序列化对象作为区域条目键并且您使用的是持久区域，则必须将PDX磁盘存储配置为与持久区域使用的磁盘存储不同。
+3. （可选）如果以后要重命名持久保存到磁盘的PDX类型，则可以通过执行`pdx rename`命令在脱机磁盘存储上执行此操作。 见[pdx 重命名](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/pdx.html).
 
-1. Set the `<pdx>` attribute `persistent` to true in your cache configuration. This is required for caches that use PDX with persistent regions and with regions that use a gateway sender to distribute events across a WAN.. Otherwise, it is optional.
-2. (Optional) If you want to use a disk store that is not the Geode default disk store, set the `<pdx>`attribute `disk-store-name` to the name of your non-default disk store. **注意:** If you are using PDX serialized objects as region entry keys and you are using persistent regions, then you must configure your PDX disk store to be a different one than the disk store used by the persistent regions.
-3. (Optional) If you later want to rename the PDX types that are persisted to disk, you can do so on your offline disk-stores by executing the `pdx rename` command. See [pdx rename](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/pdx.html).
+**示例cache.xml：**
 
-**Example cache.xml:**
-
-This example `cache.xml` enables PDX persistence and sets a non-default disk store in a server cache configuration:
+此示例`cache.xml`启用PDX持久性并在服务器缓存配置中设置非默认磁盘存储：
 
 ```
   <pdx read-serialized="true" 
@@ -3552,17 +3544,15 @@ This example `cache.xml` enables PDX persistence and sets a non-default disk sto
 ```
 
 
+#### 使用PDX对象作为区域输入键
 
-#### Using PDX Objects as Region Entry Keys
+强烈建议不要将PDX对象用作区域条目键。
 
-Using PDX objects as region entry keys is highly discouraged.
+创建区域条目键的最佳做法是使用简单的键; 例如，使用String或Integer。 如果key必须是域类，则应使用非PDX序列化类。
 
-The best practice for creating region entry keys is to use a simple key; for example, use a String or Integer. If the key must be a domain class, then you should use a non-PDX-serialized class.
+如果必须使用PDX序列化对象作为区域条目键，请确保不要将`read-serialized`设置为`true`。 此配置设置将导致分区区域出现问题，因为分区区域要求key的哈希码在分布式系统中的所有JVM上都相同。 当键是`PdxInstance`对象时，其哈希码可能与域对象的哈希码不同。
 
-If you must use PDX serialized objects as region entry keys, ensure that you do not set `read-serialized` to `true`. This configuration setting will cause problems in partitioned regions because partitioned regions require the hash code of the key to be the same on all JVMs in the distributed system. When the key is a `PdxInstance` object, its hash code will likely not be the same as the hash code of the domain object.
-
-If you are using PDX serialized objects as region entry keys and you are using persistent regions, then you must configure your PDX disk store to be a different one than the disk store used by the persistent regions.  
-
+如果您使用PDX序列化对象作为区域条目键并且您使用的是持久区域，则必须将PDX磁盘存储配置为与持久区域使用的磁盘存储不同。
 
 
 ### Geode Data Serialization (DataSerializable and DataSerializer)
