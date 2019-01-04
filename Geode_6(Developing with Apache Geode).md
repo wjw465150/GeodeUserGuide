@@ -3555,23 +3555,23 @@ Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存
 如果您使用PDX序列化对象作为区域条目键并且您使用的是持久区域，则必须将PDX磁盘存储配置为与持久区域使用的磁盘存储不同。
 
 
-### Geode Data Serialization (DataSerializable and DataSerializer)
+### Geode数据序列化（DataSerializable和DataSerializer）
 
-Geode’s `DataSerializable` interface gives you quick serialization of your objects.
+Geode的`DataSerializable`接口为您提供了对象的快速序列化。
 
-**Data Serialization with the DataSerializable Interface**
+**使用DataSerializable接口进行数据序列化**
 
-Geode’s `DataSerializable` interface gives you faster and more compact data serialization than the standard Java serialization or Geode PDX serialization. However, while Geode `DataSerializable`interface is generally more performant than Geode’s `PdxSerializable`, it requires full deserialization on the server and then reserialization to send the data back to the client.
+Geode的`DataSerializable`接口为您提供比标准Java序列化或Geode PDX序列化更快，更紧凑的数据序列化。 然而，虽然Geode`DataSerializable`接口通常比Geode的'PdxSerializable`更高性能，但它需要在服务器上进行完全反序列化，然后再进行重新序列化以将数据发送回客户端。
 
-You can further speed serialization by registering the instantiator for your `DataSerializable` class through `Instantiator`, eliminating the need for reflection to find the right serializer. You can provide your own serialization through the API.
+您可以通过`Instantiator`注册`DataSerializable`类的实例化器来进一步加速序列化，从而无需反射来找到正确的序列化器。 您可以通过API提供自己的序列化。
 
-The recommended way to register your custom `Instantiator` is by specifying it in the `serialization-registration` element of cache.xml.
+注册自定义`Instantiator`的推荐方法是在cache.xml的`serialization-registration`元素中指定它。
 
-For more information, see the online Java documentation for `DataSerializable` and `DataSerializer`.
+有关更多信息，请参阅`DataSerializable`和`DataSerializer`的在线Java文档。
 
-**Example cache.xml:**
+**例子 cache.xml:**
 
-The following provides an example of how to register an instantiator using cache.xml.
+以下提供了如何使用cache.xml注册实例化器的示例。
 
 ```
 <serialization-registration>
@@ -3581,132 +3581,128 @@ The following provides an example of how to register an instantiator using cache
 </serialization-registration>
 ```
 
-In addition to speeding standard object serialization, you can use the `DataSerializable` interface to serialize any custom objects you store in the cache.
+除了加速标准对象序列化之外，您还可以使用`DataSerializable`接口来序列化存储在缓存中的任何自定义对象。
 
-**Serializing Your Domain Object with DataSerializer**
+**使用DataSerializer序列化您的域对象**
 
-You can also use `DataSerializer` to serialize domain objects. It serializes data in the same way as `DataSerializable` but allows you to serialize classes without modifying the domain class code.
+您还可以使用`DataSerializer`来序列化域对象。 它以与`DataSerializable`相同的方式序列化数据，但允许您在不修改域类代码的情况下序列化类。
 
-See the JavaDocs on [DataSerializable](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializable.html) and [DataSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializer.html) for more information.
+请参阅[DataSerializable]上的JavaDocs(https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializable.html)和[DataSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializer.html) 了解更多信息。
 
 
+### 标准Java序列化
 
-### Standard Java Serialization
+您可以对仅在Java应用程序之间分发的数据使用标准Java序列化。 如果在非Java客户端和Java服务器之间分发数据，则需要执行其他编程以获取各种类格式之间的数据。
 
-You can use standard Java serialization for data you only distribute between Java applications. If you distribute your data between non-Java clients and Java servers, you need to do additional programming to get the data between the various class formats.
+根据定义，标准Java类型是可序列化的。 对于您的域类，实现`java.io.Serializable`，然后确保根据对象标记瞬态和静态变量。 有关信息，请参阅Java版本的`java.io.Serializable`的联机文档。
 
-Standard Java types are serializable by definition. For your domain classes, implement `java.io.Serializable`, then make sure to mark your transient and static variables as needed for your objects. For information, see the online documentation for `java.io.Serializable` for your Java version.
-
-Mixing `DataSerializable` with `Serializable` or `PdxSerializable` use on the same data can result in increased memory use and lower throughput than using just `Serializable` on the entire data, especially if the `Serializable` entries are in collections. The bigger the data collection, the lower the throughput as the metadata for the collection entries is not shared when using `DataSerializable`.
-
+将`DataSerializable`与`Serializable`或`PdxSerializable`混合使用在相同的数据上会导致内存使用量增加，吞吐量低于仅对整个数据使用`Serializable`，特别是如果`Serializable`条目在集合中。 数据收集越大，吞吐量越低，因为使用`DataSerializable`时不会共享集合条目的元数据。
 
 
 ## 事件和事件处理
 
-Geode provides versatile and reliable event distribution and handling for your cached data and system member events.
+Geode为缓存的数据和系统成员事件提供了通用且可靠的事件分发和处理。
 
-- **How Events Work**
+- **事件是如何工作**
 
-  Members in your cluster receive cache updates from other members through cache events. The other members can be peers to the member, clients or servers or other clusters.
+  集群中的成员通过缓存事件从其他成员接收缓存更新。 其他成员可以是成员，客户端或服务器或其他集群的对等成员。
 
-- **Implementing Geode Event Handlers**
+- **实现Geode事件处理程序**
 
-  You can specify event handlers for region and region entry operations and for administrative events.
+  您可以为区域和区域条目操作以及管理事件指定事件处理程序。
 
-- **Configuring Peer-to-Peer Event Messaging**
+- **配置点对点事件消息**
 
-  You can receive events from cluster peers for any region that is not a local region. Local regions receive only local cache events.
+  您可以从集群对等方接收非本地区域的任何区域的事件。 本地区域仅接收本地缓存事件。
 
-- **Configuring Client/Server Event Messaging**
+- **配置客户端/服务器事件消息**
 
-  You can receive events from your servers for server-side cache events and query result changes.
+  您可以从服务器接收服务器端缓存事件和查询结果更改的事件。
 
-- **Configuring Multi-Site (WAN) Event Queues**
+- **配置多站点（WAN）事件队列**
 
-  In a multi-site (WAN) installation, Geode uses gateway sender queues to distribute events for regions that are configured with a gateway sender. AsyncEventListeners also use an asynchronous event queue to distribute events for configured regions. This section describes additional options for configuring the event queues that are used by gateway senders or AsyncEventListener implementations.
-
-
-
-### How Events Work
-
-Members in your Geode cluster receive cache updates from other members through cache events. The other members can be peers to the member, clients or servers or other clusters.
-
-**Events Features**
-
-These are the primary features of Geode events:
-
-- Content-based events
-- Asynchronous event notifications with conflation
-- Synchronous event notifications for low latency
-- High availability through redundant messaging queues
-- Event ordering and once and only-once delivery
-- Distributed event notifications
-- Durable subscriptions
-- Continuous querying
-
-**Types of Events**
-
-There are two categories of events and event handlers.
-
-- Cache events in the caching API are used by applications with a cache. Cache events provide detail-level notification for changes to your data. Continuous query events are in this category.
-- Administrative events in the administration API are used by administrative applications without caches.
-
-Both kinds of events can be generated by a single member operation.
-
-**注意:** You can handle one of these categories of events in a single system member. You cannot handle both cache and administrative events in a single member.
-
-Because Geode maintains the order of administrative events and the order of cache events separately, using cache events and administrative events in a single process can cause unexpected results.
-
-**Event Cycle**
-
-The following steps describe the event cycle:
-
-1. An operation begins, such as data put or a cache close.
-2. The operation execution generates these objects:
-   - An object of type `Operation` that describes the method that triggered the event.
-   - An event object that describes the event, such as the member and region where the operation originated.
-3. The event handlers that can handle the event are called and passed the event objects. Different event types require different handler types in different locations. If there is no matching event handler, that does not change the effect of the operation, which happens as usual.
-4. When the handler receives the event, it triggers the handler’s callback method for this event. The callback method can hand off the event object as input to another method. Depending on the type of event handler, the callbacks can be triggered before or after the operation. The timing depends on the event handler, not on the event itself. **注意:** For transactions, after-operation listeners receive the events after the transaction has committed.
-5. If the operation is distributed, so that it causes follow-on operations in other members, those operations generate their own events, which can be handled by their listeners in the same way.
-
-**Event Objects**
-
-Event objects come in several types, depending on the operation. Some operations generate multiple objects of different types. All event objects contain data describing the event, and each event type carries slightly different kinds of data appropriate to its matching operation. An event object is stable. For example, its content does not change if you pass it off to a method on another thread.
-
-For cache events, the event object describes the operation performed in the local cache. If the event originated remotely, it describes the local application of the remote entry operation, not the remote operation itself. The only exception is when the local region has an empty data policy; then the event carries the information for the remote (originating) cache operation.
-
-**Event Distribution**
-
-After a member processes an event in its local cache, it distributes it to remote caches according to the member’s configuration and the configurations of the remote caches. For example, if a client updates its cache, the update is forwarded to the client’s server. The server distributes the update to its peers and forwards it to any other clients according to their interest in the data entry. If the server system is part of a multi-site deployment and the data region is configured to use a gateway sender, then the gateway sender also forwards the update to a remote site, where the update is further distributed and propagated.
-
-**Event Handlers and Region Data Storage**
-
-You can configure a region for no local data storage and still send and receive events for the region. Conversely, if you store data in the region, the cache is updated with data from the event regardless of whether you have any event handlers installed.
-
-**Multiple Listeners**
-
-When multiple listeners are installed, as can be done with cache listeners, the listeners are invoked sequentially in the order they were added to the region or cache. Listeners are executed one at a time. So, unless you program a listener to pass off processing to another thread, you can use one listener’s work in later listeners.
-
-**Event Ordering**
-
-During a cache operation, event handlers are called at various stages of the operation. Some event handlers are called before a region update and some are called after the region update operation. Depending on the type of event handler being called, the event handler can receive the events in-order or out-of-order in which they are applied on Region.
-
-- `CacheWriter` and `AsyncEventListener` always receive events in the order in which they are applied on region.
-- `CacheListener` and `CqListener` can receive events in a different order than the order in which they were applied on the region.
-
-**注意:** An `EntryEvent` contains both the old value and the new value of the entry, which helps to indicate the value that was replaced by the cache operation on a particular key.
+  在多站点（WAN）安装中，Geode使用网关发件人队列来为使用网关发件人配置的区域分发事件。 AsyncEventListeners还使用异步事件队列来分配已配置区域的事件。 本节介绍用于配置网关发件人或AsyncEventListener实现使用的事件队列的其他选项。
 
 
+### 事件是如何工作
 
-#### Peer-to-Peer Event Distribution
+Geode集群中的成员通过缓存事件从其他成员接收缓存更新。 其他成员可以是成员，客户端或服务器或其他集群的对等成员。
 
-When a region or entry operation is performed, Geode distributes the associated events in the cluster according to system and cache configurations.
+**事件特征**
 
-Install a cache listener for a region in each system member that needs to receive notification of region and entry changes.
+这些是Geode事件的主要特征：
 
-**Events in a Partitioned Region**
+- 基于内容的事件
+- 带有混合的异步事件通知
+- 低延迟的同步事件通知
+- 通过冗余消息队列实现高可用性
+- 事件排序和一次且仅一次交付
+- 分布式事件通知
+- 持久的订阅
+- 持续查询
 
-A distributed operation follows this sequence in a partitioned region:
+**事件类型**
+
+有两类事件和事件处理程序。
+
+- 缓存API中的缓存事件由具有缓存的应用程序使用。 缓存事件为数据更改提供详细级别的通知。 连续查询事件属于此类别。
+- 管理API中的管理事件由没有缓存的管理应用程序使用。
+
+两种事件都可以由单个成员操作生成。
+
+**注意:** 您可以在单个系统成员中处理这些类别的事件之一。 您无法在单个成员中处理缓存和管理事件。
+
+由于Geode分别维护管理事件的顺序和缓存事件的顺序，因此在单个进程中使用缓存事件和管理事件可能会导致意外结果。
+
+**事件周期**
+
+以下步骤描述了事件周期:
+
+1. 操作开始，例如数据放入或缓存关闭。
+2. 操作执行生成以下对象：
+   - `Operation`类型的对象，描述触发事件的方法。
+   - 描述事件的事件对象，例如操作源自的成员和区域。
+3. 可以处理事件的事件处理程序被调用并传递事件对象。 不同的事件类型需要不同位置的不同处理程序类型 如果没有匹配的事件处理程序，则不会改变操作的效果，这通常会发生。
+4. 当处理程序收到事件时，它会触发此事件的处理程序的回调方法。 回调方法可以将事件对象作为另一个方法的输入切换。 根据事件处理程序的类型，可以在操作之前或之后触发回调。 时间取决于事件处理程序，而不是事件本身。 **注意:**对于事务，事务后监听器在事务提交后收到事件。
+5. 如果操作是分布式的，那么它会导致其他成员的后续操作，那些操作会生成他们自己的事件，这些事件可以由他们的侦听器以相同的方式处理。
+
+**事件对象**
+
+事件对象有多种类型，具体取决于操作。 某些操作会生成多个不同类型的对象。 所有事件对象都包含描述事件的数据，每个事件类型都包含适合其匹配操作的略微不同类型的数据。 事件对象是稳定的。 例如，如果将其传递给另一个线程上的方法，则其内容不会更改。
+
+对于缓存事件，事件对象描述在本地缓存中执行的操作。 如果事件是远程发起的，则它描述远程输入操作的本地应用程序，而不是远程操作本身。 唯一的例外是本地区域有空数据策略; 然后事件携带远程（始发）高速缓存操作的信息。
+
+**事件分发**
+
+成员在其本地缓存中处理事件后，会根据成员的配置和远程缓存的配置将其分发到远程缓存。 例如，如果客户端更新其缓存，则更新将转发到客户端的服务器。 服务器将更新分发给其对等方，并根据它们对数据条目的兴趣将其转发给任何其他客户端。 如果服务器系统是多站点部署的一部分并且数据区域配置为使用网关发送方，则网关发送方还将更新转发到远程站点，在该站点中进一步分发和传播更新。
+
+**事件处理程序和区域数据存储**
+
+您可以为没有本地数据存储的区域配置区域，并仍然发送和接收该区域的事件。 相反，如果您在区域中存储数据，则无论您是否安装了任何事件处理程序，都会使用事件中的数据更新缓存。
+
+**多个监听器**
+
+安装多个侦听器时，可以使用缓存侦听器，按照添加到区域或缓存的顺序依次调用侦听器。 监听器一次执行一个。 因此，除非您将侦听器编程为将处理传递给另一个线程，否则您可以在以后的侦听器中使用一个侦听器的工作。
+
+**事件排序**
+
+在高速缓存操作期间，在操作的各个阶段调用事件处理程序。 在区域更新之前调用一些事件处理程序，在区域更新操作之后调用一些事件处理程序。 根据被调用的事件处理程序的类型，事件处理程序可以按顺序或无序接收它们在Region上应用的事件。
+
+- `CacheWriter`和`AsyncEventListener`总是按照它们在区域上应用的顺序接收事件。
+- `CacheListener`和`CqListener`可以按照与在区域上应用它们的顺序不同的顺序接收事件。
+
+**注意:** `EntryEvent`包含条目的旧值和新值，这有助于指示由特定键上的缓存操作替换的值。
+
+
+#### 点对点事件分发
+
+执行区域或条目操作时，Geode会根据系统和缓存配置在集群中分配关联的事件。
+
+为每个系统成员中需要接收区域和条目更改通知的区域安装缓存侦听器。
+
+**分区区域中的事件**
+
+分布式操作遵循此序列在分区区域中：
 
 1. Apply the operation to the cache with the primary data entry, if appropriate.
 2. Do the distribution based on the subscription-attributes interest-policy of the other members.
