@@ -3704,229 +3704,225 @@ Geode集群中的成员通过缓存事件从其他成员接收缓存更新。 �
 
 分布式操作遵循此序列在分区区域中：
 
-1. Apply the operation to the cache with the primary data entry, if appropriate.
-2. Do the distribution based on the subscription-attributes interest-policy of the other members.
-3. Invoke any listeners in the caches that receive the distribution.
-4. Invoke the listener in the cache with the primary data entry.
+1. 如果适用，将操作应用于具有主数据条目的缓存。
+2. 根据其他成员的订阅属性兴趣策略进行分发。
+3. 在接收分发的缓存中调用任何侦听器。
+4. 使用主数据条目在缓存中调用侦听器。
 
-In the following figure:
+在下图中：
 
-1. An API call in member M1 creates an entry.
-2. The partitioned region creates the new entry in the cache in M2. M2, the holder of the primary copy, drives the rest of the procedure.
-3. These two operations occur simultaneously:
-   - The partitioned region creates a secondary copy of the entry in the cache in M3. Creating the secondary copy does not invoke the listener on M3.
-   - M2 distributes the event to M4. This distribution to the other members is based on their interest policies. M4 has an interest-policy of all , so it receives notification of all events anywhere in the region. Since M1 and M3 have an interest-policy of cache-content , and this event does not affect any pre-existing entry in their local caches, they do not receive the event.
-4. The cache listener on M4 handles the notification of the remote event on M2.
-5. Once everything on the other members has completed successfully, the original create operation on M2 succeeds and invokes the cache listener on M2.
+1. 成员M1中的API调用创建一个条目。
+2. 分区区域在M2中的缓存中创建新条目。 M2，主副本的持有者，驱动程序的其余部分。
+3. 这两个操作同时发生：
+   - 分区区域在M3中的高速缓存中创建条目的辅助副本。 创建辅助副本不会调用M3上的侦听器。
+   - M2将事件分发给M4。 向其他成员的分配基于他们的利益政策。 M4拥有所有人的利益政策，因此它接收该地区任何地方的所有事件的通知。 由于M1和M3具有缓存内容的兴趣策略，并且此事件不会影响其本地缓存中的任何预先存在的条目，因此它们不会收到该事件。
+4. M4上的缓存侦听器处理M2上的远程事件的通知。
+5. 一旦其他成员上的所有内容都成功完成，M2上的原始创建操作就会成功并调用M2上的缓存侦听器。
 
 ![img](assets/Events-2.gif)
 
-**Events in a Distributed Region**
+**分布式区域中的事件**
 
-A distributed operation follows this sequence in a distributed region:
+分布式操作遵循此序列在分布式区域中：
 
-1. Apply the operation to the local cache, if appropriate.
-2. Invoke the local listeners.
-3. Do the distribution.
-4. Each member that receives the distribution carries out its own operation in response, which invokes any local listeners.
+1. 如果适用，将操作应用于本地缓存。
+2. 调用本地侦听器。
+3. 做分发。
+4. 接收分发的每个成员在响应中执行其自己的操作，其调用任何本地侦听器。
 
-In the following figure:
+在下图中：
 
-1. An entry is created through a direct API call on member M1.
-2. The create invokes the cache listener on M1.
-3. M1 distributes the event to the other members.
-4. M2 and M3 apply the remote change through their own local operations.
-5. M3 does a create, but M2 does an update, because the entry already existed in its cache.
-6. The cache listener on M2 receives callbacks for the local update. Since there is no cache listener on M3, the callbacks from the create on M3 are not handled. An API call in member M1 creates an entry.
+1. 通过成员M1上的直接API调用创建条目。
+2. create在M1上调用缓存侦听器。
+3. M1将事件分发给其他成员。
+4. M2和M3通过自己的本地操作应用远程更改。
+5. M3执行创建，但M2执行更新，因为该条目已存在于其缓存中。
+6. M2上的缓存侦听器接收本地更新的回调。 由于M3上没有缓存侦听器，因此不会处理来自M3上的create的回调。 成员M1中的API调用创建一个条目。
 
 ![img](assets/Events-3.gif)
 
-**Managing Events in Multi-threaded Applications**
+**管理多线程应用程序中的事件**
 
-For partitioned regions, Geode guarantees ordering of events across threads, but for distributed regions it doesn’t. For multi-threaded applications that create distributed regions, you need to use your application synchronization to make sure that one operation completes before the next one begins. Distribution through the distributed-no-ack queue can work with multiple threads if you set the `conserve-sockets` attribute to true. Then the threads share one queue, preserving the order of the events in distributed regions. Different threads can invoke the same listener, so if you allow different threads to send events, it can result in concurrent invocations of the listener. This is an issue only if the threads have some shared state - if they are incrementing a serial number, for example, or adding their events to a log queue. Then you need to make your code thread safe.
+对于分区区域，Geode保证跨线程排序事件，但对于分布式区域，它不会。 对于创建分布式区域的多线程应用程序，您需要使用应用程序同步以确保在下一个操作开始之前完成一个操作。 如果将`conserve-sockets`属性设置为true，则通过distributed-no-ack队列进行分发可以使用多个线程。 然后线程共享一个队列，保留分布区域中事件的顺序。 不同的线程可以调用相同的侦听器，因此如果允许不同的线程发送事件，则可能导致侦听器的并发调用。 仅当线程具有某种共享状态时才会出现此问题 - 例如，如果它们正在递增序列号，或者将其事件添加到日志队列中。 然后，您需要使您的代码线程安全。
 
 
+#### 客户端到服务器事件分发
 
-#### Client-to-Server Event Distribution
+客户端和服务器根据客户端活动并根据客户端在服务器端缓存更改中注册的兴趣来分发事件。
 
-Clients and servers distribute events according to client activities and according to interest registered by the client in server-side cache changes.
+当客户端更新其缓存时，对客户端区域的更改会自动转发到服务器端。 然后，服务器端更新将传播到已连接的其他客户端并启用订阅。 服务器不会将更新返回给发送客户端。
 
-When the client updates its cache, changes to client regions are automatically forwarded to the server side. The server-side update is then propagated to the other clients that are connected and have subscriptions enabled. The server does not return the update to the sending client.
-
-The update is passed to the server and then passed, with the value, to every other client that has registered interest in the entry key. This figure shows how a client’s entry updates are propagated.
+更新将传递到服务器，然后通过该值传递给已注册对条目key感兴趣的其他每个客户端。 此图显示了如何传播客户端的条目更新。
 
 ![img](assets/client_server_event_dist.svg)
 
-The figure shows the following process:
+该图显示了以下过程：
 
-1. Entry X is updated or created in Region A through a direct API call on Client1.
-2. The update to the region is passed to the pool named in the region.
-3. The pool propagates the event to the cache server, where the region is updated.
-4. The server member distributes the event to its peers and also places it into the subscription queue for Client2 because that client has previously registered interest in entry X.
-5. The event for entry X is sent out of the queue to Client2. When this happens is indeterminate.
+1. 通过Client1上的直接API调用在区域A中更新或创建条目X.
+2. 对该区域的更新将传递到该区域中指定的池。
+3. 池将事件传播到缓存服务器，更新区域。
+4. 服务器成员将事件分发给其对等体，并将其放入Client2的预订队列中，因为该客户端先前已注册对条目X的兴趣。
+5. 条目X的事件从队列发送到Client2。 当这种情况发生时是不确定的。
 
-Client to server distribution uses the client pool connections to send updates to the server. Any region with a named pool automatically forwards updates to the server. Client cache modifications pass first through a client `CacheWriter`, if one is defined, then to the server through the client pool, and then finally to the client cache itself. A cache writer, either on the client or server side, may abort the operation.
+客户端到服务器分发使用客户端池连接将更新发送到服务器。 具有命名池的任何区域都会自动将更新转发给服务器。 客户端缓存修改首先通过客户端`CacheWriter`（如果已定义），然后通过客户端池传递到服务器，最后传递到客户端缓存本身。 客户端或服务器端的缓存写入器可能会中止操作。
 
-| Change in Client Cache                              | Effect on Server Cache                                       |
+| 更改客户端缓存                              | 对服务器缓存的影响                                       |
 | --------------------------------------------------- | ------------------------------------------------------------ |
-| Entry create or update                              | Creation or update of entry.                                 |
-| Distributed entry destroy                           | Entry destroy. The destroy call is propagated to the server even if the entry is not in the client cache. |
-| Distributed region destroy/clear (distributed only) | Region destroy/clear                                         |
+| 条目创建或更新                              | 创建或更新条目。                                 |
+| 分布式条目销毁                           | 条目销毁。 即使条目不在客户端缓存中，destroy调用也会传播到服务器。 |
+| 分布式区域销毁/清除（仅分布式） | 区域销毁/清除                                         |
 
-**注意:** Invalidations on the client side are not forwarded to the server.
+**注意:** 客户端的失效不会转发到服务器。
 
-**Server-to-Client Event Distribution**
+**服务器到客户端事件分发**
 
-The server automatically sends entry modification events only for keys in which the client has registered interest. In the interest registration, the client indicates whether to send new values or just invalidations for the server-side entry creates and updates. If invalidation is used, the client then updates the values lazily as needed.
+服务器仅针对客户端已注册的key自动发送条目修改事件。 在兴趣注册中，客户端指示是为服务器端条目创建和更新发送新值还是仅发送无效。 如果使用了无效，则客户端会根据需要懒惰地更新值。
 
-This figure shows the complete event subscription event distribution for interest registrations, with value receipt requested (receiveValues=true) and without.
+此图显示了兴趣注册的完整事件订阅事件分发，请求了值收据（receiveValues = true）且没有。
 
 ![img](assets/server_client_event_dist.svg)
 
-| Change in Server Cache                      | Effect on Client Cache                                       |
+| 更改服务器缓存                      | 对客户端缓存的影响                                       |
 | ------------------------------------------- | ------------------------------------------------------------ |
-| Entry create/update                         | For subscriptions with `receiveValues` set to true, entry create or update.For subscriptions with `receiveValues` set to false, entry invalidate if the entry already exists in the client cache; otherwise, no effect. The next client get for the entry is forwarded to the server. |
-| Entry invalidate/destroy (distributed only) | Entry invalidate/destroy                                     |
-| Region destroy/clear (distributed only)     | Region destroy or local region clear                         |
+| 条目创建/更新                         | 对于`receiveValues`设置为true的订阅，条目创建或更新。对于`receiveValues`设置为false的订阅，如果条目已存在于客户端缓存中，则条目无效; 否则，没有效果。 下一个客户端获取的条目将转发到服务器。 |
+| 条目无效/销毁（仅限分布式） | 条目无效/销毁                                     |
+| 区域销毁/清除（仅限分布式）     | 区域破坏或局部区域清除                         |
 
-Server-side distributed operations are all operations that originate as a distributed operation in the server or one of its peers. Region invalidation in the server is not forwarded to the client.
+服务器端分布式操作是在服务器或其中一个对等体中作为分布式操作发起的所有操作。 服务器中的区域失效不会转发到客户端。
 
-**注意:** To maintain a unified set of data in your servers, do not do local entry invalidation in your server regions.
+**注意:** 要在服务器中维护统一的数据集，请不要在服务器区域中执行本地条目失效。
 
-**Server-to-Client Message Tracking**
+**服务器到客户端的消息跟踪**
 
-The server uses an asynchronous messaging queue to send events to its clients. Every event in the queue originates in an operation performed by a thread in a client, a server, or an application in the server’s or some other cluster. The event message has a unique identifier composed of the originating thread’s ID combined with its member’s distributed system member ID, and the sequential ID of the operation. So the event messages originating in any single thread can be grouped and ordered by time from lowest sequence ID to highest. Servers and clients track the highest sequential ID for each member thread ID.
+服务器使用异步消息传递队列将事件发送到其客户端。 队列中的每个事件都源自客户端，服务器中的线程或服务器或某个其他集群中的应用程序执行的操作。 事件消息具有唯一标识符，该标识符由始发线程的ID与其成员的分布式系统成员ID以及操作的顺序ID组成。 因此，源自任何单个线程的事件消息可以按时间从最低序列ID到最高序列进行分组和排序。 服务器和客户端跟踪每个成员线程ID的最高顺序ID。
 
-A single client thread receives and processes messages from the server, tracking received messages to make sure it does not process duplicate sends. It does this using the process IDs from originating threads.
+单个客户端线程接收并处理来自服务器的消息，跟踪收到的消息以确保它不处理重复发送。 它使用来自原始线程的进程ID来完成此操作。
 
 ![img](assets/client_server_message_tracking.svg)
 
-The client’s message tracking list holds the highest sequence ID of any message received for each originating thread. The list can become quite large in systems where there are many different threads coming and going and doing work on the cache. After a thread dies, its tracking entry is not needed. To avoid maintaining tracking information for threads that have died, the client expires entries that have had no activity for more than the `subscription-message-tracking-timeout`.
+客户端的消息跟踪列表保存为每个始发线程接收的任何消息的最高序列ID。 在有许多不同线程进出并在缓存上工作的系统中，该列表可能变得非常大。 线程死亡后，不需要跟踪条目。 为了避免维护已经死亡的线程的跟踪信息，客户端会使没有活动的条目超过`subscription-message-tracking-timeout`。
 
-**Client Interest Registration on the Server**
+**在服务器上注册客户端兴趣**
 
-The system processes client interest registration following these steps:
+系统按照以下步骤处理客户兴趣注册：
 
-1. The entries in the client region that may be affected by this registration are silently destroyed. Other keys are left alone.
-   - For the `registerInterest` method, the system destroys all of the specified keys, leaving other keys in the client region alone. So if you have a client region with keys A, B, and C and you register interest in the key list A, B, at the start of the `registerInterest` operation, the system destroys keys A and B in the client cache but does not touch key C.
-   - For the `registerInterestRegex` method, the system silently destroys all keys in the client region.
-2. The interest specification is sent to the server, where it is added to the client’s interest list. The list can specify entries that are not in the server region at the time interest is registered.
-3. If a bulk load is requested in the call’s `InterestResultPolicy` parameter, before control is returned to the calling method, the server sends all data that currently satisfies the interest specification. The client’s region is updated automatically with the downloaded data. If the server region is partitioned, the entire partitioned region is used in the bulk load. Otherwise, only the server’s local cache region is used. The interest results policy options are:
-   - KEYS—The client receives a bulk load of all available keys matching the interest registration criteria.
-   - KEYS_VALUES—The client receives a bulk load of all available keys and values matching the interest registration criteria. This is the default interest result policy.
-   - NONE—The client does not receive any immediate bulk loading.
+1. 客户区域中可能受此注册影响的条目将被静默销毁。 其他key是独自留下的。
+   - 对于`registerInterest`方法，系统会销毁所有指定的key，只留下客户区域中的其他key。 因此，如果您有一个带有键A，B和C的客户区，并且您在`registerInterest`操作开始时注册了对键列表A，B的兴趣，系统会破坏客户端缓存中的键A和B，但是 不要碰键C.
+   - 对于`registerInterestRegex`方法，系统以静默方式销毁客户区域中的所有key。
+2. 兴趣规范被发送到服务器，并将其添加到客户端的兴趣列表中。 该列表可以指定在注册兴趣时不在服务器区域中的条目。
+3. 如果在调用的`InterestResultPolicy`参数中请求批量加载，则在将控制返回到调用方法之前，服务器将发送当前满足兴趣规范的所有数据。 使用下载的数据自动更新客户端的区域。 如果服务器区域已分区，则整个分区区域将用于批量加载。 否则，仅使用服务器的本地缓存区域。 兴趣结果政策选项包括：
+   - KEYS—客户端接收与兴趣注册标准匹配的所有可用key的批量加载。
+   - KEYS_VALUES—客户端接收所有可用key的批量加载和与兴趣注册标准匹配的值。 这是默认的兴趣结果政策。
+   - NONE—客户端没有立即收到批量加载。
 
-Once interest is registered, the server continually monitors region activities and sends events to its clients that match the interest.
+一旦注册了兴趣，服务器就会持续监控区域活动并将事件发送给符合兴趣的客户。
 
-- No events are generated by the register interest calls, even if they load values into the client cache.
-- The server maintains the union of all of the interest registrations, so if a client registers interest in key ‘A’, then registers interest in regular expression “B*”, the server will send updates for all entries with key ‘A’ or key beginning with the letter ‘B’.
-- The server maintains the interest registration list separate from the region. The list can contain specifications for entries that are not currently in the server region.
-- The `registerInterestRegex` method uses the standard `java.util.regex` methods to parse the key specification.
+- 注册器兴趣调用不会生成任何事件，即使它们将值加载到客户端缓存中也是如此。
+- 服务器维护所有兴趣注册的联合，因此如果客户注册对密钥'A'的兴趣，然后注册对正则表达式“B*”的兴趣，服务器将发送带有key'A'或以字母'B'开头key的所有条目的更新 。
+- 服务器将兴趣注册列表与区域分开。 该列表可以包含当前不在服务器区域中的条目的规范。
+- `registerInterestRegex`方法使用标准的`java.util.regex`方法来解析key规范。
 
-**Server Failover**
+**服务器故障转移**
 
-When a server hosting a subscription queue fails, the queueing responsibilities pass to another server. How this happens depends on whether the new server is a secondary server. In any case, all failover activities are carried out automatically by the Geode system.
+当托管订阅队列的服务器失败时，排队职责将传递给另一台服务器。 如何发生这取决于新服务器是否是辅助服务器。 在任何情况下，所有故障转移活动都由Geode系统自动执行。
 
-- **Non-HA failover:** The client fails over without high availability if it is not configured for redundancy or if all secondaries also fail before new secondaries can be initialized. As soon as it can attach to a server, the client goes through an automatic reinitialization process. In this process, the failover code on the client side silently destroys all entries of interest to the client and refetches them from the new server, essentially reinitializing the client cache from the new server’s cache. For the notify all configuration, this clears and reloads all of the entries for the client regions that are connected to the server. For notify by subscription, it clears and reloads only the entries in the region interest lists. To reduce failover noise, the events caused by the local entry destruction and refetching are blocked by the failover code and do not reach the client cache listeners. Because of this, your clients could receive some out-of-sequence events during and after a server failover. For example, entries that exist on the failed server and not on its replacement are destroyed and never recreated during a failover. Because the destruction events are blocked, the client ends up with entries removed from its cache with no associated destroy events.
+- **非HA故障转移:** 如果未配置冗余，或者在初始化新辅助节点之前所有辅助节点都失败，则客户端在没有高可用性的情况下进行故障转移。只要它可以连接到服务器，客户端就会进行自动重新初始化过程。在此过程中，客户端上的故障转移代码以静默方式销毁客户端感兴趣的所有条目，并从新服务器中重新获取它们，实质上是从新服务器的缓存中重新初始化客户端缓存。对于notify all配置，这将清除并重新加载连接到服务器的客户端区域的所有条目。对于按订阅通知，它仅清除并重新加载区域兴趣列表中的条目。为了减少故障转移噪声，由本地条目销毁和重新获取引起的事件被故障转移代码阻止，并且不会到达客户端缓存侦听器。因此，您的客户端可能会在服务器故障转移期间和之后收到一些无序事件。例如，故障转移期间，故障服务器上存在而不是其替换的条目将被销毁，并且永远不会重新创建。由于销毁事件被阻止，因此客户端最终会从其缓存中删除条目而没有关联的销毁事件。
 
-- **HA failover:** If your client pool is configured with redundancy and a secondary server is available at the time the primary fails, the failover is invisible to the client. The secondary server resumes queueing activities as soon as the primary loss is detected. The secondary might resend a few events, which are discarded automatically by the client message tracking activities.
+- **HA 故障转移:** 如果客户端池配置了冗余，并且主服务器出现故障时辅助服务器可用，则客户端将无法访问故障转移。 一旦检测到主要丢失，辅助服务器就会恢复排队活动。 辅助节点可能会重新发送一些事件，这些事件会被客户端邮件跟踪活动自动丢弃。
 
-  **注意:** There is a very small potential for message loss during HA server failover. The risk is not present for failover to secondaries that have fully initialized their subscription queue data. The risk is extremely low in healthy systems that use at least two secondary servers. The risk is higher in unstable systems where servers often fail and where secondaries do not have time to initialize their subscription queue data before becoming primaries. To minimize the risk, the failover logic chooses the longest-lived secondary as the new primary.
+  **注意:** 在HA服务器故障转移期间，消息丢失的可能性非常小。 故障转移到已完全初始化其订阅队列数据的辅助节点的风险不存在。 在使用至少两台辅助服务器的健康系统中，风险极低。 在服务器经常出现故障的不稳定系统中，以及辅助设备在成为初选之前没有时间初始化其订阅队列数据的风险更高。 为了最小化风险，故障转移逻辑选择寿命最长的辅助节点作为新的主节点。
 
-  **注意:** Redundancy management is handled by the client, so when a durable client is disconnected from the server, client event redundancy is not maintained. Even if the servers fail one at a time, so that running clients have time to fail over and pick new secondary servers, an offline durable client cannot fail over. As a result, the client loses its queued messages.
-
-
-
-#### Multi-Site (WAN) Event Distribution
-
-Geode distributes a subset of cache events between clusters, with a minimum impact on each system’s performance. Events are distributed only for regions that you configure to use a gateway sender for distribution.
-
-**Queuing Events for Distribution**
-
-In regions that are configured with one or more gateway senders (`gateway-sender-ids` attribute), events are automatically added to a gateway sender queue for distribution to other sites. Events that are placed in a gateway sender queue are distributed asynchronously to remote sites. For serial gateway queues, the ordering of events sent between sites can be preserved using the `order-policy` attribute.
-
-If a queue becomes too full, it is overflowed to disk to keep the member from running out of memory. You can optionally configure the queue to be persisted to disk (with the `enable-persistence` `gateway-sender` attribute). With persistence, if the member that manages the queue goes down, the member picks up where it left off after it restarts.
-
-**Operation Distribution from a Gateway Sender**
-
-The multi-site installation is designed for minimal impact on cluster performance, so only the farthest-reaching entry operations are distributed between sites.
-
-These operations are distributed:
-
-- entry create
-- entry put
-- entry distributed destroy, providing the operation is not an expiration action
-
-These operations are not distributed:
-
-- get
-- invalidate
-- local destroy
-- expiration actions of any kind
-- region operations
-
-**How a Gateway Sender Processes Its Queue**
-
-Each primary gateway sender contains a processor thread that reads messages from the queue, batches them, and distributes the batches to a gateway receiver in a remote site. To process the queue, a gateway sender thread takes the following actions:
-
-1. Reads messages from the queue
-2. Creates a batch of the messages
-3. Synchronously distributes the batch to the other site and waits for a reply
-4. Removes the batch from the queue after the other site has successfully replied
-
-Because the batch is not removed from the queue until after the other site has replied, the message cannot get lost. On the other hand, in this mode a message could be processed more than once. If a site goes offline in the middle of processing a batch of messages, then that same batch will be sent again once the site is back online.
-
-You can configure the batch size for messages as well as the batch time interval settings. A gateway sender processes a batch of messages from the queue when either the batch size or the time interval is reached. In an active network, it is likely that the batch size will be reached before the time interval. In an idle network, the time interval will most likely be reached before the batch size. This may result in some network latency that corresponds to the time interval.
-
-**How a Gateway Sender Handles Batch Processing Failure**
-
-Exceptions can occur at different points during batch processing:
-
-- The gateway receiver could fail with acknowledgment. If processing fails while the gateway receiver is processing a batch, the receiver replies with a failure acknowledgment that contains the exception, including the identity of the message that failed, and the ID of the last message that it successfully processed. The gateway sender then removes the successfully processed messages and the failed message from the queue and logs an exception with the failed message information. The sender then continues processing the messages remaining in the queue.
-- The gateway receiver can fail without acknowledgment. If the gateway receiver does not acknowledge a sent batch, the gateway sender does not know which messages were successfully processed. In this case the gateway sender re-sends the entire batch.
-- No gateway receivers may be available for processing. If a batch processing exception occurs because there are no remote gateway receivers available, then the batch remains in the queue. The gateway sender waits for a time, and then attempts to re-send the batch. The time period between attempts is five seconds. The existing server monitor continuously attempts to connect to the gateway receiver, so that a connection can be made and queue processing can continue. Messages build up in the queue and possibly overflow to disk while waiting for the connection.
+  **注意:** 冗余管理由客户端处理，因此当持久客户端与服务器断开连接时，不会维护客户端事件冗余。 即使服务器一次失败一个，以便运行的客户端有时间进行故障转移并选择新的辅助服务器，脱机持久客户端也无法进行故障转移。 结果，客户端丢失其排队的消息。
 
 
+#### 多站点（WAN）事件分发
 
-#### List of Event Handlers and Events
+Geode在集群之间分配缓存事件的子集，对每个系统的性能影响最小。 仅为您配置为使用网关发件人进行分发的区域分发事件。
 
-Geode provides many types of events and event handlers to help you manage your different data and application needs.
+**为分发排队事件**
 
-**Event Handlers**
+在使用一个或多个网关发件人（`gateway-sender-ids`属性）配置的区域中，事件会自动添加到网关发件人队列以分发到其他站点。 放置在网关发送方队列中的事件将异步分发到远程站点。 对于串行网关队列，可以使用`order-policy`属性保留站点之间发送的事件的顺序。
 
-Use either cache handlers or membership handlers in any single application. Do not use both. The event handlers in this table are cache handlers unless otherwise noted.
+如果队列变得太满，它会溢出到磁盘以防止成员内存不足。 您可以选择将队列配置为持久保存到磁盘（使用`enable-persistence` `gateway-sender`属性）。 使用持久性，如果管理队列的成员发生故障，成员将在重新启动后从中断处继续。
 
-| Handler API                          | Events received                                       | Description                                                  |
+**来自网关发件人的操作分配**
+
+多站点安装旨在最大限度地降低对群集性能的影响，因此只有最远的入口操作才会在站点之间分配。
+
+这些操作分布在：
+
+- 条目创建
+- 条目放置
+- 条目分布式销毁，提供的操作不是到期操作
+
+这些操作不分发：
+
+- 获取
+- 作废
+- 当地销毁
+- 任何类型的到期行为
+- 区域操作
+
+**网关发件人如何处理其队列**
+
+每个主网关发送器都包含一个处理器线程，该线程从队列中读取消息，对其进行批处理，并将批处理分发到远程站点中的网关接收器。 要处理队列，网关发送方线程将执行以下操作：
+
+1. 从队列中读取消息
+2. 创建一批消息
+3. 同步将批处理分发到其他站点并等待回复
+4. 在另一个站点成功回复后，从队列中删除批处理
+
+因为在其他站点回复之前，批处理不会从队列中删除，所以该消息不会丢失。 另一方面，在此模式下，可以多次处理消息。 如果站点在处理一批消息的过程中脱机，则一旦站点重新联机，将再次发送该批次。
+
+您可以配置消息的批处理大小以及批处理时间间隔设置。 当达到批量大小或时间间隔时，网关发件人处理来自队列的一批消息。 在活动网络中，很可能在时间间隔之前达到批量大小。 在空闲网络中，最有可能在批量大小之前达到时间间隔。 这可能导致一些与时间间隔相对应的网络延迟。
+
+**网关发件人如何处理批处理失败**
+
+批处理期间的不同点可能会发生异常：
+
+- 网关接收器可能会因确认而失败。 如果在网关接收器处理批处理时处理失败，则接收方将回复包含异常的失败确认，包括失败消息的标识以及成功处理的最后一条消息的ID。 然后，网关发件人从队列中删除成功处理的消息和失败的消息，并使用失败的消息信息记录异常。 然后，发送方继续处理队列中剩余的消息。
+- 网关接收器可能无法确认而失败。 如果网关接收方未确认已发送的批次，则网关发件人不知道哪些消息已成功处理。 在这种情况下，网关发件人重新发送整批。
+- 没有网关接收器可用于处理。 如果由于没有可用的远程网关接收器而发生批处理异常，则批处理仍保留在队列中。 网关发件人等待一段时间，然后尝试重新发送批次。 尝试之间的时间间隔为五秒。 现有服务器监视器不断尝试连接到网关接收器，以便可以建立连接并继续进行队列处理。 消息在队列中累积，并可能在等待连接时溢出到磁盘。
+
+
+#### 事件处理程序和事件列表
+
+Geode提供了许多类型的事件和事件处理程序，可帮助您管理不同的数据和应用程序需求。
+
+**事件处理程序**
+
+在任何单个应用程序中使用缓存处理程序或成员资格处理程序。 不要同时使用两者。 除非另有说明，否则此表中的事件处理程序是缓存处理程序。
+
+| 处理程序API                          | 收到的事件                                       | 描述                                                  |
 | ------------------------------------ | ----------------------------------------------------- | ------------------------------------------------------------ |
-| `AsyncEventListener`                 | `AsyncEvent`                                          | Tracks changes in a region for write-behind processing. Extends the `CacheCallback`interface. You install a write-back cache listener to an `AsyncEventQueue` instance. You can then add the `AsyncEventQueue` instance to one or more regions for write-behind processing. See [Implementing an AsyncEventListener for Write-Behind Cache Event Handling](https://geode.apache.org/docs/guide/17/developing/events/implementing_write_behind_event_handler.html#implementing_write_behind_cache_event_handling). |
-| `CacheCallback`                      |                                                       | Superinterface of all cache event listeners. Functions only to clean up resources that the callback allocated. |
-| `CacheListener`                      | `RegionEvent`, `EntryEvent`                           | Tracks changes to region and its data entries. Responds synchronously. Extends `CacheCallback` interface. Installed in region. Receives only local cache events. Install one in every member where you want the events handled by this listener. In a partitioned region, the cache listener only fires in the primary data store. Listeners on secondaries are not fired. |
-| `CacheWriter`                        | `RegionEvent`, `EntryEvent`                           | Receives events for *pending*changes to the region and its data entries in this member or one of its peers. Has the ability to abort the operations in question. Extends `CacheCallback` interface. Installed in region. Receives events from anywhere in the distributed region, so you can install one in one member for the entire distributed region. Receives events only in primary data store in partitioned regions, so install one in every data store. |
-| `ClientMembershipListener`           | `ClientMembershipEvent`                               | One of the interfaces that replaces the deprecated Admin APIs. You can use the ClientMembershipListener to receive membership events only about clients. This listener’s callback methods are invoked when this process detects connection changes to clients. Callback methods include `memberCrashed`, `memberJoined`, `memberLeft`(graceful exit). |
-| `CqListener`                         | `CqEvent`                                             | Receives events from the server cache that satisfy a client-specified query. Extends `CacheCallback` interface. Installed in the client inside a `CqQuery`. |
-| `GatewayConflictResolver`            | `TimestampedEntryEvent`                               | Decides whether to apply a potentially conflicting event to a region that is distributed over a WAN configuration. This event handler is called only when the distributed system ID of an update event is different from the ID that last updated the region entry. |
-| `MembershipListener`                 | `MembershipEvent`                                     | Use this interface to receive membership events only about peers. This listener’s callback methods are invoked when peer members join or leave the cluster. Callback methods include `memberCrashed`, `memberJoined`, and `memberLeft`(graceful exit). |
-| `RegionMembershipListener`           | `RegionEvent`                                         | Provides after-event notification when a region with the same name has been created in another member and when other members hosting the region join or leave the cluster. Extends `CacheCallback` and `CacheListener`. Installed in region as a `CacheListener`. |
-| `TransactionListener`                | `TransactionEvent` with embedded list of `EntryEvent` | Tracks the outcome of transactions and changes to data entries in the transaction.**注意:**Multiple transactions on the same cache can cause concurrent invocation of `TransactionListener`methods, so implement methods that do the appropriate synchronizing of the multiple threads for thread-safe operation.Extends `CacheCallback`interface. Installed in cache using transaction manager. Works with region-level listeners if needed. |
-| `TransactionWriter`                  | `TransactionEvent` with embedded list of `EntryEvent` | Receives events for *pending*transaction commits. Has the ability to abort the transaction. Extends `CacheCallback`interface. Installed in cache using transaction manager. At most one writer is called per transaction. Install a writer in every transaction host. |
-| `UniversalMembershipListenerAdapter` | `MembershipEvent` and `ClientMembershipEvent`         | One of the interfaces that replaces the deprecated Admin APIs. Provides a wrapper for MembershipListener and ClientMembershipListener callbacks for both clients and peers. |
+| `AsyncEventListener`                 | `AsyncEvent`                                          | 跟踪区域中的更改以进行后写处理。 扩展`CacheCallback`接口。 您将回写缓存侦听器安装到`AsyncEventQueue`实例。 然后，您可以将“AsyncEventQueue”实例添加到一个或多个区域以进行后写处理。 请参阅[实现用于后写高速缓存事件处理的AsyncEventListener](https://geode.apache.org/docs/guide/17/developing/events/implementing_write_behind_event_handler.html#implementing_write_behind_cache_event_handling)。|
+| `CacheCallback`                      |                                                       | 所有缓存事件侦听器的超级接口。 仅用于清除回调分配的资源的函数。 |
+| `CacheListener`                      | `RegionEvent`, `EntryEvent`                           | 跟踪区域及其数据条目的更改。 同步响应。 扩展`CacheCallback`接口。 安装在地区。 仅接收本地缓存事件。 在您希望此侦听器处理事件的每个成员中安装一个。 在分区区域中，缓存侦听器仅在主数据存储中触发。 辅助听众不会被解雇。|
+| `CacheWriter`                        | `RegionEvent`, `EntryEvent`                           | 接收该区域及其成员或其中一个对等方中的区域及其数据条目的*待定*更改事件。 是否有能力中止有问题的操作。 扩展`CacheCallback`接口。 安装在地区。 从分布式区域中的任何位置接收事件，因此您可以为整个分布式区域安装一个成员。 仅在分区区域中的主数据存储中接收事件，因此在每个数据存储中安装一个事件。 |
+| `ClientMembershipListener`           | `ClientMembershipEvent`                               | 替换已弃用的Admin API的接口之一。 您可以使用ClientMembershipListener仅接收有关客户端的成员资格事件。 当此进程检测到客户端的连接更改时，将调用此侦听器的回调方法。 回调方法包括`memberCrashed`，`memberJoined`，`memberLeft`（graceful exit）。 |
+| `CqListener`                         | `CqEvent`                                             | 从服务器缓存接收满足客户端指定查询的事件。 扩展`CacheCallback`接口。 安装在`CqQuery`里面的客户端。 |
+| `GatewayConflictResolver`            | `TimestampedEntryEvent`                               | 决定是否将可能存在冲突的事件应用于通过WAN配置分发的区域。 仅当更新事件的分布式系统ID与上次更新区域条目的ID不同时，才会调用此事件处理程序。 |
+| `MembershipListener`                 | `MembershipEvent`                                     | 使用此接口仅接收有关对等方的成员资格事件。 当对等成员加入或离开集群时，将调用此侦听器的回调方法。 回调方法包括`memberCrashed`，`memberJoined`和`memberLeft`（graceful exit）。 |
+| `RegionMembershipListener`           | `RegionEvent`                                         | 当在另一个成员中创建了具有相同名称的区域以及托管该区域的其他成员加入或离开集群时，提供事件后通知。 扩展`CacheCallback`和`CacheListener`。 作为`CacheListener`安装在区域中。 |
+| `TransactionListener`                | `TransactionEvent` with embedded list of `EntryEvent` | 跟踪事务的结果和事务中数据条目的更改。**注意:**同一缓存上的多个事务可能导致并发调用`TransactionListener`方法，因此实现为多个线程进行适当同步以进行线程安全操作的方法。扩展`CacheCallback`接口。 使用事务管理器安装在缓存中。 如果需要，可以使用区域级侦听器。 |
+| `TransactionWriter`                  | `TransactionEvent` with embedded list of `EntryEvent` | 接收* pending *事务提交的事件。 有能力中止交易。 扩展`CacheCallback`接口。 使用事务管理器安装在缓存中。 每个事务最多调用一个编写器。 在每个事务主机中安装writer。 |
+| `UniversalMembershipListenerAdapter` | `MembershipEvent` and `ClientMembershipEvent`         | 替换已弃用的Admin API的接口之一。 为客户端和对等端的MembershipListener和ClientMembershipListener回调提供包装器。 |
 
-**Events**
+**事件**
 
-The events in this table are cache events unless otherwise noted.
+除非另有说明，否则此表中的事件是缓存事件。
 
-| Event                               | Passed to handler …                                          | Description                                                  |
+| 事件                               | 传递给处理程序 …                                          | 描述                                                  |
 | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `AsyncEvent`                        | `AsyncEventListener`                                         | Provides information about a single event in the cache for asynchronous, write-behind processing. |
-| `CacheEvent`                        |                                                              | Superinterface to `RegionEvent` and `EntryEvent`. This defines common event methods, and contains data needed to diagnose the circumstances of the event, including a description of the operation being performed, information about where the event originated, and any callback argument passed to the method that generated this event. |
-| `ClientMembershipEvent`             | `ClientMembershipListener`                                   | An event delivered to a `ClientMembershipListener` when this process detects connection changes to servers or clients. |
-| `CqEvent`                           | `CqListener`                                                 | Provides information about a change to the results of a continuous query running on a server on behalf of a client. `CqEvent`s are processed on the client. |
-| `EntryEvent`                        | `CacheListener`, `CacheWriter`, `TransactionListener`(inside the `TransactionEvent`) | Extends `CacheEvent` for entry events. Contains information about an event affecting a data entry in the cache. The information includes the key, the value before this event, and the value after this event. `EntryEvent.getNewValue` returns the current value of the data entry. `EntryEvent.getOldValue` returns the value before this event if it is available. For a partitioned region, returns the old value if the local cache holds the primary copy of the entry. `EntryEvent` provides the Geode transaction ID if available.You can retrieve serialized values from `EntryEvent` using the `getSerialized`* methods. This is useful if you get values from one region’s events just to put them into a separate cache region. There is no counterpart `put` function as the put recognizes that the value is serialized and bypasses the serialization step. |
-| `MembershipEvent`(membership event) | `MembershipListener`                                         | An event that describes the member that originated this event. Instances of this are delivered to a `MembershipListener` when a member has joined or left the cluster. |
-| `RegionEvent`                       | `CacheListener`, `CacheWriter`, `RegionMembershipListener`   | Extends `CacheEvent` for region events. Provides information about operations that affect the whole region, such as reinitialization of the region after being destroyed. |
-| `TimestampedEntryEvent`             | `GatewayConflictResolver`                                    | Extends `EntryEvent` to include a timestamp and distributed system ID associated with the event. The conflict resolver can compare the timestamp and ID in the event with the values stored in the entry to decide whether the local system should apply the potentially conflicting event. |
-| `TransactionEvent`                  | `TransactionListener`, `TransactionWriter`                   | Describes the work done in a transaction. This event may be for a pending or committed transaction, or for the work abandoned by an explicit rollback or failed commit. The work is represented by an ordered list of `EntryEvent` instances. The entry events are listed in the order in which the operations were performed in the transaction.As the transaction operations are performed, the entry events are conflated, with only the last event for each entry remaining in the list. So if entry A is modified, then entry B, then entry A, the list will contain the event for entry B followed by the second event for entry A. |
-
+| `AsyncEvent`                        | `AsyncEventListener`                                         | 提供有关异步，后写处理的高速缓存中单个事件的信息。 |
+| `CacheEvent`                        |                                                              | 超级接口到`RegionEvent`和`EntryEvent`。 这定义了常见的事件方法，并包含诊断事件环境所需的数据，包括正在执行的操作的描述，有关事件源自何处的信息，以及传递给生成此事件的方法的任何回调参数。 |
+| `ClientMembershipEvent`             | `ClientMembershipListener`                                   | 当此进程检测到对服务器或客户端的连接更改时，会将事件传递给`ClientMembershipListener`。 |
+| `CqEvent`                           | `CqListener`                                                 | 提供有关代表客户端在服务器上运行的连续查询结果的更改的信息。 `CqEvent`s在客户端上处理。 |
+| `EntryEvent`                        | `CacheListener`, `CacheWriter`, `TransactionListener`(inside the `TransactionEvent`) | 为入口事件扩展`CacheEvent`。 包含有关影响缓存中数据条目的事件的信息。 信息包括key，此事件之前的值以及此事件之后的值。 `EntryEvent.getNewValue`返回数据条目的当前值。 `EntryEvent.getOldValue`返回此事件之前的值（如果可用）。 对于分区区域，如果本地缓存包含条目的主副本，则返回旧值。 `EntryEvent`提供Geode事务ID（如果可用）。您可以使用`getSerialized` *方法从`EntryEvent`检索序列化值。 如果从一个区域的事件中获取值只是为了将它们放入单独的缓存区域，这将非常有用。 没有对应的`put`函数，因为put识别该值被序列化并绕过序列化步骤。 |
+| `MembershipEvent`(membership event) | `MembershipListener`                                         | 描述发起此事件的成员的事件。 当成员加入或离开集群时，会将此实例传递给`MembershipListener`。 |
+| `RegionEvent`                       | `CacheListener`, `CacheWriter`, `RegionMembershipListener`   | 为区域事件扩展`CacheEvent`。 提供有关影响整个区域的操作的信息，例如在销毁后重新初始化该区域。 |
+| `TimestampedEntryEvent`             | `GatewayConflictResolver`                                    | 扩展`EntryEvent`以包括与事件关联的时间戳和分布式系统ID。 冲突解决程序可以将事件中的时间戳和ID与存储在条目中的值进行比较，以确定本地系统是否应该应用潜在冲突的事件。 |
+| `TransactionEvent`                  | `TransactionListener`, `TransactionWriter`                   | 描述事务中完成的工作。 此事件可能用于挂起或已提交的事务，也可能用于显式回滚或失败提交放弃的工作。 该工作由`EntryEvent`实例的有序列表表示。 条目事件按事务中执行操作的顺序列出。在执行事务操作时，条目事件被混合，每个条目的最后一个事件仅保留在列表中。 因此，如果修改了条目A，然后是条目B，那么条目A，该列表将包含条目B的事件，后面是条目A的第二个事件。 |
 
 
 ### Implementing Geode Event Handlers
