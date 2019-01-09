@@ -3925,55 +3925,54 @@ Geode提供了许多类型的事件和事件处理程序，可帮助您管理不
 | `TransactionEvent`                  | `TransactionListener`, `TransactionWriter`                   | 描述事务中完成的工作。 此事件可能用于挂起或已提交的事务，也可能用于显式回滚或失败提交放弃的工作。 该工作由`EntryEvent`实例的有序列表表示。 条目事件按事务中执行操作的顺序列出。在执行事务操作时，条目事件被混合，每个条目的最后一个事件仅保留在列表中。 因此，如果修改了条目A，然后是条目B，那么条目A，该列表将包含条目B的事件，后面是条目A的第二个事件。 |
 
 
-### Implementing Geode Event Handlers
+### 实现Geode事件处理程序
 
-You can specify event handlers for region and region entry operations and for administrative events.
+您可以为区域和区域条目操作以及管理事件指定事件处理程序。
 
-- **Implementing Cache Event Handlers**
+- **实现缓存事件处理程序**
 
-  Depending on your installation and configuration, cache events can come from local operations, peers, servers, and remote sites. Event handlers register their interest in one or more events and are notified when the events occur.
+  根据您的安装和配置，缓存事件可以来自本地操作，对等方，服务器和远程站点。 事件处理程序在一个或多个事件中注册其兴趣，并在事件发生时得到通知。
 
-- **Implementing an AsyncEventListener for Write-Behind Cache Event Handling**
+- **为Write-Behind Cache事件处理实现AsyncEventListener**
 
-  An `AsyncEventListener` asynchronously processes batches of events after they have been applied to a region. You can use an `AsyncEventListener` implementation as a write-behind cache event handler to synchronize region updates with a database.
+  `AsyncEventListener`”在将批量事件应用于区域后异步处理这些事件。 您可以使用`AsyncEventListener`实现作为后写缓存事件处理程序，以将区域更新与数据库同步。
 
-- **How to Safely Modify the Cache from an Event Handler Callback**
+- **如何从事件处理程序回调安全地修改缓存**
 
-  Event handlers are synchronous. If you need to change the cache or perform any other distributed operation from event handler callbacks, be careful to avoid activities that might block and affect your overall system performance.
+  事件处理程序是同步的。 如果需要更改缓存或从事件处理程序回调执行任何其他分布式操作，请小心避免可能阻止并影响整体系统性能的活动。
 
-- **Cache Event Handler Examples**
+- **缓存事件处理程序示例**
 
-  Some examples of cache event handlers.
+  缓存事件处理程序的一些示例。
 
 
+#### 实现缓存事件处理程序
 
-#### Implementing Cache Event Handlers
+根据您的安装和配置，缓存事件可以来自本地操作，对等方，服务器和远程站点。 事件处理程序在一个或多个事件中注册其兴趣，并在事件发生时得到通知。
 
-Depending on your installation and configuration, cache events can come from local operations, peers, servers, and remote sites. Event handlers register their interest in one or more events and are notified when the events occur.
+对于每种类型的处理程序，Geode为接口回调方法提供了一个带有空存根的便捷类。
 
-For each type of handler, Geode provides a convenience class with empty stubs for the interface callback methods.
+**注意:** 通过扩展`AsyncEventListener`接口创建后写高速缓存侦听器，并且它们配置有您分配给一个或多个区域的`AsyncEventQueue`。
 
-**注意:** Write-behind cache listeners are created by extending the `AsyncEventListener` interface, and they are configured with an `AsyncEventQueue` that you assign to one or more regions.
+**步骤**
 
-**Procedure**
+1. 确定应用程序需要处理哪些事件。 对于每个区域，确定要处理的事件。 对于缓存，决定是否处理事务事件。
 
-1. Decide which events your application needs to handle. For each region, decide which events you want to handle. For the cache, decide whether to handle transaction events.
+2. 对于每个事件，决定使用哪些处理程序。 `org.apache.geode.cache.util`中的`*Listener`和`*Adapter`类显示选项。
 
-2. For each event, decide which handlers to use. The `*Listener` and `*Adapter` classes in `org.apache.geode.cache.util` show the options.
+3. 编程每个事件处理程序:
 
-3. Program each event handler:
+   1. 扩展处理程序的适配器类。
 
-   1. Extend the handler’s adapter class.
+   2. 如果要在`cache.xml`中声明处理程序，也要实现`org.apache.geode.cache.Declarable`接口。
 
-   2. If you want to declare the handler in the `cache.xml`, implement the `org.apache.geode.cache.Declarable` interface as well.
+   3. 根据应用程序的需要实现处理程序的回调方法。
 
-   3. Implement the handler’s callback methods as needed by your application.
+      **注意:** 编程不正确的事件处理程序可能会阻止您的分布式系统。 缓存事件是同步的。 要根据事件修改缓存或执行分布式操作，请遵循[如何从事件处理程序回调安全地修改缓存](https://geode.apache.org/docs/guide/17/developing/events/writing_callbacks_that_modify_the_cache.html#writing_callbacks_that_modify_the_cache)中的准则来避免阻塞系统.
 
-      **注意:** Improperly programmed event handlers can block your distributed system. Cache events are synchronous. To modify your cache or perform distributed operations based on events, avoid blocking your system by following the guidelines in [How to Safely Modify the Cache from an Event Handler Callback](https://geode.apache.org/docs/guide/17/developing/events/writing_callbacks_that_modify_the_cache.html#writing_callbacks_that_modify_the_cache).
+      例子:
 
-      Example:
-
-      ```
+      ```java
       package myPackage;
       import org.apache.geode.cache.Declarable;
       import org.apache.geode.cache.EntryEvent;
@@ -3993,11 +3992,11 @@ For each type of handler, Geode provides a convenience class with empty stubs fo
       }
       ```
 
-4. Install the event handlers, either through the API or the `cache.xml`.
+4. 通过API或`cache.xml`安装事件处理程序。
 
-   XML Region Event Handler Installation:
+   XML Region事件处理程序安装：
 
-   ```
+   ```xml
    <region name="trades">
      <region-attributes ... >
        <!-- Cache listener -->
@@ -4008,17 +4007,17 @@ For each type of handler, Geode provides a convenience class with empty stubs fo
    </region>
    ```
 
-   Java Region Event Handler Installation:
+   Java Region事件处理程序安装：
 
-   ```
+   ```java
    tradesRegion = cache.createRegionFactory(RegionShortcut.PARTITION)
      .addCacheListener(new MyCacheListener())
      .create("trades");
    ```
 
-   XML Transaction Writer and Listener Installation:
+   XML事务编写器和监听器安装：
 
-   ```
+   ```xml
    <cache search-timeout="60">
          <cache-transaction-manager>
            <transaction-listener>
@@ -4044,13 +4043,13 @@ For each type of handler, Geode provides a convenience class with empty stubs fo
    </cache>
    ```
 
-The event handlers are initialized automatically during region creation when you start the member.
+启动成员时，在区域创建期间会自动初始化事件处理程序。
 
-**Installing Multiple Listeners on a Region**
+**在区域上安装多个侦听器**
 
 XML:
 
-```
+```xml
 <region name="exampleRegion">
   <region-attributes>
     . . .
@@ -4082,67 +4081,66 @@ Region nr = cache.createRegionFactory()
 ```
 
 
+#### 为Write-Behind Cache事件处理实现AsyncEventListener
 
-#### Implementing an AsyncEventListener for Write-Behind Cache Event Handling
+`AsyncEventListener`在将批量事件应用于区域后异步处理这些事件。 您可以使用`AsyncEventListener`实现作为后写缓存事件处理程序，以将区域更新与数据库同步。
 
-An `AsyncEventListener` asynchronously processes batches of events after they have been applied to a region. You can use an `AsyncEventListener` implementation as a write-behind cache event handler to synchronize region updates with a database.
+**AsyncEventListener的工作原理**
 
-**How an AsyncEventListener Works**
+`AsyncEventListener`实例由其自己的专用线程提供服务，其中调用了一个回调方法。 更新区域的事件放在内部的`AsyncEventQueue`中，并且一个或多个线程一次将一批事件分派给侦听器实现。
 
-An `AsyncEventListener` instance is serviced by its own dedicated thread in which a callback method is invoked. Events that update a region are placed in an internal `AsyncEventQueue`, and one or more threads dispatch batches of events at a time to the listener implementation.
+您可以将`AsyncEventQueue`配置为串行或并行。 串行队列部署到一个Geode成员，它按发生顺序将所有区域事件传递给已配置的`AsyncEventListener`实现。 并行队列部署到多个Geode成员，并且队列的每个实例都可以同时将区域事件传递给本地的`AsyncEventListener`实现。
 
-You can configure an `AsyncEventQueue` to be either serial or parallel. A serial queue is deployed to one Geode member, and it delivers all of a region’s events, in order of occurrence, to a configured `AsyncEventListener` implementation. A parallel queue is deployed to multiple Geode members, and each instance of the queue delivers region events, possibly simultaneously, to a local `AsyncEventListener` implementation.
+虽然并行队列为写入事件提供了最佳吞吐量，但它对订购这些事件提供的控制较少。 使用并行队列时，您无法保留整个区域的事件排序，因为多个Geode服务器会同时排队并传递区域的事件。 但是，可以保留给定分区（或分布式区域的给定队列）的事件顺序。
 
-While a parallel queue provides the best throughput for writing events, it provides less control for ordering those events. With a parallel queue, you cannot preserve event ordering for a region as a whole because multiple Geode servers queue and deliver the region’s events at the same time. However, the ordering of events for a given partition (or for a given queue of a distributed region) can be preserved.
+对于串行和并行队列，您可以控制每个队列使用的最大内存量，以及处理队列中批次的批量大小和频率。 您还可以将队列配置为持久保存到磁盘（而不是简单地溢出到磁盘），以便后续缓存可以在成员关闭并稍后重新启动时从中断处获取。
 
-For both serial and parallel queues, you can control the maximum amount of memory that each queue uses, as well as the batch size and frequency for processing batches in the queue. You can also configure queues to persist to disk (instead of simply overflowing to disk) so that write-behind caching can pick up where it left off when a member shuts down and is later restarted.
+（可选）队列可以使用多个线程来分派排队事件。 为串行队列配置多个线程时，Geode成员上托管的逻辑队列将分为多个物理队列，每个队列都有一个专用的调度程序线程。 然后，您可以配置线程是按键，按线程还是按照将事件添加到队列的相同顺序来调度排队事件。 为并行队列配置多个线程时，托管在Geode成员上的每个队列都由调度程序线程处理; 创建的队列总数取决于托管该区域的成员数。
 
-Optionally, a queue can use multiple threads to dispatch queued events. When you configure multiple threads for a serial queue, the logical queue that is hosted on a Geode member is divided into multiple physical queues, each with a dedicated dispatcher thread. You can then configure whether the threads dispatch queued events by key, by thread, or in the same order in which events were added to the queue. When you configure multiple threads for a parallel queue, each queue hosted on a Geode member is processed by dispatcher threads; the total number of queues created depends on the number of members that host the region.
+可以在`AsyncEventQueue`上放置一个`GatewayEventFilter`来控制是否将特定事件发送到选定的`AsyncEventListener`。 例如，可以检测与敏感数据相关联的事件而不排队。 有关更多详细信息，请参阅`GatewayEventFilter`的Javadoc。
 
-A `GatewayEventFilter` can be placed on the `AsyncEventQueue` to control whether a particular event is sent to a selected `AsyncEventListener`. For example, events associated with sensitive data could be detected and not queued. For more detail, see the Javadocs for `GatewayEventFilter`.
+`GatewayEventSubstitutionFilter`可以指定事件是完整传输还是以更改的表示形式传输。 例如，要减小要序列化的数据的大小，仅通过其键表示完整对象可能更有效。 有关更多详细信息，请参阅`GatewayEventSubstitutionFilter`的Javadoc。
 
-A `GatewayEventSubstitutionFilter` can specify whether the event is transmitted in its entirety or in an altered representation. For example, to reduce the size of the data being serialized, it might be a more efficient to represent a full object by only its key. For more detail, see the Javadocs for `GatewayEventSubstitutionFilter`.
+**来自AsyncEventQueue的分布式操作**
 
-**Operation Distribution from an AsyncEventQueue**
+`AsyncEventQueue`分发这些操作：
 
-An `AsyncEventQueue` distributes these operations:
+- Entry 创建
+- Entry 放置
+- Entry 分布式销毁，提供的操作不是到期操作
+- 如果`forward-expiration-destroy`属性设置为'true`，则到期销毁。 默认情况下，此属性为`false`，但您可以使用`cache.xml`或`gfsh`将其设置为`true`。 要在Java API中设置此属性，请使用`AsyncEventQueueFactory.setForwardExpirationDestroy()`。 有关详细信息，请参阅javadocs。
 
-- Entry create
-- Entry put
-- Entry distributed destroy, providing the operation is not an expiration action
-- Expiration destroy, if the `forward-expiration-destroy` attribute is set to `true`. By default, this attribute is `false`, but you can set it to `true` using `cache.xml` or `gfsh`. To set this attribute in the Java API, use `AsyncEventQueueFactory.setForwardExpirationDestroy()`. See the javadocs for details.
+这些操作不是分布式的：
 
-These operations are not distributed:
+- 获取
+- 失效
+- 本地销毁
+- 区域操作
+- 过期操作
+- 如果`forward-expiration-destroy`属性设置为`false`，则到期销毁。 默认值为`false`。
 
-- Get
-- Invalidate
-- Local destroy
-- Region operations
-- Expiration actions
-- Expiration destroy, if the `forward-expiration-destroy` attribute is set to `false`. The default value is `false`.
+**使用AsyncEventListener的准则**
 
-**Guidelines for Using an AsyncEventListener**
+在使用AsyncEventListener之前，请查看以下准则：
 
-Review the following guidelines before using an AsyncEventListener:
+- 如果使用`AsyncEventListener`来实现后写缓存侦听器，则代码应检查由于先前的异常而可能已关闭现有数据库连接的可能性。 例如，在catch块中检查`Connection.isClosed()`并在执行进一步操作之前根据需要重新创建连接。
+- 如果在向侦听器实现传递事件时需要保留线程中区域事件的顺序，请使用序列`AsyncEventQueue`。 当线程内的事件顺序不重要时，以及处理事件时需要最大吞吐量时，请使用并行队列。 在串行和并行两种情况下，给定键的操作顺序都保留在线程的范围内。
+- 您必须在承载要处理其事件的区域的Geode成员上安装`AsyncEventListener`实现。
+- 如果配置并行`AsyncEventQueue`，请在承载该区域的每个Geode成员上部署队列。
+- 如果具有活动`AsyncEventListener`的成员关闭，您可以在多个成员上安装侦听器以提供高可用性并保证事件的传递。 在任何给定时间，只有一个成员具有用于调度事件的主动侦听器。 其他成员的监听器仍处于备用状态以实现冗余。 为了获得最佳性能和最有效的内存使用，请仅安装一个备用侦听器（最多一个冗余）。
+- 出于性能和内存原因，安装不超过一个备用侦听器（最多一个冗余）。
+- 要通过成员关闭保留挂起事件，请将Geode配置为将`AsyncEventListener`的内部队列持久保存到可用磁盘存储中。 默认情况下，如果活动侦听器的成员关闭，则驻留在`AsyncEventListener`的内部队列中的任何挂起事件都将丢失。
+- 要确保事件的高可用性和可靠传递，请将事件队列配置为持久和冗余。
 
-- If you use an `AsyncEventListener` to implement a write-behind cache listener, your code should check for the possibility that an existing database connection may have been closed due to an earlier exception. For example, check for `Connection.isClosed()` in a catch block and re-create the connection as needed before performing further operations.
-- Use a serial `AsyncEventQueue` if you need to preserve the order of region events within a thread when delivering events to your listener implementation. Use parallel queues when the order of events within a thread is not important, and when you require maximum throughput for processing events. In both cases, serial and parallel, the order of operations on a given key is preserved within the scope of the thread.
-- You must install the `AsyncEventListener` implementation on a Geode member that hosts the region whose events you want to process.
-- If you configure a parallel `AsyncEventQueue`, deploy the queue on each Geode member that hosts the region.
-- You can install a listener on more than one member to provide high availability and guarantee delivery for events, in the event that a member with the active `AsyncEventListener` shuts down. At any given time only one member has an active listener for dispatching events. The listeners on other members remain on standby for redundancy. For best performance and most efficient use of memory, install only one standby listener (redundancy of at most one).
-- Install no more than one standby listener (redundancy of at most one) for performance and memory reasons.
-- To preserve pending events through member shutdowns, configure Geode to persist the internal queue of the `AsyncEventListener` to an available disk store. By default, any pending events that reside in the internal queue of an `AsyncEventListener` are lost if the active listener’s member shuts down.
-- To ensure high availability and reliable delivery of events, configure the event queue to be both persistent and redundant.
+**实现AsyncEventListener**
 
-**Implementing an AsyncEventListener**
+要接收要处理的区域事件，可以创建一个实现`AsyncEventListener`接口的类。 侦听器中的`processEvents`方法接收每个批处理中排队的`AsyncEvent`对象的列表。
 
-To receive region events for processing, you create a class that implements the `AsyncEventListener`interface. The `processEvents` method in your listener receives a list of queued `AsyncEvent` objects in each batch.
+每个`AsyncEvent`对象都包含有关区域事件的信息，例如事件发生的区域的名称，区域操作的类型以及受影响的键和值。
 
-Each `AsyncEvent` object contains information about a region event, such as the name of the region where the event occurred, the type of region operation, and the affected key and value.
+实现后写事件处理程序的基本框架包括迭代批处理事件并将每个事件写入数据库。 例如：
 
-The basic framework for implementing a write-behind event handler involves iterating through the batch of events and writing each event to a database. For example:
-
-```
+```java
 class MyAsyncEventListener implements AsyncEventListener {
 
   public boolean processEvents(List<AsyncEvent> events) {
@@ -4158,13 +4156,13 @@ class MyAsyncEventListener implements AsyncEventListener {
 }
 ```
 
-**Processing AsyncEvents**
+**处理AsyncEvents**
 
-Use the [AsyncEventListener.processEvents](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/asyncqueue/AsyncEventListener.html) method to process AsyncEvents. This method is called asynchronously when events are queued to be processed. The size of the list reflects the number of batch events where batch size is defined in the AsyncEventQueueFactory. The `processEvents`method returns a boolean; true if the AsyncEvents are processed correctly, and false if any events fail processing. As long as `processEvents` returns false, Geode continues to re-try processing the events.
+使用[AsyncEventListener.processEvents](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/asyncqueue/AsyncEventListener.html)方法处理AsyncEvents。 当事件排队等待处理时，将异步调用此方法。 列表的大小反映了在AsyncEventQueueFactory中定义批量大小的批处理事件的数量。 `processEvents`method返回一个布尔值; 如果正确处理了AsyncEvents，则为true;如果任何事件处理失败，则为false。 只要`processEvents`返回false，Geode就会继续重新尝试处理事件。
 
-You can use the `getDeserializedValue` method to obtain cache values for entries that have been updated or created. Since the `getDeserializedValue` method will return a null value for destroyed entries, you should use the `getKey` method to obtain references to cache objects that have been destroyed. Here’s an example of processing AsyncEvents:
+您可以使用`getDeserializedValue`方法获取已更新或创建的条目的缓存值。 由于`getDeserializedValue`方法将为已销毁的条目返回null值，因此应使用`getKey`方法获取对已销毁的缓存对象的引用。 这是处理AsyncEvents的示例：
 
-```
+```java
 public boolean processEvents(@SuppressWarnings("rawtypes") List<AsyncEvent> list)   
  {  
      logger.log (Level.INFO, String.format("Size of List<GatewayEvent> = %s", list.size()));  
@@ -4196,15 +4194,15 @@ public boolean processEvents(@SuppressWarnings("rawtypes") List<AsyncEvent> list
      }  
 ```
 
-**Configuring an AsyncEventListener**
+**配置AsyncEventListener**
 
-To configure a write-behind cache listener, you first configure an asynchronous queue to dispatch the region events, and then create the queue with your listener implementation. You then assign the queue to a region in order to process that region’s events.
+要配置后写高速缓存侦听器，首先要配置异步队列以分派区域事件，然后使用侦听器实现创建队列。 然后，您可以将队列分配给某个区域，以便处理该区域的事件。
 
-**Procedure**
+**步骤**
 
-1. Configure a unique `AsyncEventQueue` with the name of your listener implementation. You can optionally configure the queue for parallel operation, persistence, batch size, and maximum memory size. See [WAN Configuration](https://geode.apache.org/docs/guide/17/reference/topics/elements_ref.html#topic_7B1CABCAD056499AA57AF3CFDBF8ABE3) for more information.
+1. 使用侦听器实现的名称配置唯一的`AsyncEventQueue`。 您可以选择为并行操作，持久性，批量大小和最大内存大小配置队列。 有关详细信息，请参阅[WAN配置](https://geode.apache.org/docs/guide/17/reference/topics/elements_ref.html#topic_7B1CABCAD056499AA57AF3CFDBF8ABE3) 。
 
-   **gfsh configuration**
+   **gfsh配置**
 
    ```
    gfsh>create async-event-queue --id=sampleQueue --persistent --disk-store=exampleStore --listener=com.myCompany.MyAsyncEventListener --listener-param=url#jdbc:db2:SAMPLE,username#gfeadmin,password#admin1
@@ -4217,11 +4215,11 @@ To configure a write-behind cache listener, you first configure an asynchronous 
    [--persistent(=value)?] [--disk-store=value] [--max-queue-memory=value] [--listener-param=value(,value)*]
    ```
 
-   For more information, see [create async-event-queue](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#topic_ryz_pb1_dk).
+   有关更多信息，请参阅[create async-event-queue](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#topic_ryz_pb1_dk).
 
-   **cache.xml Configuration**
+   **cache.xml 配置**
 
-   ```
+   ```xml
    <cache>
       <async-event-queue id="sampleQueue" persistent="true"
        disk-store-name="exampleStore" parallel="false">
@@ -4242,9 +4240,9 @@ To configure a write-behind cache listener, you first configure an asynchronous 
    </cache>
    ```
 
-   **Java Configuration**
+   **Java 配置**
 
-   ```
+   ```java
    Cache cache = new CacheFactory().create();
    AsyncEventQueueFactory factory = cache.createAsyncEventQueueFactory();
    factory.setPersistent(true);
@@ -4254,19 +4252,19 @@ To configure a write-behind cache listener, you first configure an asynchronous 
    AsyncEventQueue asyncQueue = factory.create("sampleQueue", listener);
    ```
 
-2. If you are using a parallel `AsyncEventQueue`, the gfsh example above requires no alteration, as gfsh applies to all members. If using cache.xml or the Java API to configure your `AsyncEventQueue`, repeat the above configuration in each Geode member that will host the region. Use the same ID and configuration settings for each queue configuration. **注意:** You can ensure other members use the sample configuration by using the cluster configuration service available in gfsh. See [Overview of the Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
+2. 如果您使用并行的`AsyncEventQueue`，则上面的gfsh示例不需要更改，因为gfsh适用于所有成员。 如果使用cache.xml或Java API来配置`AsyncEventQueue`，请在将托管该区域的每个Geode成员中重复上述配置。 为每个队列配置使用相同的ID和配置设置。 **注意:**您可以使用gfsh中提供的群集配置服务确保其他成员使用示例配置。 请参见[群集配置服务概述](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html).
 
-3. On each Geode member that hosts the `AsyncEventQueue`, assign the queue to each region that you want to use with the `AsyncEventListener` implementation.
+3. 在托管`AsyncEventQueue`的每个Geode成员上，将队列分配给要与`AsyncEventListener`实现一起使用的每个区域。
 
-   **gfsh Configuration**
+   **gfsh 配置**
 
    ```
    gfsh>create region --name=Customer --async-event-queue-id=sampleQueue 
    ```
 
-   Note that you can specify multiple queues on the command line in a comma-delimited list.
+   请注意，您可以在逗号分隔的列表中的命令行上指定多个队列。
 
-   **cache.xml Configuration**
+   **cache.xml 配置**
 
    ```
    <cache>
@@ -4278,7 +4276,7 @@ To configure a write-behind cache listener, you first configure an asynchronous 
    </cache>
    ```
 
-   **Java Configuration**
+   **Java 配置**
 
    ```
    RegionFactory rf1 = cache.createRegionFactory();
@@ -4291,47 +4289,46 @@ To configure a write-behind cache listener, you first configure an asynchronous 
    Region order = rf2.create("Order");
    ```
 
-   Using the Java API, you can also add and remove queues to regions that have already been created:
+   使用Java API，您还可以向已创建的区域添加和删除队列：
 
    ```
    AttributesMutator mutator = order.getAttributesMutator();
    mutator.addAsyncEventQueueId("sampleQueue");        
    ```
 
-   See the [Geode API documentation](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/AttributesMutator.html) for more information.
+   有关详细信息，请参阅[Geode API文档](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/AttributesMutator.html)。
 
-4. Optionally configure persistence and conflation for the queue. **注意:** You must configure your AsyncEventQueue to be persistent if you are using persistent data regions. Using a non-persistent queue with a persistent region is not supported.
+4. （可选）为队列配置持久性和混合。**注意:** 如果使用持久数据区域，则必须将AsyncEventQueue配置为持久性。 不支持使用具有持久区域的非持久队列。
 
-5. Optionally configure multiple dispatcher threads and the ordering policy for the queue using the instructions in [Configuring Dispatcher Threads and Order Policy for Event Distribution](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html).
+5. （可选）使用[配置调度程序线程和事件分发的顺序策略](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html)中的说明配置多个调度程序线程和队列的排序策略。
 
-The `AsyncEventListener` receives events from every region configured with the associated `AsyncEventQueue`.
+`AsyncEventListener`从配置有关联的`AsyncEventQueue`的每个区域接收事件。
 
 
+#### 如何从事件处理程序回调安全地修改缓存
 
-#### How to Safely Modify the Cache from an Event Handler Callback
+事件处理程序是同步的。 如果需要更改缓存或从事件处理程序回调执行任何其他分布式操作，请小心避免可能阻止并影响整体系统性能的活动。
 
-Event handlers are synchronous. If you need to change the cache or perform any other distributed operation from event handler callbacks, be careful to avoid activities that might block and affect your overall system performance.
+**在事件处理程序中避免的操作**
 
-**Operations to Avoid in Event Handlers**
+不要直接从事件处理程序执行任何类型的分布式操作。 Geode是一个高度分布式的系统，许多操作似乎在本地调用分布式操作。
 
-Do not perform distributed operations of any kind directly from your event handler. Geode is a highly distributed system and many operations that may seem local invoke distributed operations.
+这些是常见的分布式操作，可能会让您陷入麻烦：
 
-These are common distributed operations that can get you into trouble:
+- 在事件的区域或任何其他区域调用`Region`方法。
+- 使用Geode`DetributedLockService`。
+- 修改区域属性。
+- 通过Geode`FunctionService`执行一个函数。
 
-- Calling `Region` methods, on the event’s region or any other region.
-- Using the Geode `DistributedLockService`.
-- Modifying region attributes.
-- Executing a function through the Geode `FunctionService`.
+为了安全起见，请不要直接从事件处理程序中调用Geode API。 从单独的线程或执行程序中进行所有Geode API调用。
 
-To be on the safe side, do not make any calls to the Geode API directly from your event handler. Make all Geode API calls from within a separate thread or executor.
+**如何基于事件执行分布式操作**
 
-**How to Perform Distributed Operations Based on Events**
+如果您需要使用处理程序中的Geode API，请使您的工作与事件处理程序异步。 您可以生成一个单独的线程或使用像`java.util.concurrent.Executor`接口这样的解决方案。
 
-If you need to use the Geode API from your handlers, make your work asynchronous to the event handler. You can spawn a separate thread or use a solution like the `java.util.concurrent.Executor`interface.
+此示例显示了一个串行执行程序，其中回调创建一个`Runnable`，可以从队列中拉出并由另一个对象运行。 这保留了事件的顺序。
 
-This example shows a serial executor where the callback creates a `Runnable` that can be pulled off a queue and run by another object. This preserves the ordering of events.
-
-```
+```java
 public void afterCreate(EntryEvent event) {
   final Region otherRegion = cache.getRegion("/otherRegion");
   final Object key = event.getKey();
@@ -4353,15 +4350,14 @@ public void afterCreate(EntryEvent event) {
   }
 ```
 
-For additional information on the `Executor`, see the `SerialExecutor` example on the Oracle Java web site.
+有关`Executor`的其他信息，请参阅Oracle Java Web站点上的`SerialExecutor`示例。
 
 
+#### 缓存事件处理程序示例
 
-#### Cache Event Handler Examples
+缓存事件处理程序的一些示例。
 
-Some examples of cache event handlers.
-
-**Declaring and Loading an Event Handler with Parameters**
+**使用参数声明和加载事件处理程序**
 
 This declares an event handler for a region in the `cache.xml`. The handler is a cache listener designed to communicate changes to a DB2 database. The declaration includes the listener’s parameters, which are the database path, username, and password.
 
