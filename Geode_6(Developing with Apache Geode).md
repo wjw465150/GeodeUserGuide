@@ -4359,9 +4359,9 @@ public void afterCreate(EntryEvent event) {
 
 **使用参数声明和加载事件处理程序**
 
-This declares an event handler for a region in the `cache.xml`. The handler is a cache listener designed to communicate changes to a DB2 database. The declaration includes the listener’s parameters, which are the database path, username, and password.
+这为`cache.xml`中的区域声明了一个事件处理程序。 处理程序是一个缓存侦听器，旨在将更改传递给DB2数据库。 声明包括侦听器的参数，即数据库路径，用户名和密码。
 
-```
+```xml
 <region name="exampleRegion"> 
   <region-attributes> 
   . . . 
@@ -4381,9 +4381,9 @@ This declares an event handler for a region in the `cache.xml`. The handler is a
   </region>
 ```
 
-This code listing shows part of the implementation of the `JDBCListener` declared in the `cache.xml`. This listener implements the `Declarable` interface. When an entry is created in the cache, this listener’s `afterCreate` callback method is triggered to update the database. Here the listener’s properties, provided in the `cache.xml`, are passed into the `Declarable.init` method and used to create a database connection.
+此代码清单显示了`cache.xml`中声明的`JDBCListener`的部分实现。 这个监听器实现了`Declarable`接口。 在缓存中创建条目时，将触发此侦听器的`afterCreate`回调方法以更新数据库。 这里，`cache.xml`中提供的监听器属性被传递到`Declarable.init`方法并用于创建数据库连接。
 
-```
+```java
 . . .
 public class JDBCListener
 extends CacheListenerAdapter
@@ -4406,9 +4406,9 @@ implements Declarable {
 }
 ```
 
-**Installing an Event Handler Through the API**
+**通过API安装事件处理程序**
 
-This listing defines a cache listener using the `RegionFactory` method `addCacheListener`.
+此清单使用`RegionFactory`方法`addCacheListener`定义缓存侦听器。
 
 ```
 Region newReg = cache.createRegionFactory()
@@ -4459,7 +4459,7 @@ Region nr = cache.createRegionFactory()
   .create(name);
 ```
 
-**Installing a Write-Behind Cache Listener**
+**安装Write-Behind 缓存 监听器**
 
 ```
 //AsyncEventQueue with listener that performs WBCL work
@@ -4490,17 +4490,17 @@ Region nr = cache.createRegionFactory()
 
 
 
-### Configuring Peer-to-Peer Event Messaging
+### 配置点对点事件消息
 
-You can receive events from cluster peers for any region that is not a local region. Local regions receive only local cache events.
+您可以从集群对等方接收任何非本地区域的事件。 本地区域仅接收本地缓存事件。
 
-Peer distribution is done according to the region’s configuration.
+对等分发根据区域的配置完成。
 
-- Replicated regions always receive all events from peers and require no further configuration. Replicated regions are configured using the `REPLICATE` region shortcut settings.
+- 复制区域始终从对等方接收所有事件，无需进一步配置。 使用`REPLICATE`区域快捷方式设置配置复制区域。
 
-- For non-replicated regions, decide whether you want to receive all entry events from the distributed cache or only events for the data you have stored locally. To configure:
+- 对于非复制区域，请确定是要从分布式缓存接收所有条目事件，还是仅接收本地存储的数据的事件。 要配置：
 
-  - To receive all events, set the `subscription-attributes` `interest-policy` to `all`:
+  - 要接收所有事件，请将`subscription-attributes` `intece-policy`设置为`all`：
 
     ```
     <region-attributes> 
@@ -4508,7 +4508,7 @@ Peer distribution is done according to the region’s configuration.
     </region-attributes>
     ```
 
-  - To receive events just for the data you have stored locally, set the `subscription-attributes` `interest-policy` to `cache-content` or do not set it (`cache-content` is the default):
+  - 要仅为本地存储的数据接收事件，请将`subscription-attributes` `interest-policy`设置为`cache-content`或不设置它（`cache-content`是默认值）：
 
     ```
     <region-attributes> 
@@ -4516,35 +4516,35 @@ Peer distribution is done according to the region’s configuration.
     </region-attributes>
     ```
 
-  For partitioned regions, this only affects the receipt of events, as the data is stored according to the region partitioning. Partitioned regions with interest policy of `all` can create network bottlenecks, so if you can, run listeners in every member that hosts the partitioned region data and use the `cache-content` interest policy.
+  对于分区区域，这仅影响事件的接收，因为数据是根据区域分区存储的。 具有`all`的兴趣策略的分区区域可以创建网络瓶颈，因此如果可以，则在托管分区区域数据的每个成员中运行侦听器并使用`cache-content`兴趣策略。
 
-**注意:** You can also configure Regions using the gfsh command-line interface. See [Region Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD).
+**注意:** 您还可以使用gfsh命令行界面配置区域。 参见[区域命令](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_EF03119A40EE492984F3B6248596E1DD).
 
 
 
-### Configuring Client/Server Event Messaging
+### 配置客户端/服务器事件消息
 
-You can receive events from your servers for server-side cache events and query result changes.
+您可以从服务器接收服务器端缓存事件和查询结果更改的事件。
 
-For cache updates, you can configure to receive entry keys and values or just entry keys, with the data retrieved lazily when requested. The queries are run continuously against server cache events, with the server sending the deltas for your query result sets.
+对于缓存更新，您可以配置为接收条目键和值，或只是输入键，并在请求时懒惰地检索数据。 查询针对服务器缓存事件持续运行，服务器发送查询结果集的增量。
 
-Before you begin, set up your client/server installation and configure and program your basic event messaging.
+在开始之前，请设置客户端/服务器安装并配置和编写基本事件消息。
 
-Servers receive updates for all entry events in their client’s client regions.
+服务器接收客户端客户区域中所有条目事件的更新。
 
-To receive entry events in the client from the server:
+要从服务器接收客户端中的条目事件：
 
-1. Set the client pool `subscription-enabled` to true. See [](https://geode.apache.org/docs/guide/17/reference/topics/client-cache.html#cc-pool).
+1. 将客户端池`subscription-enabled`设置为true。 参见 [](https://geode.apache.org/docs/guide/17/reference/topics/client-cache.html#cc-pool).
 
-2. Program the client to register interest in the entries you need.
+2. 对客户进行编程以注册您所需条目的兴趣。
 
-   **注意:** This must be done through the API.
+   **注意:** 这必须通过API完成。
 
-   Register interest in all keys, a key list, individual keys, or by comparing key strings to regular expressions. By default, no entries are registered to receive updates. Specify whether the server is to send values with entry update events. Interest registration is only available through the API.
+   注册对所有键，键列表，单个键或通过将键字符串与正则表达式进行比较的兴趣。 默认情况下，未注册任何条目来接收更新。 指定服务器是否要发送带有条目更新事件的值。 兴趣注册仅通过API提供。
 
-   1. Get an instance of the region where you want to register interest.
+   1. 获取您要注册兴趣的区域的实例。
 
-   2. Use the region’s `registerInterest`* methods to specify the entries you want. Examples:
+   2. 使用区域的`registerInterest`*方法指定所需的条目。 例子：
 
       ```
       // Register interest in a single key and download its entry 
@@ -4571,25 +4571,25 @@ To receive entry events in the client from the server:
       region1.registerInterestRegex("[a-zA-Z]+_[0-9]+"); 
       ```
 
-      You can call the register interest methods multiple times for a single region. Each interest registration adds to the server’s list of registered interest criteria for the client. So if a client registers interest in key ‘A’, then registers interest in regular expression “B*”, the server will send updates for all entries with key ‘A’ or key beginning with the letter ‘B’.
+      您可以为单个区域多次调用注册兴趣方法。 每个兴趣注册都会添加到服务器的客户注册兴趣标准列表中。 因此，如果客户注册对键'A'的兴趣，然后注册对正则表达式“B*”的兴趣，服务器将发送所有带有键'A'或以字母'B'开头的键的更新。
 
-   3. For highly available event messaging, configure server redundancy. See [Configuring Highly Available Servers](https://geode.apache.org/docs/guide/17/developing/events/configuring_highly_available_servers.html).
+   3. 对于高可用性事件消息，请配置服务器冗余。 请参阅[配置高可用性服务器](https://geode.apache.org/docs/guide/17/developing/events/configuring_highly_available_servers.html).
 
-   4. To have events enqueued for your clients during client downtime, configure durable client/server messaging.
+   4. 要在客户端停机期间为客户端排队事件，请配置持久的客户端/服务器消息传递。
 
-   5. Write any continuous queries (CQs) that you want to run to receive continuously streaming updates to client queries. CQ events do not update the client cache. If you have dependencies between CQs and/or interest registrations, so that you want the two types of subscription events to arrive as closely together on the client, use a single server pool for everything. Using different pools can lead to time differences in the delivery of events because the pools might use different servers to process and deliver the event messages.
+   5. 编写要运行的任何连续查询（CQs），以持续接收客户端查询的流式更新。 CQ事件不更新客户端缓存。 如果您在CQ和/或兴趣注册之间存在依赖关系，那么您希望两种类型的订阅事件在客户端上紧密地一起到达，请为所有内容使用单个服务器池。 使用不同的池可能会导致事件传递的时间差异，因为池可能使用不同的服务器来处理和传递事件消息。
 
-- **Configuring Highly Available Servers**
-- **Implementing Durable Client/Server Messaging**
-- **Tuning Client/Server Event Messaging**
+- **配置高可用服务器**
+- **实施持久的客户端/服务器消息传递**
+- **调整客户端/服务器事件消息**
 
 
 
-#### Configuring Highly Available Servers
+#### 配置高可用性服务器
 
-With highly-available servers, one of the backups steps in and takes over messaging with no interruption in service if the client’s primary server crashes.
+使用高可用性服务器，如果客户端的主服务器崩溃，其中一个备份将介入并接管消息，而不会中断服务。
 
-To configure high availability, set the `subscription-redundancy` in the client’s pool configuration. This setting indicates the number of secondary servers to use. For example:
+要配置高可用性，请在客户端池配置中设置`subscription-redundancy`。 此设置指示要使用的辅助服务器的数量。 例如：
 
 ```
 <!-- Run one secondary server -->
@@ -4604,42 +4604,42 @@ To configure high availability, set the `subscription-redundancy` in the client�
 </pool> 
 ```
 
-When redundancy is enabled, secondary servers maintain queue backups while the primary server pushes events to the client. If the primary server fails, one of the secondary servers steps in as primary to provide uninterrupted event messaging to the client.
+启用冗余后，辅助服务器会在主服务器将事件推送到客户端时维护队列备份。 如果主服务器发生故障，其中一个辅助服务器将作为主服务器进入，以向客户端提供不间断的事件消息传递。
 
-The following table describes the different values for the subscription-redundancy setting:
+下表描述了subscription-redundancy设置的不同值：
 
-| subscription-redundancy | Description                                                  |
+| subscription-redundancy | 描述                                                  |
 | ----------------------- | ------------------------------------------------------------ |
-| 0                       | No secondary servers are configured, so high availability is disabled. |
-| > 0                     | Sets the precise number of secondary servers to use for backup to the primary. |
-| -1                      | Every server that is not the primary is to be used as a secondary. |
+| 0                       | 未配置辅助服务器，因此禁用高可用性。 |
+| > 0                     | 设置用于备份到主服务器的辅助服务器的精确数量。 |
+| -1                      | 每个不是主服务器的服务器都将用作辅助服务器。 |
 
-- **Highly Available Client/Server Event Messaging**
+- **高度可用的客户端/服务器事件消息**
 
 
 
-##### Highly Available Client/Server Event Messaging
+##### 高度可用的客户端/服务器事件消息
 
-With server redundancy, each pool has a primary server and some number of secondaries. The primaries and secondaries are assigned on a per-pool basis and are generally spread out for load balancing, so a single client with multiple pools may have primary queues in more than one server.
+使用服务器冗余，每个池都有一个主服务器和一些辅助服务器。 初选和辅助是基于每个池分配的，并且通常分散用于负载平衡，因此具有多个池的单个客户端可以在多个服务器中具有主队列。
 
-The primary server pushes events to clients and the secondaries maintain queue backups. If the primary server fails, one of the secondaries becomes primary to provide uninterrupted event messaging.
+主服务器将事件推送到客户端，辅助服务器维护队列备份。 如果主服务器发生故障，其中一个辅助服务器将成为主服务器以提供不间断的事件消息传递。
 
-For example, if there are six servers running and `subscription-redundancy` is set to two, one server is the primary, two servers are secondary, and the remaining three do not actively participate in HA for the client. If the primary server fails, the system assigns one of the secondaries as the new primary and attempts to add another server to the secondary pool to retain the initial redundancy level. If no new secondary server is found, then the redundancy level is not satisfied but the failover procedure completes successfully. As soon as another secondary is available, it is added.
+例如，如果有六台服务器正在运行且`subscription-redundancy`设置为2，则一台服务器是主服务器，两台服务器是辅助服务器，其余三台服务器不主动参与客户端的HA。 如果主服务器出现故障，系统会将其中一个辅助服务器指定为新主服务器，并尝试将另一个服务器添加到辅助池以保留初始冗余级别。 如果未找到新的辅助服务器，则不满足冗余级别，但故障转移过程成功完成。 只要有另一个辅助辅助设备，就会添加辅助辅助设备。
 
-When high availability is enabled:
+启用高可用性时：
 
-- The primary server sends event messages to the clients.
-- Periodically, the clients send received messages to the server and the server removes the sent messages from its queues.
-- Periodically, the primary server synchronizes with its secondaries, notifying them of messages that can be discarded because they have already been sent and received. There is a lag in notification, so the secondary servers remain only roughly synchronized with the primary. Secondary queues contain all messages that are contained in the primary queue plus possibly a few messages that have already been sent to clients.
-- In the case of primary server failure, one of the secondaries becomes the primary and begins sending event messages from its queues to the clients. Immediately after failover, the new primary usually resends some messages that were already sent by the old primary. The client recognizes these as duplicates and discards them.
+- 主服务器将事件消息发送到客户端。
+- 客户端定期将收到的消息发送到服务器，服务器从队列中删除发送的消息。
+- 主服务器定期与其辅助服务器同步，通知它们可以丢弃的消息，因为它们已经被发送和接收。 通知存在延迟，因此辅助服务器仅与主服务器保持大致同步。 辅助队列包含主队列中包含的所有消息以及可能已发送到客户端的一些消息。
+- 在主服务器发生故障的情况下，其中一个辅助服务器成为主服务器，并开始从其队列向客户端发送事件消息。 故障转移后，新主服务器通常会重新发送旧主服务器已发送的一些消息。 客户端将这些视为重复项并将其丢弃。
 
-In stage 1 of this figure, the primary sends an event message to the client and a synchronization message to its secondary. By stage 2, the secondary and client have updated their queue and message tracking information. If the primary failed at stage two, the secondary would start sending event messages from its queue beginning with message A10. The client would discard the resend of message A10 and then process subsequent messages as usual. ![High Availability Messaging: Server to Client and Primary Server to Secondary Server](assets/ClientServerAdvancedTopics-5.gif)
+在该图的阶段1中，主设备向客户端发送事件消息，并向其辅助设备发送同步消息。 在阶段2，辅助和客户端已更新其队列和消息跟踪信息。 如果主服务器在第二阶段失败，则辅助服务器将从消息A10开始从其队列开始发送事件消息。 客户端将丢弃重新发送消息A10，然后照常处理后续消息。 ![高可用性消息：服务器到客户端和主服务器到辅助服务器](assets/ClientServerAdvancedTopics-5.gif)
 
-**Change Server Queue Synchronization Frequency**
+**更改服务器队列同步频率**
 
-By default, the primary server sends queue synchronization messages to the secondaries every second. You can change this interval with the `gfsh alter runtime` command
+默认情况下，主服务器每秒向辅助节点发送队列同步消息。 您可以使用`gfsh alter runtime`命令更改此间隔
 
-Set the interval for queue synchronization messages as follows:
+设置队列同步消息的时间间隔如下：
 
 - gfsh:
 
@@ -4661,18 +4661,18 @@ Set the interval for queue synchronization messages as follows:
   cache.setMessageSyncInterval(2);  
   ```
 
-The ideal setting for this interval depends in large part on your application behavior. These are the benefits of shorter and longer interval settings:
+此间隔的理想设置在很大程度上取决于您的应用程序行为。 这些是更短和更长间隔设置的好处：
 
-- A shorter interval requires less memory in the secondary servers because it reduces queue buildup between synchronizations. In addition, fewer old messages in the secondary queues means reduced message re-sends after a failover. These considerations are most important for systems with high data update rates.
-- A longer interval requires fewer distribution messages between the primary and secondary, which benefits overall system performance.
+- 较短的间隔在辅助服务器中需要较少的内存，因为它减少了同步之间的队列建立。 此外，辅助队列中较少的旧消息意味着在故障转移后减少重新发送的消息。 对于具有高数据更新速率的系统，这些考虑因素最为重要。
+- 较长的间隔需要较少的主要和次要之间的分发消息，这有利于整体系统性能。
 
-Set Frequency of Orphan Removal from the Secondary Queues
+设置从辅助队列中删除孤立的频率
 
-Usually, all event messages are removed from secondary subscription queues based on the primary’s synchronization messages. Occasionally, however, some messages are orphaned in the secondary queues. For example, if a primary fails in the middle of sending a synchronization message to its secondaries, some secondaries might receive the message and some might not. If the failover goes to a secondary that did receive the message, the system will have secondary queues holding messages that are no longer in the primary queue. The new primary will never synchronize on these messages, leaving them orphaned in the secondary queues.
+通常，根据主要的同步消息从辅助订阅队列中删除所有事件消息。 但是，有时候，某些消息在辅助队列中是孤立的。 例如，如果主节点在向其辅助节点发送同步消息的过程中失败，则某些辅助节点可能会收到该消息，而某些辅助节点可能不会。 如果故障转移到达确实收到消息的辅助服务器，则系统将具有包含不再位于主队列中的消息的辅助队列。 新主服务器永远不会在这些消息上同步，将它们孤立在辅助队列中。
 
-To make sure these messages are eventually removed, the secondaries expire all messages that have been enqueued longer than the time indicated by the servers’ `message-time-to-live`.
+为了确保最终删除这些消息，辅助节点使所有已排队的消息超过服务器的`message-time-live`所指示的时间。
 
-Set the time-to-live as follows:
+设置生存时间如下：
 
 - XML:
 
@@ -4693,23 +4693,23 @@ Set the time-to-live as follows:
 
 
 
-#### Implementing Durable Client/Server Messaging
+#### 实施持久的客户端/服务器消息传递
 
-Use durable messaging for subscriptions that you need maintained for your clients even when your clients are down or disconnected. You can configure any of your event subscriptions as durable. Events for durable queries and subscriptions are saved in queue when the client is disconnected and played back when the client reconnects. Other queries and subscriptions are removed from the queue.
+即使客户端关闭或断开连接，也需要为客户端维护的订阅使用持久消息传递。 您可以将任何事件订阅配置为持久。 当客户端断开连接时，持久查询和订阅的事件将保存在队列中，并在客户端重新连接时播放。 其他查询和订阅将从队列中删除。
 
-Use durable messaging for client/server installations that use event subscriptions.
+对使用事件订阅的客户端/服务器安装使用持久消息传递。
 
-These are the high-level tasks described in this topic:
+这些是本主题中描述的高级任务：
 
-1. Configure your client as durable
-2. Decide which subscriptions should be durable and configure accordingly
-3. Program your client to manage durable messaging for disconnect, reconnect, and event handling
+1. 将您的客户端配置为持久
+2. 确定哪些订阅应该是持久的并相应地进行配置
+3. 对客户端进行编程，以管理断开连接，重新连接和事件处理的持久消息传递
 
-**Configure the Client as Durable**
+**将客户端配置为持久**
 
-Use one of the following methods:
+使用以下方法之一：
 
-- `gemfire.properties` file:
+- `gemfire.properties` 文件:
 
   ```
   durable-client-id=31 
@@ -4727,13 +4727,13 @@ Use one of the following methods:
 
 
 
-The `durable-client-id` indicates that the client is durable and gives the server an identifier to correlate the client to its durable messages. For a non-durable client, this id is an empty string. The ID can be any number that is unique among the clients attached to servers in the same cluster.
+`durable-client-id`表示客户端是持久的，并为服务器提供一个标识符，用于将客户端与其持久消息相关联。 对于非持久客户端，此id是空字符串。 ID可以是连接到同一群集中的服务器的客户端中唯一的任何数字。
 
-The `durable-client-timeout` tells the server how long to wait for client reconnect. When this timeout is reached, the server stops storing to the client’s message queue and discards any stored messages. The default is 300 seconds. This is a tuning parameter. If you change it, take into account the normal activity of your application, the average size of your messages, and the level of risk you can handle, both in lost messages and in the servers’ capacity to store enqueued messages. Assuming that no messages are being removed from the queue, how long can the server run before the queue reaches the maximum capacity? How many durable clients can the server handle? To assist with tuning, use the Geode message queue statistics for durable clients through the disconnect and reconnect cycles.
+`durable-client-timeout`告诉服务器等待客户端重新连接多长时间。 达到此超时后，服务器将停止存储到客户端的消息队列并丢弃所有存储的消息。 默认值为300秒。 这是一个调整参数。 如果更改它，请考虑应用程序的正常活动，消息的平均大小以及可以处理的风险级别，包括丢失的消息和服务器存储排队消息的容量。 假设没有消息从队列中删除，服务器在队列达到最大容量之前可以运行多长时间？ 服务器可以处理多少持久客户端？ 为了协助调整，请通过断开连接和重新连接周期为持久客户端使用Geode消息队列统计信息。
 
-**Configure Durable Subscriptions and Continuous Queries**
+**配置持久订阅和连续查询**
 
-The register interest and query creation methods all have an optional boolean parameter for indicating durability. By default all are non-durable.
+注册器兴趣和查询创建方法都有一个可选的布尔参数，用于指示持久性。 默认情况下，所有都是非持久的。
 
 ```
 // Durable registration
@@ -4745,27 +4745,27 @@ exampleRegion.registerInterest(keySpecification, interestResultPolicySpecificati
 CqQuery myCq = queryService.newCq(cqName, queryString, cqAttributes, true);
 ```
 
-Save only critical messages while the client is disconnected by only indicating durability for critical subscriptions and CQs. When the client is connected to its servers, it receives messages for all keys and queries reqistered. When the client is disconnected, non-durable interest registrations and CQs are discontinued but all messages already in the queue for them remain there.
+通过仅指示关键订阅和CQ的持久性，在客户端断开连接时仅保存关键消息。 当客户端连接到其服务器时，它会接收所有键和已重新注册的查询的消息。 当客户端断开连接时，非持久兴趣注册和CQ将停止，但队列中已存在的所有消息仍然存在。
 
-**注意:** For a single durable client ID, you must maintain the same durability of your registrations and queries between client runs.
+**注意:** 对于单个持久客户端ID，您必须在客户端运行之间保持相同的注册和查询持久性。
 
-**Program the Client to Manage Durable Messaging**
+**对客户端进行编程以管理持久消息传递**
 
-Program your durable client to be durable-messaging aware when it disconnects, reconnects, and handles events from the server.
+将持久客户端编程为在断开连接，重新连接和处理来自服务器的事件时具有持久消息感知能力。
 
-1. Disconnect with a request to keep your queues active by using `Pool.close` or `ClientCache.close` with the boolean `keepalive` parameter.
+1. 通过使用带有布尔值`keepalive`参数的`Pool.close`或`ClientCache.close`来断开与队列保持活动的请求。
 
    ```
    clientCache.close(true);
    ```
 
-   To be retained during client down time, durable continuous queries (CQs) must be executing at the time of disconnect.
+   要在客户端停机期间保留，必须在断开连接时执行持久连续查询（CQ）。
 
-2. Program your durable client’s reconnection to:
+2. 将持久客户端的重新连接编程为：
 
-   1. If desired, detect whether the previously registered subscription queue is available upon durable client reconnection and the count of pending events in the queue. Based on the results, you can then decide whether to receive the remaining events or close the cache if the number is too large.
+   1. 如果需要，检测先前注册的订阅队列是否在持久客户端重新连接时可用以及队列中的挂起事件计数。 根据结果，您可以决定是否接收剩余事件，或者如果数字太大则关闭缓存。
 
-      For example, for a client with only the default pool created:
+      例如，对于仅创建了默认池的客户端：
 
       ```
       int pendingEvents = cache.getDefaultPool().getPendingEventCount();
@@ -4780,7 +4780,7 @@ Program your durable client to be durable-messaging aware when it disconnects, r
       }
       ```
 
-      For a client with multiple pools:
+      对于具有多个池的客户端：
 
       ```
       int pendingEvents = 0;
@@ -4796,21 +4796,21 @@ Program your durable client to be durable-messaging aware when it disconnects, r
       // process individual pool counts separately.
       ```
 
-      The `getPendingEventCount` API can return the following possible values:
+      `getPendingEventCount` API可以返回以下可能的值：
 
-      - A value representing a count of events pending at the server. Note that this count is an approximate value based on the time the durable client pool connected or reconnected to the server. Any number of invocations will return the same value.
-      - A zero value if there are no events pending at server for this client pool
-      - A negative value indicates that no queue is available at the server for the client pool.
-        - -1 indicates that the client pool has reconnected to the server after its durable-client-timeout period has elapsed. The pool’s subscription queue has been removed possibly causing data loss.
-        - A value of -2 indicates that this client pool has connected to server for the first time.
+      - 表示服务器上待处理事件计数的值。 请注意，此计数是基于持久客户端池连接或重新连接到服务器的时间的近似值。 任意数量的调用都将返回相同的值。
+      - 如果此服务器池的服务器上没有待处理事件，则为零值
+      - 负值表示服务器上没有可用于客户端池的队列。
+        - `-1`表示客户端池在持久性客户端超时期限过后已重新连接到服务器。 池的订阅队列已被删除，可能导致数据丢失。
+        - 值`-2`表示此客户端池第一次连接到服务器。
 
-   2. Connect, initialize the client cache, regions, and any cache listeners, and create and execute any durable continuous queries.
+   2. 连接，初始化客户端缓存，区域和任何缓存侦听器，并创建和执行任何持久的连续查询。
 
-   3. Run all interest registration calls.
+   3. 运行所有兴趣注册调用。
 
-      **注意:** Registering interest with `InterestResultPolicy.KEYS_VALUES` initializes the client cache with the *current* values of specified keys. If concurrency checking is enabled for the region, any earlier (older) region events that are replayed to the client are ignored and are not sent to configured listeners. If your client must process all replayed events for a region, register with `InterestResultPolicy.KEYS` or `InterestResultPolicy.NONE` when reconnecting. Or, disable concurrency checking for the region in the client cache. See [Consistency for Region Updates](https://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045).
+      **注意:** 使用`InterestResultPolicy.KEYS_VALUES`注册兴趣会使用指定键的*current*值初始化客户端缓存。 如果为区域启用了并发检查，则会忽略重播到客户端的任何早期（较旧）区域事件，并且不会将其发送到已配置的侦听器。 如果您的客户端必须处理区域的所有重播事件，请在重新连接时注册`InterestResultPolicy.KEYS`或`InterestResultPolicy.NONE`。 或者，禁用客户端缓存中区域的并发检查。 请参阅[区域更新的一致性](https://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045).
 
-   4. Call `ClientCache.readyForEvents` so the server will replay stored events. If the ready message is sent earlier, the client may lose events.
+   4. 调用`ClientCache.readyForEvents`，以便服务器重放存储的事件。 如果先前发送就绪消息，则客户端可能会丢失事件。
 
    ```
    ClientCache clientCache = ClientCacheFactory.create(); 
@@ -4819,83 +4819,83 @@ Program your durable client to be durable-messaging aware when it disconnects, r
    clientCache.readyForEvents(); 
    ```
 
-3. When you program your durable client `CacheListener`:
+3. 编写持久客户端`CacheListener`时：
 
-   1. Implement the callback methods to behave properly when stored events are replayed. The durable client’s `CacheListener` must be able to handle having events played after the fact. Generally listeners receive events very close to when they happen, but the durable client may receive events that occurred minutes before and are not relevant to current cache state.
-   2. Consider whether to use the `CacheListener` callback method, `afterRegionLive`, which is provided specifically for the end of durable event replay. You can use it to perform application-specific operations before resuming normal event handling. If you do not wish to use this callback, and your listener is an instance of `CacheListener` (instead of a `CacheListenerAdapter`) implement `afterRegionLive` as an empty method.
+   1. 实现回调方法，以便在重放存储的事件时正常运行。 持久客户端的`CacheListener`必须能够处理事后播放的事件。 通常，侦听器在事件发生时接收非常接近的事件，但持久客户端可能会接收事件发生在几分钟之前并且与当前缓存状态无关的事件。
+   2. 考虑是否使用`CacheListener`回调方法`afterRegionLive`，它专门用于持久事件重放的结束。 您可以在恢复正常事件处理之前使用它来执行特定于应用程序的操作。 如果您不希望使用此回调，并且您的侦听器是`CacheListener`（而不是`CacheListenerAdapter`）的实例，则将`afterRegionLive`实现为空方法。
 
-**Initial Operation**
+**初步操作**
 
-The initial startup of a durable client is similar to the startup of any other client, except that it specifically calls the `ClientCache.readyForEvents` method when all regions and listeners on the client are ready to process messages from the server.
+持久客户端的初始启动类似于任何其他客户端的启动，除了当客户端上的所有区域和侦听器都准备好处理来自服务器的消息时，它专门调用`ClientCache.readyForEvents`方法。
 
-**Disconnection**
+**断开**
 
-While the client and servers are disconnected, their operation varies depending on the circumstances.
+客户端和服务器断开连接时，其操作会根据具体情况而有所不同。
 
-- **Normal disconnect**. When a client closes its connection, the servers stop sending messages to the client and release its connection. If the client requests it, the servers maintain the queues and durable interest list information until the client reconnects or times out. The non-durable interest lists are discarded. The servers continue to queue up incoming messages for entries on the durable interest list. All messages that were in the queue when the client disconnected remain in the queue. If the client requests not to have its subscriptions maintained, or if there are no durable subscriptions, the servers unregister the client and do the same cleanup as for a non-durable client.
-- **Abnormal disconnect**. If the client crashes or loses its connections to all servers, the servers automatically maintain its message queue and durable subscriptions until it reconnects or times out.
-- **Client disconnected but operational**. If the client operates while it is disconnected, it gets what data it can from the local client cache. Since updates are not allowed, the data can become stale. An `UnconnectedException` occurs if an update is attempted.
-- **Client stays disconnected past timeout period**. The servers track how long to keep a durable subscription queue alive based on the `durable-client-timeout` setting. If the client remains disconnected longer than the timeout, the servers unregister the client and do the same cleanup that is performed for a non-durable client. The servers also log an alert. When a timed-out client reconnects, the servers treat it as a new client making its initial connection.
+- **正常断开**. 当客户端关闭其连接时，服务器停止向客户端发送消息并释放其连接。 如果客户端请求它，则服务器会维护队列和持久兴趣列表信息，直到客户端重新连接或超时。 非持久兴趣列表将被丢弃。 服务器继续为持久兴趣列表上的条目排队传入消息。 客户端断开连接时队列中的所有消息都保留在队列中。 如果客户端请求不维护其订阅，或者没有持久订阅，则服务器取消注册客户端并执行与非持久客户端相同的清理。
+- **异常断开**. 如果客户端崩溃或丢失与所有服务器的连接，则服务器会自动维护其消息队列和持久订阅，直到它重新连接或超时。
+- **客户断开但运营正常**. 如果客户端在断开连接时运行，它将从本地客户端缓存中获取数据。 由于不允许更新，因此数据可能会过时。 如果尝试更新，则会发生`UnconnectedException`。
+- **客户端在超时期限内保持断开状**. 服务器根据`durable-client-timeout`设置跟踪保持持久订阅队列活动的时间。 如果客户端保持断开连接的时间超过超时，则服务器将注销客户端并执行为非持久客户端执行的相同清理。 服务器还会记录警报。 当超时客户端重新连接时，服务器将其视为新客户端进行初始连接。
 
-**Reconnection**
+**重新连接**
 
-During initialization, the client cache is not blocked from doing operations, so you might be receiving old stored events from the server at the same time that your client cache is being updated by much more current events. These are the things that can act on the cache concurrently:
+在初始化期间，不会阻止客户端缓存执行操作，因此您可能会在更多当前事件更新客户端缓存的同时从服务器接收旧的存储事件。 这些是可以同时作用于缓存的事情：
 
-- Results returned by the server in response to the client’s interest registrations.
-- Client cache operations by the application.
-- Callbacks triggered by replaying old events from the queue
+- 服务器返回的结果以响应客户的兴趣注册。
+- 应用程序的客户端缓存操作。
+- 通过从队列重放旧事件触发的回调
 
-Geode handles the conflicts between the application and interest registrations so they do not create cache update conflicts. But you must program your event handlers so they don’t conflict with current operations. This is true for all event handlers, but it is especially important for those used in durable clients. Your handlers may receive events well after the fact and you must ensure your programming takes that into account.
+Geode处理应用程序和兴趣注册之间的冲突，因此它们不会创建缓存更新冲突。 但是您必须对事件处理程序进行编程，以使它们不与当前操作冲突。 这适用于所有事件处理程序，但对于持久客户端中使用的那些事件尤为重要。 您的处理程序可能会在事后很好地接收事件，您必须确保您的编程考虑到这一点。
 
-This figure shows the three concurrent procedures during the initialization process. The application begins operations immediately on the client (step 1), while the client’s cache ready message (also step 1) triggers a series of queue operations on the servers (starting with step 2 on the primary server). At the same time, the client registers interest (step 2 on the client) and receives a response from the server. Message B2 applies to an entry in Region A, so the cache listener handles B2’s event. Because B2 comes before the marker, the client does not apply the update to the cache.
+该图显示了初始化过程中的三个并发过程。 应用程序立即在客户端上开始操作（步骤1），而客户端的缓存就绪消息（也是步骤1）在服务器上触发一系列队列操作（从主服务器上的步骤2开始）。 同时，客户端注册兴趣（客户端上的步骤2）并从服务器接收响应。 消息B2适用于区域A中的条目，因此缓存侦听器处理B2的事件。 由于B2位于标记之前，因此客户端不会将更新应用于缓存。
 
 ![Durable client reconnection. ](assets/ClientServerAdvancedTopics-6.png)
 
-**Durable Event Replay**
+**持久的事件重播**
 
-When a durable client reconnects before the timeout period, the servers replay the events that were stored while the client was gone and then resume normal event messaging to the client. To avoid overwriting current entries with old data, the stored events are not applied to the client cache. Stored events are distinguished from new normal events by a marker that is sent to the client once all old events are replayed.
+当持久客户端在超时期限之前重新连接时，服务器会重放客户端消失时存储的事件，然后将正常的事件消息传递回客户端。 为避免使用旧数据覆盖当前条目，存储的事件不会应用于客户端缓存。 通过在重放所有旧事件后发送到客户端的标记将存储事件与新正常事件区分开。
 
-1. All servers with a queue for this client place a marker in their queue when the client reconnects.
-2. The primary server sends the queued messages to the client up to the marker.
-3. The client receives the messages but does not apply the usual automatic updates to its cache. If cache listeners are installed, they handle the events.
-4. The client receives the marker message indicating that all past events have been played back.
-5. The server sends the current list of live regions.
-6. For every `CacheListener` in each live region on the client, the marker event triggers the `afterRegionLive` callback. After the callback, the client begins normal processing of events from the server and applies the updates to its cache.
+1. 当客户端重新连接时，具有此客户端队列的所有服务器都会在其队列中放置标记。
+2. 主服务器将排队的消息发送到客户端，直到标记。
+3. 客户端接收消息但不对其高速缓存应用通常的自动更新。 如果安装了缓存侦听器，它们将处理事件。
+4. 客户端接收标记消息，指示已经播放了所有过去的事件。
+5. 服务器发送当前活动区域列表。
+6. 对于客户端上每个活动区域中的每个`CacheListener`，标记事件触发`afterRegionLive`回调。 在回调之后，客户端开始从服务器正常处理事件并将更新应用于其缓存。
 
-Even when a new client starts up for the first time, the client cache ready markers are inserted in the queues. If messages start coming into the new queues before the servers insert the marker, those messages are considered as having happened while the client was disconnected, and their events are replayed the same as in the reconnect case.
+即使新客户端第一次启动，客户端缓存就绪标记也会插入队列中。 如果消息在服务器插入标记之前开始进入新队列，则在客户端断开连接时会认为这些消息已发生，并且它们的事件的重放方式与重新连接情况相同。
 
-**Application Operations During Interest Registration**
+**兴趣注册期间的申请操作**
 
-Application operations take precedence over interest registration responses. The client can perform operations while it is receiving its interest registration responses. When adding register interest responses to the client cache, the following rules are applied:
+应用程序操作优先于兴趣注册响应。 客户端可以在收到其兴趣注册响应时执行操作。 将注册兴趣响应添加到客户端缓存时，将应用以下规则：
 
-- If the entry already exists in the cache with a valid value, it is not updated.
-- If the entry is invalid, and the register interest response is valid, the valid value is put into the cache.
-- If an entry is marked destroyed, it is not updated. Destroyed entries are removed from the system after the register interest response is completed.
-- If the interest response does not contain any results, because all of those keys are absent from the server’s cache, the client’s cache can start out empty. If the queue contains old messages related to those keys, the events are still replayed in the client’s cache.
+- 如果条目已存在于具有有效值的缓存中，则不会更新。
+- 如果条目无效，并且寄存器兴趣响应有效，则将有效值放入缓存中。
+- 如果条目被标记为已销毁，则不会更新。 在注册兴趣响应完成后，将从系统中删除被破坏的条目。
+- 如果兴趣响应不包含任何结果，因为服务器缓存中不存在所有这些键，则客户端的缓存可以从空开始。 如果队列包含与这些键相关的旧消息，则事件仍在客户端的缓存中重播。
 
 
 
-#### Tuning Client/Server Event Messaging
+#### 调整客户端/服务器事件消息
 
-The server uses an asynchronous messaging queue to send events to its clients. Every event in the queue originates in an operation performed by a thread in a client, a server, or an application in the server’s or some other cluster. The event message has a unique identifier composed of the originating thread’s ID combined with its member’s distributed system member ID, and the sequential ID of the operation. So the event messages originating in any single thread can be grouped and ordered by time from lowest sequence ID to highest. Servers and clients track the highest sequential ID for each member thread ID.
+服务器使用异步消息传递队列将事件发送到其客户端。 队列中的每个事件都源自客户端，服务器中的线程或服务器或某个其他集群中的应用程序执行的操作。 事件消息具有唯一标识符，该标识符由始发线程的ID与其成员的分布式系统成员ID以及操作的顺序ID组成。 因此，源自任何单个线程的事件消息可以按时间从最低序列ID到最高序列进行分组和排序。 服务器和客户端跟踪每个成员线程ID的最高顺序ID。
 
-A single client thread receives and processes messages from the server, tracking received messages to make sure it does not process duplicate sends. It does this using the process IDs from originating threads.
+单个客户端线程接收并处理来自服务器的消息，跟踪收到的消息以确保它不处理重复发送。 它使用来自原始线程的进程ID来完成此操作。
 
 ![img](assets/tune_cs_event_messaging.svg)
 
-The client’s message tracking list holds the highest sequence ID of any message received for each originating thread. The list can become quite large in systems where there are many different threads coming and going and doing work on the cache. After a thread dies, its tracking entry is not needed. To avoid maintaining tracking information for threads that have died, the client expires entries that have had no activity for more than the `subscription-message-tracking-timeout`.
+客户端的消息跟踪列表保存为每个始发线程接收的任何消息的最高序列ID。 在有许多不同线程进出并在缓存上工作的系统中，该列表可能变得非常大。 线程死亡后，不需要跟踪条目。 为了避免维护已经死亡的线程的跟踪信息，客户端会使没有活动的条目超过`subscription-message-tracking-timeout`。
 
-- **Conflate the Server Subscription Queue**
-- **Limit the Server’s Subscription Queue Memory Use**
-- **Tune the Client’s Subscription Message Tracking Timeout**
+- **配置服务器订阅队列**
+- **限制服务器的订阅队列内存使用**
+- **调整客户端的订阅邮件跟踪超时**
 
 
 
-##### Conflate the Server Subscription Queue
+##### 配置服务器订阅队列
 
-Conflating the server subscription queue can save space in the server and time in message processing.
+配置服务器订阅队列可以节省服务器空间和消息处理时间。
 
-Enable conflation at the server level in the server region configuration:
+在服务器区域配置中的服务器级别启用协调：
 
 ```
 <region ... >
@@ -4903,31 +4903,31 @@ Enable conflation at the server level in the server region configuration:
 </region>
 ```
 
-Override the server setting as needed, on a per-client basis, in the client’s `gemfire.properties`:
+根据需要，在客户端的`gemfire.properties`中覆盖服务器设置：
 
 ```
 conflate-events=false
 ```
 
-Valid `conflate-events` settings are: - `server`, which uses the server settings - `true`, which conflates everything sent to the client - `false`, which does not conflate anything sent to this client
+有效的`conflate-events`设置是： - `server`，它使用服务器设置 - `true`，它将发送给客户端的所有内容混为一起 - `false`，它不会混淆发送给该客户端的任何内容
 
-Conflation can both improve performance and reduce the amount of memory required on the server for queuing. The client receives only the latest available update in the queue for a particular entry key. Conflation is disabled by default.
+通过配置可以提高性能并减少服务器上排队所需的内存量。 客户端仅接收队列中针对特定条目键的最新可用更新。 默认情况下禁用配置。
 
-Conflation is particularly useful when a single entry is updated often and the intermediate updates don’t require processing by the client. With conflation, if an entry is updated and there is already an update in the queue for its key, the existing update is removed and the new update is placed at the end of the queue. Conflation is only done on messages that are not in the process of being sent to the client.
+当经常更新单个条目并且中间更新不需要客户端处理时，配置特别有用。 通过合并，如果条目已更新且队列中已存在其键更新，则会删除现有更新，并将新更新置于队列末尾。 仅在未发送到客户端的消息上进行协调。
 
 ![img](assets/ClientServerAdvancedTopics-7.gif)
 
-**注意:** This method of conflation is different from the one used for multi-site gateway sender queue conflation. It is the same as the method used for the conflation of peer-to-peer distribution messages within a single cluster.
+**注意:** 这种合并方法与用于多站点网关发送方队列合并的方法不同。 它与用于在单个集群内合并对等分发消息的方法相同。
 
 
 
-##### Limit the Server's Subscription Queue Memory Use
+##### 限制服务器的订阅队列内存使用
 
-These are options for limiting the amount of server memory the subscription queues consume.
+这些是用于限制订阅队列消耗的服务器内存量的选项。
 
-- Optional: Conflate the subscription queue messages.
+- 可选的: 合并订阅队列消息。
 
-- Optional: Increase the frequency of queue synchronization. This only applies to configurations where server redundancy is used for high availability. Increase the client’s pool configuration, `subscription-ack-interval`. The client periodically sends a batch acknowledgment of messages to the server, rather than acknowledging each message individually. A lower setting speeds message delivery and generally reduces traffic between the server and client. A higher setting helps contain server queue size. Example:
+- 可选的: 增加队列同步的频率。 这仅适用于将服务器冗余用于高可用性的配置。 增加客户端的池配置，`subscription-ack-interval`。 客户端定期向服务器发送批量消息确认，而不是单独确认每条消息。 较低的设置可以加快邮件传递速度，并且通常可以减少服 较高的设置有助于包含服务器队列大小。 例：
 
   ```
   <!-- Set subscription ack interval to 3 seconds -->
@@ -4938,11 +4938,11 @@ These are options for limiting the amount of server memory the subscription queu
   </pool>
   ```
 
-  You might want to lower the interval if you have a very busy system and want to reduce the space required in the servers for the subscription queues. More frequent acknowledgments means fewer events held in the server queues awaiting acknowledgment.
+  如果您的系统非常繁忙，并且希望减少订阅队列服务器所需的空间，则可能需要降低时间间隔。 更频繁的确认意味着等待确认的服务器队列中保存的事件更少。
 
-- Optional: Limit Queue Size. Cap the server queue size using overflow or blocking. These options help avoid out of memory errors on the server in the case of slow clients. A slow client slows the rate that the server can send messages, causing messages to back up in the queue, possibly leading to out of memory on the server. You can use one or the other of these options, but not both:
+- 可选的: 限制队列大小。 使用溢出或阻塞来限制服务器队列大小。 这些选项有助于避免在客户端较慢的情况下服务器上出现内存不足错误。 慢速客户端会降低服务器发送消息的速率，从而导致消息在队列中备份，从而可能导致服务器内存不足。 您可以使用这些选项中的一个或另一个，但不能同时使用两者：
 
-  - Optional: Overflow to Disk. Configure subscription queue overflow by setting the server’s `client-subscription` properties. With overflow, the most recently used (MRU) events are written out to disk, keeping the oldest events, the ones that are next in line to be sent to the client, available in memory. Example:
+  - 可选的: 溢出到磁盘。 通过设置服务器的`client-subscription`属性来配置订阅队列溢出。 通过溢出，最近使用的（MRU）事件被写入磁盘，保留最旧的事件，即下一行发送到客户端的事件，在内存中可用。 例：
 
     ```
     <!-- Set overflow after 10K messages are enqueued -->
@@ -4954,7 +4954,7 @@ These are options for limiting the amount of server memory the subscription queu
     </cache-server>
     ```
 
-  - Optional: Block While Queue Full. Set the server’s `maximum-message-count` to the maximum number of event messages allowed in any single subscription queue before incoming messages are blocked. You can only limit the message count, not the size allocated for messages. Examples:
+  - 可选的: 队列满时阻止。 将服务器的`maximum-message-count`设置为阻止传入消息之前任何单个订阅队列中允许的最大事件消息数。 您只能限制消息计数，而不是为消息分配的大小。 例子：
 
     XML:
 
@@ -4973,26 +4973,26 @@ These are options for limiting the amount of server memory the subscription queu
     cacheServer.start(); 
     ```
 
-    **注意:** With this setting, one slow client can slow the server and all of its other clients because this blocks the threads that write to the queues. All operations that add messages to the queue block until the queue size drops to an acceptable level. If the regions feeding these queues are partitioned or have `distributed-ack` or `global` scope, operations on them remain blocked until their event messages can be added to the queue. If you are using this option and see stalling on your server region operations, your queue capacity might be too low for your application behavior.
+    **注意:** 使用此设置，一个慢速客户端可以减慢服务器及其所有其他客户端的速度，因为这会阻止写入队列的线程。 将消息添加到队列块的所有操作，直到队列大小降至可接受的水平。 如果为这些队列提供的区域被分区或具有`distributed-ack`或`global`范围，则对它们的操作将保持阻塞状态，直到它们的事件消息可以添加到队列中。 如果您使用此选项并且看到服务器区域操作停滞，则您的队列容量可能太低而不适合您的应用程序行为。
 
 
 
-##### Tune the Client's Subscription Message Tracking Timeout
+##### 调整客户端的订阅消息跟踪超时
 
-If the client pool’s `subscription-message-tracking-timeout` is set too low, your client will discard tracking records for live threads, increasing the likelihood of processing duplicate events from those threads.
+如果客户端池的`subscription-message-tracking-timeout`设置得太低，您的客户端将丢弃实时线程的跟踪记录，从而增加处理来自这些线程的重复事件的可能性。
 
-This setting is especially important in systems where it is vital to avoid or greatly minimize duplicate events. If you detect that duplicate messages are being processed by your clients, increasing the timeout may help. Setting `subscription-message-tracking-timeout` may not completely eliminate duplicate entries, but careful configuration can help minimize occurrences.
+此设置对于避免或大大减少重复事件至关重要的系统尤其重要。 如果您检测到客户端正在处理重复的消息，则增加超时可能会有所帮助。 设置`subscription-message-tracking-timeout`可能无法完全消除重复条目，但仔细配置可以帮助最小化出现次数。
 
-Duplicates are monitored by keeping track of message sequence IDs from the source thread where the operation originated. For a long-running system, you would not want to track this information for very long periods or the information may be kept long enough for a thread ID to be recycled. If this happens, messages from a new thread may be discarded mistakenly as duplicates of messages from an old thread with the same ID. In addition, maintaining this tracking information for old threads uses memory that might be freed up for other things.
+通过跟踪来自操作源的源线程的消息序列ID来监视重复项。 对于长时间运行的系统，您不希望长时间跟踪此信息，或者信息可能保留足够长的时间以便回收线程ID。 如果发生这种情况，来自新线程的消息可能被错误地丢弃为来自具有相同ID的旧线程的消息的重复。 此外，为旧线程维护此跟踪信息会使用可能为其他事物释放的内存。
 
-To minimize duplicates and reduce the size of the message tracking list, set your client `subscription-message-tracking-timeout` higher than double the sum of these times:
+要最大限度地减少重复项并减小邮件跟踪列表的大小，请将客户端`subscription-message-tracking-timeout`设置为高于这些时间总和的两倍：
 
-- The longest time your originating threads might wait between operations
-- For redundant servers add:
-  - The server’s `message-sync-interval`
-  - Total time required for failover (usually 7-10 seconds, including the time to detect failure)
+- 原始线程可能在操作之间等待的最长时间
+- 对于冗余服务器添加：
+  - 服务器的`message-sync-interval`
+  - 故障转移所需的总时间（通常为7-10秒，包括检测故障的时间）
 
-You risk losing live thread tracking records if you set the value lower than this. This could result in your client processing duplicate event messages into its cache for the associated threads. It is worth working to set the `subscription-message-tracking-timeout` as low as you reasonably can.
+如果将值设置为低于此值，则可能会丢失活动线程跟踪记录。 这可能导致客户端将重复的事件消息处理到其关联线程的高速缓存中。 值得努力将`subscription-message-tracking-timeout`设置为合理的最低值。
 
 ```
 <!-- Set the tracking timeout to 70 seconds -->
@@ -5003,41 +5003,41 @@ You risk losing live thread tracking records if you set the value lower than thi
 
 
 
-### Configuring Multi-Site (WAN) Event Queues
+### 配置多站点（WAN）事件队列
 
-In a multi-site (WAN) installation, Geode uses gateway sender queues to distribute events for regions that are configured with a gateway sender. AsyncEventListeners also use an asynchronous event queue to distribute events for configured regions. This section describes additional options for configuring the event queues that are used by gateway senders or AsyncEventListener implementations.
+在多站点（WAN）安装中，Geode使用网关发件人队列来分配使用网关发件人配置的区域的事件。 AsyncEventListeners还使用异步事件队列来分配已配置区域的事件。 本节介绍用于配置网关发件人或AsyncEventListener实现使用的事件队列的其他选项。
 
-Before you begin, set up your multi-site (WAN) installation or configure asynchronous event queues and AsyncEventListener implementations. See [Configuring a Multi-site (WAN) System](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html#setting_up_a_multisite_system) or [Implementing an AsyncEventListener for Write-Behind Cache Event Handling](https://geode.apache.org/docs/guide/17/developing/events/implementing_write_behind_event_handler.html#implementing_write_behind_cache_event_handling).
+在开始之前，请设置多站点（WAN）安装或配置异步事件队列和AsyncEventListener实现。 请参阅[配置多站点（WAN）系统](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html#setting_up_a_multisite_system) 或[为后写缓存事件实现AsyncEventListener处理](https://geode.apache.org/docs/guide/17/developing/events/implementing_write_behind_event_handler.html#implementing_write_behind_cache_event_handling)。
 
-- **Persisting an Event Queue**
+- **持久化事件队列**
 
-  You can configure a gateway sender queue or an asynchronous event queue to persist data to disk similar to the way in which replicated regions are persisted.
+  您可以配置网关发件人队列或异步事件队列以将数据持久保存到磁盘，类似于复制区域的持久方式。
 
-- **Configuring Dispatcher Threads and Order Policy for Event Distribution**
+- **为事件分发配置Dispatcher线程和顺序策略**
 
-  By default, Geode uses multiple dispatcher threads to process region events simultaneously in a gateway sender queue for distribution between sites, or in an asynchronous event queue for distributing events for write-behind caching. With serial queues, you can also configure the ordering policy for dispatching those events.
+  默认情况下，Geode使用多个调度程序线程在网关发送方队列中同时处理区域事件，以便在站点之间进行分配，或者在异步事件队列中用于分发事务以进行后写式高速缓存。 使用串行队列，您还可以配置用于分派这些事件的排序策略。
 
-- **Conflating Events in a Queue**
+- **配置队列中的事件**
 
-  Conflating a queue improves distribution performance. When conflation is enabled, only the latest queued value is sent for a particular key.
+  配置队列可提高分发性能。 启用合并后，仅为特定键发送最新排队值。
 
 
 
-#### Persisting an Event Queue
+#### 持久化事件队列
 
-You can configure a gateway sender queue or an asynchronous event queue to persist data to disk similar to the way in which replicated regions are persisted.
+您可以配置网关发件人队列或异步事件队列以将数据持久保存到磁盘，类似于复制区域的持久方式。
 
-Persisting a queue provides high availability for the event messaging that the sender performs. For example, if a persistent gateway sender queue exits for any reason, when the member that hosts the sender restarts it automatically reloads the queue and resumes sending messages. If an asynchronous event queue exits for any reason, write-back caching can resume where it left off when the queue is brought back online. Geode persists an event queue if you set the `enable-persistence` attribute to true. The queue is persisted to the disk store specified in the queue’s `disk-store-name` attribute, or to the default disk store if you do not specify a store name.
+保留队列可为发件人执行的事件消息传递提供高可用性。 例如，如果持久网关发送方队列因任何原因退出，则当承载发送方的成员重新启动它时，它会自动重新加载队列并继续发送消息。 如果异步事件队列因任何原因退出，则回写缓存可以在队列重新联机时从中断处继续。 如果将`enable-persistence`属性设置为true，Geode会持久保存事件队列。 队列将持久保存到队列的`disk-store-name`属性中指定的磁盘存储区，如果未指定存储名称，则保留到默认磁盘存储区。
 
-You must configure the event queue to use persistence if you are using persistent regions. The use of non-persistent event queues with persistent regions is not supported.
+如果使用持久性区域，则必须将事件队列配置为使用持久性。 不支持使用具有持久区域的非持久性事件队列。
 
-When you enable persistence for a queue, the `maximum-queue-memory` attribute determines how much memory the queue can consume before it overflows to disk. By default, this value is set to 100MB.
+为队列启用持久性时，`maximum-queue-memory`属性确定队列在溢出到磁盘之前可以消耗多少内存。 默认情况下，此值设置为100MB。
 
-**注意:** If you configure a parallel queue and/or you configure multiple dispatcher threads for a queue, the values that are defined in the `maximum-queue-memory` and `disk-store-name` attributes apply to each instance of the queue.
+**注意:** 如果配置并行队列和/或为队列配置多个调度程序线程，则`maximum-queue-memory`和`disk-store-name`属性中定义的值将应用于队列的每个实例。
 
-In the example below the gateway sender queue uses “diskStoreA” for persistence and overflow, and the queue has a maximum queue memory of 100MB:
+在下面的示例中，网关发送方队列使用“diskStoreA”进行持久性和溢出，并且队列的最大队列内存为100MB：
 
-- XML example:
+- XML 例子:
 
   ```
   <cache>
@@ -5050,7 +5050,7 @@ In the example below the gateway sender queue uses “diskStoreA” for persiste
   </cache>
   ```
 
-- API example:
+- API 例子:
 
   ```
   Cache cache = new CacheFactory().create();
@@ -5072,11 +5072,11 @@ In the example below the gateway sender queue uses “diskStoreA” for persiste
   --maximum-queue-memory=100
   ```
 
-If you were to configure 10 dispatcher threads for the serial gateway sender, then the total maximum memory for the gateway sender queue would be 1000MB on each Geode member that hosted the sender, because Geode creates a separate copy of the queue per thread..
+如果要为串行网关发送方配置10个调度程序线程，则每个承载发送方的Geode成员的网关发送方队列的总最大内存为1000MB，因为Geode会为每个线程创建一个单独的队列副本。
 
-The following example shows a similar configuration for an asynchronous event queue:
+以下示例显示了异步事件队列的类似配置：
 
-- XML example:
+- XML 例子:
 
   ```
   <cache>
@@ -5099,7 +5099,7 @@ The following example shows a similar configuration for an asynchronous event qu
   </cache>
   ```
 
-- API example:
+- API 例子:
 
   ```
   Cache cache = new CacheFactory().create();
@@ -5121,7 +5121,7 @@ The following example shows a similar configuration for an asynchronous event qu
 
 
 
-#### Configuring Dispatcher Threads and Order Policy for Event Distribution
+#### 为事件分发配置Dispatcher线程和顺序策略
 
 By default, Geode uses multiple dispatcher threads to process region events simultaneously in a gateway sender queue for distribution between sites, or in an asynchronous event queue for distributing events for write-behind caching. With serial queues, you can also configure the ordering policy for dispatching those events.
 
