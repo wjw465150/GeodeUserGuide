@@ -5123,45 +5123,45 @@ conflate-events=false
 
 #### 为事件分发配置Dispatcher线程和顺序策略
 
-By default, Geode uses multiple dispatcher threads to process region events simultaneously in a gateway sender queue for distribution between sites, or in an asynchronous event queue for distributing events for write-behind caching. With serial queues, you can also configure the ordering policy for dispatching those events.
+默认情况下，Geode使用多个调度程序线程在网关发送方队列中同时处理区域事件，以便在站点之间进行分配，或者在异步事件队列中用于分发事务以进行后写式高速缓存。 使用串行队列，您还可以配置用于分派这些事件的排序策略。
 
-By default, a gateway sender queue or asynchronous event queue uses 5 dispatcher threads per queue. This provides support for applications that have the ability to process queued events concurrently for distribution to another Geode site or listener. If your application does not require concurrent distribution, or if you do not have enough resources to support the requirements of multiple dispatcher threads, then you can configure a single dispatcher thread to process a queue.
+默认情况下，网关发送方队列或异步事件队列每个队列使用5个调度程序线程。 这为那些能够同时处理排队事件以便分发给另一个Geode站点或监听器的应用程序提供支持。 如果您的应用程序不需要并发分发，或者您没有足够的资源来支持多个调度程序线程的要求，那么您可以配置单个调度程序线程来处理队列。
 
-- [Using Multiple Dispatcher Threads to Process a Queue](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_20E8EFCE89EB4DC7AA822D03C8E0F470)
-- [Performance and Memory Considerations](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_C4C83B5C0FDD4913BA128365EE7E4E35)
-- [Configuring the Ordering Policy for Serial Queues](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_4835BA30CDFD4B658BD2576F6BC2E23F)
-- [Examples—Configuring Dispatcher Threads and Ordering Policy for a Serial Gateway Sender Queue](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_752F08F9064B4F67A80DA0A994671EA0)
+- [使用多个Dispatcher线程来处理队列](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_20E8EFCE89EB4DC7AA822D03C8E0F470)
+- [性能和内存注意事项](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_C4C83B5C0FDD4913BA128365EE7E4E35)
+- [配置串行队列的订购策略](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_4835BA30CDFD4B658BD2576F6BC2E23F)
+- [示例 - 为串行网关发送器队列配置Dispatcher线程和排序策略](https://geode.apache.org/docs/guide/17/developing/events/configuring_gateway_concurrency_levels.html#concept_6C52A037E39E4FD6AE4C6A982A4A1A85__section_752F08F9064B4F67A80DA0A994671EA0)
 
-**Using Multiple Dispatcher Threads to Process a Queue**
+**使用多个Dispatcher线程来处理队列**
 
-When multiple dispatcher threads are configured for a parallel queue, Geode simply uses multiple threads to process the contents of each individual queue. The total number of queues that are created is still determined by the number of Geode members that host the region.
+当为并行队列配置多个调度程序线程时，Geode只使用多个线程来处理每个单独队列的内容。 创建的队列总数仍由托管该区域的Geode成员数决定。
 
-When multiple dispatcher threads are configured for a serial queue, Geode creates an additional copy of the queue for each thread on each member that hosts the queue. To obtain the maximum throughput, increase the number of dispatcher threads until your network is saturated.
+为串行队列配置多个调度程序线程时，Geode会为承载队列的每个成员上的每个线程创建一个队列的附加副本。 要获得最大吞吐量，请增加调度程序线程数，直到网络饱和为止。
 
-The following diagram illustrates a serial gateway sender queue that is configured with multiple dispatcher threads. ![img](assets/MultisiteConcurrency_WAN_Gateway.png)
+下图说明了使用多个调度程序线程配置的串行网关发送方队列。 ![img](assets/MultisiteConcurrency_WAN_Gateway.png)
 
-**Performance and Memory Considerations**
+**性能和内存注意事项**
 
-When a serial gateway sender or an asynchronous event queue uses multiple dispatcher threads, consider the following:
+当串行网关发送方或异步事件队列使用多个调度程序线程时，请考虑以下事项：
 
-- Queue attributes are repeated for each copy of the queue that is created for a dispatcher thread. That is, each concurrent queue points to the same disk store, so the same disk directories are used. If persistence is enabled and overflow occurs, the threads that insert entries into the queues compete for the disk. This applies to application threads and dispatcher threads, so it can affect application performance.
-- The `maximum-queue-memory` setting applies to each copy of the serial queue. If you configure 10 dispatcher threads and the maximum queue memory is set to 100MB, then the total maximum queue memory for the queue is 1000MB on each member that hosts the queue.
+- 对于为调度程序线程创建的队列的每个副本，都会重复队列属性。 也就是说，每个并发队列指向同一磁盘存储，因此使用相同的磁盘目录。 如果启用了持久性并发生溢出，则将条目插入队列的线程将竞争磁盘。 这适用于应用程序线程和调度程序线程，因此它可能会影响应用程序性能。
+- `maximum-queue-memory`设置适用于串行队列的每个副本。 如果配置10个调度程序线程并且最大队列内存设置为100MB，则队列队列的每个成员上队列的总最大队列内存为1000MB。
 
-**Configuring the Ordering Policy for Serial Queues**
+**配置串行队列的排序策略**
 
-When using multiple `dispatcher-threads` (greater than 1) with a serial event queue, you can also configure the `order-policy` that those threads use to distribute events from the queue. The valid order policy values are:
+当使用带有串行事件队列的多个`dispatcher-threads`（大于1）时，您还可以配置这些线程用于从队列分发事件的`order-policy`。 有效的排队策略值为：
 
-- **key (default)**. All updates to the same key are distributed in order. Geode preserves key ordering by placing all updates to the same key in the same dispatcher thread queue. You typically use key ordering when updates to entries have no relationship to each other, such as for an application that uses a single feeder to distribute stock updates to several other systems.
-- **thread**. All region updates from a given thread are distributed in order. Geode preserves thread ordering by placing all region updates from the same thread into the same dispatcher thread queue. In general, use thread ordering when updates to one region entry affect updates to another region entry.
-- **partition**. All region events that share the same partitioning key are distributed in order. Specify partition ordering when applications use a [PartitionResolver](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/PartitionResolver.html) to implement [custom partitioning](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/using_custom_partition_resolvers.html). With partition ordering, all entries that share the same “partitioning key” (RoutingObject) are placed into the same dispatcher thread queue.
+- **key (default)**. 对同一key的所有更新都按顺序分发。 Geode通过将相同key的所有更新放在同一个调度程序线程队列中来保留key排序。 当条目更新彼此没有关系时，通常使用key排序，例如对于使用单个馈送器将库存更新分发给其他几个系统的应用程序。
+- **thread**. 来自给定线程的所有区域更新按顺序分布。 Geode通过将来自同一线程的所有区域更新放入同一个调度程序线程队列来保留线程排序。 通常，当对一个区域条目的更新影响对另一个区域条目的更新时，请使用线程排序。
+- **partition**. 共享相同分区键的所有区域事件按顺序分布。 当应用程序使用[PartitionResolver](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/PartitionResolver.html)实现[自定义分区](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/using_custom_partition_resolvers.html)时，指定分区顺序。 使用分区排序，共享相同“分区键”（RoutingObject）的所有条目都放在同一个调度程序线程队列中。
 
-You cannot configure the `order-policy` for a parallel event queue, because parallel queues cannot preserve event ordering for regions. Only the ordering of events for a given partition (or in a given queue of a distributed region) can be preserved.
+您无法为并行事件队列配置`order-policy`，因为并行队列无法保留区域的事件排序。 只能保留给定分区（或分布式区域的给定队列）中事件的顺序。
 
-**Examples—Configuring Dispatcher Threads and Ordering Policy for a Serial Gateway Sender Queue**
+**示例 - 为串行网关发送器队列配置Dispatcher线程和排序策略**
 
-To increase the number of dispatcher threads and set the ordering policy for a serial gateway sender, use one of the following mechanisms.
+要增加调度程序线程数并为串行网关发送方设置排序策略，请使用以下机制之一。
 
-- **cache.xml configuration**
+- **cache.xml 配置**
 
   ```
   <cache>
@@ -5175,7 +5175,7 @@ To increase the number of dispatcher threads and set the ordering policy for a s
   </cache>
   ```
 
-- **Java API configuration**
+- **Java API 配置**
 
   ```
   Cache cache = new CacheFactory().create();
@@ -5204,9 +5204,9 @@ To increase the number of dispatcher threads and set the ordering policy for a s
      --order-policy="key"
   ```
 
-The following examples show how to set dispatcher threads and ordering policy for an asynchronous event queue:
+以下示例显示如何为异步事件队列设置调度程序线程和排序策略：
 
-- **cache.xml configuration**
+- **cache.xml 配置**
 
   ```
   <cache>
@@ -5230,7 +5230,7 @@ The following examples show how to set dispatcher threads and ordering policy fo
   </cache>
   ```
 
-- **Java API configuration**
+- **Java API 配置**
 
   ```
   Cache cache = new CacheFactory().create();
@@ -5260,23 +5260,23 @@ The following examples show how to set dispatcher threads and ordering policy fo
 
 
 
-#### Conflating Events in a Queue
+#### 合并队列中的事件
 
-Conflating a queue improves distribution performance. When conflation is enabled, only the latest queued value is sent for a particular key.
+配置队列可提高分发性能。 启用合并后，仅为特定key发送最新排队值。
 
-**注意:** Do not use conflation if your receiving applications depend on the specific ordering of entry modifications, or if they need to be notified of every change to an entry.
+**注意:** 如果您的接收应用程序依赖于条目修改的特定顺序，或者如果需要通知他们对条目的每次更改，请不要使用合并。
 
-Conflation is most useful when a single entry is updated frequently, but other sites only need to know the current value of the entry (rather than the value of each update). When an update is added to a queue that has conflation enabled, if there is already an update message in the queue for the entry key, then the existing message assumes the value of the new update and the new update is dropped, as shown here for key A.
+当频繁更新单个条目时，合并最有用，但其他站点只需要知道条目的当前值（而不是每个更新的值）。 将更新添加到启用了混淆的队列时，如果条目队列中已存在更新消息，则现有消息将采用新更新的值并删除新更新，如下所示 键A.
 
 ![img](assets/MultiSite-4.gif)
 
-**注意:** This method of conflation is different from the one used for server-to-client subscription queue conflation and peer-to-peer distribution within a cluster.
+**注意:** 这种合并方法不同于用于服务器到客户端订阅队列协调和群集内对等分发的方法。
 
-**Examples—Configuring Conflation for a Gateway Sender Queue**
+**示例 - 为网关发件人队列配置合并**
 
-To enable conflation for a gateway sender queue, use one of the following mechanisms:
+要为网关发件人队列启用合并，请使用以下机制之一：
 
-- **cache.xml configuration**
+- **cache.xml 配置**
 
   ```
   <cache>
@@ -5289,7 +5289,7 @@ To enable conflation for a gateway sender queue, use one of the following mechan
   </cache>
   ```
 
-- **Java API configuration**
+- **Java API 配置**
 
   ```
   Cache cache = new CacheFactory().create();
@@ -5303,7 +5303,7 @@ To enable conflation for a gateway sender queue, use one of the following mechan
   sender.start();
   ```
 
-  Entry updates in the current, in-process batch are not eligible for conflation.
+  当前进程中批处理中的条目更新不符合合并条件。
 
 - **gfsh:**
 
@@ -5315,9 +5315,9 @@ To enable conflation for a gateway sender queue, use one of the following mechan
      --enable-batch-conflation=true
   ```
 
-The following examples show how to configure conflation for an asynchronous event queue:
+以下示例显示如何为异步事件队列配置conflation：
 
-- **cache.xml configuration**
+- **cache.xml 配置**
 
   ```
   <cache>
@@ -5341,7 +5341,7 @@ The following examples show how to configure conflation for an asynchronous even
   </cache>
   ```
 
-- **Java API configuration**
+- **Java API 配置**
 
   ```
   Cache cache = new CacheFactory().create();
@@ -5354,7 +5354,7 @@ The following examples show how to configure conflation for an asynchronous even
   AsyncEventQueue sampleQueue = factory.create("customerWB", listener);
   ```
 
-  Entry updates in the current, in-process batch are not eligible for conflation.
+  当前进程中批处理中的条目更新不符合合并条件。
 
 - **gfsh:**
 
@@ -5371,118 +5371,118 @@ The following examples show how to configure conflation for an asynchronous even
 
 ## 增量传播
 
-Delta propagation allows you to reduce the amount of data you send over the network by including only changes to objects rather than the entire object.
+增量传播允许您通过仅包括对象而不是整个对象的更改来减少通过网络发送的数据量。
 
-- **How Delta Propagation Works**
+- **增量传播如何工作**
 
-  Delta propagation reduces the amount of data you send over the network. You do this by only sending the change, or delta, information about an object, instead of sending the entire changed object. If you do not use cloning when applying the deltas, you can also expect to generate less garbage in your receiving JVMs.
+  增量传播减少了您通过网络发送的数据量。 您只需发送有关对象的更改或增量信息，而不是发送整个更改的对象。 如果在应用增量时不使用克隆，则还可以期望在接收JVM中生成更少的垃圾。
 
-- **When to Avoid Delta Propagation**
+- **何时避免增量传播**
 
-  Generally, the larger your objects and the smaller the deltas, the greater the benefits of using delta propagation. Partitioned regions with higher redundancy levels generally benefit more from delta propagation. However, in some application scenarios, delta propagation does not show any significant benefits. On occasion it results in performance degradation.
+  通常，对象越大，增量越小，使用增量传播的好处就越大。 具有较高冗余级别的分区区域通常受益于增量传播。 但是，在某些应用场景中，增量传播并未显示任何显着优势。 有时它会导致性能下降。
 
-- **Delta Propagation Properties**
+- **增量传播属性**
 
-  This topic describes the properties that can be used to configure delta propagation.
+  本主题描述可用于配置增量传播的属性。
 
-- **Implementing Delta Propagation**
+- **实施增量传播**
 
-  By default, delta propagation is enabled in your cluster. When enabled, delta propagation is used for objects that implement `org.apache.geode.Delta`. You program the methods to store and extract delta information for your entries and to apply received delta information.
+  默认情况下，集群中启用了增量传播。 启用时，增量传播用于实现`org.apache.geode.Delta`的对象。 您可以对方法进行编程，以存储和提取条目的增量信息，并应用收到的增量信息。
 
-- **Errors In Delta Propagation**
+- **增量传播中的错误**
 
-  This topic lists the errors that can occur when using delta propagation.
+  本主题列出了使用增量传播时可能发生的错误。
 
-- **Delta Propagation Example**
+- **增量传播示例**
 
-  This topic provides an example of delta propagation.
-
-
-
-### How Delta Propagation Works
-
-Delta propagation reduces the amount of data you send over the network. You do this by only sending the change, or delta, information about an object, instead of sending the entire changed object. If you do not use cloning when applying the deltas, you can also expect to generate less garbage in your receiving JVMs.
-
-In most distributed data management systems, the data stored in the system tends to be created once and then updated frequently. These updates are sent to other members for event propagation, redundancy management, and cache consistency in general. Tracking only the changes in an updated object and sending only the deltas mean lower network transmission costs and lower object serialization/deserialization costs. Performance improvements can be significant, especially when changes to an object are small relative to its overall size.
+  本主题提供了增量传播的示例。
 
 
 
-Geode propagates object deltas using methods that you program. The methods are in the `Delta`interface, which you implement in your cached objects’ classes. If any of your classes are plain old Java objects, you need to wrap them for this implementation.
+### 增量传播如何工作
 
-This figure shows delta propagation for a change to an entry with key, k, and value object, v.
+增量传播减少了您通过网络发送的数据量。 您只需发送有关对象的更改或增量信息，而不是发送整个更改的对象。 如果在应用增量时不使用克隆，则还可以期望在接收JVM中生成更少的垃圾。
+
+在大多数分布式数据管理系统中，存储在系统中的数据往往会被创建一次，然后经常更新。 这些更新通常会发送给其他成员，以实现事件传播，冗余管理和缓存一致性。 仅跟踪更新对象中的更改并仅发送增量意味着更低的网络传输成本和更低的对象序列化/反序列化成本。 性能改进可能很重要，尤其是当对象的更改相对于其整体大小较小时。
+
+
+
+Geode使用您编程的方法传播对象增量。 这些方法位于`Delta`接口中，您可以在缓存对象的类中实现。 如果您的任何类是普通的旧Java对象，则需要将它们包装为此实现。
+
+此图显示了使用键，k和值对象v更改条目的增量传播。
 
 ![img](assets/delta-propagation.png)
 
-1. **get operation**. The `get` works as usual: the cache returns the full entry object from the local cache or, if it isn’t available there, from a remote cache or from a loader.
-2. **update methods**. You need to add code to the object’s update methods so that they save delta information for object updates, in addition to the work they were already doing.
-3. **put operation**. The `put` works as usual in the local cache, using the full value, then calls `hasDelta` to see if there are deltas and `toDelta` to serialize the information. Distribution is the same as for full values, according to member and region configuration.
-4. **receipt of delta at remote member**. `fromDelta` extracts the delta information that was serialized by `toDelta` and applies it to the object in the local cache. The delta is applied directly to the existing value or to a clone, depending on how you configure it for the region.
-5. **additional distributions**. As with full distributions, receiving members forward the delta according to their configurations and connections to other members. For example, if VM1 is a client and VM2 is a server, VM2 forwards the delta to its peers and its other clients as needed. Receiving members do not recreate the delta; `toDelta` is only called in the originating member.
+1. **get 操作**. `get`像往常一样工作：缓存从本地缓存返回完整的条目对象，如果在那里不可用，则从远程缓存或加载器返回。
+2. **update 方法**. 您需要向对象的更新方法添加代码，以便除了已经完成的工作外，还可以保存对象更新的增量信息。
+3. **put 操作**. `put`在本地缓存中照常工作，使用完整值，然后调用`hasDelta`查看是否有增量和`toDelta`来序列化信息。 根据成员和区域配置，分配与完整值相同。
+4. **收到远程成员的delta**. `fromDelta`提取由`toDelta`序列化的delta信息，并将其应用于本地缓存中的对象。 增量将直接应用于现有值或克隆，具体取决于您为区域配置它的方式。
+5. **额外的分布式**. 与完整分布式一样，接收成员根据其配置和与其他成员的连接转发增量。 例如，如果VM1是客户端而VM2是服务器，则VM2根据需要将增量转发给其对等端及其他客户端。 接收成员不会重新创建增量; `toDelta`只在原始成员中调用。
 
-**General Characteristics of Delta Propagation**
+**增量传播的一般特征**
 
-To use the delta propagation feature, all updates on a key in a region must have value types that implement the `Delta` interface. You cannot mix object types for an entry key where some of the types implement delta and some do not. This is because, when a type implementing the delta interface is received for an update, the existing value for the key is cast to a `Delta` type to apply the received delta. If the existing type does not also implement the `Delta` interface, the operation throws a `ClassCastException`.
+要使用增量传播功能，区域中键的所有更新都必须具有实现`Delta`接口的值类型。 您不能为某些类型实现delta的条目键混合对象类型，而有些类型则不能。 这是因为，当接收到实现增量接口的类型以进行更新时，将键的现有值强制转换为`Delta`类型以应用接收的增量。 如果现有类型也没有实现`Delta`接口，则操作会抛出`ClassCastException`。
 
-**注意:** Only the object itself being placed in the cache can implement the `Delta` interface and propagate changes. Any sub-objects of the cache object do not propagate their changes.
+**注意:** 只有放置在缓存中的对象本身才能实现`Delta`接口并传播更改。 缓存对象的任何子对象都不会传播其更改。
 
-Sometimes `fromDelta` cannot be invoked because there is no object to apply the delta to in the receiving cache. When this happens, the system automatically does a full value distribution to the receiver. These are the possible scenarios: 1. If the system can determine beforehand that the receiver does not have a local copy, it sends the initial message with the full value. This is possible when regions are configured with no local data storage, such as with the region shortcut settings `PARTITION_PROXY` and `REPLICATE_PROXY`. These configurations are used to accomplish things like provide data update information to listeners and to pass updates forward to clients. 2. In less obvious cases, such as when an entry has been locally deleted, first the delta is sent, then the receiver requests a full value and that is sent. Whenever the full value is received, any further distributions to the receiver’s peers or clients uses the full value.
+有时`fromDelta`无法调用，因为没有对象将delta应用于接收缓存。 发生这种情况时，系统会自动对接收器进行完整的值分配。 以下是可能的情况：1。如果系统可以事先确定接收方没有本地副本，则会发送带有完整值的初始消息。 当区域配置为没有本地数据存储时，例如区域快捷方式设置为`PARTITION_PROXY`和`REPLICATE_PROXY`，这是可能的。 这些配置用于完成诸如向侦听器提供数据更新信息以及将更新传递给客户端之类的事情。 2.在不太明显的情况下，例如当一个条目被本地删除时，首先发送增量，然后接收方请求一个完整的值并发送。 每当收到完整值时，对接收者的对等体或客户端的任何进一步分发都使用完整值。
 
-Geode also does not propagate deltas for:
+Geode也不会传播增量：
 
-- Transactional commit
-- The `putAll` operation
-- JVMs running Geode versions that do not support delta propagation (6.0 and earlier)
+- 事务提交
+- `putAll` 操作
+- 运行不支持增量传播的Geode版本的JVM（6.0及更早版本）
 
-**Supported Topologies and Limitations**
+**支持的拓扑和限制**
 
-The following topologies support delta propagation (with some limitations):
+以下拓扑支持增量传播（有一些限制）：
 
-- Peer-to-peer
+- Peer-to-peer(点对点)
 
-  . Geode system members distribute and receive entry changes using delta propagation, with these requirements and caveats:
+  . Geode系统成员使用delta传播来分发和接收条目更改，具有以下要求和注意事项：
 
-  - Regions must be partitioned or have their scope set to `distributed-ack` or `global`. The region shortcut settings for distributed regions use `distributed-ack` `scope`. Delta propagation does not work for regions with `distributed-no-ack` `scope` because the receiver could not recover if an exception occurred while applying the delta.
-  - For partitioned regions, if a receiving peer does not hold the primary or a secondary copy of the entry, but still requires a value, the system automatically sends the full value.
-  - To receive deltas, a region must be non-empty. The system automatically sends the full value to empty regions. Empty regions can send deltas.
+  - 必须对区域进行分区或将其范围设置为`distributed-ack`或`global`。 分布式区域的区域快捷方式设置使用`distributed-ack``范围`。 Delta传播对于具有`distributed-no-ack``范围的区域不起作用，因为如果在应用delta时发生异常，则接收器无法恢复。
+  - 对于分区区域，如果接收对等方未保留条目的主副本或副本，但仍需要值，则系统会自动发送完整值。
+  - 要接收增量，区域必须是非空的。 系统自动将完整值发送到空白区域。 空区域可以发送增量。
 
-- Client/server
+- Client/server(客户端/服务器)
 
-  . Geode clients can always send deltas to the servers, and servers can usually sent deltas to clients. These configurations require the servers to send full values to the clients, instead of deltas:
+  . Geode客户端总是可以向服务器发送增量，服务器通常可以向客户端发送增量。 这些配置要求服务器将完整值发送到客户端，而不是增量：
 
-  - When the client’s `gemfire.properties` setting `conflate-events` is set to true, the servers send full values for all regions.
-  - When the server region attribute `enable-subscription-conflation` is set to true and the client `gemfire.properties` setting `conflate-events` is set to `server`, the servers send full values for the region.
-  - When the client region is configured with the `PROXY` client region shortcut setting (empty client region), servers send full values.
+  - 当客户端的`gemfire.properties`设置`conflate-events`设置为true时，服务器会为所有区域发送完整值。
+  - 当服务器区域属性`enable-subscription-conflation`设置为true并且客户端`gemfire.properties`设置`conflate-events`设置为`server`时，服务器会发送该区域的完整值。
+  - 当客户端区域配置了`PROXY`客户端区域快捷方式设置（空客户端区域）时，服务器将发送完整值。
 
-- **Multi-site (WAN)**. Gateway senders do not send Deltas. The full value is always sent.
-
-
-
-### When to Avoid Delta Propagation
-
-Generally, the larger your objects and the smaller the deltas, the greater the benefits of using delta propagation. Partitioned regions with higher redundancy levels generally benefit more from delta propagation. However, in some application scenarios, delta propagation does not show any significant benefits. On occasion it results in performance degradation.
-
-By default, delta propagation is enabled in your cluster.
-
-These are the main factors that can reduce the performance benefits of using delta propagation:
-
-- The added costs of deserializing your objects to apply deltas. Applying a delta requires the entry value to be deserialized. Once this is done, the object is stored back in the cache in deserialized form. This aspect of delta propagation only negatively impacts your system if your objects are not already being deserialized for other reasons, such as for indexing and querying or for listener operations. Once stored in deserialized form, there are reserialization costs for operations that send the object outside of the member, like distribution from a gateway sender, values sent in response to `netSearch` or client requests, and storage to disk. The more operations that require reserialization, the higher the overhead of deserializing the object. As with all serialization efforts, you can improve performance in serialization and deserialization by providing custom implementations of `DataSerializable` for your objects.
-- Cloning when applying the delta. Using cloning can affect performance and generates extra garbage. Not using cloning is risky however, as you are modifying cached values in place. Without cloning, make sure you synchronize your entry access to keep your cache from becoming inconsistent.
-- Problems applying the delta that cause the system to go back to the originator for the full entry value. When this happens, the overall operation costs more than sending the full entry value in the first place. This can be additionally aggravated if your delta is sent to a number of recipients, all or most of them request a full value, and the full value send requires the object to be serialized.
-- Disk I/O costs associated with overflow regions. If you use eviction with overflow to disk, on-disk values must be brought into memory in order to apply the delta. This is much more costly than just removing the reference to the disk copy, as you would do with a full value distribution into the cache.
+- **多站点（WAN）**. 网关发件人不发送Deltas。 始终发送完整值。
 
 
 
-### Delta Propagation Properties
+### 何时避免增量传播
 
-This topic describes the properties that can be used to configure delta propagation.
+通常，对象越大，增量越小，使用增量传播的好处就越大。 具有较高冗余级别的分区区域通常受益于增量传播。 但是，在某些应用场景中，增量传播并未显示任何显着优势。 有时它会导致性能下降。
 
-Delta propagation properties can be configured through the API and through the `gemfire.properties` and `cache.xml` files.
+默认情况下，集群中启用了增量传播。
 
-**delta-propagation**
+这些是可能降低使用增量传播的性能优势的主要因素：
 
-A `gemfire.properties` boolean that enables or disables delta propagation. When false, full entry values are sent for every update. The default setting is true, which enables delta propagation.
+- 反序列化对象以增加应用增量的成本。 应用增量需要反序列化条目值。 完成此操作后，对象将以反序列化的形式存储在缓存中。 如果由于其他原因（例如索引和查询或侦听器操作）尚未对对象进行反序列化，则delta传播的这一方面仅会对您的系统产生负面影响。 一旦以反序列化的形式存储，就会有将对象发送到成员之外的操作的重新编码成本，例如来自网关发送者的分发，响应于`netSearch`或客户端请求而发送的值以及存储到磁盘。 需要重新编译的操作越多，反序列化对象的开销就越高。 与所有序列化工作一样，您可以通过为对象提供`DataSerializable`的自定义实现来提高序列化和反序列化的性能。
+- 应用delta时克隆。 使用克隆会影响性能并产生额外的垃圾。 但是，不使用克隆是有风险的，因为您正在修改缓存值。 如果没有克隆，请确保同步您的条目访问权限以防止缓存变得不一致。
+- 应用delta的问题导致系统返回到发起者的完整条目值。 发生这种情况时，整体操作的成本高于首先发送完整的条目值。 如果将delta发送给多个收件人，其中全部或大部分请求完整值，并且完整值发送需要将对象序列化，则可能会进一步加剧这种情况。
+- 与溢出区域相关的磁盘I / O开销。 如果使用带有溢出到磁盘的驱逐，则必须将磁盘上的值带入内存才能应用增量。 这比仅删除对磁盘副本的引用要昂贵得多，就像对缓存中的完整值分配一样。
 
-Disable delta propagation as follows:
+
+
+### 增量传播属性
+
+本主题描述可用于配置增量传播的属性。
+
+增量传播属性可以通过API和`gemfire.properties`和`cache.xml`文件进行配置。
+
+**delta-propagation(增量传播)**
+
+一个`gemfire.properties`布尔值，用于启用或禁用增量传播。 如果为false，则为每次更新发送完整的条目值。 默认设置为true，启用增量传播。
+
+禁用增量传播如下：
 
 - `gemfire.properties`:
 
@@ -5498,31 +5498,31 @@ Disable delta propagation as follows:
   this.cache = new ClientCacheFactory(props).create();
   ```
 
-**cloning-enabled**
+**cloning-enabled(启用克隆)**
 
-A region attributes boolean that affects how `fromDelta` applies deltas to the local cache. When true, the updates are applied to a clone of the value and then the clone is saved to the cache. When false, the value is modified in place in the cache. The default value is false.
+区域属性boolean影响`fromDelta`如何将增量应用于本地缓存。 如果为true，则将更新应用于值的克隆，然后将克隆保存到缓存中。 如果为false，则在缓存中就地修改该值。 默认值为false。
 
-Exceptions to this behavior:
+此行为的例外情况：
 
-- If the `Cache` attribute `copy-on-read` is true, cloning is enabled, regardless of what this attribute is set to.
-- If the `Region` attribute `off-heap` is true, cloning is enabled, regardless of what this attribute is set to.
+- 如果`Cache`属性`copy-on-read`为true，则启用克隆，无论该属性设置为什么。
+- 如果`Region`属性`off-heap`为true，则启用克隆，无论此属性设置为什么。
 
-Cloning can be expensive, but it ensures that the new object is fully initialized with the delta before any application code sees it.
+克隆可能很昂贵，但它确保在任何应用程序代码看到之前，使用delta完全初始化新对象。
 
-When cloning is enabled, by default Geode does a deep copy of the object, using serialization. You may be able to improve performance by implementing `java.lang.Cloneable` and then implementing the `clone` method, making a deep copy of anything to which a delta may be applied. The goal is to reduce significantly the overhead of copying the object while still retaining the isolation needed for your deltas.
+启用克隆后，默认情况下，Geode使用序列化对对象执行深层复制。 您可以通过实现`java.lang.Cloneable`然后实现`clone`方法来提高性能，对可以应用delta的任何内容进行深层复制。 目标是显着减少复制对象的开销，同时仍保留增量所需的隔离。
 
-Without cloning:
+没有克隆：
 
-- It is possible for application code to read the entry value as it is being modified, possibly seeing the value in an intermediate, inconsistent state, with just part of the delta applied. You may choose to resolve this issue by having your application code synchronize on reads and writes.
-- Geode loses any reference to the old value because the old value is transformed in place into the new value. Because of this, your `CacheListener` sees the same new value returned for `EntryEvent.getOldValue` and `EntryEvent.getNewValue` .
-- Exceptions thrown from `fromDelta` may leave your cache in an inconsistent state. Without cloning, any interruption of the delta application could leave you with some of the fields in your cached object changed and others unchanged. If you do not use cloning, keep this in mind when you program your error handling in your `fromDelta` implementation.
+- 应用程序代码可以在修改时读取条目值，可能会看到处于中间不一致状态的值，只应用部分delta。 您可以选择通过使应用程序代码在读取和写入上同步来解决此问题。
+- Geode丢失对旧值的任何引用，因为旧值已在适当位置转换为新值。 因此，你的`CacheListener`看到了为`EntryEvent.getOldValue`和`EntryEvent.getNewValue`返回的相同新值。
+- 从`fromDelta`抛出的异常可能会使缓存处于不一致状态。 如果没有克隆，delta应用程序的任何中断都可能使您的缓存对象中的某些字段发生更改而其他字段保持不变。 如果您不使用克隆，请在编译`fromDelta`实现中的错误处理时记住这一点。
 
-With cloning:
+伴随着克隆：
 
-- The `fromDelta` method generates more garbage in memory.
-- Performance is reduced.
+- `fromDelta`方法在内存中生成更多垃圾。
+- 性能降低。
 
-Enable cloning as follows:
+启用克隆如下：
 
 - `cache.xml`:
 
@@ -5550,19 +5550,19 @@ Enable cloning as follows:
 
 
 
-### Implementing Delta Propagation
+### 实施增量传播
 
-By default, delta propagation is enabled in your cluster. When enabled, delta propagation is used for objects that implement `org.apache.geode.Delta`. You program the methods to store and extract delta information for your entries and to apply received delta information.
+默认情况下，集群中启用了增量传播。 启用时，增量传播用于实现`org.apache.geode.Delta`的对象。 您可以对方法进行编程，以存储和提取条目的增量信息，并应用收到的增量信息。
 
-Use the following procedure to implement delta propagation in your cluster.
+使用以下过程在集群中实现增量传播。
 
-1. Study your object types and expected application behavior to determine which regions can benefit from using delta propagation. Delta propagation does not improve performance for all data and data modification scenarios. See [When to Avoid Delta Propagation](https://geode.apache.org/docs/guide/17/developing/delta_propagation/when_to_use_delta_prop.html#when_to_use_delta_prop).
+1. 研究对象类型和预期的应用程序行为，以确定哪些区域可以从使用增量传播中受益。 增量传播不会提高所有数据和数据修改方案的性能。 参见[何时避免Delta传播](https://geode.apache.org/docs/guide/17/developing/delta_propagation/when_to_use_delta_prop.html#when_to_use_delta_prop).
 
-2. For each region where you are using delta propagation, choose whether to enable cloning using the delta propagation property `cloning-enabled`. Cloning is disabled by default. See [Delta Propagation Properties](https://geode.apache.org/docs/guide/17/developing/delta_propagation/delta_propagation_properties.html#delta_propagation_properties).
+2. 对于使用增量传播的每个区域，选择是否使用增量传播属性`cloning-enabled`启用克隆。 默认情况下禁用克隆。 参见[Delta传播属性](https://geode.apache.org/docs/guide/17/developing/delta_propagation/delta_propagation_properties.html#delta_propagation_properties).
 
-3. If you do not enable cloning, review all associated listener code for dependencies on `EntryEvent.getOldValue`. Without cloning, Geode modifies the entry in place and so loses its reference to the old value. For delta events, the `EntryEvent` methods `getOldValue` and `getNewValue` both return the new value.
+3. 如果您不启用克隆，请查看所有关联的侦听器代码以查看`EntryEvent.getOldValue`的依赖项。 如果没有克隆，Geode就会修改条目，因此失去对旧值的引用。 对于delta事件，`EntryEvent`方法`getOldValue`和`getNewValue`都返回新值。
 
-4. For every class where you want delta propagation, implement
+4. 对于您想要增量传播的每个类，请实现下面的接口
 
     
 
@@ -5572,56 +5572,56 @@ Use the following procedure to implement delta propagation in your cluster.
 
     
 
-   and update your methods to support delta propagation. Exactly how you do this depends on your application and object needs, but these steps describe the basic approach:
+   并更新您的方法以支持增量传播。 具体如何执行此操作取决于您的应用程序和对象需求，但这些步骤描述了基本方法：
 
-   1. If the class is a plain old Java object (POJO), wrap it for this implementation and update your code to work with the wrapper class.
-   2. Define as transient any extra object fields that you use to manage delta state. This can help performance when the full object is distributed. Whenever standard Java serialization is used, the transient keyword indicates to Java to not serialize the field.
-   3. Study the object contents to decide how to handle delta changes. Delta propagation has the same issues of distributed concurrency control as the distribution of full objects, but on a more detailed level. Some parts of your objects may be able to change independent of one another while others may always need to change together. Send deltas large enough to keep your data logically consistent. If, for example, field A and field B depend on each other, then your delta distributions should either update both fields or neither. As with regular updates, the fewer producers you have on a data region, the lower your likelihood of concurrency issues.
-   4. In the application code that puts entries, put the fully populated object into the local cache. Even though you are planning to send only deltas, errors on the receiving end could cause Geode to request the full object, so you must provide it to the originating put method. Do this even in empty producers, with regions configured for no local data storage. This usually means doing a get on the entry unless you are sure it does not already exist anywhere in the distributed region.
-   5. Change each field’s update method to record information about the update. The information must be sufficient for `toDelta` to encode the delta and any additional required delta information when it is invoked.
-   6. Write `hasDelta` to report on whether a delta is available.
-   7. Write `toDelta` to create a byte stream with the changes to the object and any other information `fromDelta` will need to apply the changes. Before returning from `toDelta`, reset your delta state to indicate that there are no delta changes waiting to be sent.
-   8. Write `fromDelta` to decode the byte stream that `toDelta` creates and update the object.
-   9. Make sure you provide adequate synchronization to your object to maintain a consistent object state. If you do not use cloning, you will probably need to synchronize on reads and writes to avoid reading partially written updates from the cache.This synchronization might involve `toDelta`, `fromDelta`, `toData`, `fromData`, and other methods that access or update the object. Additionally, your implementation should take into account the possibility of concurrent invocations of `fromDelta` and one or more of the object’s update methods.
-
-
-
-### Errors In Delta Propagation
-
-This topic lists the errors that can occur when using delta propagation.
-
-Errors in delta propagation fall into two categories based on how they are handled by the system:
-
-- Problems applying the delta that can be remedied by requesting the full value in place of the delta. Your`put`operation does not see errors or exceptions related to this type of delta propagation failure. The system automatically does a full value distribution from the sender to the receiver where the problem occurs. This type of error includes:
-
-  - Unavailable entry value in the receiving cache, either because the entry is missing or its value is null. In both cases, there is nothing to apply the delta to and the full value must be sent. This is most likely to occur if you destroy or invalidate your entries locally, either through application calls or through configured actions like eviction or entry expiration.
-  - `InvalidDeltaException` thrown by `fromDelta` method, programmed by you. This exception enables you to avoid applying deltas that would violate data consistency checks or other application requirements.
-  - Any error applying the delta in a client in server-to-client propagation. The client logs a warning in addition to retrieving the full value from the server.
-
-- Problems creating or distributing the delta that cannot be fixed by distributing the full value. In these cases, your`put` operation fails with an exception. This type of error includes:
-
-  - Error or exception in `hasDelta` or `toDelta`.
-  - Error or exception in a server or peer receiver that fall outside of the situations described above in the first category.
+   1. 如果该类是普通的旧Java对象（POJO），请将其包装为此实现并更新代码以使用包装类。
+   2. 将用于管理增量状态的任何额外对象字段定义为瞬态。 这可以在分发完整对象时提高性能。 每当使用标准Java序列化时，transient关键字指示Java不对该字段进行序列化。
+   3. 研究对象内容以决定如何处理增量变化。 Delta传播与分布式并发控制具有相同的问题，就像完整对象的分布一样，但是在更详细的层面上。 对象的某些部分可能能够彼此独立地更改，而其他部分可能总是需要一起更改。 发送足够大的增量以保持数据在逻辑上一致。 例如，如果字段A和字段B相互依赖，则delta分布应更新两个字段或两者都不更新。 与常规更新一样，数据区域上的生产者越少，并发问题的可能性就越低。
+   4. 在放置条目的应用程序代码中，将完全填充的对象放入本地缓存中。 即使您计划仅发送增量，接收端上的错误也可能导致Geode请求完整对象，因此您必须将其提供给原始put方法。 即使在空的生产者中也要这样做，区域配置为没有本地数据存储。 这通常意味着要进行输入，除非您确定它在分布式区域中的任何位置都不存在。
+   5. 更改每个字段的更新方法以记录有关更新的信息。 该信息必须足以让`toDelta`在调用delta时对delta和任何其他所需的delta信息进行编码。
+   6. 写`hasDelta`告知delta是否可用。
+   7. 编写`toDelta`来创建一个带有对象更改的字节流，并且任何其他信息`fromDelta`将需要应用更改。 在从`toDelta`返回之前，重置delta状态以指示没有等待发送的delta更改。
+   8. 写`fromDelta`来解码'toDelta`创建的字节流并更新对象。
+   9. 确保为对象提供足够的同步以维持一致的对象状态。 如果不使用克隆，则可能需要同步读取和写入以避免从缓存中读取部分写入的更新。此同步可能涉及`toDelta`，`fromDelta`，`toData`，`fromData`和其他方法 访问或更新对象。 此外，您的实现应考虑并发调用`fromDelta`和一个或多个对象的更新方法的可能性。
 
 
 
-### Delta Propagation Example
+### 增量传播中的错误
 
-This topic provides an example of delta propagation.
+本主题列出了使用增量传播时可能发生的错误。
 
-In this example, the feeder client is connected to the first server, and the receiver client is connected to the second. The servers are peers to each other.
+增量传播中的错误根据系统处理方式分为两类：
+
+- 应用delta的问题可以通过请求全部值代替delta来补救。 您的`put`操作没有看到与此类delta传播失败相关的错误或异常。 系统会自动执行从发送方到发生问题的接收方的完整值分配。 此类错误包括：
+
+  - 接收缓存中的条目值不可用，原因是条目缺失或其值为null。 在这两种情况下，都没有应用delta的任何内容，必须发送完整值。 如果您通过应用程序调用或通过驱逐或条目到期等已配置的操作在本地销毁或使您的条目无效，则最有可能发生这种情况。
+  - `fromDelta`方法抛出的`InvalidDeltaException`，由你编程。 此异常使您可以避免应用违反数据一致性检查或其他应用程序要求的增量。
+  - 在服务器到客户端传播中在客户端中应用增量的任何错误。 除了从服务器检索完整值之外，客户端还会记录警告。
+
+- 创建或分发无法通过分配完整值来修复的增量的问题。 在这些情况下，您的`put`操作会失败并出现异常。 此类错误包括：
+
+  - `hasDelta`或`toDelta`中的错误或异常。
+  - 服务器或对等接收器中的错误或异常超出上述第一类中描述的情况。
+
+
+
+### 增量传播示例
+
+本主题提供了增量传播的示例。
+
+在此示例中，馈线客户端连接到第一服务器，接收器客户端连接到第二服务器。 服务器彼此对等。
 
 ![img](assets/DeltaPropagation-3.gif)
 
-The example demonstrates the following operations:
+该示例演示了以下操作：
 
-1. In the Feeder client, the application updates the entry object and puts the entry. In response to the `put`, Geode calls `hasDelta`, which returns true, so Geode calls `toDelta` and forwards the extracted delta to the server. If `hasDelta` returned false, Geode would distribute the full entry value.
-2. In Server1, Geode applies the delta to the cache, distributes the received delta to the server’s peers, and forwards it to any other clients with interest in the entry (there are no other clients to Server1 in this example)
-3. In Server2, Geode applies the delta to the cache and forwards it to its interested clients, which in this case is just the Receiver client.
+1. 在Feeder客户端中，应用程序更新条目对象并放入条目。 响应`put`，Geode调用`hasDelta`，返回true，因此Geode调用`toDelta`并将提取的delta转发给服务器。 如果`hasDelta`返回false，Geode将分配完整的条目值。
+2. 在Server1中，Geode将增量应用于缓存，将收到的增量分发给服务器的对等体，并将其转发给对该条目感兴趣的任何其他客户端（在此示例中没有其他客户端到Server1）
+3. 在Server2中，Geode将增量应用于缓存并将其转发给感兴趣的客户端，在这种情况下，客户端只是接收客户端。
 
 
 
-This example shows the basic approach to programming a `Delta` implementation.
+此示例显示了编写`Delta`实现的基本方法。
 
 ```java
 package delta;
@@ -5720,58 +5720,58 @@ public class SimpleDelta implements Delta, Serializable {
 
 ## 查询
 
-Geode provides a SQL-like querying language called OQL that allows you to access data stored in Geode regions.
+Geode提供了一种类似SQL的查询语言OQL，允许您访问存储在Geode区域中的数据。
 
-Since Geode regions are key-value stores where values can range from simple byte arrays to complex nested objects, Geode uses a query syntax based on OQL (Object Query Language) to query region data. OQL is very similar to SQL, but OQL allows you to query complex objects, object attributes, and methods.
+由于Geode区域是键值存储，其值可以从简单字节数组到复杂嵌套对象，因此Geode使用基于OQL（对象查询语言）的查询语法来查询区域数据。 OQL与SQL非常相似，但OQL允许您查询复杂对象，对象属性和方法。
 
-- **Querying FAQ and Examples**
+- **查询常见问题和示例**
 
-  This topic answers some frequently asked questions on querying functionality. It provides examples to help you get started with Geode querying.
+  本主题回答有关查询功能的一些常见问题。 它提供了一些示例来帮助您开始使用Geode查询。
 
-- **Querying with OQL**
+- **使用OQL查询**
 
-  This section provides a high-level introduction to Geode querying such as building a query string and describes query language features.
+  本节提供Geode查询的高级介绍，例如构建查询字符串和描述查询语言功能。
 
-- **Advanced Querying**
+- **高级查询**
 
-  This section includes advanced querying topics such as using query indexes, using query bind parameters, querying partitioned regions and query debugging.
+  本节包括高级查询主题，例如使用查询索引，使用查询绑定参数，查询分区区域和查询调试。
 
-- **Working with Indexes**
+- **使用索引**
 
-  The Geode query engine supports indexing. An index can provide significant performance gains for query execution.
+  Geode查询引擎支持索引。 索引可以为查询执行提供显着的性能提升。
 
 
 
-### Querying FAQ and Examples
+### 查询常见问题和示例
 
-This topic answers some frequently asked questions on querying functionality. It provides examples to help you get started with Geode querying.
+本主题回答有关查询功能的一些常见问题。 它提供了一些示例来帮助您开始使用Geode查询。
 
-For additional information on Geode querying, see [Querying](https://geode.apache.org/docs/guide/17/developing/querying_basics/chapter_overview.html).
+有关Geode查询的其他信息，请参阅[查询](https://geode.apache.org/docs/guide/17/developing/querying_basics/chapter_overview.html).
 
-- [How do I write and execute a query against a Geode region?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_7A4D2C6A4E2C4F4384C158FFCA9CA1C0)
-- [Can I see query string examples, listed by query type?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_641D97CD874D4182961C85429ACA1B05)
-- [Which APIs should I use to write my queries?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_5383407F9D004D4EB4E695252EBA1EF0)
-- [How do I invoke an object’s method in a query?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_3E6E4B33D57846008EF4404D2B687597)
-- [Can I invoke a static method on an object in a query?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_9221C29BC1FD49D7BBD26BB34D5BDEB8)
-- [How do I write a reusable query?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_907DBBBA1AEC4570A15B3491B0A7DF0E)
-- [When should I create indexes to use in my queries?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_3A9528E8E43140BAA0D5A1457CCAB2D2)
-- [How do I create an index?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_76CDCCFBDB134A339DBE556C28D48F11)
-- [Can I query a partitioned region? Can I perform a join query on a partitioned region?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_EDD17817450C4FC0B510CD87DB2FCD16)
-- [How can I improve the performance of a partitioned region query?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_5FF905E0D10D4CDF9E6F49A70848AF69)
-- [Which query language elements are supported in Geode?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_FBC59A5420FD40D6907A302A1D50DF7E)
-- [How do I debug queries?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_314B88A55B514B88A12DC36227A2D4EF)
-- [Can I use implicit attributes or methods in my query?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__implicit_attributes)
-- [How do I perform a case-insensitive search on a field in OQL?](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_ayq_hqw_1r)
+- [如何针对Geode区域编写和执行查询？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_7A4D2C6A4E2C4F4384C158FFCA9CA1C0)
+- [我可以查看按查询类型列出的查询字符串示例吗？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_641D97CD874D4182961C85429ACA1B05)
+- [我应该使用哪些API来编写查询？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_5383407F9D004D4EB4E695252EBA1EF0)
+- [如何在查询中调用对象的方法？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_3E6E4B33D57846008EF4404D2B687597)
+- [我可以在查询中的对象上调用静态方法吗？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_9221C29BC1FD49D7BBD26BB34D5BDEB8)
+- [如何编写可重用的查询？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_907DBBBA1AEC4570A15B3491B0A7DF0E)
+- [我应该何时创建要在查询中使用的索引？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_3A9528E8E43140BAA0D5A1457CCAB2D2)
+- [如何创建索引？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_76CDCCFBDB134A339DBE556C28D48F11)
+- [我可以查询分区区域吗？ 我可以在分区区域上执行连接查询吗？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_EDD17817450C4FC0B510CD87DB2FCD16)
+- [如何提高分区区域查询的性能？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_5FF905E0D10D4CDF9E6F49A70848AF69)
+- [Geode支持哪些查询语言元素？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_FBC59A5420FD40D6907A302A1D50DF7E)
+- [我如何调试查询？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_314B88A55B514B88A12DC36227A2D4EF)
+- [我可以在查询中使用隐式属性或方法吗？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__implicit_attributes)
+- [如何在OQL中对字段执行不区分大小写的搜索？](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E__section_ayq_hqw_1r)
 
-**How do I write and execute a query against a Geode region?**
+**如何针对Geode区域编写和执行查询？**
 
-To write and execute a query in Geode, you can use any of the following mechanisms. Sample query code follows.
+要在Geode中编写和执行查询，可以使用以下任何机制。 示例查询代码如下。
 
-- Geode querying APIs
-- [gfsh](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/chapter_overview.html) command-line interface; in particular the [query](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html) command
+- Geode查询API
+- [gfsh](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/chapter_overview.html) 命令行界面; 特别是[查询](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html) 命令
 - REST API [query endpoints](https://geode.apache.org/docs/guide/17/rest_apps/rest_queries.html#concept_mmg_d35_m4)
 
-**Sample Geode Query Code (Java)**
+**示例Geode查询代码(Java)**
 
 ```
 // Identify your query string.
@@ -5793,9 +5793,9 @@ To write and execute a query in Geode, you can use any of the following mechanis
  Portfolio p = (Portfolio)results.iterator().next(); /* Region containing Portfolio object. */
 ```
 
-**Can I see query string examples, listed by query type?**
+**我可以查看按查询类型列出的查询字符串示例吗？**
 
-The following example query strings use the `/exampleRegion` whose keys are the portfolio ID and whose values correspond to the summarized data shown in the following class definitions:
+以下示例查询字符串使用`/exampleRegion`，其键是项目组合ID，其值对应于以下类定义中显示的汇总数据：
 
 ```
 class Portfolio implements DataSerializable {
@@ -5811,57 +5811,57 @@ class Position implements DataSerializable {
 }
 ```
 
-**Basic WHERE Clause Examples**
+**基本WHERE子句示例**
 
-In the following examples, the status field is type String and the ID field is type int. See [Supported Literals](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals) for a complete list of literals supported in Geode querying.
+在以下示例中，status字段的类型为String，ID字段的类型为int。 有关Geode查询支持的文字的完整列表，请参阅[支持的文字](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals) 。
 
-1. Select all active portfolios.
+1. 选择所有有效投资组合
 
    ```
    SELECT * FROM /exampleRegion WHERE status = 'active'
    ```
 
-2. Select all portfolios whose status begins with ‘activ’.
+2. 选择状态以`activ`开头的所有投资组合。
 
    ```
    SELECT * FROM /exampleRegion p WHERE p.status LIKE 'activ%'
    ```
 
-3. Select all portfolios whose ID is greater than 100.
+3. 选择ID大于100的所有投资组合。
 
    ```
    SELECT * from /exampleRegion p WHERE p.ID > 100
    ```
 
-**Using DISTINCT**
+**使用 DISTINCT**
 
-Select distinct Objects from the region that satisfy the where clause condition of status = 'active’.
+从满足status ='active'的where子句条件的区域中选择不同的对象。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE status = 'active'
 ```
 
-**Aliases and Synonyms**
+**别名和同义词**
 
-In the query string, the path expressions (region and its objects) can be defined using an alias. This alias can be used or referred to in other places in the query.
+在查询字符串中，可以使用别名定义路径表达式（区域及其对象）。 可以在查询的其他位置使用或引用此别名。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 SELECT p.ID, p.status FROM /exampleRegion p WHERE p.ID > 0
 ```
 
-**Using the NOT Operator**
+**使用NOT运算符**
 
-See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) for a complete list of supported operators.
+有关支持的运算符的完整列表，请参阅[运算符](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) 。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE NOT (status = 'active') AND ID = 2
 SELECT * FROM /exampleRegion WHERE NOT (ID IN SET(1,2))
 ```
 
-**Using the AND and OR Operators**
+**使用AND和OR运算符**
 
-See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) for a complete list of supported operators.
+有关支持的运算符的完整列表，请参阅[运算符](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators)。
 
 ```
 SELECT * FROM /exampleRegion WHERE ID > 4 AND ID < 9
@@ -5870,36 +5870,36 @@ SELECT DISTINCT p.status FROM /exampleRegion p
 WHERE (p.createTime IN SET (10|) OR p.status IN SET ('active')) AND p.ID > 0
 ```
 
-**Using not equal to**
+**使用不等于**
 
 ```
 SELECT * FROM /exampleRegion portfolio WHERE portfolio.ID <> 2
 SELECT * FROM /exampleRegion portfolio WHERE portfolio.ID != 2
 ```
 
-**Projection attribute example**
+**投影属性示例**
 
 ```
 SELECT p.get('account') FROM /exampleRegion p
 ```
 
-**Querying nested collections**
+**查询嵌套集合**
 
-The following query uses Positions of type HashMap.
+以下查询使用HashMap类型的位置。
 
 ```
 SELECT p, pos FROM /exampleRegion p, p.positions.values pos WHERE pos.secId = 'VMW'
 ```
 
-**Using LIMIT**
+**使用 LIMIT**
 
 ```
 SELECT * FROM /exampleRegion p WHERE p.ID > 0 LIMIT 2
 ```
 
-**Using COUNT**
+**使用 COUNT**
 
-See [COUNT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_B2CBA00EB83F463DAF4769D7859C64C8) for more information.
+有关详细信息，请参阅[COUNT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_B2CBA00EB83F463DAF4769D7859C64C8)。
 
 ```
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0
@@ -5912,7 +5912,7 @@ SELECT DISTINCT COUNT(*) FROM /exampleRegion p, p.positions.values pos
 WHERE p.ID > 0 OR p.status = 'active' OR pos.secId OR pos.secId = 'IBM'
 ```
 
-**Using LIKE**
+**使用 LIKE**
 
 ```
 SELECT * FROM /exampleRegion ps WHERE ps.pkid LIKE '_bc'
@@ -5920,7 +5920,7 @@ SELECT * FROM /exampleRegion ps WHERE ps.status LIKE '_b_' OR ps.pkid = '2'
 SELECT * FROM /exampleRegion ps WHERE ps.status LIKE '%b%
 ```
 
-**Using Region Entry Keys and Values**
+**使用区域输入键和值**
 
 ```
 SELECT * FROM /exampleRegion.keys k WHERE k.ID = 1
@@ -5934,7 +5934,7 @@ SELECT * FROM /exampleRegion.values portfolio
 WHERE portfolio.status = 'active'
 ```
 
-**Nested Queries**
+**嵌套查询**
 
 ```
 IMPORT "query".Portfolio;
@@ -5948,16 +5948,16 @@ SELECT DISTINCT * FROM /exampleRegion p, (SELECT DISTINCT pos
 FROM /exampleRegion x, x.positions.values pos WHERE x.ID = p.ID ) AS itrX
 ```
 
-**Query the results of a FROM clause expression**
+**查询FROM子句表达式的结果**
 
 ```
 SELECT DISTINCT * FROM (SELECT DISTINCT * FROM /Portfolios ptf, positions pos) p 
 WHERE p.get('pos').value.secId = 'IBM'
 ```
 
-**Hash Map Query**
+**Hash Map 查询**
 
-Query using a hashmap. In the following examples, 'version’ is one of the keys in the hashmap.
+使用hashmap查询。 在以下示例中，'version'是hashmap中的键之一。
 
 ```
 SELECT * FROM /exampleRegion p WHERE p['version'] = '1.0'
@@ -5965,22 +5965,22 @@ SELECT entry.key, entry.value FROM /exampleRegion.entries entry
 WHERE entry.value['version'] = '100'
 ```
 
-**Map example where “map” is a nested HashMap object**
+**映射示例“map”是嵌套的HashMap对象**
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.portfolios['key2'] >= 3
 ```
 
-**Example Queries that Fetch Array Values**
+**获取数组值的示例查询**
 
 ```
 SELECT * FROM /exampleRegion p WHERE p.names[0] = 'aaa'
 SELECT * FROM /exampleRegion p WHERE p.collectionHolderMap.get('1').arr[0] = '0'
 ```
 
-**Using ORDER BY (and ORDER BY with LIMIT)**
+**使用 ORDER BY (and ORDER BY with LIMIT)**
 
-You must use the DISTINCT keyword with ORDER BY queries.
+必须将DISTINCT关键字与ORDER BY查询一起使用。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID
@@ -5994,7 +5994,7 @@ SELECT DISTINCT e.key FROM /exampleRegion.entrySet e ORDER BY e.key.ID desc, e.k
 SELECT DISTINCT p.names[1] FROM /exampleRegion p ORDER BY p.names[1]
 ```
 
-**Join Queries**
+**连接查询**
 
 ```
 SELECT * FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 
@@ -6009,21 +6009,21 @@ AND positions1.secId = positions1.secId
 SELECT DISTINCT a, b.price FROM /exampleRegoin1 a, /exampleRegion2 b WHERE a.price = b.price
 ```
 
-**Using AS**
+**使用 AS**
 
 ```
 SELECT * FROM /exampleRegion p, p.positions.values AS pos WHERE pos.secId != '1'
 ```
 
-**Using TRUE**
+**使用 TRUE**
 
 ```
 SELECT DISTINCT * FROM /Portfolios WHERE TRUE
 ```
 
-**Using IN and SET**
+**使用 IN 和 SET**
 
-See also [IN and SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7).
+参见 [IN 和 SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7).
 
 ```
 SELECT * FROM /exampleRegion portfolio WHERE portfolio.ID IN SET(1, 2)
@@ -6036,25 +6036,25 @@ WHERE portfolio.Pk IN SET ('1', '2') OR positions.secId IN SET ('1', '2', '3')
 AND portfolio.status = 'active'
 ```
 
-**Querying for Set values**
+**查询Set值**
 
-In the following query, sp is of type Set.
+在以下查询中，sp的类型为Set。
 
 ```
 SELECT * FROM /exampleRegion WHERE sp = set('20', '21', '22')
 ```
 
-If the Set (sp) only contains '20’ and '21’, then the query will evaluate to false. The query compares the two sets and looks for the presence of elements in both sets.
+如果Set（sp）仅包含`20`和`21`，则查询将评估为false。 查询比较两组并查找两组中元素的存在。
 
-For other collection types like list (sp is of type List), the query can be written as follows:
+对于像list这样的其他集合类型（sp是List类型），查询可以写成如下：
 
 ```
 SELECT * FROM /exampleRegion WHERE sp.containsAll(set('20', '21', '22'))
 ```
 
-**Invoking Methods on Objects**
+**在对象上调用方法**
 
-See [Method Invocations](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_D2F8D17B52B04895B672E2FCD675A676) for more information.
+有关详细信息，请参阅[方法调用](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_D2F8D17B52B04895B672E2FCD675A676) 。
 
 ```
 SELECT * FROM /exampleRegion p WHERE p.length > 1
@@ -6063,82 +6063,82 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.isEmpty
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.name.startsWith('Bo')
 ```
 
-**Using Query-Level Debugging**
+**使用查询级调试**
 
-To set debugging on the query level, add the **<trace>** keyword before the query. (If you are using an IMPORT statement, include it before the IMPORT).
+要在查询级别设置调试，请在查询之前添加** <trace> **关键字。 （如果您使用的是IMPORT语句，请在IMPORT之前包含它）。
 
 ```
 <trace>
 SELECT * from /exampleRegion, positions.values TYPE myclass
 ```
 
-**Using Reserved Words in Queries**
+**在查询中使用保留字**
 
-To access any method, attribute, or named object that has the same name as a query language reserved word, enclose the name within double quotation marks.
+要访问与查询语言保留字同名的任何方法，属性或命名对象，请将该名称括在双引号内。
 
 ```
 SELECT * FROM /exampleRegion WHERE status = 'active' AND "type" = 'XYZ'
 SELECT DISTINCT "type" FROM /exampleRegion WHERE status = 'active'
 ```
 
-**Using IMPORT**
+**使用 IMPORT**
 
-In the case where the same class name resides in two different namescopes (packages), there needs to be a means of referring to different classes of the same name. The IMPORT statement is used to establish a namescope for a class in a query.
+在同一个类名存在于两个不同的名称范围（包）中的情况下，需要有一种引用同名的不同类的方法。 IMPORT语句用于在查询中为类建立名称范围。
 
 ```
 IMPORT package.Position;
 SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position WHERE positions.mktValue >= 25.00
 ```
 
-**Using TYPE**
+**使用 TYPE**
 
-Specifying object type helps the query engine to process the query at optimal speed. Apart from specifying the object types during configuration (using key-constraint and value-constraint), type can be explicitly specified in the query string.
+指定对象类型有助于查询引擎以最佳速度处理查询。 除了在配置期间指定对象类型（使用键约束和值约束）之外，还可以在查询字符串中显式指定类型。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position WHERE positions.mktValue >= 25.00
 ```
 
-**Using ELEMENT**
+**使用 ELEMENT**
 
-Using ELEMENT(expr) extracts a single element from a collection or array. This function throws a `FunctionDomainException` if the argument is not a collection or array with exactly one element.
+使用ELEMENT(expr)从集合或数组中提取单个元素。 如果参数不是只包含一个元素的集合或数组，则此函数抛出`FunctionDomainException`。
 
 ```
 ELEMENT(SELECT DISTINCT * FROM /exampleRegion WHERE id = 'XYZ-1').status = 'active'
 ```
 
-**Which APIs should I use to write my queries?**
+**我应该使用哪些API来编写查询？**
 
-If you are querying a Java application’s local cache or querying other members, use [org.apache.geode.cache.Cache.getQueryService](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/QueryService.html).
+如果要查询Java应用程序的本地缓存或查询其他成员，请使用[org.apache.geode.cache.Cache.getQueryService](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/QueryService.html).
 
-If you are writing a Java client to server query, use [org.apache.geode.cache.client.Pool.getQueryService](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/client/Pool.html).
+如果要将Java客户端编写到服务器查询，请使用[org.apache.geode.cache.client.Pool.getQueryService](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/client/Pool.html).
 
-**How do I invoke an object’s method in a query?**
+**如何在查询中调用对象的方法？**
 
-To use a method in a query, use the attribute name that maps to the public method you want to invoke. For example:
+要在查询中使用方法，请使用映射到要调用的公共方法的属性名称。 例如：
 
 ```
 /*valid method invocation*/ 
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.size >= 2 - maps to positions.size()
 ```
 
-**Can I invoke a static method on an object in a query?**
+**我可以在查询中的对象上调用静态方法吗？**
 
-No, you cannot invoke a static method on an object. For example, the following query is invalid.
+不，您无法在对象上调用静态方法。 例如，以下查询无效。
 
 ```
 /*invalid method invocation*/
 SELECT DISTINCT * FROM /exampleRegion WHERE aDay = Day.Wednesday
 ```
 
-To work around this limitation, write a reusable query that uses a query bind parameter to invoke the static method. Then at query run time, set the parameter to the static method invocation (`Day.Wednesday`). For example:
+要解决此限制，请编写可重用查询，该查询使用查询绑定参数来调用静态方法。 然后在查询运行时，将参数设置为静态方法调用（`Day.Wednesday`）。 例如：
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE aDay = $1
 ```
 
-**How do I write a reusable query?**
+**如何编写可重用的查询？**
 
-Using query APIs, you can set query bind parameters that are passed values at query run time. For example:
+使用查询API，您可以设置在查询运行时传递值的查询绑定参数。 例如：
 
 ```
 // specify the  query string
@@ -6158,23 +6158,23 @@ SelectResults results = (SelectResults) query.execute(params);
  int size = results.size();
 ```
 
-If you use a query bind parameter in place of a region path in your path expression, the parameter value must reference a collection (and not a String such as the name of the region path.)
+如果使用查询绑定参数代替路径表达式中的区域路径，则参数值必须引用集合（而不是字符串，例如区域路径的名称）。
 
-See [Using Query Bind Parameters](https://geode.apache.org/docs/guide/17/developing/query_additional/using_query_bind_parameters.html#concept_173E775FE46B47DF9D7D1E40680D34DF) for more details.
+有关详细信息，请参阅[使用查询绑定参数](https://geode.apache.org/docs/guide/17/developing/query_additional/using_query_bind_parameters.html#concept_173E775FE46B47DF9D7D1E40680D34DF)。
 
-**When should I create indexes to use in my queries?**
+**我应该何时创建要在查询中使用的索引？**
 
-Determine whether your query’s performance will benefit from an index. For example, in the following query, an index on pkid can speed up the query.
+确定查询的性能是否会从索引中受益。 例如，在以下查询中，pkid上的索引可以加快查询速度。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.pkid = '123'
 ```
 
-**How do I create an index?**
+**如何创建索引？**
 
-An index can be created programmatically using APIs or by using xml. Here are two examples:
+可以使用API或使用xml以编程方式创建索引。 这是两个例子：
 
-**Sample Code**
+**示例代码**
 
 ```
 QueryService qs = cache.getQueryService();
@@ -6182,9 +6182,9 @@ QueryService qs = cache.getQueryService();
  qs.createKeyIndex("myKeyIndex", "id", "exampleRegion");
 ```
 
-For more information on using this API, see the [JavaDocs](https://geode.apache.org/releases/latest/javadoc/index.html).
+有关使用此API的更多信息，请参阅[JavaDocs](https://geode.apache.org/releases/latest/javadoc/index.html).
 
-**Sample XML**
+**示例XML**
 
 ```
 <region name="portfolios">
@@ -6200,25 +6200,25 @@ For more information on using this API, see the [JavaDocs](https://geode.apache.
  <entry>
 ```
 
-For more details on indexes, see [Working with Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/query_index.html).
+有关索引的更多详细信息，请参阅[使用索引](https://geode.apache.org/docs/guide/17/developing/query_index/query_index.html).
 
-**Can I create indexes on overflow regions?**
+**我可以在溢出区域创建索引吗？**
 
-You can create indexes on overflow regions, but you are subject to some limitations. For example, the data contained in the index itself cannot be overflowed to disk. See [Using Indexes with Overflow Regions](https://geode.apache.org/docs/guide/17/developing/query_index/indexes_with_overflow_regions.html#concept_87BE7DB32C714EB0BF7532AF93569328) for more information.
+您可以在溢出区域上创建索引，但是您受到一些限制。 例如，索引本身包含的数据不能溢出到磁盘。 有关详细信息，请参阅[使用具有溢出区域的索引](https://geode.apache.org/docs/guide/17/developing/query_index/indexes_with_overflow_regions.html#concept_87BE7DB32C714EB0BF7532AF93569328) 。
 
-**Can I query a partitioned region? Can I perform a join query on a partitioned region?**
+**我可以查询分区区域吗？ 我可以在分区区域上执行连接查询吗？**
 
-You can query partitioned regions, but there are some limitations. You cannot perform join queries on partitioned regions, however you can perform equi-join queries on colocated partitioned regions by executing a function on a local data set.
+您可以查询分区区域，但存在一些限制。 您不能对分区区域执行连接查询，但是您可以通过在本地数据集上执行函数来对共置的分区区域执行等连接查询。
 
-For a full list of restrictions, see [Partitioned Region Query Restrictions](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_query_restrictions.html#concept_5353476380D44CC1A7F586E5AE1CE7E8).
+有关限制的完整列表，请参阅[分区区域查询限制](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_query_restrictions.html#concept_5353476380D44CC1A7F586E5AE1CE7E8).
 
-**How can I improve the performance of a partitioned region query?**
+**如何提高分区区域查询的性能？**
 
-If you know the data you need to query, you can target particular nodes in your queries (thus reducing the number of servers the query needs to access) by executing the query with the FunctionService. See [Querying a Partitioned Region on a Single Node](https://geode.apache.org/docs/guide/17/developing/query_additional/query_on_a_single_node.html#concept_30B18A6507534993BD55C2C9E0544A97) for details. If you are querying data that has been partitioned by a key or specific field, you should first create a key index and then execute the query using the FunctionService with the key or field as a filter. See [Optimizing Queries on Data Partitioned by a Key or Field Value](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454).
+如果您知道需要查询的数据，则可以通过使用FunctionService执行查询来定位查询中的特定节点（从而减少查询需要访问的服务器数量）。 有关详细信息，请参阅[在单个节点上查询分区区域](https://geode.apache.org/docs/guide/17/developing/query_additional/query_on_a_single_node.html#concept_30B18A6507534993BD55C2C9E0544A97)。 如果要查询已由键或特定字段分区的数据，则应首先创建键索引，然后使用FunctionService以键或字段作为过滤器执行查询。 请参阅[优化对按键或字段值分区的数据的查询](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454)。
 
-**Which query language elements are supported in Geode?**
+**Geode支持哪些查询语言元素？**
 
-| Supported elements |          |         |
+| 支持的元素 |          |         |
 | ------------------ | -------- | ------- |
 | AND                | LIMIT    | TO_DATE |
 | AS                 | LIKE     | TYPE    |
@@ -6232,73 +6232,73 @@ If you know the data you need to query, you can target particular nodes in your 
 | IS_DEFINED         | TRUE     |         |
 | IS_UNDEFINED       |          |         |
 
-For more information and examples on using each supported keyword, see [Supported Keywords](https://geode.apache.org/docs/guide/17/developing/query_additional/supported_keywords.html#reference_07214B0F8DC94659B0F2D68B67195BD8).
+有关使用每个受支持关键字的更多信息和示例，请参阅[支持的关键字](https://geode.apache.org/docs/guide/17/developing/query_additional/supported_keywords.html#reference_07214B0F8DC94659B0F2D68B67195BD8).
 
-**How do I debug queries?**
+**我如何调试查询？**
 
-You can debug a specific query at the query level by adding the <trace> keyword before the query string that you want to debug. Here is an example:
+您可以在查询级别调试特定查询，方法是在要调试的查询字符串之前添加<trace>关键字。 这是一个例子：
 
 ```
 <trace> SELECT * FROM /exampleRegion
 ```
 
-You can also write:
+你也可以写：
 
 ```
 <TRACE> SELECT * FROM /exampleRegion
 ```
 
-When the query is executed, Geode will log a message in `$GEMFIRE_DIR/system.log` with the following information:
+执行查询时，Geode将在`$GEMFIRE_DIR/system.log`中记录一条消息，其中包含以下信息：
 
 ```
 [info 2011/08/29 11:24:35.472 PDT CqServer <main> tid=0x1] Query Executed in 9.619656 ms; rowCount = 99; 
 indexesUsed(0) "select *  from /exampleRegion" 
 ```
 
-If you want to enable debugging for all queries, you can enable query execution logging by setting a System property on the command line during start-up:
+如果要为所有查询启用调试，可以通过在启动期间在命令行上设置System属性来启用查询执行日志记录：
 
 ```
 gfsh>start server --name=server_name -–J=-Dgemfire.Query.VERBOSE=true
 ```
 
-Or you can set the property programmatically:
+或者您可以以编程方式设置属性：
 
 ```
 System.setProperty("gemfire.Query.VERBOSE","true");
 ```
 
-**Can I use implicit attributes or methods in my query?**
+**我可以在查询中使用隐式属性或方法吗？**
 
-If an implicit attribute or method name can only be associated with one untyped iterator, the Geode query processor will assume that it is associated with that iterator. However, if more than one untyped iterator is in scope, then the query will fail with a `TypeMismatchException`. The following query fails because the query processor does not fully type expressions:
+如果隐式属性或方法名称只能与一个无类型迭代器关联，则Geode查询处理器将假定它与该迭代器关联。 但是，如果多个非类型化迭代器在范围内，则查询将失败并出现`TypeMismatchException`。 以下查询失败，因为查询处理器未完全键入表达式：
 
 ```
 select distinct value.secId from /pos , getPositions(23)
 ```
 
-The following query, however, succeeds because the iterator is either explicitly named with a variable or it is typed:
+但是，以下查询成功，因为迭代器是使用变量显式命名的，或者是键入的：
 
 ```
 select distinct e.value.secId from /pos , getPositions(23) e
 ```
 
-**Can I instruct the query engine to use specific indexes with my queries?**
+**我可以指示查询引擎在查询中使用特定索引吗？**
 
-Using HINT *indexname* allows you to instruct the query engine to prefer and filter results from the specified indexes. If you provide multiple index names, the query engine will use all available indexes but prefer the specified indexes.
+使用HINT *indexname*可以指示查询引擎优先选择并过滤指定索引的结果。 如果提供多个索引名称，则查询引擎将使用所有可用索引，但更喜欢指定的索引。
 
 ```
 <HINT 'IDIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ'
 <HINT 'IDIndex', 'OwnerIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ' AND p.value < 100
 ```
 
-**How do I perform a case-insensitive search on a field in OQL?**
+**如何在OQL中对字段执行不区分大小写的搜索？**
 
-You can use the Java String class methods `toUpperCase` and `toLowerCase` to transform fields where you want to perform a case-insensitive search. For example:
+您可以使用Java String类方法`toUpperCase`和`toLowerCase`来转换要执行不区分大小写搜索的字段。 例如：
 
 ```
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.value.toUpperCase LIKE '%BAR%'
 ```
 
-or
+或者
 
 ```
 SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
@@ -6306,7 +6306,7 @@ SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 
 
 
-### Querying with OQL
+### 使用OQL查询
 
 This section provides a high-level introduction to Geode querying such as building a query string and describes query language features.
 
