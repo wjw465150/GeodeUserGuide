@@ -6308,11 +6308,11 @@ SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 
 ### 使用OQL查询
 
-This section provides a high-level introduction to Geode querying such as building a query string and describes query language features.
+本节提供Geode查询的高级介绍，例如构建查询字符串和描述查询语言功能。
 
-Geode provides a SQL-like querying language that allows you to access data stored in Geode regions. Since Geode regions are key-value stores where values can range from simple byte arrays to complex nested objects, Geode uses a query syntax based on OQL (Object Query Language) to query region data. OQL and SQL have many syntactical similarities, however they have significant differences. For example, while OQL does not offer all of the capabilities of SQL like aggregates, OQL does allow you to execute queries on complex object graphs, query object attributes and invoke object methods.
+Geode提供类似SQL的查询语言，允许您访问存储在Geode区域中的数据。 由于Geode区域是键值存储，其值可以从简单字节数组到复杂嵌套对象，因此Geode使用基于OQL（对象查询语言）的查询语法来查询区域数据。 OQL和SQL有许多语法上的相似之处，但是它们有很大的不同。 例如，虽然OQL不像聚合那样提供SQL的所有功能，但OQL允许您对复杂对象图执行查询，查询对象属性并调用对象方法。
 
-The syntax of a typical Geode OQL query is:
+典型的Geode OQL查询的语法是：
 
 ```
 [IMPORT package]
@@ -6322,42 +6322,42 @@ FROM collection1, [collection2, …]
 [ORDER BY order_criteria [desc]]
 ```
 
-Therefore, a simple Geode OQL query resembles the following:
+因此，一个简单的Geode OQL查询类似于以下内容：
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE status = ‘active’
 ```
 
-An important characteristic of Geode querying to note is that by default, Geode queries on the values of a region and not on keys. To obtain keys from a region, you must use the keySet path expression on the queried region. For example, `/exampleRegion.keySet`.
+Geode查询要注意的一个重要特征是，默认情况下，Geode会查询区域的值而不是键。 要从区域获取键，必须在查询区域上使用keySet路径表达式。 例如，`/exampleRegion.keySet`。
 
-For those new to the Geode querying, see also the [Geode Querying FAQ and Examples](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E).
-
-
-
-#### Advantages of OQL
-
-The following list describes some of the advantages of using an OQL-based querying language:
-
-- You can query on any arbitrary object
-- You can navigate object collections
-- You can invoke methods and access the behavior of objects
-- Data mapping is supported
-- You are not required to declare types. Since you do not need type definitions, you can work across multiple languages
-- You are not constrained by a schema
+对于Geode查询的新手，请参阅[Geode查询常见问题和示例](https://geode.apache.org/docs/guide/17/getting_started/querying_quick_reference.html#reference_D5CE64F5FD6F4A808AEFB748C867189E).
 
 
 
-#### Writing and Executing a Query in Geode
+#### OQL的优点
 
-The Geode QueryService provides methods to create the Query object. You can then use the Query object to perform query-related operations.
+以下列表描述了使用基于OQL的查询语言的一些优点：
 
-The QueryService instance you should use depends on whether you are querying the local cache of an application or if you want your application to query the server cache.
+- 您可以查询任意对象
+- 您可以导航对象集合
+- 您可以调用方法并访问对象的行为
+- 支持数据映射
+- 您不需要声明类型。 由于您不需要类型定义，因此可以使用多种语言
+- 您不受架构约束
 
-**Querying a Local Cache**
 
-To query the application’s local cache or to query other members, use `org.apache.geode.cache.Cache.getQueryService`.
 
-**Sample Code**
+#### 在Geode中编写和执行查询
+
+Geode QueryService提供了创建Query对象的方法。 然后，您可以使用Query对象执行与查询相关的操作。
+
+您应该使用的QueryService实例取决于您是查询应用程序的本地缓存还是希望应用程序查询服务器缓存。
+
+**查询本地缓存**
+
+要查询应用程序的本地缓存或查询其他成员，请使用`org.apache.geode.cache.Cache.getQueryService`。
+
+**示例代码**
 
 ```
  // Identify your query string.
@@ -6379,11 +6379,11 @@ To query the application’s local cache or to query other members, use `org.apa
  Portfolio p = (Portfolio)results.iterator().next(); /* Region containing Portfolio object. */
 ```
 
-**Querying a Server Cache from a Client**
+**从客户端查询服务器缓存**
 
-To perform a client to server query, use `org.apache.geode.cache.client.Pool.getQueryService`.
+要执行客户端到服务器查询，请使用`org.apache.geode.cache.client.Pool.getQueryService`。
 
-**Sample Code**
+**示例代码**
 
 ```
 // Identify your query string.
@@ -6405,48 +6405,48 @@ To perform a client to server query, use `org.apache.geode.cache.client.Pool.get
  Portfolio p = (Portfolio)results.iterator().next(); /* Region containing Portfolio object. */
 ```
 
-Refer to the following JavaDocs for specific APIs:
+有关特定API，请参阅以下JavaDocs：
 
 - [Query package](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/package-summary.html)
 - [QueryService](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/QueryService.html)
 
-**注意:** You can also perform queries using the gfsh `query` command. See [query](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html).
+**注意:** 您还可以使用gfsh`query`命令执行查询。 见[查询](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html).
 
 
 
-#### Building a Query String
+#### 构建查询字符串
 
-A query string is a fully formed OQL statement that can be passed to a query engine and executed against a data set. To build a query string, you combine supported keywords, expressions, and operators to create an expression that returns the information you require.
+查询字符串是完全形成的OQL语句，可以传递给查询引擎并针对数据集执行。 要构建查询字符串，请组合支持的关键字，表达式和运算符，以创建返回所需信息的表达式。
 
-A query string follows the rules specified by the query language and grammar. It can include:
+查询字符串遵循查询语言和语法指定的规则。 它可以包括：
 
-- **Namescopes**. For example, the IMPORT statement. See [IMPORT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_import_statement.html#concept_2E9F15B2FE9041238B54736103396BF7).
-- **Path expressions**. For example, in the query `SELECT * FROM /exampleRegion`,`/exampleRegion` is a path expression. See [FROM Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause).
-- **Attribute names**. For example, in the query `SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.secId = '1'`, we access the `secId`attribute of the Position object. See [WHERE Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause).
-- **Method invocations**. For example, in the query `SELECT DISTINCT * FROM /exampleRegion p WHERE p.name.startsWith('Bo')`, we invoke the `startsWith` method on the Name object. See [WHERE Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause).
-- **Operators**. For example, comparison operators (=,<,>,<>), unary operators (NOT), logical operators (AND, OR) and so on. See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) for a complete list.
-- **Literals**. For example, boolean, date, time and so on. See [Supported Literals](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals) for a complete list.
-- **Query bind parameters**. For example, in the query `SELECT DISTINCT * FROM $1 p WHERE p.status = $2`, $1 and $2 are parameters that can be passed to the query during runtime. See [Using Query Bind Parameters](https://geode.apache.org/docs/guide/17/developing/query_additional/using_query_bind_parameters.html#concept_173E775FE46B47DF9D7D1E40680D34DF) for more details.
-- **Preset query functions**. For example, ELEMENT(expr) and IS_DEFINED(expr). See [SELECT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E) for other available functions.
-- **SELECT statements**. For example, in the example queries above `SELECT *` or `SELECT DISTINCT *`. See [SELECT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E) for other available functions.
-- **Comments**. OQL permits extra characters to accompany the query string without changing the string’s definition. Form a multi-line comment by enclosing the comment body within `/*` and `*/` delimiters; OQL does not permit nested comments. A single line comment body is all the characters to the right of `--` (two hyphens) up to the end of the line.
+- **Namescopes**. 例如，IMPORT语句。 请参阅[IMPORT声明](https://geode.apache.org/docs/guide/17/developing/query_select/the_import_statement.html#concept_2E9F15B2FE9041238B54736103396BF7)。
+- **Path expressions**. 例如，在查询`SELECT * FROM /exampleRegion`中，`/exampleRegion`是路径表达式。 参见[FROM Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause。
+- **Attribute names**. 例如，在查询`SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.secId ='1'`中，我们访问Position对象的`secId`属性。 请参阅[WHERE子句](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause)。
+- **Method invocations**. 例如，在查询`SELECT DISTINCT * FROM /exampleRegion p WHERE p.name.startsWith('Bo')`中，我们在Name对象上调用`startsWith`方法。 请参阅[WHERE子句](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause)。
+- **Operators**. 例如，比较运算符（=，<，>，<>），一元运算符（NOT），逻辑运算符（AND，OR）等。 有关完整列表，请参阅[操作员](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) 。
+- **Literals**. 例如，布尔值，日期，时间等。 有关完整列表，请参阅[支持的文字](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals) 。
+- **Query bind parameters**. 例如，在查询`SELECT DISTINCT * FROM $1 p WHERE p.status = $2`中，$1和$2是可以在运行时传递给查询的参数。 有关详细信息，请参阅[使用查询绑定参数](https://geode.apache.org/docs/guide/17/developing/query_additional/using_query_bind_parameters.html#concept_173E775FE46B47DF9D7D1E40680D34DF)。
+- **Preset query functions**. 例如，ELEMENT(expr)和IS_DEFINED(expr)。 有关其他可用功能，请参阅[SELECT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E) 。
+- **SELECT statements**. 例如，在上面的`SELECT *`或`SELECT DISTINCT *`的示例查询中。 有关其他可用功能，请参阅[SELECT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E) 。
+- **Comments**. OQL允许在查询字符串中附加额外的字符，而不更改字符串的定义。 通过将注释主体包含在`/ *`和`* /`分隔符中来形成多行注释; OQL不允许嵌套注释。 单行注释正文是`--` （两个连字符）右边的所有字符，直到行尾。
 
-The components listed above can all be part of the query string, but none of the components are required. At a minimum, a query string contains an expression that can be evaluated against specified data.
+上面列出的组件都可以是查询字符串的一部分，但不需要任何组件。 查询字符串至少包含可以根据指定数据计算的表达式。
 
-The following sections provide guidelines for the query language building blocks that are used when writing typical Geode queries.
+以下部分提供了编写典型Geode查询时使用的查询语言构建块的准则。
 
-- **IMPORT Statement**
-- **FROM Clause**
-- **WHERE Clause**
-- **SELECT Statement**
+- **IMPORT Statement(IMPORT语句)**
+- **FROM Clause(FROM子句)**
+- **WHERE Clause(WHERE子句)**
+- **SELECT Statement(SELECT语句)**
 
 
 
-##### IMPORT Statement
+##### IMPORT Statement(IMPORT语句)
 
-It is sometimes necessary for an OQL query to refer to the class of an object. In cases where the same class name resides in two different namescopes (packages), you must be able to differentiate the classes having the same name.
+有时OQL查询需要引用对象的类。 如果相同的类名存在于两个不同的名称范围（包）中，则必须能够区分具有相同名称的类。
 
-The **IMPORT** statement is used to establish a name for a class in a query.
+**IMPORT**语句用于在查询中为类建立名称。
 
 ```sql
 IMPORT package.Position;
@@ -6455,89 +6455,89 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 
 
-##### FROM Clause
+##### FROM Clause(FROM子句)
 
-Use the FROM clause to bring the data you need into scope for the rest of your query. The FROM clause also includes object typing and iterator variables.
+使用FROM子句将所需的数据放入查询的其余部分的范围内。 FROM子句还包括对象类型和迭代器变量。
 
-The query engine resolves names and path expressions according to the name space that is currently in scope in the query.
+查询引擎根据查询中当前范围内的名称空间解析名称和路径表达式。
 
-**Path Expressions**
+**路径表达式**
 
-The initial name space for any query is composed of:
+任何查询的初始名称空间由以下内容组成：
 
-- **Regions.** In the context of a query, the name of a region is specified by its full path starting with a forward slash ( / ) and delimited by the forward slash between region names. For example, **/exampleRegion** or **/root/exampleRegion**.
+- **区域.** 在查询的上下文中，区域的名称由其完整路径指定，以正斜杠（/）开头，并由区域名称之间的正斜杠分隔。 例如，**/exampleRegion**或**/root/exampleRegion**。
 
-- **Region querying attributes**. From a region path, you can access the Region object’s public fields and methods, referred to in querying as the region’s attributes. For example, **/exampleRegion.size**.
+- **区域查询属性**. 从区域路径，您可以访问Region对象的公共字段和方法，在查询时称为区域的属性。 例如，**/exampleRegion.size**。
 
-- Top-level region data.
+- 顶级区域数据。
 
    
 
-  You can access entry keys and entry data through the region path.
+  您可以通过区域路径访问输入键和输入数据。
 
-  1. `/exampleRegion.keySet` returns the Set of entry keys in the region
-  2. `/exampleRegion.entryset` returns the Set of Region.Entry objects
-  3. `/exampleRegion.values` returns the Collection of entry values
-  4. `/exampleRegion` returns the Collection of entry values
+  1. `/exampleRegion.keySet` 返回区域中的输入键集
+  2. `/exampleRegion.entryset` 返回Region.Entry对象的Set
+  3. `/exampleRegion.values` 返回条目值集合
+  4. `/exampleRegion` 返回条目值集合
 
-New name spaces are brought into scope based on the FROM clause in the SELECT statement.
+新名称空间根据SELECT语句中的FROM子句进入作用域。
 
-**Examples:**
+**例子:**
 
-Query a region for all distinct values. Return a collection of unique entry values from the region:
+查询所有不同值的区域。 从区域返回一组唯一条目值：
 
 ```
 SELECT DISTINCT * FROM /exampleRegion
 ```
 
-Query the top level region data using entrySet. Return the keys and positions of Region.Entry objects whose mktValue attribute is greater than 25.00:
+使用entrySet查询顶级区域数据。 返回mktValue属性大于25.00的Region.Entry对象的键和位置：
 
 ```
 SELECT key, positions FROM /exampleRegion.entrySet, value.positions.values positions WHERE positions.mktValue >= 25.00
 ```
 
-Query the region for its entry values. Return a set of unique values from Region.Entry objects that have the key equal to 1:
+查询区域的条目值。 从Region.Entry对象返回一组唯一值，这些对象的键等于1：
 
 ```
 SELECT DISTINCT entry.value FROM /exampleRegion.entries entry WHERE entry.key = '1'
 ```
 
-Query the region for its entry values. Return the set of all entry values in which the `ID` field is greater than 1000:
+查询区域的条目值。 返回`ID`字段大于1000的所有条目值的集合：
 
 ```
 SELECT * FROM /exampleRegion.entries entry WHERE entry.value.ID > 1000
 ```
 
-Query entry keys in the region. Return a set of entry keys in the region that have the key equal to ‘1’:
+查询区域中的条目键。 返回键为`1`的区域中的一组输入键：
 
 ```
 SELECT * FROM /exampleRegion.keySet key WHERE key = '1'
 ```
 
-Query values in the region. Return a collection of entry values in the region that have the status attribute value of 'active’:
+查询区域中的值。 返回状态属性值为`active`的区域中的条目值集合：
 
 ```
 SELECT * FROM /exampleRegion.values portfolio WHERE portfolio.status = 'active'
 ```
 
-**Aliases and Synonyms**
+**别名和同义词**
 
-In query strings, you can use aliases in path expressions (region and its objects) so that you can refer to the region or objects in other places in the query.
+在查询字符串中，您可以在路径表达式（区域及其对象）中使用别名，以便您可以引用查询中其他位置的区域或对象。
 
-You can also use the **AS** keyword to provide a label for joined path expressions.
+您还可以使用**AS**关键字为连接的路径表达式提供标签。
 
-**Examples:**
+**例子:**
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 SELECT * FROM /exampleRegion p, p.positions.values AS pos WHERE pos.secId != '1'
 ```
 
-**Object Typing**
+**对象类型**
 
-Specifying object type in the FROM clause helps the query engine to process the query at optimal speed. Apart from specifying the object types during configuration (using key-constraint and value-constraint), type can be explicitly specified in the query string.
+在FROM子句中指定对象类型有助于查询引擎以最佳速度处理查询。 除了在配置期间指定对象类型（使用键约束和值约束）之外，还可以在查询字符串中显式指定类型。
 
-**Example:**
+**例子:**
 
 ```
 SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position WHERE positions.mktValue >= 25.00
@@ -6545,36 +6545,36 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 
 
-##### WHERE Clause
+##### WHERE Clause(WHERE子句)
 
-Each FROM clause expression must resolve to a collection of objects. The collection is then available for iteration in the query expressions that follow in the WHERE clause.
+每个FROM子句表达式必须解析为一组对象。 然后，该集合可用于WHERE子句中的查询表达式中的迭代。
 
-For example:
+例如:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 ```
 
-The entry value collection is iterated by the WHERE clause, comparing the status field to the string ‘active’. When a match is found, the value object of the entry is added to the return set.
+条目值集合由WHERE子句迭代，将状态字段与字符串'active'进行比较。 找到匹配项后，条目的值对象将添加到返回集。
 
-In the next example query, the collection specified in the first FROM clause expression is used by the rest of the SELECT statement, including the second FROM clause expression.
+在下一个示例查询中，第一个FROM子句表达式中指定的集合由SELECT语句的其余部分使用，包括第二个FROM子句表达式。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion, positions.values p WHERE p.qty > 1000.00
 ```
 
-**Implementing equals and hashCode Methods**
+**实现equals和hashCode方法**
 
-You must implement the `equals` and `hashCode` methods in your custom objects if you are doing ORDER BY and DISTINCT queries on the objects. The methods must conform to the properties and behavior documented in the online Java API documentation for `java.lang.Object`. Inconsistent query results may occur if these methods are absent.
+如果要对对象执行ORDER BY和DISTINCT查询，则必须在自定义对象中实现`equals`和`hashCode`方法。 这些方法必须符合`java.lang.Object`的在线Java API文档中记录的属性和行为。 如果不存在这些方法，则可能会出现查询结果不一致的情况。
 
-If you have implemented `equals` and `hashCode` methods in your custom objects, you must provide detailed implementations of these methods so that queries execute properly against the objects. For example, assume that you have defined a custom object (CustomObject) with the following variables:
+如果在自定义对象中实现了`equals`和`hashCode`方法，则必须提供这些方法的详细实现，以便查询对对象正确执行。 例如，假设您已使用以下变量定义了自定义对象（CustomObject）：
 
 ```
 int ID
 int otherValue
 ```
 
-Let’s put two CustomObjects (we’ll call them CustomObjectA and CustomObjectB) into the cache:
+让我们将两个CustomObjects（我们称之为CustomObjectA和CustomObjectB）放入缓存中：
 
 CustomObjectA:
 
@@ -6590,9 +6590,9 @@ ID=1
 otherValue=2
 ```
 
-If you have implemented the equals method to simply match on the ID field (ID == ID), queries will produce unpredictable results.
+如果已实现equals方法以简单地匹配ID字段（ID == ID），则查询将产生不可预测的结果。
 
-The following query:
+以下查询：
 
 ```
 SELECT * FROM /CustomObjects c 
@@ -6600,9 +6600,9 @@ WHERE c.ID > 1 AND c.ID < 3
 AND c.otherValue > 0 AND c.otherValue < 3
 ```
 
-returns two objects, however the objects will be two of either CustomObjectA or CustomObjectB.
+返回两个对象，但对象将是CustomObjectA或CustomObjectB中的两个。
 
-Alternately, the following query:
+或者，以下查询：
 
 ```
 SELECT * FROM /CustomObjects c 
@@ -6610,27 +6610,31 @@ WHERE c.ID > 1 AND c.ID < 3
 AND c.otherValue > 1 AND c.otherValue < 3
 ```
 
-returns either 0 results or 2 results of CustomObjectB, depending on which entry is evaluated last.
+返回0结果或2个CustomObjectB结果，具体取决于最后评估的条目。
 
-To avoid unpredictable querying behavior, implement detailed versions of the `equals` and `hashCode` methods.
+为了避免不可预测的查询行为，请实现`equals`和`hashCode`方法的详细版本。
 
-If you are comparing a non-primitive field of the object in the WHERE clause, use the `equals`method instead of the `=` operator. For example instead of `nonPrimitiveObj = objToBeCompared` use `nonPrimitiveObj.equals(objToBeCompared)`.
+如果要比较WHERE子句中对象的非原始字段，请使用`equals`方法而不是`=`运算符。 例如，使用`nonPrimitiveObj.equals（objToBeCompared）`代替`nonPrimitiveObj = objToBeCompared`。
 
-**Querying Serialized Objects**
+**查询序列化的对象**
 
-Objects must implement serializable if you will be querying partitioned regions or if you are performing client-server querying.
+如果要查询分区区域，或者要执行客户机-服务器查询，则对象必须实现serializable。
 
-If you are using PDX serialization, you can access the values of individual fields without having to deserialize the entire object. This is accomplished by using PdxInstance, which is a wrapper around the serialized stream. The PdxInstance provides a helper method that takes field-name and returns the value without deserializing the object. While evaluating the query, the query engine will access field values by calling the getField method thus avoiding deserialization.
+如果使用PDX序列化，可以访问各个字段的值，而不必反序列化整个对象。
+这是通过使用PdxInstance实现的，它是序列化流的包装器。
+PdxInstance提供了一个助手方法，该方法接受字段名并返回值，而不反序列化对象。
+在评估查询时，查询引擎将通过调用getField方法访问字段值，从而避免反序列化。
 
-To use PdxInstances in querying, ensure that PDX serialization reads are enabled in your server’s cache. In gfsh, execute the following command before starting up your data members:
+要在查询中使用pdxinstance，请确保在服务器的缓存中启用了PDX序列化读取。
+在gfsh中，在启动数据成员之前执行以下命令:
 
 ```
 gfsh>configure pdx --read-serialized=true
 ```
 
-See [configure pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh) for more information.
+有关更多信息，请参见[配置 pdx](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/configure.html#topic_jdkdiqbgphqh)。
 
-In cache.xml, set the following:
+在cache.xml，设置如下:
 
 ```
 // Cache configuration setting PDX read behavior 
@@ -6641,11 +6645,14 @@ In cache.xml, set the following:
 </cache>
 ```
 
-**Attribute Visibility**
+**属性可见性**
 
-You can access any object or object attribute that is available in the current scope of a query. In querying, an object’s attribute is any identifier that can be mapped to a public field or method in the object. In the FROM specification, any object that is in scope is valid. Therefore, at the beginning of a query, all locally cached regions and their attributes are in scope.
+您可以访问查询的当前范围内可用的任何对象或对象属性。
+在查询中，对象的属性是可以映射到对象中的公共字段或方法的任何标识符。
+在FROM规范中，作用域中的任何对象都是有效的。
+因此，在查询开始时，所有本地缓存区域及其属性都在范围内。
 
-For attribute Position.secId which is public and has getter method “getSecId()”, the query can be written as the following:
+对于属性的位置。secId是公共的，有getter方法“getSecId()”，查询可以写成如下:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.secId = '1'
@@ -6653,117 +6660,117 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.SecId = '1'
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.getSecId() = '1'
 ```
 
-The query engine tries to evaluate the value using the public field value. If a public field value is not found, it makes a get call using field name (note that the first character is uppercase.)
+查询引擎尝试使用公共字段值计算值。如果没有找到公共字段值，则使用字段名进行get调用(注意第一个字符是大写的)。
 
-**Joins**
+**连接**
 
-If collections in the FROM clause are not related to each other, the WHERE clause can be used to join them.
+如果FROM子句中的集合彼此不相关，则可以使用WHERE子句连接它们。
 
-The statement below returns all portfolios from the /exampleRegion and /exampleRegion2 regions that have the same status.
+下面的语句从 /exampleRegion和 /exampleRegion2区域返回所有具有相同状态的投资组合。
 
 ```
 SELECT * FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 WHERE portfolio1.status = portfolio2.status
 ```
 
-To create indexes for region joins you create single-region indexes for both sides of the join condition. These are used during query execution for the join condition. Partitioned regions do not support region joins. For more information on indexes, see [Working with Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/query_index.html).
+要为区域连接创建索引，您需要为连接条件的两边创建单区域索引。这些在连接条件的查询执行期间使用。分区区域不支持区域连接。有关索引的更多信息，请参见[使用索引](https://geode.apache.org/docs/guide/17/developing/query_index/query_index.html)。
 
-**Examples:**
+**例子:**
 
-Query two regions. Return the ID and status for portfolios that have the same status.
+查询两个区域。返回具有相同状态的投资组合的ID和状态。
 
 ```
 SELECT portfolio1.ID, portfolio2.status FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 WHERE portfolio1.status = portfolio2.status
 ```
 
-Query two regions, iterating over all `positions` within each portfolio. Return all 4-tuples consisting of the value from each of the two regions and the value portion of the `positions` map from both regions in which the `secId` field of positions match.
+查询两个区域，遍历每个投资组合中的所有`头寸`。返回所有4元组，包括来自两个区域的值和来自位置的`secId`字段匹配的两个区域的`位置`映射的值部分。
 
 ```
 SELECT * FROM /exampleRegion portfolio1, portfolio1.positions.values positions1, /exampleRegion2 portfolio2, portfolio2.positions.values positions2 WHERE positions1.secId = positions2.secId
 ```
 
-Same query as the previous example, with the additional constraint that matches will have a `ID`of 1.
+与前一个示例相同的查询，具有匹配的附加约束的ID将为1。
 
 ```
 SELECT * FROM /exampleRegion portfolio1, portfolio1.positions.values positions1, /exampleRegion2 portfolio2, portfolio2.positions.values positions2 WHERE portfolio1.ID = 1 AND positions1.secId = positions2.secId
 ```
 
-**LIKE**
+**LIKE(好像)**
 
-Geode offers limited support for the LIKE predicate. LIKE can be used to mean 'equals to’. If you terminate the string with a wildcard (’%’), it behaves like 'starts with’. You can also place a wildcard (either ’%’ or ’_’) at any other position in the comparison string. You can escape the wildcard characters to represent the characters themselves.
+Geode对LIKE谓词提供了有限的支持。LIKE可以用来表示`等于`。如果您使用通配符(' % ')终止字符串，它的行为类似于`以...开始`。您还可以将通配符(` % `或` _ `)放置在比较字符串中的任何其他位置。可以转义通配符来表示字符本身。
 
-**注意:** The ’*’ wildcard is not supported in OQL LIKE predicates.
+**注意:** 类似谓词的OQL中不支持通配符`*`。
 
-You can also use the LIKE predicate when an index is present.
+当有索引时，还可以使用LIKE谓词。
 
-**Examples:**
+**例子:**
 
-Query the region. Return all objects where status equals 'active’:
+查询该地区。返回status = `active`的所有对象:
 
 ```
 SELECT * FROM /exampleRegion p WHERE p.status LIKE 'active'
 ```
 
-Query the region using a wild card for comparison. Returns all objects where status begins with 'activ’:
+使用通配符查询区域以进行比较。返回状态以`activ`开头的所有对象:
 
 ```
 SELECT * FROM /exampleRegion p WHERE p.status LIKE 'activ%'
 ```
 
-**Case Insensitive Fields**
+**不区分大小写字段**
 
-You can use the Java String class methods `toUpperCase` and `toLowerCase` to transform fields where you want to perform a case-insensitive search. For example:
+您可以使用Java字符串类方法`toUpperCase`和`toLowerCase`转换要执行不区分大小写搜索的字段。例如:
 
 ```
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.value.toUpperCase LIKE '%BAR%'
 ```
 
-or
+或者
 
 ```
 SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 ```
 
-**Method Invocations**
+**方法调用**
 
-To use a method in a query, use the attribute name that maps to the public method you want to invoke.
+若要在查询中使用方法，请使用映射到要调用的公共方法的属性名。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.size >= 2 - maps to positions.size()
 ```
 
-Methods declared to return void evaluate to null when invoked through the query processor.
+当通过查询处理器调用时，声明返回void evaluate为null的方法。
 
-You cannot invoke a static method. See [Enum Objects](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_59E7D64746AE495D942F2F09EF7DB9B5) for more information.
+您不能调用静态方法。有关更多信息，请参见[Enum对象](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_59E7D64746AE495D942F2F09EF7DB9B5)。
 
-**Methods without parameters**
+**方法没有参数**
 
-If the attribute name maps to a public method that takes no parameters, just include the method name in the query string as an attribute. For example, emps.isEmpty is equivalent to emps.isEmpty().
+如果属性名映射到不接受参数的公共方法，只需将方法名作为属性包含在查询字符串中。例如,emps.isEmpty等价于emps.isEmpty()。
 
-In the following example, the query invokes isEmpty on positions, and returns the set of all portfolios with no positions:
+在下面的例子中，查询对position调用isEmpty，并返回没有position的所有投资组合的集合:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.isEmpty
 ```
 
-**Methods with parameters**
+**带参数方法**
 
-To invoke methods with parameters, include the method name in the query string as an attribute and provide method arguments between parentheses.
+若要使用参数调用方法，请将查询字符串中的方法名称作为属性包含，并在圆括号中提供方法参数。
 
-This example passes the argument “Bo” to the public method, and returns all names that begin with “Bo”.
+这个示例将参数“Bo”传递给公共方法，并返回所有以“Bo”开头的名称。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.name.startsWith('Bo')
 ```
 
-For overloaded methods, the query processor decides which method to call by matching the runtime argument types with the parameter types required by the method. If only one method’s signature matches the parameters provided, it is invoked. The query processor uses runtime types to match method signatures.
+对于重载的方法，查询处理器通过将运行时参数类型与方法所需的参数类型匹配来决定调用哪个方法。如果只有一个方法的签名与提供的参数匹配，则调用该方法。查询处理器使用运行时类型来匹配方法签名。
 
-If more than one method can be invoked, the query processor chooses the method whose parameter types are the most specific for the given arguments. For example, if an overloaded method includes versions with the same number of arguments, but one takes a Person type as an argument and the other takes an Employee type, derived from Person, Employee is the more specific object type. If the argument passed to the method is compatible with both types, the query processor uses the method with the Employee parameter type.
+如果可以调用多个方法，查询处理器将选择参数类型对给定参数最特定的方法。例如，如果重载的方法包含具有相同数量参数的版本，但是一个以Person类型作为参数，另一个以从Person派生的Employee类型作为参数，则Employee是更特定的对象类型。如果传递给方法的参数与这两种类型兼容，查询处理程序将使用具有Employee参数类型的方法。
 
-The query processor uses the runtime types of the parameters and the receiver to determine the proper method to invoke. Because runtime types are used, an argument with a null value has no typing information, and so can be matched with any object type parameter. When a null argument is used, if the query processor cannot determine the proper method to invoke based on the non-null arguments, it throws an `AmbiguousNameException`.
+查询处理器使用参数和接收器的运行时类型来确定要调用的适当方法。由于使用了运行时类型，具有null值的参数没有类型信息，因此可以与任何对象类型参数匹配。当使用null参数时，如果查询处理器不能根据非空参数确定要调用的正确方法，它将抛出一个`AmbiguousNameException`。
 
-**Methods calls with the SecurityManager enabled**
+**启用SecurityManager的方法调用**
 
-When the `SecurityManager` is enabled, Geode throws a `NotAuthorizedException` when any method not on this list of whitelisted methods is invoked:
+当`SecurityManager`被启用时，Geode会在调用白名单之外的任何方法时抛出一个`NotAuthorizedException`:
 
 - On a `Map`, `Collection`, or `Region` object: `keySet`, `entrySet`, `values`, `containsKey` or `get`
 - On a `Region.Entry` object: `getKey` or `getValue`
@@ -6773,134 +6780,134 @@ When the `SecurityManager` is enabled, Geode throws a `NotAuthorizedException` w
 - On any `Boolean` object: `booleanValue`
 - On any object: `equals`, `compareTo`, or `toString`
 
-To disable the authorization check, start all servers with the added system property `gemfire.QueryService.allowUntrustedMethodInvocation`. For example:
+要禁用授权检查，请使用添加的系统属性`gemfire.QueryService.allowUntrustedMethodInvocation`启动所有服务器。例如:
 
 ```
 gfsh>start server --name=Server1 \
      --J=-Dgemfire.QueryService.allowUntrustedMethodInvocation=true
 ```
 
-**Enum Objects**
+**枚举对象**
 
-To write a query based on the value of an Enum object field, you must use the `toString` method of the enum object or use a query bind parameter.
+要基于枚举对象字段的值编写查询，必须使用枚举对象的`toString`方法或使用查询绑定参数。
 
-For example, the following query is NOT valid:
+例如，以下查询无效:
 
 ```
 //INVALID QUERY
 select distinct * from /QueryRegion0 where aDay = Day.Wednesday
 ```
 
-The reason it is invalid is that the call to `Day.Wednesday` involves a static class and method invocation which is not supported.
+它无效的原因是调用到 `Day.Wednesday` 涉及不支持的静态类和方法调用。
 
-Enum types can be queried by using toString method of the enum object or by using bind parameter. When you query using the toString method, you must already know the constraint value that you wish to query. In the following first example, the known value is 'active’.
+枚举类型可以通过枚举对象的toString方法或使用bind参数来查询。当您使用toString方法查询时，您必须已经知道希望查询的约束值。在下面的第一个示例中，已知值是`active`。
 
-**Examples:**
+**例子:**
 
-Query enum type using the toString method:
+查询枚举类型使用toString方法:
 
 ```
 // eStatus is an enum with values 'active' and 'inactive'
 select * from /exampleRegion p where p.eStatus.toString() = 'active'
 ```
 
-Query enum type using a bind parameter. The value of the desired Enum field ( Day.Wednesday) is passed as an execution parameter:
+使用绑定参数查询枚举类型。期望的Enum字段(Day.Wednesday)的值作为执行参数传递:
 
 ```
 select distinct * from /QueryRegion0 where aDay = $1
 ```
 
-**IN and SET**
+**IN 和 SET**
 
-The IN expression is a boolean indicating if one expression is present inside a collection of expressions of compatible type. The determination is based on the expressions’ equals semantics.
+IN表达式是一个布尔值，指示在兼容类型的表达式集合中是否存在一个表达式。该决定基于表达式的equals语义。
 
-If `e1` and `e2` are expressions, `e2` is a collection, and `e1` is an object or a literal whose type is a subtype or the same type as the elements of `e2`, then `e1 IN e2` is an expression of type boolean.
+如果`e1`和`e2`是表达式，`e2`是集合，`e1`是类型为`e2`的子类型或元素类型相同的对象或文字，那么`e2`中的`e1`是布尔类型的表达式。
 
-The expression returns:
+表达式返回:
 
-- TRUE if e1 is not UNDEFINED and is contained in collection e2
-- FALSE if e1 is not UNDEFINED and is not contained in collection e2 #
-- UNDEFINED if e1 is UNDEFINED
+- 如果e1不是未定义的并且包含在集合e2中，则为TRUE
+- 如果e1不是未定义的，且集合e2中不包含e1，则为FALSE
+- 如果e1没有定义怎返回UNDEFINED
 
-For example, `2 IN SET(1, 2, 3)` is TRUE.
+例如，集合(1,2,3)中的2为真。
 
-Another example is when the collection you are querying into is defined by a subquery. This query looks for companies that have an active portfolio on file:
+另一个例子是，您正在查询的集合是由一个子查询定义的。这个查询寻找的公司有一个活跃的投资组合文件:
 
 ```
 SELECT name, address FROM /company 
   WHERE id IN (SELECT id FROM /portfolios WHERE status = 'active')
 ```
 
-The interior SELECT statement returns a collection of ids for all /portfolios entries whose status is active. The exterior SELECT iterates over /company, comparing each entry’s id with this collection. For each entry, if the IN expression returns TRUE, the associated name and address are added to the outer SELECT’s collection.
+内部SELECT语句返回状态为活动的所有/portfolio条目的id集合。外部选择在/company上迭代，将每个条目的id与此集合进行比较。对于每个条目，如果IN表达式返回TRUE，那么相关的名称和地址将添加到外部SELECT的集合中。
 
-**Comparing Set Values**
+**比较 Set 值**
 
-The following is an example of a set value type comparison where sp is of type Set:
+下面是一个集合值类型比较的例子，其中sp是集合类型:
 
 ```
 SELECT * FROM /exampleRegion WHERE sp = set('20','21','22')
 ```
 
-In this case, if sp only contains '20’ and '21’, then the query will evalute to false. The query compares the two sets and looks for the presence of all elements in both sets.
+在这种情况下，如果sp只包含 '20’和'21’，那么查询将求值为false。查询比较这两个集合，并查找这两个集合中的所有元素。
 
-For other collections types like list, the query can be written as follows:
+对于list等其他集合类型，查询可以写成:
 
 ```
 SELECT * FROM /exampleRegion WHERE sp.containsAll(set('20','21','22))
 ```
 
-where sp is of type List.
+其中sp为List类型。
 
-In order to use it for Set value, the query can be written as:
+为了将其用于Set值，查询可以写成:
 
 ```
 SELECT * FROM /exampleRegion WHERE sp IN SET (set('20','21','22'),set('10',11','12'))
 ```
 
-where a set value is searched in collection of set values.
+在集合中搜索集合值。
 
-One problem is that you cannot create indexes on Set or List types (collection types) that are not comparable. To workaround this, you can create an index on a custom collection type that implements Comparable.
+一个问题是不能在集合类型或列表类型(集合类型)上创建不可比较的索引。要解决这个问题，可以在实现Comparable的自定义集合类型上创建索引。
 
-**Double.NaN and Float.NaN Comparisons**
+**Double.NaN 和 Float.NaN 比较**
 
-The comparison behavior of Double.NaN and Float.NaN within Geode queries follow the semantics of the JDK methods Float.compareTo and Double.compareTo.
+Double.NaN 和 Float.NaN的比较行为,在Geode查询中的NaN遵循JDK方法Float.compareTo和Double.compareTo的语义。
 
-In summary, the comparisons differ in the following ways from those performed by the Java language numerical comparison operators (<, <=, ==, >= >) when applied to primitive double [float] values:
+综上所述，当Java语言的数值比较运算符(<，<=，==，>= >)应用于原语double [float]值时，其比较的不同之处在于:
 
-- Double.NaN [Float.NaN] is considered to be equal to itself and greater than all other double [float] values (including Double.POSITIVE_INFINITY [Float.POSITIVE_INFINITY]).
-- 0.0d [0.0f] is considered by this method to be greater than -0.0d [-0.0f].
+- Double.NaN [Float.NaN] 被认为等于它本身，并且大于所有其他double [float]值(包括Double.POSITIVE_INFINITY [Float.POSITIVE_INFINITY])。
+- 该方法认为0.0d [0.0f]大于-0.0d [-0.0f]。
 
-Therefore, Double.NaN[Float.NaN] is considered to be larger than Double.POSITIVE_INFINITY[Float.POSITIVE_INFINITY]. Here are some example queries and what to expect.
+因此,Double.NaN[Float.NaN]被认为大于Double.POSITIVE_INFINITY[Float.POSITIVE_INFINITY]。下面是一些示例查询和预期结果。
 
-| If p.value is NaN, the following query:                      | Evaluates to:     | Appears in the result set?     |
+| 如果 p.value 是 NaN, 下面的查询:                      | 计算结果为:     | 出现在结果集中?     |
 | ------------------------------------------------------------ | ----------------- | ------------------------------ |
 | `SELECT * FROM /positions p WHERE p.value = 0`               | false             | no                             |
 | `SELECT * FROM /positions p WHERE p.value > 0`               | true              | yes                            |
 | `SELECT * FROM /positions p WHERE p.value >= 0`              | true              | yes                            |
 | `SELECT * FROM /positions p WHERE p.value < 0`               | false             | no                             |
 | `SELECT * FROM /positions p WHERE p.value <= 0`              | false             | no                             |
-| **When p.value and p.value1 are both NaN, the following query:** | **Evaluates to:** | **Appears in the result set:** |
+| **如果 p.value 和 p.value1 都是 NaN, 下面的查询:** | **计算结果为:** | **出现在结果集中:** |
 | `SELECT * FROM /positions p WHERE p.value = p.value1`        | true              | yes                            |
 
-If you combine values when defining the following query in your code, when the query is executed the value itself is considered UNDEFINED when parsed and will not be returned in the result set.
+如果在代码中定义以下查询时将值组合在一起，那么在执行查询时，解析值本身被认为是未定义的，不会在结果集中返回。
 
 ```
 String query = "SELECT * FROM /positions p WHERE p.value =" + Float.NaN
 ```
 
-Executing this query, the value itself is considered UNDEFINED when parsed and will not be returned in the result set.
+执行此查询时，解析后的值本身被认为是未定义的，不会在结果集中返回。
 
-To retrieve NaN values without having another field already stored as NaN, you can define the following query in your code:
+要检索NaN值而不需要另一个字段已经存储为NaN，可以在代码中定义以下查询:
 
 ```
 String query = "SELECT * FROM /positions p WHERE p.value > " + Float.MAX_VALUE;
 ```
 
-**Arithmetic Operations**
+**算术运算**
 
-Arithmetic operators may be used in any expression.
+算术运算符可以用在任何表达式中。
 
-For example, this query selects all people with a body mass index less than 25:
+例如，该查询选择体重指数小于25的所有人:
 
 ```
 String query = "SELECT * FROM /people p WHERE p.height * p.height/p.weight < 25";
@@ -6908,125 +6915,125 @@ String query = "SELECT * FROM /people p WHERE p.height * p.height/p.weight < 25"
 
 
 
-##### SELECT Statement
+##### SELECT Statement(SELECT语句)
 
-The SELECT statement allows you to filter data from the collection of object(s) returned by a WHERE search operation. The projection list is either specified as * or as a comma delimited list of expressions.
+SELECT语句允许您从WHERE搜索操作返回的对象集合中筛选数据。投影列表可以指定为*，也可以指定为以逗号分隔的表达式列表。
 
-For *, the interim results of the WHERE clause are returned from the query.
+对于*，WHERE子句的临时结果将从查询中返回。
 
-**Examples:**
+**例子:**
 
-Query all objects from the region using *. Returns the Collection of portfolios (The exampleRegion contains Portfolio as values).
+使用*查询区域中的所有对象。返回投资组合的集合(exampleRegion将投资组合包含为值)。
 
 ```
 SELECT * FROM /exampleRegion
 ```
 
-Query secIds from positions. Returns the Collection of secIds from the positions of active portfolios:
+从位置查询secid。从活动投资组合的头寸中返回secid集合:
 
 ```
 SELECT secId FROM /exampleRegion, positions.values TYPE Position 
 WHERE status = 'active'
 ```
 
-Returns a Collection of struct<type: String, positions: map> for the active portfolios. The second field of the struct is a Map ( jav.utils.Map ) object, which contains the positions map as the value:
+返回活动投资组合的struct<type: string,="" position:="" map="">的集合。</type:>结构的第二个字段是Map (java .utils)。对象，其中包含位置映射作为值:
 
 ```
 SELECT "type", positions FROM /exampleRegion 
 WHERE status = 'active'
 ```
 
-Returns a Collection of struct<portfolios: Portfolio, values: Position> for the active portfolios:
+返回活动投资组合<portfolios: Portfolio, values: Position> 的结构体集合:
 
 ```
 SELECT * FROM /exampleRegion, positions.values 
 TYPE Position WHERE status = 'active'
 ```
 
-Returns a Collection of struct<pflo: Portfolio, posn: Position> for the active portfolios:
+返回活动投资组合<pflo: Portfolio, posn: Position>的结构体集合:
 
 ```
 SELECT * FROM /exampleRegion portfolio, positions positions 
 TYPE Position WHERE portfolio.status = 'active'
 ```
 
-**SELECT Statement Results**
+**SELECT语句的结果**
 
-The result of a SELECT statement is either UNDEFINED or is a Collection that implements the [SelectResults](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/SelectResults.html) interface.
+SELECT语句的结果要么是未定义的，要么是实现[SelectResults](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/SelectResults.html)接口的集合。
 
-The SelectResults returned from the SELECT statement is either:
+从SELECT语句返回的SelectResults是:
 
-1. A collection of objects, returned for these two cases:
-   - When only one expression is specified by the projection list and that expression is not explicitly specified using the fieldname:expression syntax
-   - When the SELECT list is * and a single collection is specified in the FROM clause
-2. A collection of Structs that contains the objects
+1. 为这两种情况返回的对象集合:
+   - 当投影列表只指定一个表达式且该表达式未使用字段名:表达式语法显式指定时
+   - 当SELECT列表为*且FROM子句中指定了单个集合时
+2. 包含对象的结构的集合
 
-When a struct is returned, the name of each field in the struct is determined following this order of preference:
+当返回结构体时，结构体中每个字段的名称按照以下优先顺序确定:
 
-1. If a field is specified explicitly using the fieldname:expression syntax, the fieldname is used.
-2. If the SELECT projection list is * and an explicit iterator expression is used in the FROM clause, the iterator variable name is used as the field name.
-3. If the field is associated with a region or attribute path, the last attribute name in the path is used.
-4. If names cannot be decided based on these rules, arbitrary unique names are generated by the query processor.
+1. 如果使用字段名:表达式语法显式指定字段，则使用字段名。
+2. 如果SELECT投影列表是*，并且FROM子句中使用显式迭代器表达式，则迭代器变量名用作字段名。
+3. 如果字段与区域或属性路径关联，则使用该路径中的最后一个属性名。
+4. 如果不能根据这些规则决定名称，查询处理器将生成任意惟一的名称。
 
-**DISTINCT**
+**DISTINCT(独特的)**
 
-Use the DISTINCT keyword if you want to limit the results set to unique rows. Note that in the current version of Geode you are no longer required to use the DISTINCT keyword in your SELECT statement.
+如果希望将结果设置为唯一的行，请使用DISTINCT关键字。注意，在Geode的当前版本中，您不再需要在SELECT语句中使用DISTINCT关键字。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion
 ```
 
-**注意:** If you are using DISTINCT queries, you must implement the equals and hashCode methods for the objects that you query.
+**注意:** 如果使用DISTINCT查询，则必须为查询的对象实现equals和hashCode方法。
 
-**LIMIT**
+**LIMIT(限制)**
 
-You can use the LIMIT keyword at the end of the query string to limit the number of values returned.
+您可以在查询字符串的末尾使用LIMIT关键字来限制返回的值的数量。
 
-For example, this query returns at most 10 values:
+例如，这个查询最多返回10个值:
 
 ```
 SELECT * FROM /exampleRegion LIMIT 10
 ```
 
-**ORDER BY**
+**ORDER BY(排序)**
 
-You can order your query results in ascending or descending order by using the ORDER BY clause. You must use DISTINCT when you write ORDER BY queries.
+可以使用order by子句按升序或降序排列查询结果。在编写ORDER BY查询时，必须使用DISTINCT。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID
 ```
 
-The following query sorts the results in ascending order:
+以下查询按升序对结果进行排序:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID asc
 ```
 
-The following query sorts the results in descending order:
+以下查询按降序对结果进行排序:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID desc
 ```
 
-**注意:** If you are using ORDER BY queries, you must implement the equals and hashCode methods for the objects that you query.
+**注意:** 如果使用ORDER BY查询，则必须为查询的对象实现equals和hashCode方法。
 
-**Preset Query Functions**
+**预设的查询功能**
 
-Geode provides several built-in functions for evaluating or filtering data returned from a query. They include the following:
+Geode提供了几个内置函数来评估或过滤查询返回的数据。其中包括:
 
-| Function                      | Description                                                  | Example                                                      |
+| 函数                      | 描述                                                  | 例子                                                      |
 | ----------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ELEMENT(expr)                 | Extracts a single element from a collection or array. This function throws a `FunctionDomainException` if the argument is not a collection or array with exactly one element. | `ELEMENT(SELECT DISTINCT *   FROM /exampleRegion   WHERE id = 'XYZ-1').status = 'active'` |
-| IS_DEFINED(expr)              | Returns TRUE if the expression does not evaluate to [UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined). Inequality queries include undefined values in their query results. With the IS_DEFINED function, you can limit results to only those elements with defined values. | `IS_DEFINED(SELECT DISTINCT *  FROM /exampleRegion p  WHERE p.status = 'active')` |
-| IS_UNDEFINED (expr)           | Returns TRUE if the expression evaluates to [UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined). With the exception of inequality queries, most queries do not include undefined values in their query results. The IS_UNDEFINED function allows undefined values to be included, so you can identify elements with undefined values. | `SELECT DISTINCT *  FROM /exampleRegion p  WHERE IS_UNDEFINED(p.status)` |
-| NVL(expr1, expr2)             | Returns expr2 if expr1 is null. The expressions can be query parameters (bind arguments), path expressions, or literals. |                                                              |
-| TO_DATE(date_str, format_str) | Returns a Java Data class object. The arguments must be String S with date_str representing the date and format_str representing the format used by date_str. The format_str you provide is parsed using java.text.SimpleDateFormat. |                                                              |
+| ELEMENT(expr)                 | 从集合或数组中提取单个元素。如果参数不是只有一个元素的集合或数组，则该函数抛出一个`FunctionDomainException`。 | `ELEMENT(SELECT DISTINCT *   FROM /exampleRegion   WHERE id = 'XYZ-1').status = 'active'` |
+| IS_DEFINED(expr)              | 如果表达式的值不为[UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined)，则返回TRUE。不等式查询在查询结果中包含未定义的值。使用IS_DEFINED函数，您可以将结果限制为只有那些具有定义值的元素。 | `IS_DEFINED(SELECT DISTINCT *  FROM /exampleRegion p  WHERE p.status = 'active')` |
+| IS_UNDEFINED (expr)           | 如果表达式计算结果为[UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined)，则返回TRUE。除不等式查询外，大多数查询的查询结果中不包含未定义的值。IS_UNDEFINED函数允许包含未定义的值，因此可以使用未定义的值标识元素。 | `SELECT DISTINCT *  FROM /exampleRegion p  WHERE IS_UNDEFINED(p.status)` |
+| NVL(expr1, expr2)             | 如果expr1为空，则返回expr2。表达式可以是查询参数(绑定参数)、路径表达式或文本。 |                                                              |
+| TO_DATE(date_str, format_str) | 返回一个Java数据类对象。参数必须是字符串S, date_str表示日期，format_str表示date_str使用的格式。您提供的format_str是使用java.text.SimpleDateFormat解析的。 |                                                              |
 
 **COUNT**
 
-The COUNT keyword returns the number of results that match the query selection conditions specified in the WHERE clause. Using COUNT allows you to determine the size of a results set. The COUNT statement always returns an integer as its result.
+COUNT关键字返回与WHERE子句中指定的查询选择条件匹配的结果数。使用COUNT可以确定结果集的大小。COUNT语句总是返回一个整数作为结果。
 
-The following queries are example COUNT queries that return region entries:
+以下查询是返回区域项的示例计数查询:
 
 ```
 SELECT COUNT(*) FROM /exampleRegion
@@ -7038,7 +7045,7 @@ SELECT COUNT(*) FROM /exampleRegion
 WHERE ID IN SET(1,2,3,4,5)
 ```
 
-The following COUNT query returns the total number of StructTypes that match the query’s selection criteria.
+下面的COUNT查询返回与查询的选择条件匹配的结构类型的总数。
 
 ```
 SELECT COUNT(*) 
@@ -7046,7 +7053,7 @@ FROM /exampleRegion p, p.positions.values pos
 WHERE p.ID > 0 AND pos.secId 'IBM'
 ```
 
-The following COUNT query uses the DISTINCT keyword and eliminates duplicates from the number of results.
+下面的COUNT查询使用不同的关键字，并从结果的数量中消除重复。
 
 ```
 SELECT DISTINCT COUNT(*)
@@ -7057,33 +7064,33 @@ OR pos.secId = 'IBM'
 
 
 
-##### OQL Aggregate Functions
+##### OQL聚合函数
 
-The aggregate functions `MIN`, `MAX`, `AVG`, `AVG` over a DISTINCT expression, `SUM` over a DISTINCT expression, `COUNT`, and `COUNT` over a DISTINCT expression are supported. The `GROUP BY` extension is also supported where appropriate.
+支持针对不同表达式的聚合函数`MIN`、`MAX`、`AVG`、`AVG`、`SUM`、`COUNT`和`COUNT`。在适当的情况下，还支持`GROUP BY`扩展。
 
-The `MIN` function returns the smallest of the selected expression. The type of the expression must evaluate to a `java.lang.Comparable`.
+`MIN`函数的作用是:返回所选表达式中最小的一个。表达式的类型必须计算为`java.lang.Comparable`。
 
-The `MAX` function returns the largest of the selected expression. The type of the expression must evaluate to a `java.lang.Comparable`.
+`MAX`函数的作用是:返回所选表达式中最大的一个。表达式的类型必须计算为`java.lang.Comparable`。
 
-The `AVG` function returns the arithmetic mean of the set formed by the selected expression. The type of the expression must evaluate to a `java.lang.Number`. For partitioned regions, each node’s buckets provide both a sum and the number of elements to the node executing the query, such that a correct average may be computed.
+`AVG`函数的作用是:返回所选表达式的算术平均值。表达式的类型必须计算为`java.lang.Number`。对于分区区域，每个节点的bucket为执行查询的节点提供一个`和`和`元素`的数量，这样就可以计算出正确的平均值。
 
-The `AVG` function where the DISTINCT modifier is applied to the expression returns the arithmetic mean of the set of unique (distinct) values. The type of the expression must evaluate to a`java.lang.Number`. For partitioned regions, the distinct values in a node’s buckets are returned to the node executing the query. The query node can then calculate the avarage over the values that are unique across nodes, after eliminating duplicate values that come from separate nodes.
+有`DISTINCT`限定符的`AVG`函数的作用是:返回一组唯一值(不同值)的算术平均值。表达式的类型必须计算为`java.lang.Number`。对于分区区域，节点bucket中的不同值返回给执行查询的节点。然后，在消除来自不同节点的重复值之后，查询节点可以计算跨节点的唯一值的平均值。
 
-The `SUM` function returns the sum over the set formed by the selected expression. The type of the expression must evaluate to a `java.lang.Number`. For partitioned regions, each node’s buckets compute a sum over that node, returning that sum to the node executing the query, when then sums across all nodes.
+`SUM`函数的作用是:返回选定表达式形成的集合的和。表达式的类型必须计算为`java.lang.Number`。对于分区区域，每个节点的bucket计算该节点上的和，并将该和返回到执行查询的节点，然后计算所有节点上的和。
 
-The `SUM` function where the DISTINCT modifier is applied to the expression returns the sum over the set of unique (distinct) values. The type of the expression must evaluate to a `java.lang.Number`. For partitioned regions, the distinct values in a node’s buckets are returned to the node executing the query. The query node can then calculate the sum over the values that are unique across nodes, after eliminating duplicate values that come from separate nodes.
+将`DISTINCT `修饰符应用于表达式的`SUM`函数返回对一组惟一(不同)值的和。表达式的类型必须计算为`java.lang.Number`。对于分区区域，节点bucket中的不同值返回给执行查询的节点。然后，在消除来自不同节点的重复值之后，查询节点可以计算节点间惟一值的总和。
 
-The `COUNT` function returns the quantity of values in the set formed by the selected expression. For example, to return the quantity of employees who have a positive sales amount:
+`COUNT`函数的作用是:返回所选表达式在集合中形成的值的数量。例如，返回销售额为正的员工数量:
 
 ```
 SELECT count(e.sales) FROM /employees e WHERE e.sales > 0.0
 ```
 
-The `COUNT` function where the DISTINCT modifier is applied returns the quantity of unique (distinct) values in the set formed by the selected expression.
+应用`DISTINCT `修饰符的' COUNT '函数返回所选表达式形成的集合中唯一(不同)值的数量。
 
-**GROUP BY Extension for Aggregate Functions**
+**通过扩展对聚合函数进行GROUP BY**
 
-`GROUP BY` is required when aggregate functions are used in combination with other selected items. It permits ordering. For example,
+当聚合函数与其他选定项组合使用时，需要`GROUP BY`。它允许排序。例如,
 
 ```
 SELECT ID, MAX(e.sales) FROM /employees e GROUP BY ID
@@ -7091,68 +7098,68 @@ SELECT ID, MAX(e.sales) FROM /employees e GROUP BY ID
 
 
 
-#### OQL Syntax and Semantics
+#### OQL语法和语义
 
-This section covers the following querying language features:
+本节介绍以下查询语言特性:
 
-- **Supported Character Sets**
-- **Supported Keywords**
-- **Case Sensitivity**
-- **Comments in Query Strings**
-- **Query Language Grammar**
-- **Operators**
-- **Reserved Words**
-- **Supported Literals**
-
-
-
-##### Supported Character Sets
-
-Geode query language supports the full ASCII and Unicode character sets.
+- **支持的字符集**
+- **支持的关键字**
+- **区分大小写**
+- **查询字符串中的注释**
+- **查询语言语法**
+- **操作符**
+- **保留字**
+- **支持的文字**
 
 
 
-##### Supported Keywords
+##### 支持的字符集
 
-| Query Language Keyword | Description                                                  | Example                                                      |
+Geode查询语言支持完整的ASCII和Unicode字符集。
+
+
+
+##### 支持的关键字
+
+| 查询语言关键字 | 描述                                                  | 例子                                                      |
 | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| AND                    | Logical operator used to create complex expressions by combining two or more expressions to produce a Boolean result. When you combine two conditional expressions using the AND operator, both conditions must evaluate to true for the entire expression to be true. | See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) |
-| AS                     | Used to provide a label for a path expression so you can refer to the path by the label later. | See [Aliases and Synonyms](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause__section_AB1734C16DC348479C00FD6829B933AA) |
-| COUNT                  | Returns the number of results that match the provided criteria. | See [COUNT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_B2CBA00EB83F463DAF4769D7859C64C8) |
-| DISTINCT               | Restricts the select statement to unique results (eliminates duplicates). | See [DISTINCT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_972EE73A6F3E4427B6A99DB4EDF5860D) |
-| ELEMENT                | Query function. Extracts a single element from a collection or array. This function throws a `FunctionDomainException` if the argument is not a collection or array with exactly one element. | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
-| FROM                   | You can access any object or object attribute that is available in the current scope of the query. | See [FROM Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause) |
-| <HINT>                 | Keyword that instructs the query engine to prefer certain indexes. | See [Using Query Index Hints](https://geode.apache.org/docs/guide/17/developing/query_index/query_index_hints.html) |
-| IMPORT                 | Used to establish the namescope for objects.                 | See [IMPORT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_import_statement.html#concept_2E9F15B2FE9041238B54736103396BF7) |
-| IN                     | The IN expression is a Boolean indicating whether one expression is present inside a collection of expressions of a compatible type. | See [IN and SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7) |
-| IS_DEFINED             | Query function. Returns TRUE if the expression does not evaluate to [UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined). Inequality queries include undefined values in their query results. With the IS_DEFINED function, you can limit results to only those elements with defined values. | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
-| IS_UNDEFINED           | Query function. Returns TRUE if the expression evaluates to [UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined). With the exception of inequality queries, most queries do not include undefined values in their query results. The IS_UNDEFINED function allows undefined values to be included, so you can identify elements with undefined values. | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
-| LIMIT                  | Limits the number of returned results. If you use the limit keyword, you cannot also run operations on the query result set that perform any kind of summary activities. For example trying to run add or addAll or a SelectResult from a query with a LIMIT clause throws an exception. | See [LIMIT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_25D7055B33EC47B19B1B70264B39212F) |
-| LIKE                   | LIKE can be used to mean ‘equals to’, or if you terminate the string with a wildcard character (`%`), it behaves like 'starts with’. Note that the wildcard can only be used at the end of the comparison string. You can escape the wildcard character to represent the `%` character. You can also use the LIKE predicate if an index is present. | See [LIKE](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_D91E0B06FFF6431490CC0BFA369425AD) |
-| NOT                    | The example returns the set of portfolios that have positions. Note that NOT cannot use an index. | See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) |
-| NVL                    | Returns expr2 if expr1 is null. The expressions can be query parameters (bind arguments), path expressions, or literals. | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
-| OR                     | If an expression uses both AND and OR operators, the AND expression has higher precedence than OR. | See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) |
-| ORDER BY               | Allows you to order query results (either in ascending or descending order). | See [ORDER BY](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_D9DF0F785CA94EF8B367C3326CC12990) |
-| SELECT                 | Allows you to filter data from the collection of object(s) returned by a WHERE search operation. | See [SELECT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E) |
-| SET                    | Specifies a collection of values that can be compared to the returned values of query. | See [IN and SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7) |
-| <TRACE>                | Enables debugging on the following query string.             | See [Query Debugging](https://geode.apache.org/docs/guide/17/developing/query_additional/query_debugging.html#concept_2D557E24AAB24044A3DB36B3124F6748) |
-| TO_DATE                | Returns a Java Data class object. The arguments must be String S with date_str representing the date and format_str representing the format used by date_str. The format_str you provide is parsed using java.text.SimpleDateFormat. | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
-| TYPE                   | Specifying object type in the FROM clause helps the query engine to process the query at optimal speed. | See [Object Typing](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause__section_A5B42CCB7C924949954AEC2DAAD51134) |
-| WHERE                  | Resolves to a collection of objects. The collection is then available for iteration in the query expressions that follow in the WHERE clause. | See [WHERE Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause) |
+| AND                    | 逻辑运算符，用于通过组合两个或多个表达式来生成布尔结果来创建复杂表达式。当您使用AND运算符组合两个条件表达式时，两个条件的值都必须为true，才能使整个表达式为真。 | See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) |
+| AS                     | 用于为路径表达式提供标签，以便稍后可以通过标签引用路径。 | See [Aliases and Synonyms](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause__section_AB1734C16DC348479C00FD6829B933AA) |
+| COUNT                  | 返回与提供的条件匹配的结果的数量。 | See [COUNT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_B2CBA00EB83F463DAF4769D7859C64C8) |
+| DISTINCT               | 将select语句限制为唯一的结果(消除重复)。 | See [DISTINCT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_972EE73A6F3E4427B6A99DB4EDF5860D) |
+| ELEMENT                | 查询功能。从集合或数组中提取单个元素。如果参数不是只有一个元素的集合或数组，则该函数抛出一个`FunctionDomainException`。 | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
+| FROM                   | 您可以访问查询的当前范围内可用的任何对象或对象属性。 | See [FROM Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause) |
+| <HINT>                 | 指示查询引擎优先选择某些索引的关键字。| See [Using Query Index Hints](https://geode.apache.org/docs/guide/17/developing/query_index/query_index_hints.html) |
+| IMPORT                 | 用于建立对象的名称库。                 | See [IMPORT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_import_statement.html#concept_2E9F15B2FE9041238B54736103396BF7) |
+| IN                     | IN表达式是一个布尔值，指示一个表达式是否存在于兼容类型的表达式集合中。| See [IN and SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7) |
+| IS_DEFINED             | 查询功能。如果表达式的值不为[UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined)，则返回TRUE。不等式查询在查询结果中包含未定义的值。使用IS_DEFINED函数，您可以将结果限制为只有那些具有定义值的元素。 | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
+| IS_UNDEFINED           | 查询功能。如果表达式计算结果为[UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined)，则返回TRUE。除不等式查询外，大多数查询的查询结果中不包含未定义的值。IS_UNDEFINED函数允许包含未定义的值，因此可以使用未定义的值标识元素。 | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
+| LIMIT                  | 限制返回结果的数量。如果使用limit关键字，还不能对执行任何类型的汇总活动的查询结果集运行操作。例如，试图从带有LIMIT子句的查询中运行add或addAll或SelectResult会抛出异常。 | See [LIMIT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_25D7055B33EC47B19B1B70264B39212F) |
+| LIKE                   | LIKE可以用来表示`等于`，或者如果您以通配符(`%`)结束字符串，它的行为类似于`以`开头。请注意，通配符只能在比较字符串的末尾使用。可以转义通配符来表示`%`字符。如果有索引，还可以使用LIKE谓词。 | See [LIKE](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_D91E0B06FFF6431490CC0BFA369425AD) |
+| NOT                    | 该示例返回具有头寸的投资组合集。注意NOT不能使用索引。 | See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) |
+| NVL                    | 如果expr1为空，则返回expr2。表达式可以是查询参数(绑定参数)、路径表达式或文本。参见[预设置查询函数](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85ae7d6b1e2941ed8bd2a8310a8175e__section_69dcad624e9640028bc86fd67649deb2) |
+| OR                     | 如果表达式同时使用AND和OR运算符，则AND表达式的优先级高于OR。 | See [Operators](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) |
+| ORDER BY               | 允许您对查询结果进行排序(升序或降序)。 | See [ORDER BY](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_D9DF0F785CA94EF8B367C3326CC12990) |
+| SELECT                 | 允许您从WHERE搜索操作返回的对象集合中筛选数据。 | See [SELECT Statement](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E) |
+| SET                    | 指定可与查询的返回值进行比较的值的集合。 | See [IN and SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7) |
+| <TRACE>                | 启用对以下查询字符串的调试。             | See [Query Debugging](https://geode.apache.org/docs/guide/17/developing/query_additional/query_debugging.html#concept_2D557E24AAB24044A3DB36B3124F6748) |
+| TO_DATE                | 返回一个Java数据类对象。参数必须是字符串S, date_str表示日期，format_str表示date_str使用的格式。您提供的format_str是使用java.text.SimpleDateFormat解析的。 | See [Preset Query Functions](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_69DCAD624E9640028BC86FD67649DEB2) |
+| TYPE                   | 在FROM子句中指定对象类型有助于查询引擎以最佳速度处理查询。 | See [Object Typing](https://geode.apache.org/docs/guide/17/developing/query_select/the_from_clause.html#the_from_clause__section_A5B42CCB7C924949954AEC2DAAD51134) |
+| WHERE                  |解析为对象的集合。然后集合可以在WHERE子句后面的查询表达式中进行迭代。 | See [WHERE Clause](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause) |
 
 
 
-##### Case Sensitivity
+##### 区分大小写
 
-Query language keywords such as SELECT, NULL, DATE, and <TRACE> are case-insensitive. Identifiers such as attribute names, method names, and path expressions are case-sensitive.
+查询语言关键字(如SELECT、NULL、DATE和<trace>)不区分大小写。</trace>属性名、方法名和路径表达式等标识符是区分大小写的。
 
-In terms of query string and region entry matching, if you want to perform a case-insensitive search on a particular field, you can use the Java String class `toUpperCase` and `toLowerCase`methods in your query. For example:
+在查询字符串和区域条目匹配方面，如果希望对特定字段执行不区分大小写的搜索，可以在查询中使用Java字符串类`toUpperCase`和`toLowerCase`方法。例如:
 
 ```
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.value.toUpperCase LIKE '%BAR%'
 ```
 
-or
+或者
 
 ```
 SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
@@ -7160,9 +7167,9 @@ SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 
 
 
-##### Comments in Query Strings
+##### 查询字符串中的注释
 
-Comment lines being with `--` (double dash). Comment blocks begin with `/*` and end with `*/`. For example:
+注释行使用`--`(双破折号)。注释块以`/*`开头，以`*/`结尾。例如:
 
 ```
 SELECT * --my comment 
@@ -7172,15 +7179,15 @@ a comment */ WHERE status = ‘active’
 
 
 
-##### Query Language Grammar
+##### 查询语言语法
 
-**Language Grammar**
+**语言的语法**
 
-Notation used in the grammar: n
-A nonterminal symbol that has to appear at some place within the grammar on the left side of a rule. All nonterminal symbols have to be derived to be terminal symbols.
+语法中使用的符号:n
+一种非终结符，必须出现在语法中规则左侧的某个位置。所有非终结符号都必须被派生为终结符号。
 
 **t**
-A terminal symbol (shown in italic bold).
+终端符号(以斜体粗体显示)。
 
 x y
 x followed by y
@@ -7197,10 +7204,10 @@ x or empty
 { x }
 A possibly empty sequence of x.
 
-*comment*
-descriptive text
+*备注*
+描述性的文本
 
-Grammar list:
+语法列表:
 
 ```
 symbol ::= expression
@@ -7281,7 +7288,7 @@ name_character ::= letter | digit | underscore
 digit ::= any unicode digit
 ```
 
-The expressions in the following are all terminal characters:
+以下表达式均为终端字符:
 
 ```
 dot ::= .
@@ -7299,40 +7306,40 @@ dash ::= -
 plus ::= +
 ```
 
-**Language Notes**
+**语言附录**
 
-- Query language keywords such as SELECT, NULL, and DATE are case-insensitive. Identifiers such as attribute names, method names, and path expressions are case-sensitive.
+- 查询语言关键字(如SELECT、NULL和DATE)不区分大小写。属性名、方法名和路径表达式等标识符是区分大小写的。
 
-- Comment lines begin with – (double dash).
+- 注释行以--(双破折号)开头。
 
-- Comment blocks begin with /* and end with */.
+- 注释块以/*开头，以*/结尾。
 
-- String literals are delimited by single-quotes. Embedded single-quotes are doubled.
+- 字符串文字由单引号分隔。嵌入单引号加倍。
 
-  Examples:
+  例子:
 
   ```
   'Hello' value = Hello
   'He said, ''Hello''' value = He said, 'Hello'
   ```
 
-- Character literals begin with the CHAR keyword followed by the character in single quotation marks. The single-quotation mark character itself is represented as `CHAR ''''` (with four single quotation marks).
+- 字符文字以CHAR关键字开头，后跟单引号中的字符。单引号字符本身表示为`CHAR ''''(带有四个单引号)。
 
-- In the TIMESTAMP literal, there is a maximum of nine digits after the decimal point.
+- 在时间戳文本中，小数点后最多有9位数字。
 
 
 
-##### Operators
+##### 操作符
 
-Geode supports comparison, logical, unary, arithmetic, map, index, dot, and right arrow operators.
+Geode支持比较、逻辑、一元、算术、映射、索引、点和右箭头操作符。
 
-**Comparison Operators**
+**比较运算符**
 
-Comparison operators compare two values and return the results, either TRUE or FALSE.
+比较运算符比较两个值并返回结果，要么为真，要么为假。
 
-The following are supported comparison operators:
+以下是支持的比较运算符:
 
-| Operator | Meaning                  |
+| 操作符 | 含义                  |
 | -------- | ------------------------ |
 | <        | less than                |
 | <=       | less than or equal to    |
@@ -7343,26 +7350,26 @@ The following are supported comparison operators:
 | !=       | not equal to             |
 | <>       | not equal to             |
 
-Regarding equality and inequality operators:
+关于等式和不等式运算符:
 
-- The equality and inequality operators have lower precedence than the other comparison operators.
-- The equality and inequality operators can be used with null.
-- Inequality queries return results for which the search field is [UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined).
-- To perform equality or inequality comparisons with [UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined), use the IS_DEFINED and IS_UNDEFINED preset query functions instead of these comparison operators.
+- 等式和不等式运算符的优先级低于其他比较运算符。
+- 等式和不等式运算符可以与null一起使用。
+- 不等式查询返回搜索字段为[UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined)。的结果
+- 要执行与[UNDEFINED](https://geode.apache.org/docs/guide/17/developing/query_additional/literals.html#literals__section_undefined)相等或不相等的比较，使用IS_DEFINED和IS_UNDEFINED预置查询函数，而不是这些比较运算符。
 
-**Logical Operators**
+**逻辑运算符**
 
-The logical operators AND and OR allow you to create more complex expressions by combining expressions to produce a boolean result. When you combine two conditional expressions using the AND operator, both conditions must evaluate to true for the entire expression to be true. When you combine two conditional expressions using the OR operator, the expression evaluates to true if either one or both of the conditions are true. You can create complex expressions by combining multiple simple conditional expressions with AND and OR operators. When expressions use AND and OR operators, AND has higher precedence than OR.
+逻辑运算符AND 和 OR 允许您通过组合表达式来生成布尔结果来创建更复杂的表达式。当您使用AND运算符组合两个条件表达式时，两个条件的值都必须为true，才能使整个表达式为真。当您使用OR运算符组合两个条件表达式时，如果其中一个或两个条件都为真，则表达式的计算结果为真。您可以通过使用AND和OR操作符组合多个简单条件表达式来创建复杂表达式。当表达式使用AND和或运算符时，且具有比OR更高的优先级。
 
-**Unary Operators**
+**一元操作符**
 
-Unary operators operate on a single value or expression, and have lower precedence than comparison operators in expressions. Geode supports the unary operator NOT. NOT is the negation operator, which changes the value of the operand to its opposite. For example, if an expression evaluates to TRUE, NOT changes it to FALSE. The operand must be a boolean.
+一元运算符操作单个值或表达式，在表达式中优先级低于比较运算符。Geode不支持一元运算符。NOT是否定运算符，它将操作数的值更改为相反的值。例如，如果表达式的计算结果为TRUE，则不将其更改为FALSE。操作数必须是布尔值。
 
-**Arithmetic Operators**
+**算术运算符**
 
-Arithmetic operators operate on two values or expressions. Any of the expected arithmetic exceptions may result, such as overflow or a divide by zero. `QueryInvocationTargetException` will be thrown, and `getCause()` will state `ArithmeticException`.
+算术运算符操作两个值或表达式。任何预期的算术异常都可能导致溢出或除以0。` QueryInvocationTargetException`将被抛出，`getCause()`将声明`ArithmeticException`。
 
-The following are supported arithmetic operators:
+以下是支持的算术运算符:
 
 | Operator | Meaning        |
 | -------- | -------------- |
@@ -7373,31 +7380,31 @@ The following are supported arithmetic operators:
 | %        | modulus        |
 | MOD      | modulus        |
 
-**Map and Index Operators**
+**映射和索引操作符**
 
-Map and index operators access elements in key/value collections (such as maps and regions) and ordered collections (such as arrays, lists, and `String`s). The operator is represented by a set of square brackets (`[ ]`) immediately following the name of the collection. The mapping or indexing specification is provided inside these brackets.
+映射和索引操作符访问键/值集合(如映射和区域)和有序集合(如数组、列表和`String`)中的元素。操作符由紧挨着集合名称的一组方括号(`[]`)表示。这些括号中提供了映射或索引规范。
 
-Array, list, and `String` elements are accessed using an index value. Indexing starts from zero for the first element, 1 for the second element, and so on. If `myList` is an array, list, or `String` and `index` is an expression that evaluates to a non-negative integer, then `myList[index]` represents the (`index + 1`)th element of `myList`. The elements of a `String` are the list of characters that make up the string.
+数组、列表和`字符串`元素使用索引值进行访问。索引从第一个元素的0开始，从第二个元素的1开始，依此类推。如果`myList`是一个数组、列表或`String`，而`index`是一个计算结果为非负整数的表达式，那么`myList[index]`表示`myList`的第(`index+1`)个元素。字符串的元素是组成字符串的字符列表。
 
-Map and region values are accessed by key using the same syntax. The key can be any `Object`. For a `Region`, the map operator performs a non-distributed `get` in the local cache only - with no use of `netSearch`. So `myRegion[keyExpression]` is the equivalent of `myRegion.getEntry(keyExpression).getValue`.
+Map和region值通过键使用相同的语法进行访问。关键字可以是任何`对象`。对于`区域`，map操作只在本地缓存中执行非分布式的`get`，不使用`netSearch`。因此，`myRegion[keyExpression]`等价于`myRegion. getentry(keyExpression).getvalue`。
 
-**Dot, Right Arrow, and Forward Slash Operators**
+**点，右箭头和正斜杠运算符**
 
-The dot operator (`.`) separates attribute names in a path expression, and specifies the navigation through object attributes. An alternate equivalent to the dot is the right arrow, (`->`). The forward slash is used to separate region names when navigating into subregions.
+点运算符(' . ')分隔路径表达式中的属性名，并指定通过对象属性的导航。右箭头(' -> ')是与圆点等价的另一个替代符号。当导航到子区域时，正斜杠用于分隔区域名称。
 
 
 
-##### Reserved Words
+##### 保留字
 
-These words are reserved for the query language and may not be used as identifiers. The words with asterisk (`*`) after them are not currently used by Geode, but are reserved for future implementation.
+这些词是为查询语言保留的，不能用作标识符。Geode目前不使用后面带有星号(`*`)的单词，而是为将来的实现保留。
 
 | `abs* all and  andthen*  any*  array  as  asc  avg*  bag*  boolean  by  byte  char  collection count  date  declare*  define* desc ` | `dictionary  distinct  double  element  enum*  except*  exists*  false  first*  flatten*  float  for*  from  group*  having*  import  in  int  intersect*  interval* ` | `is_defined  is_undefined  last*  like limit list*  listtoset*  long  map  max*  min*  mod  nil  not  null  nvl  octet  or  order ` | `orelse*  query*  select  set  short  some*  string  struct*  sum*  time  timestamp  to_date  true  type  undefine*  undefined  union*  unique*  where` |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 |                                                              |                                                              |                                                              |                                                              |
 
-To access any method, attribute, or named object that has the same name as a query language reserved word, enclose the name within double quotation marks.
+若要访问与查询语言保留字具有相同名称的任何方法、属性或命名对象，请将名称用双引号括起来。
 
-Examples:
+例子:
 
 ```
 SELECT DISTINCT "type" FROM /portfolios WHERE status = 'active'
@@ -7406,23 +7413,23 @@ SELECT DISTINCT * FROM /region1 WHERE emps."select"() < 100000
 
 
 
-##### Supported Literals
+##### 支持文字
 
-Geode supports the following literal types:
+Geode支持以下文字类型:
 
 
 
 **boolean**
 
-A `boolean` value, either TRUE or FALSE
+一个布尔值， `TRUE` 或者 `FALSE`
 
-**int** and **long**
+**int** 和 **long**
 
-An integer literal is of type `long` if has a suffix of the ASCII letter L. Otherwise it is of type `int`.
+如果一个整数的后缀是ASCII字母l，那么它的类型是`long`，否则它的类型是`int`。
 
-**floating point**
+**浮点**
 
-A floating-point literal is of type `float` if it has a suffix of an ASCII letter `F`. Otherwise its type is `double`. Optionally, it can have a suffix of an ASCII letter `D`. A double or floating point literal can optionally include an exponent suffix of `E` or `e`, followed by a signed or unsigned number.
+如果浮点文字的后缀是ASCII字母`F`，则它的类型为`float`。否则，它的类型是`double`。可选地，它可以有ASCII字母`D`的后缀。双精度字面值或浮点字面值可以选择性地包含指数后缀`E`或`e`，后跟有符号或无符号数字。
 
 
 
@@ -7430,202 +7437,202 @@ A floating-point literal is of type `float` if it has a suffix of an ASCII lette
 
 **string**
 
-String literals are delimited by single quotation marks. Embedded single-quotation marks are doubled. For example, the character string `'Hello'` evaluates to the value `Hello`, while the character string `'He said, ''Hello'''` evaluates to `He said, 'Hello'`. Embedded newlines are kept as part of the string literal.
+字符串文字由单引号分隔。嵌入的单引号加倍。例如，字符串`'Hello'`的值为`Hello`，而字符串`'He said, ''Hello'''`的值为`He said, 'Hello'`。嵌入的换行符保留为字符串文本的一部分。
 
 **char**
 
-A literal is of type char if it is a string literal prefixed by the keyword `CHAR`, otherwise it is of type `string`. The `CHAR` literal for the single-quotation mark character is `CHAR` `''''` (four single quotation marks).
+如果一个字面值是以关键字`char`为前缀的字符串字面值，则它是char类型，否则它是`string`类型。单引号字符的 `CHAR` 文字是`CHAR` `''''`(四个单引号)。
 
 **date**
 
-A `java.sql.Date` object that uses the JDBC format prefixed with the DATE keyword: `DATE yyyy-mm-dd`. In the `Date`, `yyyy` represents the year, `mm` represents the month, and `dd` represents the day. The year must be represented by four digits; a two-digit shorthand for the year is not allowed.
+`java.sql.Date`对象，该对象使用以Date关键字`DATE yyyy-mm-dd`为前缀的JDBC格式。在`Date`中，`yyyy`代表年份，`mm`代表月份，`dd`代表日子。年份必须用四位数表示;不允许用两位数的缩写来表示年份。
 
 **time**
 
-A `java.sql.Time` object that uses the JDBC format (based on a 24-hour clock) prefixed with the TIME keyword: `TIME hh:mm:ss`. In the `Time`, `hh` represents the hours, `mm` represents the minutes, and `ss` represents the seconds.
+`java.sql.Time`对象，该对象使用JDBC格式(基于24小时时钟)，前缀为Time关键字:`TIME hh:mm:ss`。在`Time`中，`hh`代表小时，`mm`代表分钟，`ss`代表秒。
 
 **timestamp**
 
-A `java.sql.Timestamp` object that uses the JDBC format with a TIMESTAMP prefix: `TIMESTAMP yyyy-mm-dd hh:mm:ss.fffffffff` In the `Timestamp`, `yyyy-mm-dd` represents the `date`, `hh:mm:ss` represents the `time`, and `fffffffff` represents the fractional seconds (up to nine digits).
+`java.sql.Timestamp`对象，该对象使用带有时间戳前缀的JDBC格式:`TIMESTAMP yyyy-mm-dd hh:mm:ss.fffffffff`。在`Timestamp`中，“yyyy-mm-dd”表示`日期`，`hh:mm:ss`表示`时间`，`fffffff`表示分数秒(最多9位)。
 
 **NIL**
 
-Equivalent alternative of `NULL`.
+`NULL`的等效替换。
 
 **NULL**
 
-The same as `null` in Java.
+与Java中的`null`相同。
 
 
 
 **UNDEFINED**
 
-A special literal, valid value for any data type, indicating that no value (not even NULL) has been designated for a given data item.
+任何数据类型的一个特殊的文本有效值，指示没有为给定的数据项指定任何值(甚至不为空)。
 
 
 
-**The Difference Between NULL and UNDEFINED**
+**NULL和UNDEFINED之间的区别**
 
-In OQL, as in Java, NULL is an assignable entity (an object) indicating “no value”.
+与Java一样，在OQL中，NULL是指示“无值”的可分配实体(对象)。
 
-In OQL, UNDEFINED is a type. There is no Java equivalent. In OQL search results, an UNDEFINED value can be returned in two cases:
+在OQL中，UNDEFINED是一种类型。没有等效的Java。在OQL搜索结果中，可以在两种情况下返回未定义的值:
 
-- As the result of a search for a key or value that does not exist
-- As the result of accessing an attribute of a null-valued attribute.
+- 搜索不存在的键或值的结果
+- 作为访问空值属性的属性的结果。
 
-Searches for inequality return UNDEFINED values in their results.
+搜索不等式会返回结果中未定义的值。
 
-Note that if you access an attribute that has an explicit value of NULL, then it is not UNDEFINED.
+请注意，如果您访问一个显式值为NULL的属性，那么它不是未定义的。
 
-For example, if a query accesses the attribute `address.city` and `address` is NULL, the result is UNDEFINED. If the query accesses `address`, then the result is not UNDEFINED, it is NULL.
+例如，如果查询访问`address.city`而`address`是NULL，那么结果是UNDEFINED。如果查询访问`address`，那么结果不是UNDEFINED，它是NULL。
 
-**Comparing Values With java.util.Date**
+**与java.util.Date比较值**
 
-You can compare temporal literal values `DATE`, `TIME`, and `TIMESTAMP` with `java.util.Date`values. There is no literal for `java.util.Date` in the query language.
+您可以将时态文字值`DATE`、`TIME`和`TIMESTAMP`与`java.util.Date`值进行比较。查询语言中的日期中,没有`java.util.Date`字面值。
 
-**Type Conversion**
+**类型转换**
 
-The Geode query processor performs implicit type conversions and promotions under certain cases in order to evaluate expressions that contain different types. The query processor performs binary numeric promotion, method invocation conversion, and temporal type conversion.
+Geode查询处理器在某些情况下执行隐式类型转换和提升，以计算包含不同类型的表达式。查询处理器执行二进制数字提升、方法调用转换和时间类型转换。
 
-**Binary Numeric Promotion**
+**二进制数字提升**
 
-The query processor performs binary numeric promotion on the operands of the following operators:
+查询处理器对以下运算符的操作数进行二进制数值提升:
 
-- Comparison operators <, <=, >, and >=
-- Equality operators = and <>
-- Binary numeric promotion widens the operands in a numeric expression to the widest representation used by any of the operands. In each expression, the query processor applies the following rules in the prescribed order until a conversion is made:
-  1. If either operand is of type double, the other is converted to double
-  2. If either operand is of type float, the other is converted to float
-  3. If either operand is of type long, the other is converted to long
-  4. Both operands are converted to type int char
+- 比较运算符 <, <=, >, 和 >=
+- 等算子 = 和 <>
+- 二进制数字提升将数字表达式中的操作数扩展到任何操作数所使用的最宽表示形式。在每个表达式中，查询处理器按照规定的顺序应用以下规则，直到进行转换:
+  1. 如果任一操作数类型为double，则另一个操作数转换为double
+  2. 如果任一操作数类型为float，则将另一个操作数转换为float
+  3. 如果任一操作数类型为long，则将另一个操作数转换为long
+  4. 两个操作数都转换为类型int char
 
-**Method Invocation Conversion**
+**方法调用转换**
 
-Method invocation conversion in the query language follows the same rules as Java method invocation conversion, except that the query language uses runtime types instead of compile time types, and handles null arguments differently than in Java. One aspect of using runtime types is that an argument with a null value has no typing information, and so can be matched with any type parameter. When a null argument is used, if the query processor cannot determine the proper method to invoke based on the non-null arguments, it throws an AmbiguousNameException
+查询语言中的方法调用转换遵循与Java方法调用转换相同的规则，只是查询语言使用运行时类型而不是编译时类型，并且处理空参数的方式与Java中不同。使用运行时类型的一个方面是，具有null值的参数没有类型信息，因此可以与任何类型参数匹配。当使用null参数时，如果查询处理器不能根据非空参数确定要调用的适当方法，它将抛出一个AmbiguousNameException
 
-**Temporal Type Conversion**
+**时间类型转换**
 
-The temporal types that the query language supports include the Java types java.util.Date , java.sql.Date , java.sql.Time , and java.sql.Timestamp , which are all treated the same and can be compared and used in indexes. When compared with each other, these types are all treated as nanosecond quantities.
+查询语言支持的时态类型包括Java类型 java.util.Date、java.sql.Date、java.sqlTime和java.sqlTimestamp，它们都被同等对待，可以在索引中进行比较和使用。与其他类型相比，这些类型都被视为纳秒量。
 
-**Enum Conversion**
+**枚举转换**
 
-Enums are not automatically converted. To use Enum values in query, you must use the toString method of the enum object or use a query bind parameter. See [Enum Objects](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_59E7D64746AE495D942F2F09EF7DB9B5) for more information.
+枚举不会自动转换。要在查询中使用枚举值，必须使用枚举对象的toString方法或使用查询绑定参数。有关更多信息，请参见[Enum对象](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_59E7D64746AE495D942F2F09EF7DB9B5)。
 
-**Query Evaulation of Float.NaN and Double.NaN**
+**Float.NaN 和 Double.NaN**
 
-Float.NaN and Double.NaN are not evaluated as primitives; instead, they are compared in the same manner used as the JDK methods Float.compareTo and Double.compareTo. See [Double.NaN and Float.NaN Comparisons](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_E7206D045BEC4F67A8D2B793922BF213) for more information.
+Float.NaN and Double.NaN不作为原语计算;相反，它们的比较方式与JDK方法Float.compareTo和Double.compareTo相同。参见[Double.NaN and Float.NaN Comparisons](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_E7206D045BEC4F67A8D2B793922BF213) 以获取更多信息。
 
 
 
-#### Query Language Restrictions and Unsupported Features
+#### 查询语言限制和不受支持的特性
 
-At a high level, Geode does not support the following querying features:
+在高级别上，Geode不支持以下查询特性:
 
-- Indexes targeted for joins across more than one region are not supported
+- 不支持针对跨多个区域的连接的索引
 
-- Static method invocations. For example, the following query is invalid:
+- 静态方法调用。例如，以下查询无效:
 
   ```
   SELECT DISTINCT * FROM /QueryRegion0 WHERE aDay = Day.Wednesday
   ```
 
-- You cannot create an index on fields using Set/List types (Collection types) that are not comparable. The OQL index implementation expects fields to be Comparable. To workaround this, you can create a custom Collection type that implements Comparable.
+- 不能使用不可比较的Set/List类型(集合类型)在字段上创建索引。OQL索引实现希望字段具有可比性。要解决这个问题，可以创建实现Comparable的自定义集合类型。
 
-- ORDER BY is only supported with DISTINCT queries.
+- ORDER BY只支持DISTINCT的查询。
 
-In addition, there are some specific limitations on partitioned region querying. See [Partitioned Region Query Restrictions](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_query_restrictions.html#concept_5353476380D44CC1A7F586E5AE1CE7E8).
-
-
-
-### Advanced Querying
-
-This section includes advanced querying topics such as using query indexes, using query bind parameters, querying partitioned regions and query debugging.
-
-- **Performance Considerations**
-
-  This topic covers considerations for improving query performance.
-
-- **Monitoring Low Memory When Querying**
-
-  The query monitoring feature prevents out-of-memory exceptions from occurring when you execute queries or create indexes.
-
-- **Timeouts for Long-Running Queries**
-
-  Configure a timeout value for long running queries, such that they do not complete, and Geode throws an exception when a query runs for longer than the configured value.
-
-- **Using Query Bind Parameters**
-
-  Using query bind parameters in Geode queries is similar to using prepared statements in SQL where parameters can be set during query execution. This allows you to build a query once and execute it multiple times by passing the query conditions during run time.
-
-- **Querying Partitioned Regions**
-
-  Geode allows you to manage and store large amounts of data across distributed nodes using partitioned regions. The basic unit of storage for a partitioned region is a bucket, which resides on a Geode node and contains all the entries that map to a single hashcode. In a typical partitioned region query, the system distributes the query to all buckets across all nodes, then merges the result sets and sends back the query results.
-
-- **Query Debugging**
-
-  You can debug a specific query at the query level by adding the `<trace>` keyword before the query string that you want to debug.
+此外，分区区域查询还有一些特定的限制。参见[分区区域查询限制](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_query_restrictions.html#concept_5353476380D44CC1A7F586E5AE1CE7E8)。
 
 
 
-#### Performance Considerations
+### 高级查询
 
-This topic covers considerations for improving query performance.
+本节包括高级查询主题，如使用查询索引、使用查询绑定参数、查询分区区域和查询调试。
 
-Some general performance tips:
+- **性能考虑**
 
-- Improve query performance whenever possible by creating indexes. See [Tips and Guidelines on Using Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/indexing_guidelines.html#indexing_guidelines) for some scenarios for using indexes.
-- Use bind parameters for frequently used queries. When you use a bind parameter, the query is compiled once. This improves the subsequent performance of the query when it is re-run. See [Using Query Bind Parameters](https://geode.apache.org/docs/guide/17/developing/query_additional/using_query_bind_parameters.html#concept_173E775FE46B47DF9D7D1E40680D34DF) for more details.
-- When querying partitioned regions, execute the query using the FunctionService. This function allows you to target a particular node, which will improve performance greatly by avoiding query distribution. See [Querying a Partitioned Region on a Single Node](https://geode.apache.org/docs/guide/17/developing/query_additional/query_on_a_single_node.html#concept_30B18A6507534993BD55C2C9E0544A97) for more information.
-- Use key indexes when querying data that has been partitioned by a key or field value. See [Optimizing Queries on Data Partitioned by a Key or Field Value](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454).
-- The size of a query result set depends on the restrictiveness of the query and the size of the total data set. A partitioned region can hold much more data than other types of regions, so there is more potential for larger result sets on partitioned region queries. This could cause the member receiving the results to run out of memory if the result set is very large.
+  本主题讨论了改进查询性能的考虑事项。
 
+- **查询时监视内存不足**
 
+  查询监视功能防止在执行查询或创建索引时发生内存不足异常。
 
-#### Monitoring Low Memory When Querying
+- **长时间运行查询的超时**
 
-The query monitoring feature prevents out-of-memory exceptions from occurring when you execute queries or create indexes.
+  为长时间运行的查询配置一个超时值，以便它们不完成，当查询运行的时间超过配置的值时，Geode将抛出异常。
 
-You enable this feature when you set a `critical-heap-percentage` attribute for the resource-manager element in the `cache.xml` file or by using the `cache.getResourceManager().setCriticalHeapPercentage(float heapPercentage)` API. When this feature is enabled and heap memory usage exceeds the threshold due to running a query or creating an index, the resource manager throws an exception and cancels the running query or index creation.
+- **使用查询绑定参数**
 
-You can explicitly disable this feature by setting the system property `gemfire.cache.DISABLE_QUERY_MONITOR_FOR_LOW_MEMORY` to true.
+  在Geode查询中使用查询绑定参数类似于在SQL中使用预置语句，在SQL中可以在查询执行期间设置参数。这允许您一次构建查询，并在运行时通过传递查询条件多次执行查询。
 
-When system memory is low, as determined by the critical heap percentage threshold defined in the `cache.xml` file or in the getResourceManager API, queries will throw a `QueryExecutionLowMemoryException`. Any indexes that are in the process of being created will throw an `InvalidIndexException` with the message indicating the reason.
+- **查询分区的区域**
 
-**Partitioned Region Queries and Low Memory**
+  Geode允许您使用分区区域跨分布式节点管理和存储大量数据。分区区域的基本存储单元是bucket，它驻留在Geode节点上，包含映射到单个hashcode的所有条目。在典型的分区区域查询中，系统将查询分布到所有节点上的所有bucket中，然后合并结果集并发回查询结果。
 
-Partitioned region queries are likely causes for out-of-memory exceptions. If query monitoring is enabled, partitioned region queries drop or ignore results that are being gathered by other servers if the executing server is low in memory.
+- **查询调试**
 
-Query-monitoring does not address a scenario in which a low-level collection is expanded while the partitioned region query is gathering results. For example, if a row is added and then causes a Java level collection or array to expand, it is possible to then encounter an out-of-memory exception. This scenario is rare and is only possible if the collection size itself expands before a low memory condition is met and then expands beyond the remaining available memory. As a workaround, in the event that you encounter this situation, you may be able to tune the system by additionally lowering the `critical-heap-percentage`.
+  通过在要调试的查询字符串之前添加 `<trace>` 关键字，可以在查询级别调试特定的查询。
 
 
 
-#### Timeouts for Long-Running Queries
+#### 性能考虑
 
-Geode can monitor and throw an exception when a query runs longer than a configured amount of time. This feature is enabled by setting the `critical-heap-percentage` attribute which detects that the JVM has too little heap memory.
+本主题讨论了改进查询性能的考虑事项。
 
-The default query timeout is five hours. Set a different amount of time, in milliseconds, by specifying the system variable `gemfire.cache.MAX_QUERY_EXECUTION_TIME`. A value of -1 explicitly disables the timeout.
+一些一般的性能提示:
 
-When enabled, a query that runs longer than the configured timeout will be cancelled such that it does not finish, and Geode throws a `QueryExecutionTimeoutException`.
+- 通过创建索引尽可能地提高查询性能。有关使用索引的一些场景，请参见[关于使用索引的提示和指南](https://geode.apache.org/docs/guide/17/developing/query_index/indexing_guidelines.html#indexing_guidelines) 。
+- 为经常使用的查询使用绑定参数。当使用绑定参数时，查询只编译一次。这提高了查询在重新运行时的后续性能。有关详细信息，请参见[使用查询绑定参数](https://geode.apache.org/docs/guide/17/developing/query_additional/using_query_bind_parameters.html#concept_173E775FE46B47DF9D7D1E40680D34DF)。
+- 在查询分区区域时，使用FunctionService执行查询。该函数允许您针对特定的节点，这将通过避免查询分布大大提高性能。有关更多信息，请参见[在单个节点上查询分区区域](https://geode.apache.org/docs/guide/17/developing/query_additional/query_on_a_single_node.html#concept_30B18A6507534993BD55C2C9E0544A97)。
+- 查询按键或字段值分区的数据时，请使用键索引。参见[对按键或字段值分区的数据进行优化查询](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454)。
+- 查询结果集的大小取决于查询的限制性和整个数据集的大小。分区区域可以容纳比其他类型的区域多得多的数据，因此分区区域查询的结果集更大的可能性更大。如果结果集非常大，这可能导致接收结果的成员耗尽内存。
 
 
 
-#### Using Query Bind Parameters
+#### 查询时监视内存不足
 
-Using query bind parameters in Geode queries is similar to using prepared statements in SQL where parameters can be set during query execution. This allows user to build a query once and execute it multiple times by passing the query conditions during run time.
+查询监视功能防止在执行查询或创建索引时发生内存不足异常。
 
-Query objects are thread-safe.
+当您在`cache.xml`文件中给资源管理器元素设置一个`critical-heap-percentage`属性时，您将启用此功能。或者使用`cache.getResourceManager().setCriticalHeapPercentage(float heapPercentage)`的API。当启用此功能并由于运行查询或创建索引而导致堆内存使用超过阈值时，资源管理器将抛出异常并取消正在运行的查询或索引创建。
 
-The use of query bind parameters is now supported in Client-to-Server queries.
+可以通过设置系统属性`gemfire.cache.DISABLE_QUERY_MONITOR_FOR_LOW_MEMORY`为true来显式禁用此功能。
 
-The query parameters are identified by a dollar sign, $, followed by a digit that represents the parameter’s position in the parameter array passed to the execute method. Counting begins at 1, so $1 references the first bound attribute, $2 the second attribute, and so on.
+当系统内存不足时，由`cache.xml` 文件中定义的临界堆百分比阈值决定。或者在getResourceManager API中，查询将抛出一个`QueryExecutionLowMemoryException`。正在创建的任何索引都将抛出一个`InvalidIndexException`，其中的消息指示原因。
 
-The Query interface provides an overloaded execute method that accepts parameters inside an Object array. See the [Query.execute](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html) JavaDocs for more details.
+**分区区域查询和内存不足**
 
-The 0th element of the Object array is used for the first query parameter, and so on. If the parameter count or parameter types do not match the query specification, the execute method throws an exception. Specifically, if you pass in the wrong number of parameters, the method call throws a `QueryParameterCountInvalidException`. If a parameter object type is not compatible with what is expected, the method call throws a `TypeMismatchException`.
+分区区域查询可能是内存不足异常的原因。如果启用了查询监视，那么如果正在执行的服务器内存不足，分区区域查询将删除或忽略其他服务器正在收集的结果。
 
-In the following example, the first parameter, the integer **2**, is bound to the first element in the object array. The second parameter, **active**, is bound to the second element.
+查询监视不处理在分区区域查询收集结果时展开低级收集的场景。例如，如果添加了一行，然后导致Java级别的集合或数组展开，那么可能会遇到内存不足异常。这种情况很少见，只有当集合大小本身在满足低内存条件之前扩展，然后扩展到剩余可用内存之外时，才有可能出现这种情况。作为一种变通方法，在遇到这种情况时，您可以通过降低critical-heap-percentage来优化系统。
 
-**Sample Code**
+
+
+#### 长时间运行查询的超时
+
+Geode可以在查询运行时间超过配置的时间时监视并抛出异常。通过设置`critical-heap-percentage`属性来启用该特性，该属性检测JVM的堆内存太少。
+
+默认查询超时为5个小时。通过指定系统变量`gemfire.cache.MAX_QUERY_EXECUTION_TIME`来设置不同的时间量(以毫秒为单位)。值-1显式禁用超时。
+
+当启用时，运行时间超过配置超时的查询将被取消，因此它不会完成，Geode将抛出一个`QueryExecutionTimeoutException`。
+
+
+
+#### 使用查询绑定参数
+
+在Geode查询中使用查询绑定参数类似于在SQL中使用预置语句，在SQL中可以在查询执行期间设置参数。这允许用户一次构建查询，并在运行时通过传递查询条件多次执行查询。
+
+查询对象是线程安全的。
+
+在客户机到服务器的查询中，现在支持使用查询绑定参数。
+
+查询参数由一个美元符号$标识，后面是一个数字，表示传递给execute方法的参数数组中的参数位置。计数从1开始，因此$1引用第一个绑定属性，$2引用第二个属性，依此类推。
+
+查询接口提供了一个重载的执行方法，该方法接受对象数组中的参数。有关详细信息，请参见[Query.execute](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html) JavaDocs。
+
+对象数组的第0个元素用于第一个查询参数，等等。如果参数计数或参数类型与查询规范不匹配，则execute方法将抛出异常。具体地说，如果传入错误数量的参数，方法调用将抛出一个`QueryParameterCountInvalidException`。如果参数对象类型与预期的不兼容，方法调用将抛出一个`TypeMismatchException`。
+
+在下面的示例中，第一个参数integer **2**绑定到对象数组中的第一个元素。第二个参数**active**绑定到第二个元素。
+
+**示例代码**
 
 ```
 // specify the query string
@@ -7646,11 +7653,11 @@ SelectResults results = (SelectResults) query.execute(params);
  int size = results.size();
 ```
 
-**Using Query Bind Parameters in the Path Expression**
+**在路径表达式中使用查询绑定参数**
 
-Additionally the query engine supports the use of query bind parameter in place of a region path. When you specify a bind parameter in the query’s FROM clause, the parameter’s referenced value must be bound to a collection.
+此外，查询引擎支持使用查询绑定参数代替区域路径。在查询的FROM子句中指定绑定参数时，参数的引用值必须绑定到集合。
 
-For example, the following query can be used on any collection by passing in the collection as a query parameter value. In this query you could pass in a Region Object for $1, but not the String name of a region.
+例如，通过将集合作为查询参数值传入，可以对任何集合使用以下查询。在这个查询中，您可以以$1传入一个Region对象，但不能传入区域的字符串名称。
 
 ```
 SELECT DISTINCT * FROM $1 p WHERE p.status = $2
@@ -7658,30 +7665,30 @@ SELECT DISTINCT * FROM $1 p WHERE p.status = $2
 
 
 
-#### Querying Partitioned Regions
+#### 查询分区的区域
 
-Geode allows you to manage and store large amounts of data across distributed nodes using partitioned regions. The basic unit of storage for a partitioned region is a bucket, which resides on a Geode node and contains all the entries that map to a single hashcode. In a typical partitioned region query, the system distributes the query to all buckets across all nodes, then merges the result sets and sends back the query results.
+Geode允许您使用分区区域跨分布式节点管理和存储大量数据。分区区域的基本存储单元是bucket，它驻留在Geode节点上，包含映射到单个hashcode的所有条目。在典型的分区区域查询中，系统将查询分布到所有节点上的所有bucket中，然后合并结果集并发回查询结果。
 
-The following list summarizes the querying functionality supported by Geode for partitioned regions:
+下面的列表总结了Geode支持的分区查询功能:
 
-- **Ability to target specific nodes in a query**. If you know that a specific bucket contains the data that you want to query, you can use a function to ensure that your query only runs the specific node that holds the data. This can greatly improve query efficiency. The ability to query data on a specific node is only available if you are using functions and if the function is executed on one single region. In order to do this, you need to use `Query.execute(RegionFunctionContext context)`. See the [Java API](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html) and [Querying a Partitioned Region on a Single Node](https://geode.apache.org/docs/guide/17/developing/query_additional/query_on_a_single_node.html#concept_30B18A6507534993BD55C2C9E0544A97) for more details.
-- **Ability to optimize partitioned region query performance using key indexes**. You can improve query performance on data that is partitioned by key or a field value by creating a key index and then executing the query using use `Query.execute(RegionFunctionContext context)` with the key or field value used as filter. See the [Java API](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html) and [Optimizing Queries on Data Partitioned by a Key or Field Value](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454) for more details.
-- **Ability to perform equi-join queries between partitioned regions and between partitioned regions and replicated regions**. Join queries between partitioned region and between partitioned regions and replicated regions are supported through the function service. In order to perform equi-join operations on partitioned regions or partitioned regions and replicated regions, the partitioned regions must be colocated, and you need to use the need to use `Query.execute(RegionFunctionContext context)`. See the [Java API](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html) and [Performing an Equi-Join Query on Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/join_query_partitioned_regions.html#concept_B930D276F49541F282A2CFE639F107DD) for more details.
-- **Using ORDER BY on Partitioned Regions**
-- **Querying a Partitioned Region on a Single Node**
-- **Optimizing Queries on Data Partitioned by a Key or Field Value**
-- **Performing an Equi-Join Query on Partitioned Regions**
-- **Partitioned Region Query Restrictions**
+- **能够针对查询中的特定节点**. 如果您知道特定的bucket包含您想要查询的数据，那么您可以使用一个函数来确保您的查询只运行保存数据的特定节点。这可以大大提高查询效率。只有在使用函数和在单个区域上执行函数时，才能查询特定节点上的数据。为此，您需要使用`Query.execute(RegionFunctionContext context)`。参见[Java API](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html)和[查询单个节点上的分区区域](https://geode.apache.org/docs/guide/17/developing/query_additional/query_on_a_single_node.html#concept_30B18A6507534993BD55C2C9E0544A97) 以获得更多详细信息。
+- **使用关键索引优化分区区域查询性能的能力**. 通过创建键索引，然后使用`Query.execute(RegionFunctionContext context)`执行查询，可以提高按键或字段值分区的数据的查询性能,使用键或字段值作为筛选器.参见[Java API](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html)和[优化按键或字段值分区的数据查询](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454)以获得更多详细信息。
+- **能够在分区区域之间以及分区区域和复制区域之间执行等连接查询**. 通过函数服务支持分区区域之间以及分区区域和复制区域之间的连接查询。为了对分区区域或分区区域和复制区域执行等连接操作，必须对分区区域进行colocated，并且需要使用`Query.execute(RegionFunctionContext context)`。参见[Java API](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/query/Query.html)和[在分区区域上执行等价连接查询](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/join_query_partitioned_regions.html#concept_B930D276F49541F282A2CFE639F107DD)以获得更多详细信息。
+- **对分区区域使用ORDER BY**
+- **在单个节点上查询分区区域**
+- **优化按键或字段值分区的数据查询**
+- **对分区区域执行等连接查询**
+- **分区区域查询限制**
 
 
 
-##### Using ORDER BY on Partitioned Regions
+##### 对分区区域使用ORDER BY
 
-To execute a query with an ORDER BY clause on a partitioned region, the fields specified in the ORDER BY clause must be part of the projection list.
+要在分区区域上使用ORDER BY子句执行查询，ORDER BY子句中指定的字段必须是投影列表的一部分。
 
-When an ORDER BY clause is used with a partition region query, the query is executed separately on each region host, the local query coordinator, and all remote members. The results are all gathered by the query coordinator. The cumulative result set is built by applying ORDER BY on the gathered results. If the LIMIT clause is also used in the query, ORDER BY and LIMIT are applied on each node before each node’s results are returned to the coordinator. Then the clauses are applied to the cumulative result set to get the final result set, which is returned to the calling application.
+当将ORDER BY子句与分区区域查询一起使用时，将在每个区域主机、本地查询协调器和所有远程成员上分别执行查询。查询协调器收集所有结果。累积结果集是通过对收集到的结果应用ORDER BY来构建的。如果查询中也使用了LIMIT子句，那么在将每个节点的结果返回给协调器之前，ORDER BY和LIMIT将应用于每个节点。然后将子句应用于累积结果集以获得最终结果集，并将结果集返回给调用应用程序。
 
-**Example:**
+**例子:**
 
 ```
 // This query works because p.status is part of projection list
@@ -7692,11 +7699,11 @@ select distinct * from /region where ID > 5 order by status
 
 
 
-##### Querying a Partitioned Region on a Single Node
+##### 在单个节点上查询分区区域
 
-To direct a query to specific partitioned region node, you can execute the query within a function. Use the following steps:
+要将查询指向特定的分区区域节点，可以在函数中执行查询。使用以下步骤:
 
-1. Implement a function which executes a query using RegionFunctionContext.
+1. 实现一个使用RegionFunctionContext执行查询的函数.
 
    ```
    /**
@@ -7755,9 +7762,9 @@ To direct a query to specific partitioned region node, you can execute the query
      }
    ```
 
-2. Decide on the data you want to query. Based on this decision, you can use `PartitionResolver`to configure the organization of buckets to be queried in the Partitioned Region.
+2. 决定要查询的数据。基于此决策，您可以使用`PartitionResolver`配置要在分区区域中查询的bucket的组织。
 
-   For example, let’s say that you have defined the PortfolioKey class:
+   例如，假设您已经定义了PortfolioKey类:
 
    ```
    public class PortfolioKey implements DataSerializable {
@@ -7773,7 +7780,7 @@ To direct a query to specific partitioned region node, you can execute the query
    }
    ```
 
-   You could use the `MyPartitionResolver` to store all keys with the same ID in the same bucket. This `PartitionResolver` has to be configured at the time of Partition Region creation either declaratively using xml OR using APIs. See [Configuring Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/managing_partitioned_regions.html#configure_partitioned_regions) for more information.
+   您可以使用`MyPartitionResolver`将ID相同的所有键存储在同一个bucket中。这个`PartitionResolver`必须在分区区域创建时使用xml或api进行声明式配置。有关更多信息，请参见[配置分区区域](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/managing_partitioned_regions.html#configure_partitioned_regions)。
 
    ```
    /** This resolver returns the value of the ID field in the key. With this resolver, 
@@ -7786,7 +7793,7 @@ To direct a query to specific partitioned region node, you can execute the query
    }
    ```
 
-3. Execute the function on a client or any other node by setting the filter in the function call.
+3. 通过在函数调用中设置筛选器，在客户端或任何其他节点上执行函数。
 
    ```
    /**
@@ -7845,7 +7852,7 @@ To direct a query to specific partitioned region node, you can execute the query
 
 
 
-##### Optimizing Queries on Data Partitioned by a Key or Field Value
+##### 优化按键或字段值分区的数据查询
 
 You can improve query performance on data that is partitioned by key or a field value by creating a key index and then executing the query using the `FunctionService` with the key or field value used as filter.
 
