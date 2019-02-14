@@ -7854,15 +7854,15 @@ select distinct * from /region where ID > 5 order by status
 
 ##### 优化按键或字段值分区的数据查询
 
-You can improve query performance on data that is partitioned by key or a field value by creating a key index and then executing the query using the `FunctionService` with the key or field value used as filter.
+您可以通过创建键索引，然后使用`FunctionService`和用作筛选器的键或字段值来执行查询，从而提高按键或字段值分区的数据的查询性能。
 
-The following is an example how to optimize a query that will be run on data partitioned by region key value. In the following example, data is partitioned by the “orderId” field.
+下面是一个如何优化将在按区域键值分区的数据上运行的查询的示例。在下面的示例中，数据由“orderId”字段分区。
 
-1. Create a key index on the orderId field. See [Creating Key Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/creating_key_indexes.html#concept_09E29507AF0D42CF81D261B030D0B7C8) for more details.
+1. 在orderId字段上创建一个键索引。有关详细信息，请参见[创建键索引](https://geode.apache.org/docs/guide/17/developing/query_index/creating_key_indexes.html#concept_09E29507AF0D42CF81D261B030D0B7C8)。
 
-2. Execute the query using the function service with orderId provided as the filter to the function context. For example:
+2. 使用orderId作为函数上下文的筛选器提供的函数服务执行查询。例如:
 
-   ```
+   ```java
    /**
     * Execute MyFunction for query on data partitioned by orderId key
     *
@@ -7918,24 +7918,24 @@ The following is an example how to optimize a query that will be run on data par
 
 
 
-##### Performing an Equi-Join Query on Partitioned Regions
+##### 对分区区域执行等连接查询
 
-In order to perform equi-join operations on partitioned regions or partitioned regions and replicated regions, you need to use the `query.execute` method and supply it with a function execution context. You need to use Geode’s FunctionService executor because join operations are not yet directly supported for partitioned regions without providing a function execution context.
+为了在分区区域或分区区域和复制区域上执行等连接操作，您需要使用 `query.execute`方法，并为其提供一个函数执行上下文。您需要使用Geode的FunctionService executor，因为在不提供函数执行上下文的情况下，分区区域还不直接支持连接操作。
 
-See [Partitioned Region Query Restrictions](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_query_restrictions.html#concept_5353476380D44CC1A7F586E5AE1CE7E8) for more information on partitioned region query limitations.
+有关分区区域查询限制的更多信息，请参见[分区区域查询限制](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_query_restrictions.html#concept_5353476380D44CC1A7F586E5AE1CE7E8)。
 
-For example, let’s say your equi-join query is the following:
+例如，假设您的等连接查询如下:
 
 ```
 SELECT DISTINCT * FROM /QueryRegion1 r1,
 /QueryRegion2 r2 WHERE r1.ID = r2.ID
 ```
 
-In this example QueryRegion2 is colocated with QueryRegion1, and both regions have same type of data objects.
+在这个示例中，QueryRegion2与QueryRegion1一起使用，并且两个区域具有相同类型的数据对象。
 
-On the server side:
+服务器端:
 
-```
+```java
  Function prQueryFunction1 = new QueryFunction();
  FunctionService.registerFunction(prQueryFunction1);
 
@@ -7961,11 +7961,11 @@ On the server side:
 } 
 ```
 
-On the server side, `Query.execute()` operates on the local data of the partitioned region.
+在服务器端，`Query.execute()`对分区区域的本地数据进行操作。
 
-On the client side:
+客户端:
 
-```
+```java
 Function function = new QueryFunction();
 String queryString = "SELECT DISTINCT * FROM /QueryRegion1 r1,
         /QueryRegion2 r2 WHERE r1.ID = r2.ID";
@@ -7987,27 +7987,27 @@ if (resultList.size() != 0) {
 }
 ```
 
-On the client side, note that you can specify a bucket filter while invoking FunctionService.onRegion(). In this case, the query engine relies on FunctionService to direct the query to specific nodes.
+在客户端，注意您可以在调用FunctionService.onRegion()时指定桶过滤器。在这种情况下，查询引擎依赖FunctionService将查询定向到特定的节点。
 
-**Additional Notes on Using the Query.execute and RegionFunctionContext APIs**
+**关于使用Query.execute 和 RegionFunctionContext的附加说明**
 
-You can also pass multiple parameters (besides the query itself) to the query function by specifying the parameters in the client-side code (`FunctionService.onRegion(..).setArguments()`). Then you can handle the parameters inside the function on the server side using `context.getArguments`. Note that it does not matter which order you specify the parameters as long as you match the parameter handling order on the server with the order specified in the client.
+您还可以通过在客户端代码(`FunctionService.onRegion(..). setarguments()`)中指定参数来向查询函数传递多个参数(除了查询本身)。然后您可以使用`context.getArguments`在服务器端处理函数内部的参数。请注意，指定参数的顺序并不重要，只要将服务器上的参数处理顺序与客户机中指定的顺序匹配即可。
 
 
 
-##### Partitioned Region Query Restrictions
+##### 分区区域查询限制
 
-**Query Restrictions in Partitioned Regions**
+**分区区域中的查询限制**
 
-Partitioned region queries function the same as non-partitioned region queries, except for the restrictions listed in this section. Partitioned region queries that do not follow these guidelines generate an `UnsupportedOperationException`.
+分区区域查询的功能与非分区区域查询相同，但本节列出的限制除外。不遵循这些指导原则的分区区域查询将生成`UnsupportedOperationException`异常。
 
-- Join queries between partitioned region and between partitioned regions and replicated regions are supported through the function service only. Join queries partitioned regions are not supported through the client server API.
+- 仅通过函数服务支持分区区域之间以及分区区域和复制区域之间的连接查询。客户端服务器API不支持分区的连接查询。
 
-- You can run join queries on partitioned regions and on partitioned regions and replicated regions only if they are co-located. Equi-join queries are supported only on partitioned regions that are co-located and where the co-located columns are indicated in the WHERE clause of the query. In the case of multi-column partitioning, there should also be an AND clause in the WHERE specification. See [Colocate Data from Different Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data) for more information on partitioned region co-location.
+- 只有在分区区域和分区区域以及复制区域位于同一位置时，才能对它们运行连接查询。仅在共定位的分区区域以及查询的where子句中指示了共定位列的位置上支持等连接查询。对于多列分区，WHERE规范中还应该有AND子句。参见[来自不同分区区域的Colocate数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html#colocating_partitioned_region_data)了解关于分区区域共存位置的更多信息。
 
-- Equi-join queries are allowed between partitioned regions and between partitioned regions and local replicated regions as long as the local replicated region also exists on all partitioned region nodes. To perform a join query on a partitioned region and another region (partitioned or not), you need to use the `query.execute` method and supply it with a function execution context. See [Performing an Equi-Join Query on Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/join_query_partitioned_regions.html#concept_B930D276F49541F282A2CFE639F107DD) for an example.
+- 只要在所有分区区域节点上也存在本地复制区域，就允许在分区区域之间以及分区区域与本地复制区域之间进行等连接查询。要对一个分区区域和另一个分区(分区或不分区)执行连接查询，需要使用“查询”。方法，并为其提供一个函数执行上下文。参见[在分区区域上执行等价连接查询](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/join_query_partitioned_regions.html#concept_B930D276F49541F282A2CFE639F107DD)作为示例。
 
-- The query must be just a SELECT expression (as opposed to arbitrary OQL expressions), preceded by zero or more IMPORT statements. For example, this query is not allowed because it is not just a SELECT expression:
+- 查询必须只是一个SELECT表达式(与任意OQL表达式相反)，前面必须有零个或多个IMPORT语句。例如，这个查询是不允许的，因为它不仅仅是一个SELECT表达式:
 
   ```
   // NOT VALID for partitioned regions
@@ -8021,55 +8021,55 @@ Partitioned region queries function the same as non-partitioned region queries, 
   SELECT DISTINCT *FROM /prRgn WHERE attribute > 10
   ```
 
-- The SELECT expression itself can be arbitrarily complex, including nested SELECT expressions, as long as only one partitioned region is referenced.
+- 只要只引用一个分区区域，SELECT表达式本身可以是任意复杂的，包括嵌套的SELECT表达式。
 
-- The partitioned region reference can only be in the first FROM clause iterator. Additional FROM clause iterators are allowed if they do not reference any regions (such as drilling down into the values in the partitioned region).
+- 分区区域引用只能在第一个FROM子句迭代器中。如果子句迭代器不引用任何区域，则允许使用额外的FROM子句迭代器(例如深入到分区区域中的值)。
 
-- The first FROM clause iterator must contain only one reference to the partitioned region (the reference can be a parameter, such as $1).
+- 第一个FROM子句迭代器必须只包含对分区区域的一个引用(该引用可以是参数，例如$1)。
 
-- The first FROM clause iterator cannot contain a subquery, but subqueries are allowed in additional FROM clause iterators.
+- 第一个FROM子句迭代器不能包含子查询，但是在附加的FROM子句迭代器中允许子查询。
 
-- You can use ORDER BY on partitioned region queries, but the fields that are specified in the ORDER BY clause must be part of the projection list.
+- 您可以在分区区域查询上使用ORDER BY，但是ORDER BY子句中指定的字段必须是投影列表的一部分。
 
-- If a partition region (or a bucket) being queried has been destroyed, the query is reattempted on the new primary for the destroyed bucket (if it exists). After certain number of attempts, a QueryException is thrown if all buckets (calculated at the startup of the query) cannot be queried.
+- 如果查询的分区区域(或桶)已被销毁，则在销毁桶的新主服务器上重新尝试查询(如果存在的话)。在多次尝试之后，如果无法查询所有bucket(在查询启动时计算)，则抛出QueryException。
 
 
 
-#### Query Debugging
+#### 查询调试
 
-You can debug a specific query at the query level by adding the `<trace>` keyword before the query string that you want to debug.
+通过在要调试的查询字符串之前添加`<trace>`关键字，可以在查询级别调试特定的查询。
 
-Here is an example:
+下面是一个例子:
 
 ```
 <trace> select * from /exampleRegion
 ```
 
-You can also write:
+你也可以这样写:
 
 ```
 <TRACE> select * from /exampleRegion
 ```
 
-When the query is executed, Geode will log a message in `$GEMFIRE_DIR/system.log` with the following information:
+在执行查询时，Geode将在`$GEMFIRE_DIR/system`中记录一条消息。使用以下信息进行日志记录:
 
 ```
 [info 2011/08/29 11:24:35.472 PDT CqServer <main> tid=0x1] Query Executed in 9.619656 ms; rowCount = 99; indexesUsed(0) "select *  from /exampleRegion" 
 ```
 
-If you want to enable debugging for all queries, you can enable query execution logging by setting a System property on the command line during start-up:
+如果希望对所有查询启用调试，可以在启动时通过在命令行上设置系统属性来启用查询执行日志:
 
 ```
 gfsh>start server --name=server_name -–J=-Dgemfire.Query.VERBOSE=true
 ```
 
-Or you can set the property programmatically:
+或者你可以通过编程来设置属性:
 
 ```
 System.setProperty("gemfire.Query.VERBOSE","true");
 ```
 
-As an example, let us say you have an EmployeeRegion that that contains Employee objects as values and the objects have public fields in them like ID and status.
+例如，假设您有一个EmployeeRegion，它将Employee对象作为值包含，并且对象中具有ID和status等公共字段。
 
 ```
 Employee.java
@@ -8081,9 +8081,9 @@ Class Employee {
 }
 ```
 
-In addition, you have created the following indexes for the region:
+此外，您还为该区域创建了以下索引:
 
-```
+```xml
 <index name="sampleIndex-1">
 <functional from-clause="/test " expression="ID"/>
 </index>
@@ -8092,155 +8092,155 @@ In addition, you have created the following indexes for the region:
 </index>
 ```
 
-After you have set `gemfire.Query.VERBOSE` to “true”, you could see the following debug messages in the logs after running queries on the EmployeeRegion or its indexes:
+设置好`gemfire.Query.VERBOSE`为"true"之后。在EmployeeRegion或其索引上运行查询后，可以在日志中看到以下调试消息:
 
-- If indexes are not used in the query execution, you would see a debug message like this:
+- 如果查询执行中没有使用索引，您将看到这样的调试消息:
 
   ```
   [info 2011/08/29 11:24:35.472 PDT CqServer <main> tid=0x1] Query Executed in 9.619656 ms; rowCount = 99; indexesUsed(0) "select * from /test k where ID > 0 and status='active'"
   ```
 
-- When single index is used in query execution, you might see a debug message like this:
+- 在查询执行中使用单一索引时，您可能会看到这样的调试消息:
 
   ```
   [info 2011/08/29 11:24:35.472 PDT CqServer <main> tid=0x1] Query Executed in 101.43499 ms; rowCount = 199; indexesUsed(1):sampleIndex-1(Results: 199) "select count *   from /test k where ID > 0"
   ```
 
-- When multiple indexes are used by a query, you might see a debug message like this:
+- 当查询使用多个索引时，您可能会看到这样的调试消息:
 
   ```
   [info 2011/08/29 11:24:35.472 PDT CqServer <main> tid=0x1] Query Executed in 79.43847 ms; rowCount = 199; indexesUsed(2):sampleIndex-2(Results: 100),sampleIndex-1(Results: 199) "select * from /test k where ID > 0 OR status='active'"
   ```
 
-In above log messages, the following information is provided:
+在上述日志消息中，提供了以下信息:
 
-- “rowCount” represents ResultSet size for the query.
-- “indexesUsed(\n) ” shows n indexes were used for finding the results of the query.
-- Each index name and its corresponding results are reported respectively.
-- The log can be identified with the original query string itself appended in the end.
-
-
-
-### Working with Indexes
-
-The Geode query engine supports indexing. An index can provide significant performance gains for query execution.
-
-A query run without the aid of an index iterates through every object in the collection. If an index is available that matches part or all of the query specification, the query iterates only over the indexed set, and query processing time can be reduced.
-
-- **Tips and Guidelines on Using Indexes**
-
-  Optimizing your queries with indexes requires a cycle of careful planning, testing, and tuning. Poorly-defined indexes can degrade the performance of your queries instead of improving it. This section gives guidelines for index usage in the query service.
-
-- **Creating, Listing and Removing Indexes**
-
-  The Geode `QueryService` API provides methods to create, list and remove the index. You can also use `gfsh` command-line interface to create, list and remove indexes, and use cache.xml to create an index.
-
-- **Creating Key Indexes**
-
-  Creating a key index is a good way to improve query performance when data is partitioned using a key or a field value. You can create key indexes by using the `createKeyIndex` method of the QueryService or by defining the index in `cache.xml`. Creating a key index makes the query service aware of the relationship between the values in the region and the keys in the region.
-
-- **Creating Hash Indexes**
-
-  **Hash indexes are deprecated.** Geode supports the creation of hash indexes for the purposes of performing equality-based queries.
-
-- **Creating Indexes on Map Fields (“Map Indexes”)**
-
-  To assist with the quick lookup of multiple values in a Map (or HashMap) type field, you can create an index (sometimes referred to as a “map index”) on specific (or all) keys in that field.
-
-- **Creating Multiple Indexes at Once**
-
-  In order to speed and promote efficiency when creating indexes, you can define multiple indexes and then create them all at once.
-
-- **Maintaining Indexes (Synchronously or Asynchronously) and Index Storage**
-
-  Indexes are automatically kept current with the region data they reference. The region attribute `IndexMaintenanceSynchronous` specifies whether the region indexes are updated synchronously when a region is modified or asynchronously in a background thread.
-
-- **Using Query Index Hints**
-
-  You can use the hint keyword to allow Geode’s query engine to prefer certain indexes.
-
-- **Using Indexes on Single Region Queries**
-
-  Queries with one comparison operation may be improved with either a key or range index, depending on whether the attribute being compared is also the primary key.
-
-- **Using Indexes with Equi-Join Queries**
-
-  Equi-join queries are queries in which two regions are joined through an equality condition in the WHERE clause.
-
-- **Using Indexes with Overflow Regions**
-
-  You can use indexes when querying on overflow regions; however, there are caveats.
-
-- **Using Indexes on Equi-Join Queries using Multiple Regions**
-
-  To query across multiple regions, identify all equi-join conditions. Then, create as few indexes for the equi-join conditions as you can while still joining all regions.
-
-- **Index Samples**
-
-  This topic provides code samples for creating query indexes.
+- “rowCount” 表示查询的结果集大小。
+- “indexesUsed(\n) ” 显示使用了n个索引来查找查询的结果。
+- 分别报告每个索引名及其相应的结果。
+- 可以使用最后附加的原始查询字符串标识日志。
 
 
 
-#### Tips and Guidelines on Using Indexes
+### 使用索引
 
-Optimizing your queries with indexes requires a cycle of careful planning, testing, and tuning. Poorly-defined indexes can degrade the performance of your queries instead of improving it. This section gives guidelines for index usage in the query service.
+Geode查询引擎支持索引。索引可以为查询执行提供显著的性能收益。
 
-When creating indexes, keep in mind the following:
+查询在不借助索引的情况下运行，遍历集合中的每个对象。如果一个索引与部分或全部查询规范匹配，则查询仅在索引集上迭代，并且可以减少查询处理时间。
 
-- Indexes incur maintenance costs as they must be updated when the indexed data changes. An index that requires many updates and is not used very often may require more system resources than using no index at all.
-- Indexes consume memory.
-- Indexes have limited support on overflow regions. See [Using Indexes with Overflow Regions](https://geode.apache.org/docs/guide/17/developing/query_index/indexes_with_overflow_regions.html#concept_87BE7DB32C714EB0BF7532AF93569328) for details.
-- If you are creating multiple indexes on the same region, first define your indexes and then create the indexes all at once to avoid iterating over the region multiple times. See [Creating Multiple Indexes at Once](https://geode.apache.org/docs/guide/17/developing/query_index/create_multiple_indexes.html) for details.
+- **使用索引的提示和指南**
 
-**Tips for Writing Queries that Use Indexes**
+  使用索引优化查询需要一个仔细规划、测试和调优的周期。定义不良的索引会降低而不是改进查询的性能。本节给出查询服务中索引使用的指导原则。
 
-As with query processors that run against relational databases, the way a query is written can greatly affect execution performance. Among other things, whether indexes are used depends on how each query is stated. These are some of the things to consider when optimizing your Geode queries for performance:
+- **创建、列出和删除索引**
 
-- In general an index will improve query performance if the FROM clauses of the query and index match exactly.
-- The query evaluation engine does not have a sophisticated cost-based optimizer. It has a simple optimizer which selects best index (one) or multiple indexes based on the index size and the operator that is being evaluated.
-- For AND operators, you may get better results if the conditions that use indexes and conditions that are more selective come before other conditions in the query.
-- Indexes are not used in expressions that contain NOT, so in a WHERE clause of a query, `qty >= 10` could have an index on `qty` applied for efficiency. However, `NOT(qty < 10)` could not have the same index applied.
-- Whenever possible, provide a hint to allow the query engine to prefer a specific index. See [Using Query Index Hints](https://geode.apache.org/docs/guide/17/developing/query_index/query_index_hints.html)
+  Geode ' QueryService ' API提供了创建、列出和删除索引的方法。您还可以使用`gfsh`命令行界面创建、列出和删除索引，并使用cache.xml创建索引。
+
+- **创建键索引**
+
+  在使用键或字段值对数据进行分区时，创建键索引是提高查询性能的好方法。您可以使用QueryService的`createKeyIndex`方法创建键索引，也可以在`cache.xml`中定义索引。创建键索引使查询服务知道区域中的值与区域中的键之间的关系。
+
+- **创建哈希索引**
+
+  **不赞成使用哈希索引** Geode支持为执行基于平等的查询而创建哈希索引。
+
+- **在映射字段上创建索引(“映射索引”)**
+
+  为了帮助快速查找Map(或HashMap)类型字段中的多个值，可以在该字段中的特定(或所有)键上创建索引(有时称为“Map索引”)。
+
+- **一次创建多个索引**
+
+  为了在创建索引时提高速度和效率，可以定义多个索引，然后一次创建所有索引。
+
+- **维护索引(同步或异步)和索引存储**
+
+  索引与它们引用的区域数据自动保持同步。区域属性`IndexMaintenanceSynchronous`指定在修改区域时同步更新区域索引，还是在后台线程中异步更新区域索引。
+
+- **使用查询索引提示**
+
+  您可以使用hint关键字来允许Geode的查询引擎选择特定的索引。
+
+- **在单个区域查询上使用索引**
+
+  具有一个比较操作的查询可以使用键或范围索引进行改进，这取决于所比较的属性是否也是主键。
+
+- **使用带有等连接查询的索引**
+
+  相等连接查询是通过WHERE子句中的相等条件连接两个区域的查询。
+
+- **使用带有溢出区域的索引**
+
+  在查询溢出区域时可以使用索引;然而，也有一些警告。
+
+- **在使用多个区域的等连接查询上使用索引**
+
+  要跨多个区域查询，请标识所有等连接条件。然后，为相等连接条件创建尽可能少的索引，同时仍然连接所有区域。
+
+- **索引样本**
+
+  本主题提供用于创建查询索引的代码示例。
 
 
 
-#### Creating, Listing and Removing Indexes
+#### 使用索引的提示和指南
 
-The Geode `QueryService` API provides methods to create, list and remove the index. You can also use `gfsh` command-line interface to create, list and remove indexes, and use cache.xml to create an index.
+使用索引优化查询需要一个仔细规划、测试和调优的周期。定义不良的索引会降低而不是改进查询的性能。本节给出查询服务中索引使用的指导原则。
 
-**Creating Indexes**
+在创建索引时，请记住以下几点:
 
-Indexes can be created programmatically, by using the `gfsh` command line interface or by using cache.xml.
+- 索引会产生维护成本，因为当索引数据发生变化时，必须更新索引。与完全不使用索引相比，需要多次更新且不经常使用的索引可能需要更多的系统资源。
+- 索引消耗内存。
+- 索引对溢出区域的支持有限。有关详细信息，请参见[使用带有溢出区域的索引](https://geode.apache.org/docs/guide/17/developing/query_index/indexes_with_overflow_regions.html#concept_87BE7DB32C714EB0BF7532AF93569328)。
+- 如果要在同一区域上创建多个索引，请首先定义索引，然后一次创建所有索引，以避免在该区域上进行多次迭代。有关详细信息，请参见[一次创建多个索引](https://geode.apache.org/docs/guide/17/developing/query_index/create_multiple_indexes.html)。
 
-To create an index, use one of the following `QueryService` methods:
+**编写使用索引的查询的技巧**
 
-- `createIndex`. Creates the default type of index, a range index. Use this type of index if you will be writing queries that will be doing any kind of comparison operation besides an equality comparison.
-- `createKeyIndex`. Creates a key index. See [Creating Key Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/creating_key_indexes.html#concept_09E29507AF0D42CF81D261B030D0B7C8) for more information.
-- **Deprecated.** `createHashIndex`. Creates a hash index. See [Creating Hash Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/creating_hash_indexes.html#concept_5C7614F71F394C62ACA1BDC5684A7AC4) for more information.
-- `createDefinedIndexes`. Creates multiple indexes that were previously defined using `defineIndex`. See [Creating Multiple Indexes at Once](https://geode.apache.org/docs/guide/17/developing/query_index/create_multiple_indexes.html) for more information.
+与在关系数据库上运行的查询处理器一样，查询的编写方式会极大地影响执行性能。此外，是否使用索引取决于如何声明每个查询。以下是优化Geode查询时需要考虑的一些问题:
 
-The following sections provide examples of index creation:
+- 通常，如果查询和索引的FROM子句完全匹配，那么索引将提高查询性能。
+- 查询评估引擎没有复杂的基于成本的优化器。它有一个简单的优化器，可以根据索引大小和正在计算的操作符选择最佳索引(一个)或多个索引。
+- 对于AND运算符，如果使用索引的条件和选择性更强的条件出现在查询中的其他条件之前，您可能会得到更好的结果。
+- 索引不用于包含NOT的表达式中，因此在查询的WHERE子句中，`qty >= 10`可以在`qty`上应用索引以提高效率。然而，`NOT(qty < 10)`不能应用相同的索引。
+- 只要可能，提供提示，允许查询引擎选择特定的索引。参见[使用查询索引提示](https://geode.apache.org/docs/guide/17/developing/query_index/query_index_hints.html)
 
-**Using gfsh:**
+
+
+#### 创建、列出和删除索引
+
+Geode的`QueryService` API提供了创建、列出和删除索引的方法。您还可以使用`gfsh`命令行界面创建、列出和删除索引，并使用cache.xml创建索引。
+
+**创建索引**
+
+可以使用`gfsh`命令行接口或cache.xml以编程方式创建索引。
+
+要创建索引，请使用以下`QueryService`方法之一:
+
+- `createIndex`. 创建索引的默认类型，范围索引。如果要编写执行除相等比较之外的任何比较操作的查询，请使用这种类型的索引。
+- `createKeyIndex`. 创建键索引。有关更多信息，请参见[创建键索引](https://geode.apache.org/docs/guide/17/developing/query_index/creating_key_indexes.html#concept_09E29507AF0D42CF81D261B030D0B7C8)。
+- **弃用.** `createHashIndex`. 创建哈希索引。有关更多信息，请参见[创建哈希索引](https://geode.apache.org/docs/guide/17/developing/query_index/creating_hash_indexes.html#concept_5C7614F71F394C62ACA1BDC5684A7AC4)。
+- `createDefinedIndexes`. 创建先前使用`defineIndex`定义的多个索引。有关更多信息，请参见[一次创建多个索引](https://geode.apache.org/docs/guide/17/developing/query_index/create_multiple_indexes.html)。
+
+以下部分提供了创建索引的示例:
+
+**使用 gfsh:**
 
 ```
 gfsh> create index --name=myIndex --expression=status --region=/exampleRegion
 gfsh> create index --name=myKeyIndex --type=key --expression=id --region=/exampleRegion
 ```
 
-See [Index Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_688C66526B4649AFA51C0F72F34FA45E) for more examples.
+更多示例请参见[Index Commands]https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_688C66526B4649AFA51C0F72F34FA45E)。
 
-**Using Java API:**
+**使用 Java API:**
 
-```
+```java
 QueryService qs = cache.getQueryService();
  qs.createIndex("myIndex", "status", "/exampleRegion");
  qs.createKeyIndex("myKeyIndex", "id", "/exampleRegion");
 ```
 
-**Using cache.xml:**
+**使用 cache.xml:**
 
-```
+```xml
 <region name=exampleRegion>
  <region-attributes . . . >
  </region-attributes>
@@ -8250,33 +8250,33 @@ QueryService qs = cache.getQueryService();
 </region>
 ```
 
-**注意:** If you do not specify the type of index in cache.xml, the type defaults to “range”.
+**注意:** 如果没有指定缓存中的索引类型。类型默认为“range”。
 
-**Listing Indexes**
+**列出索引**
 
-To retrieve a list of indexes from the cache or region, use the `QueryService.getIndexes` method or the `gfsh` command line interface.
+要从缓存或区域检索索引列表，请使用`QueryService.getIndexes`方法或`gfsh`命令行接口。
 
-**Using gfsh:**
+**使用 gfsh:**
 
 ```
 gfsh> list indexes
 gfsh> list indexes --with-stats
 ```
 
-**Using Java API:**
+**使用 Java API:**
 
-```
+```java
 QueryService qs = cache.getQueryService();
  qs.getIndexes(); //returns a collection of all indexes in the cache
  qs.getIndexes(exampleRegion); //returns a collection of all indexes in exampleRegion
  qs.getIndexes(exampleRegion, myKeyIndex); //returns the index named myKeyIndex from the exampleRegion
 ```
 
-**Removing Indexes**
+**删除 Indexes**
 
-To remove an index or all indexes from the cache or region, use the `QueryService.removeIndexes`method or the `gfsh` command line interface.
+要从缓存或区域删除索引或所有索引，请使用`QueryService.removeIndexes`。方法或`gfsh`命令行接口。
 
-**Using gfsh:**
+**使用 gfsh:**
 
 ```
 gfsh> destroy index
@@ -8284,7 +8284,7 @@ gfsh> destroy index --name=myIndex
 gfsh> destroy index --region=/exampleRegion
 ```
 
-**Using Java API:**
+**使用 Java API:**
 
 ```
 QueryService qs = cache.getQueryService();
@@ -8295,39 +8295,39 @@ QueryService qs = cache.getQueryService();
 
 
 
-#### Creating Key Indexes
+#### 创建键索引
 
-Creating a key index is a good way to improve query performance when data is partitioned using a key or a field value. You can create key indexes by using the `createKeyIndex` method of the QueryService or by defining the index in `cache.xml`. Creating a key index makes the query service aware of the relationship between the values in the region and the keys in the region.
+在使用键或字段值对数据进行分区时，创建键索引是提高查询性能的好方法。您可以使用QueryService的`createKeyIndex`方法创建键索引，也可以在`cache.xml`中定义索引。创建键索引使查询服务知道区域中的值与区域中的键之间的关系。
 
-The FROM clause for a primary key index must be just a region path. The indexed expression is an expression that, when applied to an entry value, produces the key. For example, if a region has Portfolios as the values and the keys are the id field of the Portfolios region, the indexed expression is id.
+主键索引的FROM子句必须只是一个区域路径。索引表达式是一种表达式，当应用于条目值时，将生成键。例如，如果一个区域的值是portfolio，键是portfolio区域的id字段，那么索引表达式就是id。
 
-You can then use the FunctionService (using the partitioned key as a filter passed to the function and as part of the query equality condition) to execute the query against the indexed data. See [Optimizing Queries on Data Partitioned by a Key or Field Value](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454) for more details.
+然后可以使用FunctionService(使用分区键作为传递给函数的筛选器，并作为查询等式条件的一部分)对索引数据执行查询。参见[根据键或字段值对数据分区进行优化查询](https://geode.apache.org/docs/guide/17/developing/query_additional/partitioned_region_key_or_field_value.html#concept_3010014DFBC9479783B2B45982014454)以获得更多详细信息。
 
-There are two issues to note with key indexes:
+键索引有两个问题需要注意:
 
-- The key index is not sorted. Without sorting, you can only do equality tests. Other comparisons are not possible. To obtain a sorted index on your primary keys, create a functional index on the attribute used as the primary key.
-- The query service is not automatically aware of the relationship between the region values and keys. For this, you must create the key index.
+- 键索引没有排序。没有排序，您只能进行等式测试。其他比较是不可能的。要获得主键上的已排序索引，请在用作主键的属性上创建函数索引。
+- 查询服务不能自动知道区域值和键之间的关系。为此，必须创建键索引。
 
-**注意:** Using a key-index with an explicit type=‘range’ in the cache.xml will lead to an exception. Key indexes will not be used in 'range’ queries.
+**注意:** 在cache.xml中使用显式type=`range`的键索引将导致异常。键索引将不会在'range’查询中使用。
 
-**Examples of Creating a Key Index**
+**创建键索引的示例**
 
-**Using Java API:**
+**使用 Java API:**
 
-```
+```java
 QueryService qs = cache.getQueryService();
  qs.createKeyIndex("myKeyIndex", "id", "/exampleRegion");
 ```
 
-**Using gfsh:**
+**使用 gfsh:**
 
 ```
 gfsh> create index --name=myKeyIndex --expression=id --region=/exampleRegion
 ```
 
-**Using cache.xml:**
+**使用 cache.xml:**
 
-```
+```xml
 <region name=exampleRegion>
  <region-attributes . . . >
  </region-attributes>
@@ -8336,51 +8336,51 @@ gfsh> create index --name=myKeyIndex --expression=id --region=/exampleRegion
 </region>
 ```
 
-**注意:** If you do not specify the type of index when defining indexes using cache.xml, the type defaults to “range”.
+**注意:** 如果在使用缓存定义索引时没有指定索引的类型。类型默认为“range”。
 
 
 
-#### Creating Hash Indexes
+#### 创建哈希索引
 
-**Hash indexes are deprecated.** Geode supports the creation of hash indexes for the purpose of performing equality-based queries.
+**不赞成使用哈希索引.** Geode支持创建哈希索引，以执行基于平等的查询。
 
-**Hash Index Performance**
+**哈希索引的性能**
 
-The performance of put operations and recovery time when using a hash index will be worse than a range index. Queries are expected to be slower due to the implementation of the hash index and the cost of recalculating the key on request. A hash index can improve the memory usage of the index. So, the trade-off of the hash index space savings must be weighed against the performance penalty it imposes. If memory usage is not a concern, a range index is recommended.
+使用哈希索引时，put操作的性能和恢复时间会比使用范围索引差。由于哈希索引的实现和根据请求重新计算密钥的成本，查询速度预计会变慢。哈希索引可以提高索引的内存使用。因此，必须权衡哈希索引空间节省的代价和它带来的性能损失。如果不考虑内存使用，建议使用范围索引。
 
-Consider the memory usage when an index contains string fields. Copies of the strings are included in the index. With hash indexes, indexed expressions are canonicalized and stored in the index as pointers to the objects residing in the region, thereby using less memory. Tests achieved as high as a 30% reduction in memory footprint, but the savings depend on the keys and data being used.
+考虑索引包含字符串字段时的内存使用情况。字符串的副本包含在索引中。使用哈希索引，索引表达式被规范化，并作为指向驻留在该区域中的对象的指针存储在索引中，从而使用更少的内存。测试可以减少高达30%的内存占用，但是节省的内存取决于所使用的键和数据。
 
-**Performance Considerations**
+**性能考虑**
 
-**Limitations**
+**限制**
 
-The following limitations must be considered when creating hash indexes:
+在创建哈希索引时，必须考虑以下限制:
 
-- You can only use hash indexes with equals and not equals queries.
-- Hash index maintenance will be slower than the other indexes due to synchronized add methods.
-- Hash indexes cannot be maintained asynchronously. If you attempt to create a hash index on a region with asynchronous set as the maintenance mode, an exception will be thrown.
-- You cannot use hash indexes for queries with multiple iterators or nested collections.
-- Using a hash index will degrade put operation performance and recovery time substantially. If memory is not a concern, use a range index instead of a hash index.
+- 只能对等于和不等于查询使用哈希索引。
+- 由于同步的添加方法，哈希索引的维护将比其他索引慢。
+- 不能异步维护哈希索引。如果您试图在一个将异步设置为维护模式的区域上创建散列索引，则会引发异常。
+- 不能对具有多个迭代器或嵌套集合的查询使用哈希索引。
+- 使用哈希索引会大大降低put操作性能和恢复时间。如果内存不是问题，那么使用范围索引而不是哈希索引。
 
-**Examples of Creating a Hash Index**
+**创建哈希索引的示例**
 
-**Hash indexes are deprecated.**
+**不赞成使用哈希索引。**
 
-**Using the Java API:**
+**使用 Java API:**
 
 ```
 QueryService qs = cache.getQueryService();
  qs.createHashIndex("myHashIndex", "mktValue", "/exampleRegion");
 ```
 
-**Using gfsh:**
+**使用 gfsh:**
 
 ```
 gfsh> create index --name=myHashIndex --expression=mktValue --region=/exampleRegion
   --type=hash
 ```
 
-**Using cache.xml:**
+**使用 cache.xml:**
 
 ```
 <region name=exampleRegion>
@@ -8393,19 +8393,19 @@ gfsh> create index --name=myHashIndex --expression=mktValue --region=/exampleReg
 
 
 
-#### Creating Indexes on Map Fields ("Map Indexes")
+#### 在映射字段上创建索引(“映射索引”)
 
-To assist with the quick lookup of multiple values in a Map (or HashMap) type field, you can create an index (sometimes referred to as a “map index”) on specific (or all) keys in that field.
+为了帮助快速查找Map(或HashMap)类型字段中的多个值，可以在该字段中的特定(或所有)键上创建索引(有时称为“Map索引”)。
 
-For example, you could create a map index to support the following query:
+例如，您可以创建一个映射索引来支持以下查询:
 
 ```
 SELECT * FROM /users u WHERE u.name['first'] = 'John' OR u.name['last'] = 'Smith'
 ```
 
-The map index extends regular range indexes created on single key by maintaining indexes for other specified keys, or for all keys if `*` is used. The underlying structure of the map index can be thought of as a wrapper around all these indexes.
+map索引扩展了在单个键上创建的常规范围索引，方法是为其他指定键或使用`*`时为所有键维护索引。映射索引的底层结构可以看作是所有这些索引的包装器。
 
-The following Java code samples provide examples of how to create a map index:
+下面的Java代码示例提供了如何创建映射索引的示例:
 
 ```
 QueryService qs = cache.getQueryService();
@@ -8418,7 +8418,7 @@ QueryService qs = cache.getQueryService();
 qs.createIndex("indexName", "p.positions[*]", "/portfolio p");
 ```
 
-In gfsh, the equivalents are:
+在gfsh中，对等物为:
 
 ```
 gfsh>create index --name="IndexName" --expression="p.positions['PVTL', 'VMW']" --region="/portfolio p"
@@ -8426,23 +8426,23 @@ gfsh>create index --name="IndexName" --expression="p.positions['PVTL', 'VMW']" -
 gfsh>create index --name="IndexName" --expression="p.positions[*]" --region="/portfolio p"
 ```
 
-In order to create or query a map index, you must use the bracket notation to list the map field keys you wish to index or query. For example: `[*]`, `['keyX1','keyX2’]`. Note that using `p.pos.get('keyX1')` will not create or query the map index.
+为了创建或查询映射索引，必须使用方括号符号列出希望索引或查询的映射字段键。例如:`[*]`, `['keyX1','keyX2’]`。注意，使用`p.pos.get('keyX1')`将不会创建或查询映射索引。
 
-**注意:** You can still query against Map or HashMap fields without querying against a map index. For example, you can always create a regular range query on a single key in any Map or HashMap field. However, note that subsequent query lookups will be limited to a single key.
+**注意:** 您仍然可以查询Map或HashMap字段，而无需查询映射索引。例如，您总是可以在任意Map或HashMap字段中的单个键上创建常规的范围查询。但是，请注意，后续查询查找将仅限于单个键。
 
 
 
-#### Creating Multiple Indexes at Once
+#### 一次创建多个索引
 
-In order to speed and promote efficiency when creating indexes, you can define multiple indexes and then create them all at once.
+为了在创建索引时提高速度和效率，可以定义多个索引，然后一次创建所有索引。
 
-Defining multiple indexes before creating them speeds up the index creation process by iterating over region entries only once.
+在创建多个索引之前定义它们，通过只迭代一次区域条目来加速索引创建过程。
 
-You can define multiple indexes of different types at once by specifying the `--type` parameter at definition time.
+通过在定义时指定 `--type` 参数，您可以一次定义不同类型的多个索引。
 
-To define multiple indexes, you can use gfsh or the Java API:
+要定义多个索引，可以使用gfsh或Java API:
 
-**gfsh example:**
+**gfsh 例子:**
 
 ```
 gfsh> define index --name=myIndex1 --expression=exp1 --region=/exampleRegion 
@@ -8452,7 +8452,7 @@ gfsh> define index --name=myIndex2 --expression="c.exp2" --region="/exampleRegio
 gfsh> create defined indexes
 ```
 
-If index creation fails, you may receive an error message in gfsh similar to the following:
+如果索引创建失败，您可能会在gfsh中收到类似如下的错误消息:
 
 ```
 gfsh>create defined indexes
@@ -8461,7 +8461,7 @@ Message : Region ' /r3' not found: from  /r3Occurred on following members
 1. india(s1:17866)<v1>:27809
 ```
 
-**Java API example:**
+**Java API 例子:**
 
 ```
  Cache cache = new CacheFactory().create();
@@ -8472,15 +8472,15 @@ Message : Region ' /r3' not found: from  /r3Occurred on following members
     List<Index> indexes = queryService.createDefinedIndexes();
 ```
 
-If one or more index population fails, Geode collect the Exceptions and continues to populate the rest of the indexes. The collected `Exceptions` are stored in a Map of index names and exceptions that can be accessed through `MultiIndexCreationException`.
+如果一个或多个索引填充失败，Geode将收集异常并继续填充其余的索引。收集到的`Exceptions`存储在索引名和异常的映射中，可以通过`MultiIndexCreationException`访问这些索引名和异常。
 
-Index definitions are stored locally on the `gfsh` client. If you want to create a new set of indexes or if one or more of the index creations fail, you might want to clear the definitions stored by using `clear defined indexes`command. The defined indexes can be cleared by using the Java API:
+索引定义存储在本地的`gfsh`客户机上。如果您想创建一组新索引，或者如果一个或多个索引创建失败，您可能希望使用 `clear defined indexes`命令清除存储的定义。定义的索引可以使用Java API清除:
 
 ```
 queryService.clearDefinedIndexes();
 ```
 
-or gfsh:
+或者 gfsh:
 
 ```
 gfsh> clear defined indexes
@@ -8488,13 +8488,13 @@ gfsh> clear defined indexes
 
 
 
-#### Maintaining Indexes (Synchronously or Asynchronously) and Index Storage
+#### 维护索引(同步或异步)和索引存储
 
-Indexes are automatically kept current with the region data they reference. The region attribute `IndexMaintenanceSynchronous` specifies whether the region indexes are updated synchronously when a region is modified or asynchronously in a background thread.
+索引与它们引用的区域数据自动保持同步。区域属性`indexmaintenancesyn`指定在修改区域时同步更新区域索引，还是在后台线程中异步更新区域索引。
 
-**Index Maintenance Behavior**
+**索引维护行为**
 
-Asynchronous index maintenance batches up multiple updates to the same region key. The default mode is synchronous, since this provides the greatest consistency with region data.
+异步索引维护将多个更新批处理到同一个区域键。默认模式是同步的，因为这提供了与区域数据的最大一致性。
 
 See [RegionFactory.setIndexMaintenanceSynchronous](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/RegionFactory.html).
 
