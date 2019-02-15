@@ -8496,18 +8496,18 @@ gfsh> clear defined indexes
 
 异步索引维护将多个更新批处理到同一个区域键。默认模式是同步的，因为这提供了与区域数据的最大一致性。
 
-See [RegionFactory.setIndexMaintenanceSynchronous](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/RegionFactory.html).
+参见 [RegionFactory.setIndexMaintenanceSynchronous](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/RegionFactory.html).
 
-This declarative index creation sets the maintenance mode to asynchronous:
+这个声明性索引创建将维护模式设置为异步:
 
-```
+```xml
 <region-attributes index-update-type="asynchronous"> 
 </region-attributes>
 ```
 
-Internal Index Structure and Storage
+内部索引结构和存储
 
-Indexes are stored either as compact or non-compact data structures based on the indexed expression (even if the index key type is the same.) For example, consider the following Passenger object:
+索引存储为基于索引表达式的紧凑或非紧凑数据结构(即使索引键类型相同)。例如，考虑以下乘客对象:
 
 ```
 Passenger {
@@ -8523,39 +8523,39 @@ Flight {
 }
 ```
 
-An index on the Passenger name field will have different memory space requirements in the cache than the Flight origin field even though they are both String field types. The internal data structure selected by Geode for index storage will depend on the field’s level in the object. In this example, name is a top-level field and an index on name can be stored as a compact index. Since origin is a second-level field, any index that uses origin as the indexed expression will be stored as a non-compact index.
+乘客姓名字段上的索引在缓存中的内存空间要求与航班起源字段不同，尽管它们都是字符串字段类型。Geode为索引存储选择的内部数据结构将取决于对象中的字段级别。在本例中，name是顶级字段，name上的索引可以存储为紧凑索引。由于origin是一个二级字段，任何使用origin作为索引表达式的索引都将作为非紧凑索引存储。
 
-**Compact Index**
+**紧凑索引**
 
-A compact index has simple data structures to minimize its footprint, at the expense of doing extra work at index maintenance. This index does not support the storage of projection attributes.
+紧凑索引具有简单的数据结构，以最小化其占用空间，代价是在索引维护方面做额外的工作。此索引不支持存储投影属性。
 
-Currently compact indexes are only selected only supports the creation of an index on a region path. In addition, the following conditions must be met:
+目前只选择紧凑索引，只支持在区域路径上创建索引。此外，还必须满足以下条件:
 
-- Index maintenance is synchronous.
-- The indexed expression is a path expression.
-- The FROM clause has only one iterator. This implies that there is only one value in the index for each region entry and it is directly on the region values (not supported with keys, entries).
+- 索引维护是同步的。
+- 索引表达式是一个路径表达式。
+- FROM子句只有一个迭代器。这意味着每个区域条目的索引中只有一个值，并且它直接位于区域值上(键、条目不支持)。
 
-**Non-Compact Index**
+**非紧凑索引**
 
-Used whenever a compact index cannot be used.
+每当无法使用紧凑型索引时使用。
 
 
 
-#### Using Query Index Hints
+#### 使用查询索引提示
 
-You can use the hint keyword to allow Geode’s query engine to prefer certain indexes.
+您可以使用hint关键字来允许Geode的查询引擎选择特定的索引。
 
-In cases where one index is hinted in a query, the query engine filters off the hinted index (if possible) and then iterates and filters from the resulting values.
+在查询中暗示索引的情况下，查询引擎过滤掉暗示索引(如果可能的话)，然后从结果值中迭代和过滤。
 
-**Example:**
+**例子:**
 
 ```
 <HINT 'IDIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ'
 ```
 
-If multiple indexes are added as hints, then the query engine will try to use as many indexes as possible while giving a preference for the hinted indexes.
+如果将多个索引作为提示添加，那么查询引擎将尝试使用尽可能多的索引，同时为提示索引提供一个首选项。
 
-**Example:**
+**例子:**
 
 ```
 <HINT 'IDIndex', 'OwnerIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ' AND p.value < 100
@@ -8563,30 +8563,30 @@ If multiple indexes are added as hints, then the query engine will try to use as
 
 
 
-#### Using Indexes on Single Region Queries
+#### 在单个区域查询上使用索引
 
-Queries with one comparison operation may be improved with either a key or range index, depending on whether the attribute being compared is also the primary key.
+具有一个比较操作的查询可以使用键或范围索引进行改进，这取决于所比较的属性是否也是主键。
 
-If pkid is the key in the /exampleRegion region, creating a key index on pkid is the best choice as a key index does not have maintenance overhead. If pkid is not the key, a range index on pkid should improve performance.
+如果pkid是/exampleRegion区域的键，那么在pkid上创建键索引是最好的选择，因为键索引没有维护开销。如果pkid不是关键字，那么关于pkid的范围索引应该可以提高性能。
 
 ```
 SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.pkid = '123'
 ```
 
-With multiple comparison operations, you can create a range index on one or more of the attributes. Try the following:
+通过多个比较操作，可以在一个或多个属性上创建范围索引。试试以下:
 
-1. Create a single index on the condition you expect to have the smallest result set size. Check performance with this index.
-2. Keeping the first index, add an index on a second condition. Adding the second index may degrade performance. If it does, remove it and keep only the first index. The order of the two comparisons in the query can also impact performance. Generally speaking, in OQL queries, as in SQL queries, you should order your comparisons so the earlier ones give you the fewest results on which to run subsequent comparisons.
+1. 在希望结果集大小最小的条件下创建单个索引。使用此索引检查性能。
+2. 保留第一个索引，在第二个条件下添加索引。添加第二个索引可能会降低性能。如果有，删除它，只保留第一个索引。查询中两个比较的顺序也会影响性能。一般来说，在OQL查询中，就像在SQL查询中一样，您应该对比较进行排序，以便前面的比较能够提供最少的结果来运行后续比较。
 
-For this query, you would try a range index on name, age, or on both:
+对于这个查询，您可以尝试对名称、年龄或两者都使用范围索引:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.status = 'active' and portfolio.ID > 45
 ```
 
-For queries with nested levels, you may get better performance by drilling into the lower levels in the index as well as in the query.
+对于嵌套级别的查询，可以通过深入索引和查询中的较低级别来获得更好的性能。
 
-This query drills down one level:
+这个查询深入到一个层次:
 
 ```
 SELECT DISTINCT * FROM /exampleRegion portfolio, portfolio.positions.values positions where positions.secId = 'AOL' and positions.MktValue > 1
@@ -8594,17 +8594,17 @@ SELECT DISTINCT * FROM /exampleRegion portfolio, portfolio.positions.values posi
 
 
 
-#### Using Indexes with Equi-Join Queries
+#### 使用带有等连接查询的索引
 
-Equi-join queries are queries in which two regions are joined through an equality condition in the WHERE clause.
+相等连接查询是通过WHERE子句中的相等条件连接两个区域的查询。
 
-To use an index with an equi-join query:
+使用索引与一个等连接查询:
 
-1. Create an index for each side of the equi-join condition. The query engine can quickly evaluate the query’s equi-join condition by iterating over the keys of the left-side and right-side indexes for an equality match.
+1. 为等连接条件的每一侧创建索引。查询引擎可以通过遍历左右两边索引的键来快速评估查询的等连接条件，以获得相等的匹配。
 
-   **注意:** Equi-join queries require regular indexes. Key indexes are not applied to equi-join queries.
+   **注意:** 等连接查询需要常规索引。键索引不应用于等连接查询。
 
-   For this query:
+   对于这个查询:
 
    ```
    SELECT DISTINCT inv.name, ord.orderID, ord.status 
@@ -8612,16 +8612,16 @@ To use an index with an equi-join query:
    WHERE inv.investorID = ord.investorID 
    ```
 
-   Create two indexes:
+   创建两个索引:
 
    | FROM clause    | Indexed expression |
    | -------------- | ------------------ |
    | /investors inv | inv.investorID     |
    | /orders ord    | ord.investorID     |
 
-2. If there are additional, single-region queries in a query with an equi-join condition, create additional indexes for the single-region conditions only if you are able to create at least one such index for each region in the query. Any indexing on a subset of the regions in the query will degrade performance.
+2. 如果在具有等连接条件的查询中有额外的单区域查询，则仅当您能够为查询中的每个区域创建至少一个这样的索引时，才为单区域条件创建额外的索引。查询中区域子集上的任何索引都会降低性能。
 
-   For this example query:
+   对于该示例查询:
 
    ```
    SELECT DISTINCT *
@@ -8632,30 +8632,30 @@ To use an index with an equi-join query:
        AND inv_hs.secName = sc.secName
    ```
 
-   Create the indexes for the equi-join condition:
+   为等连接条件创建索引:
 
    | FROM clause                               | Indexed expression |
    | ----------------------------------------- | ------------------ |
    | /investors inv, inv.heldSecurities inv_hs | inv_hs.secName     |
    | /securities sc                            | sc.secName         |
 
-   Then, if you create any more indexes, create one on `sc.status` and one on `inv.age` or `inv.name` or both.
+   然后，如果您创建更多索引，请在 `sc.status`和 `inv.age` 或者 `inv.name`上创建一个，或两者兼而有之。
 
 
 
-#### Using Indexes with Overflow Regions
+#### 使用带有溢出区域的索引
 
-You can use indexes when querying on overflow regions; however, there are caveats.
+在查询溢出区域时可以使用索引;然而，也有一些警告。
 
-The following are caveats for querying overflow regions:
+以下是查询溢出区域的注意事项:
 
-- You must use synchronous index maintenance for the region. This is the default maintenance setting.
-- The index FROM clause must specify only one iterator, and it must refer to the keys or entry values. The index cannot refer to the region’s entrySet.
-- The index data itself is not stored on (overflowed to) disk .
+- 您必须对区域使用同步索引维护。这是默认的维护设置。
+- index FROM子句必须只指定一个迭代器，并且它必须引用键或条目值。索引不能引用区域的entrySet。
+- 索引数据本身没有存储在(溢出到)磁盘上。
 
-**Examples:**
+**例子:**
 
-The following example index creation calls DO NOT work for overflow regions.
+下面的示例索引创建调用不适用于溢出区域。
 
 ```
 // This index will not work on an overflow region because there are two iterators in the FROM clause.
@@ -8665,7 +8665,7 @@ createIndex("secIdIndex", "b.secId","/portfolios pf, pf.positions.values b");
 createIndex("indx1", "entries.value.getID", "/exampleRegion.entrySet() entries");
 ```
 
-The following example indexes will work for overflow regions.
+下面的示例索引适用于溢出区域。
 
 ```
 createIndex("pkidIndex", "p.pkid", "/Portfolios p");
@@ -8673,7 +8673,7 @@ createIndex("pkidIndex", "p.pkid", "/Portfolios p");
 createIndex("indx1", "ks.toString", "/portfolio.keySet() ks");
 ```
 
-The same working examples in gfsh:
+gfsh中的相同示例:
 
 ```
 gfsh> create index -name="pkidIndex" --expression="p.pkid" --region="/Portfolios p"
@@ -8683,13 +8683,13 @@ gfsh> create index -name="indx1" --expression="ks.toString" --region="/portfolio
 
 
 
-#### Using Indexes on Equi-Join Queries using Multiple Regions
+#### 在使用多个区域的等连接查询上使用索引
 
-To query across multiple regions, identify all equi-join conditions. Then, create as few indexes for the equi-join conditions as you can while still joining all regions.
+要跨多个区域查询，请标识所有等连接条件。然后，为相等连接条件创建尽可能少的索引，同时仍然连接所有区域。
 
-If there are equi-join conditions that redundantly join two regions (in order to more finely filter the data, for example), then creating redundant indexes for these joins will negatively impact performance. Create indexes only on one equi-join condition for each region pair.
+如果存在冗余连接两个区域的等连接条件(例如，为了更好地过滤数据)，那么为这些连接创建冗余索引将对性能产生负面影响。为每个区域对仅在一个等连接条件下创建索引。
 
-In this example query:
+在这个示例查询中:
 
 ```
 SELECT DISTINCT * 
@@ -8699,7 +8699,7 @@ inv.ordersPlaced inv_op, or.securities or_sec
     AND or_sec.secID = sc.secID
 ```
 
-All conditions are required to join the regions, so you would create four indexes, two for each equi-join condition:
+连接这些区域需要所有条件，因此需要创建四个索引，每个等连接条件创建两个索引:
 
 | FROM clause                             | Indexed expression |
 | --------------------------------------- | ------------------ |
@@ -8711,7 +8711,7 @@ All conditions are required to join the regions, so you would create four indexe
 | /orders or, or.securities or_sec | or_sec.secID       |
 | /securities sc                   | sc.secID           |
 
-Adding another condition to the example:
+在示例中添加另一个条件:
 
 ```
 SELECT DISTINCT * 
@@ -8722,7 +8722,7 @@ inv.ordersPlaced inv_op, or.securities or_sec, sc.investors sc_invs
                 AND inv.investorID = sc_invs.investorID
 ```
 
-You would still only want to use four indexes in all, as that’s all you need to join all of the regions. You would need to choose the most performant two of the following three index pairs:
+您仍然希望总共使用四个索引，因为这是连接所有区域所需的全部。你需要从以下三个索引对中选择性能最好的两个:
 
 | FROM clause                             | Indexed expression |
 | --------------------------------------- | ------------------ |
@@ -8739,15 +8739,15 @@ You would still only want to use four indexes in all, as that’s all you need t
 | /investors inv, inv.ordersPlaced inv_op | inv.investorID     |
 | /securities sc, sc.investors sc_invs    | sc_invs.investorID |
 
-The most performant set is that which narrows the data to the smallest result set possible. Examine your data and experiment with the three index pairs to see which provides the best performance.
+最有效的性能集是将数据压缩到尽可能小的结果集。检查您的数据并使用这三个索引对进行试验，看看哪一个提供了最好的性能。
 
 
 
-#### Index Samples
+#### 索引例子
 
-This topic provides code samples for creating query indexes.
+本主题提供用于创建查询索引的代码示例。
 
-```
+```java
  // Key index samples. The field doesn't have to be present.
 createKeyIndex("pkidIndex","p.pkid1","/root/exampleRegion p");
 
@@ -8786,7 +8786,7 @@ createIndex("i", "p.positions['key1','key2',key3',key7']", "/exampleRegion p")
 createIndex("i", "p.positions[*]", "/exampleRegion p")
 ```
 
-The following are some sample queries on indexes.
+下面是一些关于索引的示例查询。
 
 ```
 SELECT * FROM (SELECT * FROM /R2 m) r2, (SELECT * FROM  /exampleRegion e WHERE e.pkid IN r2.sp) p
@@ -8807,151 +8807,148 @@ FROM /exampleRegion
 
 ## 连续查询
 
-Continuous querying continuously returns events that match the queries you set up.
+连续查询持续返回与您设置的查询匹配的事件。
 
-- **How Continuous Querying Works**
+- **连续查询是如何工作的**
 
-  Clients subscribe to server-side events by using SQL-type query filtering. The server sends all events that modify the query results. CQ event delivery uses the client/server subscription framework.
+  客户端通过使用sql类型的查询过滤订阅服务器端事件。服务器发送修改查询结果的所有事件。CQ事件交付使用客户机/服务器订阅框架。
 
-- **Implementing Continuous Querying**
+- **实现连续查询**
 
-  Use continuous querying in your clients to receive continuous updates to queries run on the servers.
+  在客户机中使用连续查询来接收对服务器上运行的查询的连续更新。
 
-- **Managing Continuous Querying**
+- **管理连续查询**
 
-  This topic discusses CQ management options, CQ states, and retrieving initial result sets.
+  本主题讨论CQ管理选项、CQ状态和检索初始结果集。
 
 
 
-### How Continuous Querying Works
+### 连续查询是如何工作的
 
-Clients subscribe to server-side events by using SQL-type query filtering. The server sends all events that modify the query results. CQ event delivery uses the client/server subscription framework.
+客户端通过使用sql类型的查询过滤订阅服务器端事件。服务器发送修改查询结果的所有事件。CQ事件交付使用客户机/服务器订阅框架。
 
-With CQ, the client sends a query to the server side for execution and receives the events that satisfy the criteria. For example, in a region storing stock market trade orders, you can retrieve all orders over a certain price by running a CQ with a query like this:
+使用CQ，客户机向服务器端发送一个查询以供执行，并接收满足条件的事件。例如，在存储股票市场交易订单的区域中，您可以通过运行一个CQ查询来检索某个价格上的所有订单，查询如下:
 
 ```
 SELECT * FROM /tradeOrder t WHERE t.price > 100.00
 ```
 
-When the CQ is running, the server sends the client all new events that affect the results of the query. On the client side, listeners programmed by you receive and process incoming events. For this example query on `/tradeOrder`, you might program a listener to push events to a GUI where higher-priced orders are displayed. CQ event delivery uses the client/server subscription framework.
+当CQ运行时，服务器向客户机发送影响查询结果的所有新事件。在客户端，由您编写的侦听器接收和处理传入的事件。对于这个关于`/tradeOrder`的查询示例，您可以编写一个侦听器来将事件推送到显示高价订单的GUI。CQ事件交付使用客户机/服务器订阅框架。
 
-**Logical Architecture of Continuous Querying**
+**连续查询的逻辑架构**
 
-Your clients can execute any number of CQs, with each CQ assigned any number of listeners.
+客户端可以执行任意数量的CQ，每个CQ分配任意数量的侦听器。
 
 ![img](assets/ContinuousQuerying-1.gif)
 
-**Data Flow with CQs**
+**数据流与CQs**
 
-CQs do not update the client region. This is in contrast to other server-to-client messaging like the updates sent to satisfy interest registration and responses to get requests from the client’s `Pool`. CQs serve as notification tools for the CQ listeners, which can be programmed in any way your application requires.
+CQs不更新客户端区域。这与其他服务器到客户机的消息传递(如为满足兴趣注册而发送的更新和从客户机的“池”获取请求的响应)形成了对比。CQs作为CQ侦听器的通知工具，可以按照应用程序所需的任何方式对其进行编程。
 
-When a CQ is running against a server region, each entry event is evaluated against the CQ query by the thread that updates the server cache. If either the old or the new entry value satisfies the query, the thread puts a `CqEvent` in the client’s queue. The `CqEvent` contains information from the original cache event plus information specific to the CQ’s execution. Once received by the client, the `CqEvent` is passed to the `onEvent` method of all `CqListener`s defined for the CQ.
+当对服务器区域运行CQ时，更新服务器缓存的线程根据CQ查询计算每个条目事件。如果旧的或新的条目值满足查询，线程将在客户机的队列中放置一个`CqEvent`。`CqEvent`包含来自原始缓存事件的信息以及特定于CQ执行的信息。一旦客户端接收到`CqEvent`，它就被传递给为CQ定义的所有`CqListener`的`onEvent`方法。
 
-Here is the typical CQ data flow for entries updated in the server cache:
+下面是服务器缓存中更新条目的典型CQ数据流:
 
-1. Entry events come to the server’s cache from the server or its peers, distribution from remote sites, or updates from a client.
-2. For each event, the server’s CQ executor framework checks for a match with its running CQs.
-3. If the old or new entry value satisfies a CQ query, a CQ event is sent to the CQ’s listeners on the client side. Each listener for the CQ gets the event.
+1. 条目事件从服务器或其对等方到达服务器的缓存，从远程站点分发，或从客户端更新。
+2. 对于每个事件，服务器的CQ执行器框架将检查其与正在运行的CQ是否匹配。
+3. 如果旧条目值或新条目值满足CQ查询，则将CQ事件发送到客户端CQ的侦听器。CQ的每个侦听器都获得事件。
 
-In the following figure:
+如下图所示:
 
-- Both the new and old prices for entry X satisfy the CQ query, so that event is sent indicating an update to the query results.
-- The old price for entry Y satisfied the query, so it was part of the query results. The invalidation of entry Y makes it not satisfy the query. Because of this, the event is sent indicating that it is destroyed in the query results.
-- The price for the newly created entry Z does not satisfy the query, so no event is sent.
+- 条目X的新价格和旧价格都满足CQ查询，因此事件被发送，指示对查询结果的更新。
+- 条目Y的旧价格满足查询，因此它是查询结果的一部分。条目Y的无效使得它不满足查询。因此，事件被发送，表明它在查询结果中被销毁。
+- 新创建的条目Z的价格不满足查询，因此没有发送事件。
 
 ![img](assets/ContinuousQuerying-3.gif)
 
-**CQ Events**
+**CQ 事件**
 
-CQ events do not change your client cache. They are provided as an event service only. This allows you to have any collection of CQs without storing large amounts of data in your regions. If you need to persist information from CQ events, program your listener to store the information where it makes the most sense for your application.
+CQ事件不会更改您的客户机缓存。它们仅作为事件服务提供。这允许您拥有任意cq集合，而无需在区域中存储大量数据。如果您需要从CQ事件中持久化信息，请编写侦听器来存储对应用程序最有意义的信息。
 
-The `CqEvent` object contains this information:
+`CqEvent`对象包含以下信息:
 
-- Entry key and new value.
-- Base operation that triggered the cache event in the server. This is the standard `Operation`class instance used for cache events in GemFire.
-- `CqQuery` object associated with this CQ event.
-- `Throwable` object, returned only if an error occurred when the `CqQuery` ran for the cache event. This is non-null only for `CqListener` onError calls.
-- Query operation associated with this CQ event. This operation describes the change affected to the query results by the cache event. Possible values are:
-  - `CREATE`, which corresponds to the standard database `INSERT` operation
+- 输入键和新值。
+- 在服务器中触发缓存事件的基本操作。这是GemFire中用于缓存事件的标准`Operation`类实例。
+- `CqQuery` 对象与此CQ事件关联。
+- `Throwable`对象，只有在为缓存事件运行`CqQuery`时发生错误时才返回。这是非空的只有`CqListener` onError调用。
+- 与此CQ事件关联的查询操作。此操作描述缓存事件对查询结果的影响。可能的值是:
+  - `CREATE`, 对应于标准的数据库`INSERT`操作
   - `UPDATE`
-  - `DESTROY`, which corresponds to the standard database DELETE operation
+  - `DESTROY`, 对应于标准的数据库DELETE删除操作
 
-Region operations do not translate to specific query operations and query operations do not specifically describe region events. Instead, the query operation describes how the region event affects the query results.
+区域操作不转换为特定的查询操作，而查询操作也不特定地描述区域事件。相反，查询操作描述区域事件如何影响查询结果。
 
-| Query operations based on old and new entry values | New value does not satisfy the query | New value satisfies the query |
+| 基于新旧条目值的查询操作 | 新值不满足查询 | 新值满足查询 |
 | -------------------------------------------------- | ------------------------------------ | ----------------------------- |
-| Old value does not satisfy the query               | no event                             | `CREATE` query operation      |
-| Old value does satisfies the query                 | `DESTROY` query operation            | `UPDATE` query operation      |
+| 旧值不满足查询               | 没有事件                             | `CREATE` 查询操作      |
+| 旧值确实满足查询                 | `DESTROY` 查询操作            | `UPDATE` 查询操作      |
 
-You can use the query operation to decide what to do with the `CqEvent` in your listeners. For example, a `CqListener` that displays query results on screen might stop displaying the entry, start displaying the entry, or update the entry display depending on the query operation.
+您可以使用查询操作来决定如何处理侦听器中的`CqEvent`。例如，在屏幕上显示查询结果的`CqListener`可能会停止显示条目，开始显示条目，或者根据查询操作更新条目显示。
 
-**Region Type Restrictions for CQs**
+**CQs的区域类型限制**
 
-You can only create CQs on replicated or partitioned regions. If you attempt to create a CQ on a non-replicated or non-partitioned region, you will receive the following error message:
+您只能在复制或分区区域上创建CQs。如果您试图在未复制或未分区的区域上创建CQ，您将收到以下错误消息:
 
 ```
 The region <region name> specified in CQ creation is neither replicated nor partitioned; only replicated or partitioned regions are allowed in CQ creation.
 ```
 
-In addition, you cannot create a CQ on a replicated region with eviction setting of local-destroy since this eviction setting changes the region’s data policy. If you attempt to create a CQ on this kind of region, you will receive the following error message:
+此外，您不能在具有local-destroy驱逐设置的复制区域上创建CQ，因为该驱逐设置更改了该区域的数据策略。如果您试图在这类区域上创建CQ，您将收到以下错误消息:
 
 ```
 CQ is not supported for replicated region: <region name> with eviction action: LOCAL_DESTROY
 ```
 
-See also [Configure Distributed, Replicated, and Preloaded Regions](https://geode.apache.org/docs/guide/17/developing/distributed_regions/managing_distributed_regions.html) for potential issues with setting local-destroy eviction on replicated regions.
+还请参见[配置分布式、复制和预加载区域](https://geode.apache.org/docs/guide/17/developing/distributed_regions/managing_distributed_regions.html)，了解在复制区域上设置本地销毁回收的潜在问题。
 
 
 
-### Implementing Continuous Querying
+### 实现连续查询
 
 
+在客户机中使用连续查询来接收对服务器上运行的查询的连续更新。
 
+CQs仅由客户端在其服务器上运行。
 
+在开始之前，您应该熟悉[查询](https://geode.apache.org/docs/guide/17/developing/querying_basics/chapter_overview.html)并配置客户机/服务器系统。
 
-Use continuous querying in your clients to receive continuous updates to queries run on the servers.
+1. 将用于CQs的客户端池配置为 `subscription-enabled` ，设置为true。
 
-CQs are only run by a client on its servers.
+   要使CQ和兴趣订阅事件尽可能紧密地结合在一起，请为所有事件使用单个池。不同的池可能使用不同的服务器，这可能导致事件交付时间的更大差异。
 
-Before you begin, you should be familiar with [Querying](https://geode.apache.org/docs/guide/17/developing/querying_basics/chapter_overview.html) and have your client/server system configured.
+2. 编写OQL查询来从服务器检索所需的数据。
 
-1. Configure the client pools you will use for CQs with `subscription-enabled` set to true.
+   查询必须满足这些CQ要求，除了标准GemFire查询规范:
 
-   To have CQ and interest subscription events arrive as closely together as possible, use a single pool for everything. Different pools might use different servers, which can lead to greater differences in event delivery time.
-
-2. Write your OQL query to retrieve the data you need from the server.
-
-   The query must satisfy these CQ requirements in addition to the standard GemFire querying specifications:
-
-   - The FROM clause must contain only a single region specification, with optional iterator variable.
-   - The query must be a SELECT expression only, preceded by zero or more IMPORT statements. This means the query cannot be a statement such as `"/tradeOrder.name"` or `"(SELECT * from /tradeOrder).size".`
-   - The CQ query cannot use:
-     - Cross region joins
-     - Drill-downs into nested collections
+   - FROM子句必须只包含一个区域规范，其中包含可选的iterator变量。
+   - 查询必须是一个SELECT表达式，前面必须有零个或多个IMPORT语句。这意味着查询不能是`/tradeOrder.name`或`"(SELECT * from /tradeOrder).size".`之类的语句。
+   - CQ查询不能使用:
+     - 跨区域连接
+     - 向下钻取嵌套集合
      - DISTINCT
-     - Projections
-     - Bind parameters
-   - The CQ query must be created on a partitioned or replicated region. See [Region Type Restrictions for CQs](https://geode.apache.org/docs/guide/17/developing/continuous_querying/how_continuous_querying_works.html#how_continuous_querying_works__section_bfs_llr_gr).
+     - 预测
+     - 绑定参数
+   - 必须在分区或复制区域上创建CQ查询。参见[CQs的区域类型限制](https://geode.apache.org/docs/guide/17/developing/continuous_querying/how_continuous_querying_works.html#how_continuous_querying_works__section_bfs_llr_gr)。
 
-   The basic syntax for the CQ query is:
+   CQ查询的基本语法是:
 
    ```
    SELECT * FROM /fullRegionPath [iterator] [WHERE clause]
    ```
 
-   This example query could be used to get all trade orders where the price is over $100:
+   此示例查询可用于获取价格超过$100的所有交易订单:
 
    ```
    SELECT * FROM /tradeOrder t WHERE t.price > 100.00
    ```
 
-3. Write your CQ listeners to handle CQ events from the server. Implement `org.apache.geode.cache.query.CqListener` in each event handler you need. In addition to your main CQ listeners, you might have listeners that you use for all CQs to track statistics or other general information.
+3. 编写您的CQ侦听器来处理来自服务器的CQ事件。实现`org.apache.geode.cache.query.CqListener`在您需要的每个事件处理程序中。除了您的主要CQ侦听器之外，您可能还有用于所有CQ的侦听器来跟踪统计信息或其他一般信息。
 
-   **注意:** Be especially careful if you choose to update your cache from your `CqListener`. If your listener updates the region that is queried in its own CQ and that region has a `Pool` named, the update will be forwarded to the server. If the update on the server satisfies the same CQ, it may be returned to the same listener that did the update, which could put your application into an infinite loop. This same scenario could be played out with multiple regions and multiple CQs, if the listeners are programmed to update each other’s regions.
+   **注意:** 如果选择从`CqListener`更新缓存，请特别小心。如果侦听器更新在其自己的CQ中查询的区域，并且该区域有一个名为`Pool`的名称，则更新将被转发到服务器。如果服务器上的更新满足相同的CQ，那么它可能返回到执行更新的侦听器，这可能会将应用程序放入无限循环中。如果侦听器被编程来更新彼此的区域，那么可以使用多个区域和多个cq来执行相同的场景。
 
-   This example outlines a `CqListener` that might be used to update a display screen with current data from the server. The listener gets the `queryOperation` and entry key and value from the `CqEvent` and then updates the screen according to the type of `queryOperation`.
+   这个示例概述了一个`CqListener`，它可能用于使用来自服务器的当前数据更新显示屏幕。侦听器从`CqEvent`获取`queryOperation`和输入键和值，然后根据`queryOperation`的类型更新屏幕。
 
-   ```
+   ```java
    // CqListener class
    public class TradeEventListener implements CqListener
    {
@@ -8986,13 +8983,13 @@ Before you begin, you should be familiar with [Querying](https://geode.apache.or
    }
    ```
 
-   When you install the listener and run the query, your listener will handle all of the CQ results.
+   安装侦听器并运行查询时，侦听器将处理所有CQ结果。
 
-4. If you need your CQs to detect whether they are connected to any of the servers that host its subscription queues, implement a `CqStatusListener` instead of a `CqListener`. `CqStatusListener` extends the current `CqListener`, allowing a client to detect when a CQ is connected and/or disconnected from the server(s). The `onCqConnected()` method will be invoked when the CQ is connected, and when the CQ has been reconnected after being disconnected. The `onCqDisconnected()` method will be invoked when the CQ is no longer connected to any servers.
+4. 如果您需要CQs来检测它们是否连接到托管其订阅队列的任何服务器，请实现`CqStatusListener`而不是`CqListener`。`CqStatusListener`扩展了当前的`CqListener`，允许客户端检测CQ何时连接和/或从服务器断开。`onCqConnected()`方法将在连接CQ时调用，在断开连接后重新连接CQ时调用。当CQ不再连接到任何服务器时，将调用`oncqdisconnect()`方法。
 
-   Taking the example from step 3, we can instead implement a `CqStatusListener`:
+   以步骤3中的例子为例，我们可以实现一个`CqStatusListener`:
 
-   ```
+   ```java
    public class TradeEventListener implements CqStatusListener
    {
      public void onEvent(CqEvent cqEvent)
@@ -9034,18 +9031,18 @@ Before you begin, you should be familiar with [Querying](https://geode.apache.or
    }
    ```
 
-   When you install the `CqStatusListener`, your listener will be able to detect its connection status to the servers that it is querying.
+   当您安装`CqStatusListener`时，您的侦听器将能够检测到它与所查询的服务器的连接状态。
 
-5. Program your client to run the CQ:
+5. 编程你的客户端运行CQ:
 
-   1. Create a `CqAttributesFactory` and use it to set your `CqListener`s and `CqStatusListener`.
-   2. Pass the attributes factory and the CQ query and its unique name to the `QueryService` to create a new `CqQuery`.
-   3. Start the query running by calling one of the execute methods on the `CqQuery` object. You can execute with or without an initial result set.
-   4. When you are done with the CQ, close it.
+   1. 创建一个`CqAttributesFactory`并使用它来设置您的`CqListener`和`CqStatusListener`。
+   2. 将属性工厂、CQ查询及其惟一名称传递给`QueryService`，以创建一个新的`CqQuery`。
+   3. 通过调用`CqQuery`对象上的一个执行方法来启动正在运行的查询。可以使用或不使用初始结果集执行。
+   4. 当你完成了CQ，关闭它。
 
-**Continuous Query Implementation**
+**连续查询实现**
 
-```
+```java
 // Get cache and queryService - refs to local cache and QueryService
 // Create client /tradeOrder region configured to talk to the server
 
@@ -9084,71 +9081,71 @@ try
 priceTracker.close();
 ```
 
-With continuous queries, you can optionally implement:
+使用连续查询，您可以选择性地实现:
 
-- Highly available CQs by configuring your servers for high availability.
-- Durable CQs by configuring your clients for durable messaging and indicating which CQs are durable at creation.
+- 通过为高可用性配置服务器来实现高可用性CQs。
+- 通过为持久消息配置客户端，并指示哪些CQs在创建时是持久的，从而实现持久CQs。
 
 
 
-### Managing Continuous Querying
+### 管理连续查询
 
-This topic discusses CQ management options, CQ states, and retrieving initial result sets.
+本主题讨论CQ管理选项、CQ状态和检索初始结果集。
 
-**Using CQs from a RegionService Instance**
+**使用RegionService实例中的CQs**
 
-If you are running durable client queues from the `RegionService` instance, stop and start the offline event storage for the client as a whole. The server manages one queue for the entire client process, so you need to request the stop and start of durable CQ event messaging for the cache as a whole, through the `ClientCache` instance. If you closed the `RegionService` instances, event processing would stop, but the server would continue to send events, and those events would be lost.
+如果您正在从`RegionService`实例中运行持久的客户端队列，那么应该停止并启动整个客户端的脱机事件存储。服务器为整个客户机进程管理一个队列，因此您需要通过`ClientCache`实例请求整个缓存的持久CQ事件消息传递的停止和开始。如果关闭`RegionService`实例，事件处理将停止，但服务器将继续发送事件，这些事件将丢失。
 
-Stop with:
+停止:
 
 ```
 clientCache.close(true);
 ```
 
-Start up again in this order:
+按以下顺序重新启动:
 
-1. Create `ClientCache` instance.
-2. Create all `RegionService` instances. Initialize CQ listeners.
-3. Call `ClientCache` instance `readyForEvents` method.
+1. 创建 `ClientCache` 实例。
+2. 创建所有 `RegionService`实例。初始化CQ监听器。
+3. 调用 `ClientCache`实例的`readyForEvents` 方法。
 
-**States of a CQ**
+**一个CQ的状态**
 
-A CQ has three possible states, which are maintained on the server. You can check them from the client through `CqQuery.getState`.
+CQ有三种可能的状态，它们在服务器上进行维护。您可以通过`CqQuery.getState`从客户端检查它们。
 
-| Query State | What does this mean?                                         | When does the CQ reach this state?                           | Notes                                                        |
+| 查询状态 | 这是什么意思?                                         | 什么时候CQ达到这个状态?                           | 注释                                                        |
 | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| STOPPED     | The CQ is in place and ready to run, but is not running.     | When CQ is first created and after being stopped from a running state. | A stopped CQ uses system resources. Stopping a CQ only stops the CQ event messaging from server to client. All server-side CQ processing continues, but new CQ events are not placed into the server’s client queue. Stopping a CQ does not change anything on the client side (but, of course, the client stops receiving events for the CQ that is stopped). |
-| RUNNING     | The CQ is running against server region events and the client listeners are waiting for CQ events. | When CQ is executed from a stopped state.                    | This is the only state in which events are sent to the client. |
-| CLOSED      | The CQ is not available for any further activities. You cannot rerun a closed CQ. | When CQ is closed by the client and when cache or connection conditions make it impossible to maintain or run. | The closed CQ does not use system resources.                 |
+| STOPPED     | CQ已经就绪，可以运行了，但是没有运行。     | 当CQ第一次被创建和停止运行状态后。 | 停止的CQ使用系统资源。停止CQ只会停止从服务器到客户机的CQ事件消息传递。所有服务器端CQ处理都将继续，但是新的CQ事件不会被放置到服务器的客户机队列中。停止CQ不会改变客户端上的任何东西(当然，客户端会停止接收停止的CQ的事件)。 |
+| RUNNING     | CQ针对服务器区域事件运行，客户端侦听器等待CQ事件。 | 当CQ从停止状态执行时。                    | 这是事件发送到客户机的唯一状态。 |
+| CLOSED      | CQ不能用于任何其他活动。您无法重新运行已关闭的CQ。 | 当客户端关闭CQ时，当缓存或连接条件使其无法维护或运行时。 | 关闭的CQ不使用系统资源。                 |
 
-**CQ Management Options**
+**CQ管理选项**
 
-You manage your CQs from the client side. All calls are executed only for the calling client’s CQs.
+从客户端管理CQs。所有调用都只针对调用客户机的CQs执行。
 
-| Task                                         | For a single CQ use …                                     | For groups of CQs use …                   |
+| 任务                                         | 对于单个CQ使用 …                                     | 用于CQs组的使用 …                   |
 | -------------------------------------------- | --------------------------------------------------------- | ----------------------------------------- |
-| Create a CQ                                  | `QueryService.newCq`                                      | N/A                                       |
-| Execute a CQ                                 | `CqQuery.execute` and `CqQuery.executeWithInitialResults` | `QueryService.executeCqs`                 |
-| Stop a CQ                                    | `CqQuery.stop`                                            | `QueryService.stopCqs`                    |
-| Close a CQ                                   | `CqQuery.close`                                           | `QueryService.closeCqs`                   |
-| Access a CQ                                  | `CqEvent.getCq` and `QueryService.getCq`                  | `QueryService.getCq`                      |
-| Modify CQ Listeners                          | `CqQuery.getCqAttributesMutator`                          | N/A                                       |
-| Access CQ Runtime Statistics                 | `CqQuery.getStatistics`                                   | `QueryService.getCqStatistics`            |
-| Get all durable CQs registered on the server | N/A                                                       | `QueryService.getAllDurableCqsFromServer` |
+| 创建一个 CQ                                  | `QueryService.newCq`                                      | N/A                                       |
+| 执行一个 CQ                                 | `CqQuery.execute` and `CqQuery.executeWithInitialResults` | `QueryService.executeCqs`                 |
+| 停止一个 CQ                                    | `CqQuery.stop`                                            | `QueryService.stopCqs`                    |
+| 关闭一个 CQ                                   | `CqQuery.close`                                           | `QueryService.closeCqs`                   |
+| 存取一个 CQ                                  | `CqEvent.getCq` and `QueryService.getCq`                  | `QueryService.getCq`                      |
+| 修改 CQ Listeners                          | `CqQuery.getCqAttributesMutator`                          | N/A                                       |
+| 访问CQ运行时统计数据      | `CqQuery.getStatistics`                                   | `QueryService.getCqStatistics`            |
+| 在服务器上注册所有持久CQs | N/A                                                       | `QueryService.getAllDurableCqsFromServer` |
 
-**Managing CQs and Durable Clients Using gfsh**
+**使用gfsh管理CQs和持久客户端**
 
-Using the `gfsh` command-line utility, you can perform the following actions:
+使用`gfsh`命令行实用工具，您可以执行以下操作:
 
-- Close durable clients and durable client CQs. See [close](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/close.html#topic_27555B1929D7487D9158096BC065D372).
-- List all durable CQs for a given durable client ID. See [list](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html).
-- Show the subscription event queue size for a given durable client ID. See [show subscription-queue-size](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/show.html#topic_395C96B500AD430CBF3D3C8886A4CD2E).
+- 关闭持久客户端和持久客户端CQs。参见[关闭](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/close.html#topic_27555B1929D7487D9158096BC065D372)。
+- 列出给定持久客户端ID的所有持久CQs。参见[List](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html)。
+- 显示给定持久客户端ID的订阅事件队列大小。 参见 [show subscription-queue-size](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/show.html#topic_395C96B500AD430CBF3D3C8886A4CD2E).
 
-**Retrieving an Initial Result Set of a CQ**
+**检索CQ的初始结果集**
 
-You can optionally retrieve an initial result set when you execute your CQ. To do this, execute the CQ with the `executeWithInitialResults` method. The initial `SelectResults` returned is the same that you would get if you ran the query ad hoc, by calling `QueryService.newQuery.execute` on the server cache, but with the key included. This example retrieves keys and values from an initial result set:
+在执行CQ时，可以选择检索初始结果集。为此，使用`executeWithInitialResults`方法执行CQ。返回的初始`SelectResults`与您在特别运行查询时通过在服务器缓存上执行调用`QueryService.newQuery.execute`得到的相同，但包含key。这个示例从初始结果集中检索键和值:
 
-```
+```java
 SelectResults cqResults = cq.executeWithInitialResults();
 for (Object o : cqResults.asList()) {
   Struct s = (Struct) o; // Struct with Key, value pair
@@ -9157,9 +9154,9 @@ for (Object o : cqResults.asList()) {
 }
 ```
 
-If you are managing a data set from the CQ results, you can initialize the set by iterating over the result set and then updating it from your listeners as events arrive. For example, you might populate a new screen with initial results and then update the screen from a CQ listener.
+如果您正在管理来自CQ结果的数据集，您可以通过遍历结果集并在事件到达时从侦听器更新结果集来初始化该数据集。例如，您可以使用初始结果填充新屏幕，然后从CQ侦听器更新屏幕。
 
-If a CQ is executed using the `ExecuteWithInitialResults` method, the returned result may already include the changes with respect to the event. This can arise when updates are happening on the region while CQ registration is in progress. The CQ does not block any region operation as it could affect the performance of the region operation. Design your application to synchronize between the region operation and CQ registration to avoid duplicate events from being delivered.
+如果使用`ExecuteWithInitialResults`方法执行CQ，返回的结果可能已经包含了与事件相关的更改。当CQ注册过程中该区域发生更新时，就会出现这种情况。CQ不会阻塞任何区域操作，因为它会影响区域操作的性能。将应用程序设计为在区域操作和CQ注册之间同步，以避免交付重复的事件。
 
 
 

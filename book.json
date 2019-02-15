@@ -1,0 +1,9 @@
+{
+  "title": "Geode参考指南",
+  "description": "Geode参考指南",
+  "language": "zh-hans",
+  "plugins": [
+    "splitter",
+    "back-to-top-button"
+  ]
+}
