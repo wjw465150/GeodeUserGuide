@@ -1,0 +1,2020 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>基本配置和编程 · Geode参考指南</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="Geode_3_Basic_Configuration_and_Programming.html" />
+    
+    
+    <link rel="prev" href="Geode_2_Configuring_and_Running_a_Cluster.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    前言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                    
+                    Apache Geode入门
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#关于Apache">
+            
+                    
+                    关于Apache
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#Apache Geode的主要特点">
+            
+                    
+                    Apache Geode的主要特点
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#先决条件和安装说明">
+            
+                    
+                    先决条件和安装说明
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.3.1" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#主机要求">
+            
+                    
+                    主机要求
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.2" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#如何安装">
+            
+                    
+                    如何安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.3" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#设置CLASSPATH">
+            
+                    
+                    设置CLASSPATH
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.4" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#如何卸载">
+            
+                    
+                    如何卸载
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="Geode_1_Getting_Started_with_Apache_Geode.html">
+            
+                <a href="Geode_1_Getting_Started_with_Apache_Geode.html#Apache Geode在15分钟或更短时间内完成">
+            
+                    
+                    Apache Geode在15分钟或更短时间内完成
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                    
+                    配置和运行集群
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#集群配置服务概述">
+            
+                    
+                    集群配置服务概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#教程 - 创建和使用集群配置">
+            
+                    
+                    教程 - 创建和使用集群配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#将应用程序JAR部署到Apache Geode成员">
+            
+                    
+                    将应用程序JAR部署到Apache Geode成员
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#使用成员组">
+            
+                    
+                    使用成员组
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#导出和导入集群配置">
+            
+                    
+                    导出和导入集群配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#集群配置文件和故障排除">
+            
+                    
+                    集群配置文件和故障排除
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#使用gfsh通过HTTP或HTTPS管理远程集群">
+            
+                    
+                    使用gfsh通过HTTP或HTTPS管理远程集群
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#在没有集群配置服务的情况下部署配置文件">
+            
+                    
+                    在没有集群配置服务的情况下部署配置文件
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.8.1" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#部署配置文件的主要步骤">
+            
+                    
+                    部署配置文件的主要步骤
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.2" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#默认文件规范和搜索位置">
+            
+                    
+                    默认文件规范和搜索位置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.3" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#更改文件规范">
+            
+                    
+                    更改文件规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.4" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#部署配置JAR的示例">
+            
+                    
+                    部署配置JAR的示例
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#启动和关闭系统">
+            
+                    
+                    启动和关闭系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.10" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#运行Geode定位器进程">
+            
+                    
+                    运行Geode定位器进程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.11" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#运行Geode服务器进程">
+            
+                    
+                    运行Geode服务器进程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#管理系统输出文件">
+            
+                    
+                    管理系统输出文件
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.13" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#防火墙注意事项">
+            
+                    
+                    防火墙注意事项
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.13.1" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#防火墙和连接">
+            
+                    
+                    防火墙和连接
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.13.2" data-path="Geode_2_Configuring_and_Running_a_Cluster.html">
+            
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#防火墙和端口">
+            
+                    
+                    防火墙和端口
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter active" data-level="2.1" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                    
+                    基本配置和编程
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#集群和缓存配置">
+            
+                    
+                    集群和缓存配置
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1.1" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#集群成员">
+            
+                    
+                    集群成员
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.1.2" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#设置属性">
+            
+                    
+                    设置属性
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.1.3" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#配置缓存和数据区域的选项">
+            
+                    
+                    配置缓存和数据区域的选项
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.1.4" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#本地和远程成员身份和缓存">
+            
+                    
+                    本地和远程成员身份和缓存
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#缓存管理">
+            
+                    
+                    缓存管理
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.2.1" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#缓存管理简介">
+            
+                    
+                    缓存管理简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2.2" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#管理对等或服务器缓存">
+            
+                    
+                    管理对等或服务器缓存
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2.3" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#管理客户端缓存">
+            
+                    
+                    管理客户端缓存
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2.4" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#管理安全系统中的缓存">
+            
+                    
+                    管理安全系统中的缓存
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2.5" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#管理多个安全用户的RegionServices">
+            
+                    
+                    管理多个安全用户的RegionServices
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2.6" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#初始化缓存后启动应用程序">
+            
+                    
+                    初始化缓存后启动应用程序
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#数据区域">
+            
+                    
+                    数据区域
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.3.1" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#区域管理">
+            
+                    
+                    区域管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.2" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#区域命名">
+            
+                    
+                    区域命名
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.3" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#区域快捷方式和自定义命名区域属性">
+            
+                    
+                    区域快捷方式和自定义命名区域属性
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.4" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#存储和检索区域快捷方式和自定义命名区域属性">
+            
+                    
+                    存储和检索区域快捷方式和自定义命名区域属性
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.5" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#管理区域属性">
+            
+                    
+                    管理区域属性
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.6" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#为区域和条目创建自定义属性">
+            
+                    
+                    为区域和条目创建自定义属性
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3.7" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#用现有内容构建新区域">
+            
+                    
+                    用现有内容构建新区域
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#数据条目">
+            
+                    
+                    数据条目
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.4.1" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#管理数据条目">
+            
+                    
+                    管理数据条目
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4.2" data-path="Geode_3_Basic_Configuration_and_Programming.html">
+            
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#在数据缓存中使用自定义类的要求">
+            
+                    
+                    在数据缓存中使用自定义类的要求
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="Geode_4_Topologies_and_Communication.html">
+            
+                <a href="Geode_4_Topologies_and_Communication.html">
+            
+                    
+                    拓扑和通信
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="Geode_5_Managing_Apache_Geode.html">
+            
+                <a href="Geode_5_Managing_Apache_Geode.html">
+            
+                    
+                    管理 Apache Geode
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="Geode_6_Developing_with_Apache_Geode.html">
+            
+                <a href="Geode_6_Developing_with_Apache_Geode.html">
+            
+                    
+                    使用Apache Geode进行开发
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >基本配置和编程</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x57FA;&#x672C;&#x914D;&#x7F6E;&#x548C;&#x7F16;&#x7A0B;">&#x57FA;&#x672C;&#x914D;&#x7F6E;&#x548C;&#x7F16;&#x7A0B;</h1>
+<p><em>&#x57FA;&#x672C;&#x914D;&#x7F6E;&#x548C;&#x7F16;&#x7A0B;</em> &#x4ECB;&#x7ECD;&#x5982;&#x4F55;&#x4E3A;Apache Geode&#x5B89;&#x88C5;&#x914D;&#x7F6E;&#x96C6;&#x7FA4;&#x548C;&#x7F13;&#x5B58;&#x5C5E;&#x6027;&#x3002; &#x5BF9;&#x4E8E;&#x60A8;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x5B83;&#x63D0;&#x4F9B;&#x4E86;&#x7F16;&#x5199;&#x4EE3;&#x7801;&#x4EE5;&#x7BA1;&#x7406;&#x7F13;&#x5B58;&#x548C;&#x96C6;&#x7FA4;&#x8FDE;&#x63A5;&#xFF0C;&#x6570;&#x636E;&#x533A;&#x57DF;&#x548C;&#x6570;&#x636E;&#x6761;&#x76EE;&#xFF08;&#x5305;&#x62EC;&#x81EA;&#x5B9A;&#x4E49;&#x7C7B;&#xFF09;&#x7684;&#x6307;&#x5BFC;&#x3002;</p>
+<ul>
+<li><p><strong><a href="#&#x96C6;&#x7FA4;&#x548C;&#x7F13;&#x5B58;&#x914D;&#x7F6E;">&#x96C6;&#x7FA4;&#x548C;&#x7F13;&#x5B58;&#x914D;&#x7F6E;</a></strong></p>
+<p>&#x8981;&#x4F7F;&#x7528;Apache Geode&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x548C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4EE3;&#x7801;&#x7684;&#x7EC4;&#x5408;&#x3002;</p>
+</li>
+<li><p><strong><a href="#&#x7F13;&#x5B58;&#x7BA1;&#x7406;">&#x7F13;&#x5B58;&#x7BA1;&#x7406;</a></strong></p>
+<p>Geode&#x7F13;&#x5B58;&#x662F;Geode&#x7F13;&#x5B58;&#x7BA1;&#x7406;&#x7684;&#x5165;&#x53E3;&#x70B9;&#x3002; Geode&#x63D0;&#x4F9B;&#x4E0D;&#x540C;&#x7684;API&#x548C;XML&#x914D;&#x7F6E;&#x6A21;&#x578B;&#x6765;&#x652F;&#x6301;&#x4E0D;&#x540C;&#x6210;&#x5458;&#x7684;&#x884C;&#x4E3A;&#x3002;</p>
+</li>
+<li><p><strong><a href="#&#x6570;&#x636E;&#x533A;&#x57DF;">&#x6570;&#x636E;&#x533A;&#x57DF;</a></strong></p>
+<p>&#x8BE5;&#x533A;&#x57DF;&#x662F;Apache Geode&#x96C6;&#x7FA4;&#x7684;&#x6838;&#x5FC3;&#x6784;&#x5EFA;&#x5757;&#x3002; &#x6240;&#x6709;&#x7F13;&#x5B58;&#x7684;&#x6570;&#x636E;&#x90FD;&#x7EC4;&#x7EC7;&#x5230;&#x6570;&#x636E;&#x533A;&#x57DF;&#x4E2D;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x9488;&#x5BF9;&#x5B83;&#x4EEC;&#x6267;&#x884C;&#x6240;&#x6709;&#x6570;&#x636E;&#x7684;&#x653E;&#x7F6E;&#xFF0C;&#x83B7;&#x53D6;&#x548C;&#x67E5;&#x8BE2;&#x6D3B;&#x52A8;&#x3002;</p>
+</li>
+<li><p><strong><a href="#&#x6570;&#x636E;&#x6761;&#x76EE;">&#x6570;&#x636E;&#x6761;&#x76EE;</a></strong></p>
+<p>&#x6570;&#x636E;&#x6761;&#x76EE;&#x662F;&#x5B58;&#x50A8;&#x6570;&#x636E;&#x7684;&#x952E;/&#x503C;&#x5BF9;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x5355;&#x72EC;&#x548C;&#x6279;&#x91CF;&#x7BA1;&#x7406;&#x60A8;&#x7684;&#x6761;&#x76EE;&#x3002; &#x8981;&#x5C06;&#x57DF;&#x5BF9;&#x8C61;&#x7528;&#x4E8E;&#x6761;&#x76EE;&#x503C;&#x548C;&#x952E;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x9075;&#x5FAA;Apache Geode&#x8981;&#x6C42;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x548C;&#x5206;&#x53D1;&#x3002;</p>
+</li>
+</ul>
+<h2 id="&#x96C6;&#x7FA4;&#x548C;&#x7F13;&#x5B58;&#x914D;&#x7F6E;">&#x96C6;&#x7FA4;&#x548C;&#x7F13;&#x5B58;&#x914D;&#x7F6E;</h2>
+<p>&#x8981;&#x4F7F;&#x7528;Apache Geode&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x548C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4EE3;&#x7801;&#x7684;&#x7EC4;&#x5408;&#x3002;</p>
+<ul>
+<li><p><strong>&#x96C6;&#x7FA4;&#x6210;&#x5458;</strong></p>
+<p>&#x96C6;&#x7FA4;&#x6210;&#x5458;&#x662F;&#x8FDE;&#x63A5;&#x5230;Geode&#x96C6;&#x7FA4;&#x7684;&#x7A0B;&#x5E8F;&#x3002; &#x60A8;&#x5C06;&#x6210;&#x5458;&#x914D;&#x7F6E;&#x4E3A;&#x5C5E;&#x4E8E;&#x5355;&#x4E2A;&#x96C6;&#x7FA4;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x5C06;&#x5B83;&#x4EEC;&#x914D;&#x7F6E;&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x6216;&#x670D;&#x52A1;&#x5668;&#x4EE5;&#x914D;&#x7F6E;&#x5230;&#x5176;&#x4ED6;&#x96C6;&#x7FA4;&#x4E2D;&#x7684;&#x6210;&#x5458;&#xFF0C;&#x4EE5;&#x53CA;&#x4E0E;&#x5176;&#x4ED6;&#x96C6;&#x7FA4;&#x901A;&#x4FE1;&#x3002;</p>
+</li>
+<li><p><strong>&#x8BBE;&#x7F6E;&#x5C5E;&#x6027;</strong></p>
+<p>Geode&#x4E3A;&#x5F00;&#x7BB1;&#x5373;&#x7528;&#x7684;&#x7CFB;&#x7EDF;&#x63D0;&#x4F9B;&#x9ED8;&#x8BA4;&#x7684;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x3002; &#x8981;&#x4F7F;&#x7528;&#x975E;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x5E76;&#x5FAE;&#x8C03;&#x6210;&#x5458;&#x901A;&#x4FE1;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5404;&#x79CD;&#x9009;&#x9879;&#x7684;&#x6DF7;&#x5408;&#x6765;&#x81EA;&#x5B9A;&#x4E49;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x3002;</p>
+</li>
+<li><p><strong>&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x548C;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x9009;&#x9879;</strong></p>
+<p>&#x8981;&#x586B;&#x5145;Apache Geode&#x7F13;&#x5B58;&#x5E76;&#x5FAE;&#x8C03;&#x5176;&#x5B58;&#x50A8;&#x548C;&#x5206;&#x53D1;&#x884C;&#x4E3A;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x5B9A;&#x4E49;&#x7F13;&#x5B58;&#x6570;&#x636E;&#x533A;&#x57DF;&#x5E76;&#x4E3A;&#x7F13;&#x5B58;&#x548C;&#x533A;&#x57DF;&#x63D0;&#x4F9B;&#x81EA;&#x5B9A;&#x4E49;&#x914D;&#x7F6E;&#x3002;</p>
+</li>
+<li><p><strong>&#x672C;&#x5730;&#x548C;&#x8FDC;&#x7A0B;&#x6210;&#x5458;&#x8EAB;&#x4EFD;&#x548C;&#x7F13;&#x5B58;</strong></p>
+<p>&#x5BF9;&#x4E8E;&#x8BB8;&#x591A;Apache Geode&#x8BA8;&#x8BBA;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x4E86;&#x89E3;&#x672C;&#x5730;&#x548C;&#x8FDC;&#x7A0B;&#x6210;&#x5458;&#x8D44;&#x683C;&#x548C;&#x7F13;&#x5B58;&#x4E4B;&#x95F4;&#x7684;&#x533A;&#x522B;&#x3002;</p>
+</li>
+</ul>
+<h3 id="&#x96C6;&#x7FA4;&#x6210;&#x5458;">&#x96C6;&#x7FA4;&#x6210;&#x5458;</h3>
+<p>&#x96C6;&#x7FA4;&#x6210;&#x5458;&#x662F;&#x8FDE;&#x63A5;&#x5230;Geode&#x96C6;&#x7FA4;&#x7684;&#x7A0B;&#x5E8F;&#x3002; &#x60A8;&#x5C06;&#x6210;&#x5458;&#x914D;&#x7F6E;&#x4E3A;&#x5C5E;&#x4E8E;&#x5355;&#x4E2A;&#x96C6;&#x7FA4;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x5C06;&#x5B83;&#x4EEC;&#x914D;&#x7F6E;&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x6216;&#x670D;&#x52A1;&#x5668;&#x4EE5;&#x914D;&#x7F6E;&#x5230;&#x5176;&#x4ED6;&#x96C6;&#x7FA4;&#x4E2D;&#x7684;&#x6210;&#x5458;&#xFF0C;&#x4EE5;&#x53CA;&#x4E0E;&#x5176;&#x4ED6;&#x96C6;&#x7FA4;&#x901A;&#x4FE1;&#x3002;</p>
+<p><strong>&#x6210;&#x5458;&#x6982;&#x8FF0;</strong></p>
+<p>&#x96C6;&#x7FA4;&#x6210;&#x5458;&#xFF08;&#x6216;&#x7B80;&#x79F0;&#x201C;&#x6210;&#x5458;&#x201D;&#xFF09;&#x5728;&#x521B;&#x5EFA;Geode&#x6570;&#x636E;&#x7F13;&#x5B58;&#x65F6;&#x8FDE;&#x63A5;&#x5230;Geode&#x96C6;&#x7FA4;&#x3002; &#x6210;&#x5458;&#x7684;&#x96C6;&#x7FA4;&#x901A;&#x8FC7;Geode&#x5C5E;&#x6027;&#x914D;&#x7F6E;&#x3002; &#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/reference/topics/gemfire_properties.html" target="_blank">gemfire.properties&#x548C;gfsecurity.properties(Geode Properties)</a>&#x3002; Geode&#x5C5E;&#x6027;&#x6307;&#x5B9A;&#x6210;&#x5458;&#x542F;&#x52A8;&#xFF0C;&#x521D;&#x59CB;&#x5316;&#x548C;&#x901A;&#x4FE1;&#x7684;&#x6240;&#x6709;&#x5FC5;&#x8981;&#x4FE1;&#x606F;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x5F53;&#x6210;&#x5458;&#x8FDE;&#x63A5;&#x5230;&#x96C6;&#x7FA4;&#x65F6;&#xFF0C;&#x60A8;&#x65E0;&#x6CD5;&#x66F4;&#x6539;&#x6210;&#x5458;&#x7684;&#x5C5E;&#x6027;&#x3002;</p>
+<p>&#x4F7F;&#x7528;&#x5C5E;&#x6027;&#x6765;&#x5B9A;&#x4E49;&#xFF1A;</p>
+<ul>
+<li>&#x5982;&#x4F55;&#x67E5;&#x627E;&#x548C;&#x4E0E;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x6C9F;&#x901A;</li>
+<li>&#x5982;&#x4F55;&#x6267;&#x884C;&#x65E5;&#x5FD7;&#x8BB0;&#x5F55;&#x548C;&#x7EDF;&#x8BA1;&#x6D3B;&#x52A8;</li>
+<li>&#x54EA;&#x4E2A;&#x6301;&#x4E45;&#x6027;&#x914D;&#x7F6E;&#x6216;<code>cache.xml</code>&#x6587;&#x4EF6;&#x7528;&#x4E8E;&#x7F13;&#x5B58;&#x548C;&#x6570;&#x636E;&#x533A;&#x57DF;&#x521D;&#x59CB;&#x5316;</li>
+<li>&#x5176;&#x4ED6;&#x9009;&#x9879;&#xFF0C;&#x5305;&#x62EC;&#x4E8B;&#x4EF6;&#x5408;&#x5E76;&#xFF0C;&#x5982;&#x4F55;&#x5904;&#x7406;&#x7F51;&#x7EDC;&#x4E22;&#x5931;&#x548C;&#x5B89;&#x5168;&#x8BBE;&#x7F6E;</li>
+</ul>
+<p><strong>&#x6210;&#x5458;&#x8D44;&#x683C;&#x548C;&#x7CFB;&#x7EDF;&#x62D3;&#x6251;</strong></p>
+<p>&#x6BCF;&#x4E2A;Geode&#x8FDB;&#x7A0B;&#x90FD;&#x662F;&#x96C6;&#x7FA4;&#x7684;&#x6210;&#x5458;&#xFF0C;&#x5373;&#x4F7F;&#x96C6;&#x7FA4;&#x88AB;&#x5B9A;&#x4E49;&#x4E3A;&#x72EC;&#x7ACB;&#x7684;&#xFF0C;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x6210;&#x5458;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x5355;&#x72EC;&#x8FD0;&#x884C;&#x5355;&#x4E2A;&#x96C6;&#x7FA4;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x7EC4;&#x5408;&#x96C6;&#x7FA4;&#x8FDB;&#x884C;&#x5782;&#x76F4;&#x548C;&#x6C34;&#x5E73;&#x7F29;&#x653E;&#x3002; &#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/chapter_overview.html" target="_blank">&#x62D3;&#x6251;&#x548C;&#x901A;&#x4FE1;&#x4E00;&#x822C;&#x6982;&#x5FF5;</a>&#x3002;</p>
+<ul>
+<li><strong>Peer-to-Peer Clusters</strong>. &#x5B9A;&#x4E49;&#x76F8;&#x540C;&#x6210;&#x5458;&#x53D1;&#x73B0;&#x5C5E;&#x6027;&#x7684;&#x6210;&#x5458;&#x5C5E;&#x4E8E;&#x540C;&#x4E00;&#x96C6;&#x7FA4;&#xFF0C;&#x5E76;&#x4E14;&#x5F7C;&#x6B64;&#x5BF9;&#x7B49;&#x3002;</li>
+<li><strong>Client/Server Installations</strong>. &#x5BA2;&#x6237;&#x7AEF;/&#x670D;&#x52A1;&#x5668;&#x62D3;&#x6251;&#x4F7F;&#x7528;&#x60A8;&#x5728;&#x591A;&#x4E2A;&#x96C6;&#x7FA4;&#x7684;&#x6210;&#x5458;&#x4E4B;&#x95F4;&#x914D;&#x7F6E;&#x7684;&#x5173;&#x7CFB;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x5C06;&#x4E00;&#x4E2A;&#x96C6;&#x7FA4;&#x4E2D;&#x7684;&#x90E8;&#x5206;&#x6216;&#x5168;&#x90E8;&#x5BF9;&#x7B49;&#x914D;&#x7F6E;&#x4E3A;&#x4ECE;&#x96C6;&#x7FA4;&#x5916;&#x90E8;&#x8FDE;&#x63A5;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#x3002; &#x6BCF;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#x90FD;&#x53EF;&#x4EE5;&#x6258;&#x7BA1;&#x8BB8;&#x591A;&#x5BA2;&#x6237;&#x7AEF;&#x8FDB;&#x7A0B;&#xFF0C;&#x5728;&#x9AD8;&#x6548;&#x7684;&#x5782;&#x76F4;&#x5206;&#x5C42;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x4E2D;&#x7BA1;&#x7406;&#x6240;&#x6709;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x7F13;&#x5B58;&#x8BBF;&#x95EE;&#x3002; &#x60A8;&#x4F7F;&#x7528;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x5C06;&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x914D;&#x7F6E;&#x4E3A;&#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5668;&#x3002; &#x5BA2;&#x6237;&#x7AEF;&#x4F5C;&#x4E3A;&#x72EC;&#x7ACB;Geode&#x96C6;&#x7FA4;&#x7684;&#x6210;&#x5458;&#x8FD0;&#x884C;&#xFF0C;&#x6CA1;&#x6709;&#x5BF9;&#x7B49;&#x4F53;&#xFF0C;&#x56E0;&#x6B64;&#x6240;&#x6709;&#x6570;&#x636E;&#x66F4;&#x65B0;&#x548C;&#x8BF7;&#x6C42;&#x90FD;&#x5C06;&#x53D1;&#x9001;&#x5230;&#x670D;&#x52A1;&#x5668;&#x3002;</li>
+</ul>
+<p><strong>&#x591A;&#x7AD9;&#x70B9;&#x5B89;&#x88C5;</strong></p>
+<p>&#x591A;&#x7AD9;&#x70B9;&#x62D3;&#x6251;&#x4F7F;&#x7528;&#x60A8;&#x5728;&#x591A;&#x4E2A;&#x96C6;&#x7FA4;&#x7684;&#x6210;&#x5458;&#x4E4B;&#x95F4;&#x914D;&#x7F6E;&#x7684;&#x5173;&#x7CFB;&#x3002; &#x901A;&#x8FC7;&#x6B64;&#x914D;&#x7F6E;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x677E;&#x6563;&#x5730;&#x8026;&#x5408;&#x4E24;&#x4E2A;&#x6216;&#x66F4;&#x591A;&#x96C6;&#x7FA4;&#x4EE5;&#x8FDB;&#x884C;&#x81EA;&#x52A8;&#x6570;&#x636E;&#x5206;&#x53D1;&#x3002; &#x8FD9;&#x901A;&#x5E38;&#x9488;&#x5BF9;&#x5730;&#x7406;&#x4F4D;&#x7F6E;&#x4E0D;&#x540C;&#x7684;&#x7AD9;&#x70B9;&#x8FDB;&#x884C;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x7F51;&#x5173;&#x53D1;&#x4EF6;&#x4EBA;&#x548C;/&#x6216;&#x7F51;&#x5173;&#x63A5;&#x6536;&#x5668;&#x914D;&#x7F6E;&#x6BCF;&#x4E2A;&#x96C6;&#x7FA4;&#x7AD9;&#x70B9;&#x4E2D;&#x7684;&#x5BF9;&#x7B49;&#x9879;&#x5B50;&#x96C6;&#xFF0C;&#x4EE5;&#x7BA1;&#x7406;&#x5728;&#x7AD9;&#x70B9;&#x4E4B;&#x95F4;&#x5206;&#x53D1;&#x7684;&#x4E8B;&#x4EF6;&#x3002;</p>
+<p>&#x5728;&#x5355;&#x4E2A;&#x96C6;&#x7FA4;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#xFF0C;&#x9664;&#x975E;&#x53E6;&#x6709;&#x8BF4;&#x660E;&#xFF0C;&#x5426;&#x5219;&#x201C;&#x8FDC;&#x7A0B;&#x6210;&#x5458;&#x201D;&#x6307;&#x7684;&#x662F;&#x540C;&#x4E00;&#x96C6;&#x7FA4;&#x7684;&#x53E6;&#x4E00;&#x4E2A;&#x6210;&#x5458;&#x3002; &#x5728;&#x5BA2;&#x6237;&#x7AEF;/&#x670D;&#x52A1;&#x5668;&#x548C;&#x591A;&#x7AD9;&#x70B9;&#x5B89;&#x88C5;&#x4E2D;&#xFF0C;&#x201C;&#x8FDC;&#x7A0B;&#x201D;&#x901A;&#x5E38;&#x662F;&#x6307;&#x5176;&#x4ED6;&#x96C6;&#x7FA4;&#x4E2D;&#x7684;&#x6210;&#x5458;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x6240;&#x6709;&#x670D;&#x52A1;&#x5668;&#x90FD;&#x662F;&#x201C;&#x8FDC;&#x7A0B;&#x201D;&#x8FDE;&#x63A5;&#x5230;&#x5B83;&#x4EEC;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x3002; &#x6BCF;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x72EC;&#x7ACB;&#x8FD0;&#x884C;&#xFF0C;&#x4EC5;&#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5668;&#x5C42;&#xFF0C;&#x56E0;&#x6B64;&#x6240;&#x6709;&#x670D;&#x52A1;&#x5668;&#x53CA;&#x5176;&#x4ED6;&#x5BA2;&#x6237;&#x7AEF;&#x90FD;&#x662F;&#x201C;&#x8FDC;&#x7A0B;&#x201D;&#x5230;&#x5355;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x3002; &#x6240;&#x6709;&#x7F51;&#x5173;&#x63A5;&#x6536;&#x5668;&#x90FD;&#x201C;&#x8FDC;&#x7A0B;&#x201D;&#x5230;&#x7F51;&#x5173;&#x53D1;&#x9001;&#x5668;&#xFF0C;&#x8FD9;&#x4E9B;&#x53D1;&#x9001;&#x5668;&#x4ECE;&#x5176;&#x4ED6;&#x96C6;&#x7FA4;&#x8FDE;&#x63A5;&#x5230;&#x5B83;&#x4EEC;&#xFF0C;&#x5E76;&#x8FDE;&#x63A5;&#x5230;&#x90A3;&#x4E9B;&#x7F51;&#x5173;&#x53D1;&#x9001;&#x5668;&#x7684;&#x5BF9;&#x7B49;&#x4F53;&#x3002;</p>
+<h3 id="&#x8BBE;&#x7F6E;&#x5C5E;&#x6027;">&#x8BBE;&#x7F6E;&#x5C5E;&#x6027;</h3>
+<p>Geode&#x4E3A;&#x5F00;&#x7BB1;&#x5373;&#x7528;&#x7684;&#x7CFB;&#x7EDF;&#x63D0;&#x4F9B;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x3002; &#x8981;&#x4F7F;&#x7528;&#x975E;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x5E76;&#x5FAE;&#x8C03;&#x6210;&#x5458;&#x901A;&#x4FE1;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5404;&#x79CD;&#x9009;&#x9879;&#x7684;&#x6DF7;&#x5408;&#x6765;&#x81EA;&#x5B9A;&#x4E49;&#x914D;&#x7F6E;&#x3002;</p>
+<p>Geode&#x5C5E;&#x6027;&#x7528;&#x4E8E;&#x8FDE;&#x63A5;&#x96C6;&#x7FA4;&#x5E76;&#x914D;&#x7F6E;&#x7CFB;&#x7EDF;&#x6210;&#x5458;&#x884C;&#x4E3A;&#x3002; &#x901A;&#x8FC7;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#xFF0C;Java API&#x6216;&#x547D;&#x4EE4;&#x884C;&#x8F93;&#x5165;&#x914D;&#x7F6E;Geode&#x5C5E;&#x6027;&#x3002; &#x901A;&#x5E38;&#xFF0C;&#x60A8;&#x5C06;&#x6240;&#x6709;&#x5C5E;&#x6027;&#x5B58;&#x50A8;&#x5728;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x4F46;&#x60A8;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x901A;&#x8FC7;&#x5176;&#x4ED6;&#x65B9;&#x5F0F;&#x63D0;&#x4F9B;&#x5C5E;&#x6027;&#xFF0C;&#x4F8B;&#x5982;&#xFF0C;&#x4E3A;&#x60A8;&#x4ECE;&#x952E;&#x76D8;&#x8F93;&#x5165;&#x63A5;&#x6536;&#x7684;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x4F20;&#x5165;&#x5B89;&#x5168;&#x5C5E;&#x6027;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x5728;&#x901A;&#x8FC7;API&#x66F4;&#x6539;&#x5C5E;&#x6027;&#x4E4B;&#x524D;&#xFF0C;&#x8BF7;&#x54A8;&#x8BE2;Geode&#x7CFB;&#x7EDF;&#x7BA1;&#x7406;&#x5458;&#xFF0C;&#x5305;&#x62EC;<code>gemfire.properties</code>&#x548C;<code>gfsecurity.properties</code>&#x8BBE;&#x7F6E;&#x3002; &#x7CFB;&#x7EDF;&#x7BA1;&#x7406;&#x5458;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x5728;&#x547D;&#x4EE4;&#x884C;&#x6216;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x8BBE;&#x7F6E;&#x5C5E;&#x6027;&#x3002; &#x901A;&#x8FC7;API&#x8FDB;&#x884C;&#x7684;&#x4EFB;&#x4F55;&#x66F4;&#x6539;&#x90FD;&#x5C06;&#x8986;&#x76D6;&#x5176;&#x4ED6;&#x8BBE;&#x7F6E;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x4EA7;&#x54C1;<code>defaultConfigs</code>&#x76EE;&#x5F55;&#x6709;&#x4E00;&#x4E2A;&#x5E26;&#x6709;&#x6240;&#x6709;&#x9ED8;&#x8BA4;&#x8BBE;&#x7F6E;&#x7684;&#x793A;&#x4F8B;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#x3002;</p>
+<p>&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x4EFB;&#x610F;&#x7EC4;&#x5408;&#x8BBE;&#x7F6E;&#x5C5E;&#x6027;&#x3002; &#x7CFB;&#x7EDF;&#x6309;&#x5217;&#x51FA;&#x7684;&#x987A;&#x5E8F;&#x67E5;&#x627E;&#x8BBE;&#x7F6E;&#xFF1A;</p>
+<ol>
+<li><p><code>java.lang.System</code>&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x3002; &#x901A;&#x5E38;&#x5728;&#x547D;&#x4EE4;&#x884C;&#x8BBE;&#x7F6E;&#x3002; &#x5BF9;&#x4E8E;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x8BF7;&#x5728;&#x4EE3;&#x7801;&#x6216;&#x547D;&#x4EE4;&#x884C;&#x4E2D;&#x8BBE;&#x7F6E;&#x5B83;&#x4EEC;&#x3002;</p>
+<p>&#x547D;&#x540D;&#xFF1A;&#x4EE5;<code>gemfire.property-name</code>&#x683C;&#x5F0F;&#x6307;&#x5B9A;&#x8FD9;&#x4E9B;&#x5C5E;&#x6027;&#xFF0C;&#x5176;&#x4E2D;<code>property-name</code>&#x5339;&#x914D;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x540D;&#x79F0;&#x3002; &#x8981;&#x8BBE;&#x7F6E;gemfire&#x5C5E;&#x6027;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x8BF7;&#x5355;&#x72EC;&#x4F7F;&#x7528;<code>gemfirePropertyFile</code></p>
+<ul>
+<li><p>&#x5728;API&#x4E2D;&#xFF0C;&#x5728;&#x7F13;&#x5B58;&#x521B;&#x5EFA;&#x8C03;&#x7528;&#x4E4B;&#x524D;&#x8BBE;&#x7F6E;<code>System</code>&#x5C5E;&#x6027;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>System.setProperty(&quot;gemfirePropertyFile&quot;, &quot;gfTest&quot;);
+System.setProperty(&quot;gemfire.mcast-port&quot;, &quot;10999&quot;);
+
+Cache cache = new CacheFactory().create();
+</code></pre></li>
+<li><p>&#x5728;<code>java</code>&#x547D;&#x4EE4;&#x884C;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>-D</code>&#x5F00;&#x5173;&#x4F20;&#x5165;<code>System</code>&#x5C5E;&#x6027;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>java -DgemfirePropertyFile=gfTest -Dgemfire.mcast-port=10999 test.Program
+</code></pre></li>
+</ul>
+</li>
+<li><p>&#x5728;&#x201C;&#x5C5E;&#x6027;&#x201D;&#x5BF9;&#x8C61;&#x4E2D;&#x8F93;&#x5165;&#x3002;</p>
+<p>&#x547D;&#x540D;&#xFF1A;&#x4F7F;&#x7528;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x540D;&#x79F0;&#x6307;&#x5B9A;&#x8FD9;&#x4E9B;&#x5C5E;&#x6027;&#x3002; &#x8981;&#x8BBE;&#x7F6E;gemfire&#x5C5E;&#x6027;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;<code>gemfirePropertyFile</code>&#x3002;</p>
+<ul>
+<li><p>&#x5728;API&#x4E2D;&#xFF0C;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;<code>Properties</code>&#x5BF9;&#x8C61;&#x5E76;&#x5C06;&#x5176;&#x4F20;&#x9012;&#x7ED9;&#x7F13;&#x5B58;create&#x65B9;&#x6CD5;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>Properties properties= new Properties();
+properties.setProperty(&quot;log-level&quot;, &quot;warning&quot;);
+properties.setProperty(&quot;name&quot;, &quot;testMember2&quot;);
+ClientCache userCache = 
+    new ClientCacheFactory(properties).create();
+</code></pre></li>
+<li><p>&#x5BF9;&#x4E8E;&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x5C06;<code>gfsh</code>&#x547D;&#x4EE4;&#x884C;&#x4E0A;&#x7684;&#x5C5E;&#x6027;&#x6587;&#x4EF6;&#x4F5C;&#x4E3A;&#x547D;&#x4EE4;&#x884C;&#x9009;&#x9879;&#x4F20;&#x9012;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>gfsh&gt;start server --name=server_name --mcast-port=10338 --properties-file=serverConfig/gemfire.properties --security-properties-file=gfsecurity.properties
+</code></pre><p>&#x6709;&#x5173;&#x8FD0;&#x884C;&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/configuring/running/running_the_cacheserver.html" target="_blank">&#x8FD0;&#x884C;Geode&#x670D;&#x52A1;&#x5668;&#x8FDB;&#x7A0B;</a>&#x3002;</p>
+</li>
+</ul>
+</li>
+<li><p>&#x5728;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#x4E2D;&#x8F93;&#x5165;&#x3002; &#x8BF7;&#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/configuring/running/deploying_config_files.html" target="_blank">&#x4E0D;&#x4F7F;&#x7528;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x90E8;&#x7F72;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</a>&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>cache-xml-file=cache.xml
+conserve-sockets=true
+disable-tcp=false
+</code></pre></li>
+<li><p>&#x9ED8;&#x8BA4;&#x503C;&#x3002; &#x9ED8;&#x8BA4;&#x503C;&#x5728;<code>org.apache.geode.distributed.ConfigurationProperties</code>&#x7684;API&#x4E2D;&#x5B9A;&#x4E49;&#x3002;</p>
+</li>
+</ol>
+<h3 id="&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x548C;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x9009;&#x9879;">&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x548C;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x9009;&#x9879;</h3>
+<p>&#x8981;&#x586B;&#x5145;Apache Geode&#x7F13;&#x5B58;&#x5E76;&#x5FAE;&#x8C03;&#x5176;&#x5B58;&#x50A8;&#x548C;&#x5206;&#x53D1;&#x884C;&#x4E3A;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x5B9A;&#x4E49;&#x7F13;&#x5B58;&#x6570;&#x636E;&#x533A;&#x57DF;&#x5E76;&#x4E3A;&#x7F13;&#x5B58;&#x548C;&#x533A;&#x57DF;&#x63D0;&#x4F9B;&#x81EA;&#x5B9A;&#x4E49;&#x914D;&#x7F6E;&#x3002;</p>
+<p>&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x5C5E;&#x6027;&#x5B9A;&#x4E49;&#xFF1A;</p>
+<ul>
+<li>&#x7F13;&#x5B58;&#x8303;&#x56F4;&#x7684;&#x8BBE;&#x7F6E;&#xFF0C;&#x4F8B;&#x5982;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#xFF0C;&#x901A;&#x4FE1;&#x8D85;&#x65F6;&#x4EE5;&#x53CA;&#x5C06;&#x6210;&#x5458;&#x6307;&#x5B9A;&#x4E3A;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8BBE;&#x7F6E;</li>
+<li>&#x7F13;&#x5B58;&#x6570;&#x636E;&#x533A;&#x57DF;</li>
+</ul>
+<p>&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x4E00;&#x79CD;&#x6216;&#x591A;&#x79CD;&#x65B9;&#x6CD5;&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x53CA;&#x5176;&#x6570;&#x636E;&#x533A;&#x57DF;&#xFF1A;</p>
+<ul>
+<li><p>&#x901A;&#x8FC7;&#x5728;&#x53D1;&#x51FA;&#x4F7F;&#x7528;gfsh&#x547D;&#x4EE4;&#x884C;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x7684;&#x547D;&#x4EE4;&#x65F6;&#x5B9A;&#x4E49;&#x7684;&#x6301;&#x4E45;&#x6027;&#x914D;&#x7F6E;&#x3002; gfsh&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x652F;&#x6301;Apache Geode&#x8FDB;&#x7A0B;&#x548C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7684;&#x7BA1;&#x7406;&#xFF0C;&#x8C03;&#x8BD5;&#x548C;&#x90E8;&#x7F72;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;gfsh&#x914D;&#x7F6E;&#x533A;&#x57DF;&#xFF0C;&#x5B9A;&#x4F4D;&#x5668;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#xFF0C;&#x4E8B;&#x4EF6;&#x961F;&#x5217;&#x548C;&#x5176;&#x4ED6;&#x5BF9;&#x8C61;&#x3002;</p>
+<p>&#x5728;&#x53D1;&#x51FA;&#x547D;&#x4EE4;&#x65F6;&#xFF0C;gfsh&#x4F1A;&#x4FDD;&#x5B58;&#x4E00;&#x7EC4;&#x9002;&#x7528;&#x4E8E;&#x6574;&#x4E2A;&#x96C6;&#x7FA4;&#x7684;&#x914D;&#x7F6E;&#xFF0C;&#x5E76;&#x4FDD;&#x5B58;&#x4EC5;&#x9002;&#x7528;&#x4E8E;&#x96C6;&#x7FA4;&#x4E2D;&#x5DF2;&#x5B9A;&#x4E49;&#x6210;&#x5458;&#x7EC4;&#x7684;&#x914D;&#x7F6E;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x91CD;&#x590D;&#x4F7F;&#x7528;&#x8FD9;&#x4E9B;&#x914D;&#x7F6E;&#x6765;&#x521B;&#x5EFA;&#x96C6;&#x7FA4;&#x3002; &#x8BF7;&#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html" target="_blank">&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x6982;&#x8FF0;</a>&#x3002;</p>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x5728;<code>cache-xml-file``gemfire.properties</code>&#x8BBE;&#x7F6E;&#x4E2D;&#x547D;&#x540D;&#x7684;XML&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x58F0;&#x660E;&#x3002; &#x6B64;&#x6587;&#x4EF6;&#x901A;&#x5E38;&#x79F0;&#x4E3A;<code>cache.xml</code>&#x6587;&#x4EF6;&#xFF0C;&#x4F46;&#x5B83;&#x53EF;&#x4EE5;&#x5177;&#x6709;&#x4EFB;&#x4F55;&#x540D;&#x79F0;&#x3002; &#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_cache_xml.html#cache_xml" target="_blank">cache.xml</a>&#x3002;</p>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x8C03;&#x7528;<code>org.apache.geode.cache.CacheFactory</code>&#xFF0C;<code>org.apache.geode.cache.Cache</code>&#x548C;<code>org.apache.geode.cache.Region</code> API&#x3002;</p>
+</li>
+</ul>
+<h3 id="&#x672C;&#x5730;&#x548C;&#x8FDC;&#x7A0B;&#x6210;&#x5458;&#x8EAB;&#x4EFD;&#x548C;&#x7F13;&#x5B58;">&#x672C;&#x5730;&#x548C;&#x8FDC;&#x7A0B;&#x6210;&#x5458;&#x8EAB;&#x4EFD;&#x548C;&#x7F13;&#x5B58;</h3>
+<p>&#x5BF9;&#x4E8E;&#x8BB8;&#x591A;Apache Geode&#x8BA8;&#x8BBA;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x4E86;&#x89E3;&#x672C;&#x5730;&#x548C;&#x8FDC;&#x7A0B;&#x6210;&#x5458;&#x8D44;&#x683C;&#x548C;&#x7F13;&#x5B58;&#x4E4B;&#x95F4;&#x7684;&#x533A;&#x522B;&#x3002;</p>
+<p>&#x6709;&#x5173;Geode&#x6210;&#x5458;&#x8D44;&#x683C;&#x548C;&#x7F13;&#x5B58;&#x6D3B;&#x52A8;&#x7684;&#x8BA8;&#x8BBA;&#x901A;&#x5E38;&#x4F1A;&#x533A;&#x5206;&#x672C;&#x5730;&#x548C;&#x8FDC;&#x7A0B;&#x3002; &#x672C;&#x5730;&#x7F13;&#x5B58;&#x603B;&#x662F;&#x6307;&#x5411;&#x5728;&#x8BA8;&#x8BBA;&#x7684;&#x4E2D;&#x5FC3;&#x6210;&#x5458;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x4E00;&#x4E2A;&#x8FD9;&#x6837;&#x660E;&#x663E;&#x7684;&#x6210;&#x5458;&#xFF0C;&#x800C;&#x8FDC;&#x7A0B;&#x6307;&#x7684;&#x662F;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x3002; &#x5982;&#x679C;&#x6CA1;&#x6709;&#x660E;&#x786E;&#x7684;&#x5355;&#x4E00;&#x672C;&#x5730;&#x6210;&#x5458;&#xFF0C;&#x5219;&#x8BA8;&#x8BBA;&#x4F1A;&#x4E3A;&#x6210;&#x5458;&#x5206;&#x914D;&#x540D;&#x79F0;&#x4EE5;&#x8FDB;&#x884C;&#x533A;&#x5206;&#x3002; &#x201C;&#x6210;&#x5458;Q&#x672C;&#x5730;&#x201D;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x6570;&#x636E;&#xFF0C;&#x914D;&#x7F6E;&#x7B49;&#x6B63;&#x5728;&#x6210;&#x5458;Q&#x8FDB;&#x7A0B;&#x5185;&#x8FD0;&#x884C;&#x6216;&#x9A7B;&#x7559;&#x3002; &#x201C;&#x8FDC;&#x79BB;&#x6210;&#x5458;Q&#x201D;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x6570;&#x636E;&#xFF0C;&#x914D;&#x7F6E;&#x7B49;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#x6216;&#x9A7B;&#x7559;&#x5728;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x4E2D;&#x3002;</p>
+<p>&#x672C;&#x5730;&#x7F13;&#x5B58;&#x662F;&#x5C5E;&#x4E8E;&#x672C;&#x5730;&#x6210;&#x5458;&#x7684;&#x7F13;&#x5B58;&#x3002; &#x6240;&#x6709;&#x5176;&#x4ED6;&#x7F13;&#x5B58;&#x90FD;&#x662F;&#x8FDC;&#x7A0B;&#x7684;&#xFF0C;&#x65E0;&#x8BBA;&#x662F;&#x5728;&#x540C;&#x4E00;&#x96C6;&#x7FA4;&#x7684;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x4E2D;&#x8FD8;&#x662F;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x96C6;&#x7FA4;&#x4E2D;&#x3002;</p>
+<h2 id="&#x7F13;&#x5B58;&#x7BA1;&#x7406;">&#x7F13;&#x5B58;&#x7BA1;&#x7406;</h2>
+<p>Geode&#x7F13;&#x5B58;&#x662F;Geode&#x7F13;&#x5B58;&#x7BA1;&#x7406;&#x7684;&#x5165;&#x53E3;&#x70B9;&#x3002; Geode&#x63D0;&#x4F9B;&#x4E0D;&#x540C;&#x7684;API&#x548C;XML&#x914D;&#x7F6E;&#x6A21;&#x578B;&#x6765;&#x652F;&#x6301;&#x4E0D;&#x540C;&#x6210;&#x5458;&#x7684;&#x884C;&#x4E3A;&#x3002;</p>
+<ul>
+<li><p><strong>&#x7F13;&#x5B58;&#x7BA1;&#x7406;&#x7B80;&#x4ECB;</strong></p>
+<p>&#x7F13;&#x5B58;&#x4E3A;&#x60A8;&#x7684;&#x6570;&#x636E;&#x63D0;&#x4F9B;&#x5185;&#x5B58;&#x5B58;&#x50A8;&#x548C;&#x7BA1;&#x7406;&#x3002;</p>
+</li>
+<li><p><strong>&#x7BA1;&#x7406;&#x5BF9;&#x7B49;&#x6216;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;</strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;XML&#x58F0;&#x660E;&#x548C;API&#x8C03;&#x7528;&#x7684;&#x7EC4;&#x5408;&#x6765;&#x542F;&#x52A8;&#x5BF9;&#x7B49;&#x6216;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x3002; &#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#x3002;</p>
+</li>
+<li><p><strong>&#x7BA1;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;</strong></p>
+<p>&#x60A8;&#x6709;&#x591A;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x9009;&#x9879;&#x3002; &#x4F7F;&#x7528;XML&#x58F0;&#x660E;&#x548C;API&#x8C03;&#x7528;&#x7684;&#x7EC4;&#x5408;&#x542F;&#x52A8;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002; &#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002;</p>
+</li>
+<li><p><strong>&#x7BA1;&#x7406;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x7F13;&#x5B58;</strong></p>
+<p>&#x5728;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x65F6;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x4E3A;&#x8FDE;&#x63A5;&#x8FC7;&#x7A0B;&#x63D0;&#x4F9B;&#x51ED;&#x636E;&#xFF0C;&#x4EE5;&#x4FBF;&#x5DF2;&#x7ECF;&#x8FD0;&#x884C;&#x7684;&#x5B89;&#x5168;&#x6210;&#x5458;&#x8FDB;&#x884C;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x3002; &#x5BA2;&#x6237;&#x7AEF;&#x8FDE;&#x63A5;&#x5230;&#x5B89;&#x5168;&#x670D;&#x52A1;&#x5668;&#x3002; &#x5BF9;&#x7B49;&#x65B9;&#x7531;&#x5B89;&#x5168;&#x5B9A;&#x4F4D;&#x5668;&#x6216;&#x5BF9;&#x7B49;&#x6210;&#x5458;&#x8FDB;&#x884C;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x3002;</p>
+</li>
+<li><p><strong>&#x7BA1;&#x7406;&#x591A;&#x4E2A;&#x5B89;&#x5168;&#x7528;&#x6237;&#x7684;RegionServices</strong></p>
+<p>&#x5728;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E0E;&#x6BCF;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x670D;&#x52A1;&#x5668;&#x5EFA;&#x7ACB;&#x591A;&#x4E2A;&#x5B89;&#x5168;&#x8FDE;&#x63A5;&#x6765;&#x521B;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x3002; &#x6700;&#x5E38;&#x89C1;&#x7684;&#x7528;&#x4F8B;&#x662F;&#x5D4C;&#x5165;&#x5728;&#x5E94;&#x7528;&#x670D;&#x52A1;&#x5668;&#x4E2D;&#x7684;Geode&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8BE5;&#x670D;&#x52A1;&#x5668;&#x652F;&#x6301;&#x6765;&#x81EA;&#x8BB8;&#x591A;&#x7528;&#x6237;&#x7684;&#x6570;&#x636E;&#x8BF7;&#x6C42;&#x3002; &#x53EF;&#x4EE5;&#x6388;&#x6743;&#x6BCF;&#x4E2A;&#x7528;&#x6237;&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x7684;&#x6570;&#x636E;&#x5B50;&#x96C6;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x53EF;&#x4EE5;&#x5141;&#x8BB8;&#x5BA2;&#x6237;&#x7528;&#x6237;&#x4EC5;&#x67E5;&#x770B;&#x548C;&#x66F4;&#x65B0;&#x4ED6;&#x4EEC;&#x81EA;&#x5DF1;&#x7684;&#x8BA2;&#x5355;&#x548C;&#x8D27;&#x4EF6;&#x3002;</p>
+</li>
+<li><p><strong>&#x521D;&#x59CB;&#x5316;&#x7F13;&#x5B58;&#x540E;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;</strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x6307;&#x5B9A;&#x5728;&#x7F13;&#x5B58;&#x521D;&#x59CB;&#x5316;&#x540E;&#x542F;&#x52A8;&#x7684;&#x56DE;&#x8C03;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x3002;</p>
+</li>
+</ul>
+<h3 id="&#x7F13;&#x5B58;&#x7BA1;&#x7406;&#x7B80;&#x4ECB;">&#x7F13;&#x5B58;&#x7BA1;&#x7406;&#x7B80;&#x4ECB;</h3>
+<p>&#x7F13;&#x5B58;&#x4E3A;&#x60A8;&#x7684;&#x6570;&#x636E;&#x63D0;&#x4F9B;&#x5185;&#x5B58;&#x5B58;&#x50A8;&#x548C;&#x7BA1;&#x7406;&#x3002;</p>
+<p>&#x60A8;&#x5C06;&#x7F13;&#x5B58;&#x4E2D;&#x7684;&#x6570;&#x636E;&#x7EC4;&#x7EC7;&#x5230;<em>&#x6570;&#x636E;&#x533A;&#x57DF;</em>&#x4E2D;&#xFF0C;&#x6BCF;&#x4E2A;&#x6570;&#x636E;&#x533A;&#x57DF;&#x90FD;&#x6709;&#x81EA;&#x5DF1;&#x7684;&#x53EF;&#x914D;&#x7F6E;&#x884C;&#x4E3A;&#x3002; &#x60A8;&#x5C06;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x540D;&#x4E3A;<em> data entries </em>&#x7684;&#x952E;/&#x503C;&#x5BF9;&#x4E2D;&#x7684;&#x533A;&#x57DF;&#x4E2D;&#x3002; &#x7F13;&#x5B58;&#x8FD8;&#x63D0;&#x4F9B;&#x4E8B;&#x52A1;&#xFF0C;&#x6570;&#x636E;&#x67E5;&#x8BE2;&#xFF0C;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x7BA1;&#x7406;&#x548C;&#x65E5;&#x5FD7;&#x8BB0;&#x5F55;&#x7B49;&#x529F;&#x80FD;&#x3002; &#x6709;&#x5173;<code>org.apache.geode.cache.Cache</code>&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;Javadocs&#x3002;</p>
+<p>&#x60A8;&#x901A;&#x5E38;&#x4F7F;&#x7528;<code>gfsh</code>&#x547D;&#x4EE4;&#x884C;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x6216;XML&#x58F0;&#x660E;&#x548C;API&#x8C03;&#x7528;&#x7684;&#x7EC4;&#x5408;&#x6765;&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x3002; &#x9996;&#x6B21;&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x65F6;&#xFF0C;Geode&#x4F1A;&#x52A0;&#x8F7D;&#x5E76;&#x5904;&#x7406;&#x60A8;&#x7684;XML&#x58F0;&#x660E;&#x3002;</p>
+<p>Geode&#x6709;&#x4E00;&#x79CD;&#x7528;&#x4E8E;&#x7BA1;&#x7406;&#x670D;&#x52A1;&#x5668;&#x548C;&#x5BF9;&#x7B49;&#x7F13;&#x5B58;&#x7684;&#x7F13;&#x5B58;&#x7C7B;&#x578B;&#xFF0C;&#x53E6;&#x4E00;&#x79CD;&#x7528;&#x4E8E;&#x7BA1;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002; &#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#x8FDB;&#x7A0B;&#x5728;&#x542F;&#x52A8;&#x65F6;&#x81EA;&#x52A8;&#x521B;&#x5EFA;&#x5176;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x3002; &#x5728;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x8FDB;&#x7A0B;&#x4E2D;&#xFF0C;&#x7F13;&#x5B58;&#x521B;&#x5EFA;&#x5C06;&#x8FD4;&#x56DE;&#x670D;&#x52A1;&#x5668;/&#x5BF9;&#x7B49;&#x6216;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x7684;&#x5B9E;&#x4F8B;&#x3002; &#x4ECE;&#x90A3;&#x65F6;&#x8D77;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x7684;API&#x8C03;&#x7528;&#x6765;&#x7BA1;&#x7406;&#x7F13;&#x5B58;&#x3002;</p>
+<p><strong>&#x7F13;&#x5B58;API</strong></p>
+<p>Geode&#x7684;&#x7F13;&#x5B58;API&#x4E3A;&#x4E0D;&#x540C;&#x7684;&#x7CFB;&#x7EDF;&#x6210;&#x5458;&#x7C7B;&#x578B;&#x548C;&#x5B89;&#x5168;&#x8BBE;&#x7F6E;&#x63D0;&#x4F9B;&#x4E13;&#x95E8;&#x7684;&#x884C;&#x4E3A;&#x3002;</p>
+<ul>
+<li><strong>org.apache.geode.cache.RegionService</strong>. &#x901A;&#x5E38;&#xFF0C;&#x60A8;&#x901A;&#x8FC7;<code>Cache</code>&#x548C;<code>ClientCache</code>&#x7684;&#x5B9E;&#x4F8B;&#x4F7F;&#x7528;<code>RegionService</code>&#x529F;&#x80FD;&#x3002; &#x60A8;&#x53EA;&#x5728;&#x4E3A;&#x8BB8;&#x591A;&#x7528;&#x6237;&#x63D0;&#x4F9B;&#x670D;&#x52A1;&#x7684;&#x5B89;&#x5168;&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x4E3A;&#x53D7;&#x9650;&#x8BBF;&#x95EE;&#x7528;&#x6237;&#x4E13;&#x95E8;&#x4F7F;&#x7528;<code>RegionService</code>&#x5B9E;&#x4F8B;&#x3002; <code>RegionService</code> API&#x63D0;&#x4F9B;&#x5BF9;&#x73B0;&#x6709;&#x7F13;&#x5B58;&#x6570;&#x636E;&#x533A;&#x57DF;&#x548C;&#x7F13;&#x5B58;&#x7684;&#x6807;&#x51C6;&#x67E5;&#x8BE2;&#x670D;&#x52A1;&#x7684;&#x8BBF;&#x95EE;&#x3002; &#x5BF9;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#xFF0C;&#x67E5;&#x8BE2;&#x5C06;&#x53D1;&#x9001;&#x5230;&#x670D;&#x52A1;&#x5668;&#x5C42;&#x3002; &#x5BF9;&#x4E8E;&#x670D;&#x52A1;&#x5668;&#x548C;&#x5BF9;&#x7B49;&#x7F13;&#x5B58;&#xFF0C;&#x67E5;&#x8BE2;&#x5728;&#x5F53;&#x524D;&#x7F13;&#x5B58;&#x548C;&#x4EFB;&#x4F55;&#x53EF;&#x7528;&#x5BF9;&#x7B49;&#x4F53;&#x4E2D;&#x8FD0;&#x884C;&#x3002; <code>RegionService</code>&#x7531;<code>GemFireCache</code>&#x5B9E;&#x73B0;&#x3002;</li>
+<li><strong>org.apache.geode.cache.GemFireCache</strong>. &#x4F60;&#x6CA1;&#x6709;&#x4E13;&#x95E8;&#x4F7F;&#x7528;<code>GemFireCache</code>&#x7684;&#x5B9E;&#x4F8B;&#xFF0C;&#x4F46;&#x4F60;&#x5728;<code>Cache</code>&#x548C;<code>ClientCache</code>&#x7684;&#x5B9E;&#x4F8B;&#x4E2D;&#x4F7F;&#x7528;<code>GemFireCache</code>&#x529F;&#x80FD;&#x3002; <code>GemFireCache</code>&#x6269;&#x5C55;&#x4E86;<code>RegionService</code>&#x5E76;&#x6DFB;&#x52A0;&#x4E86;&#x4E00;&#x822C;&#x7F13;&#x5B58;&#x529F;&#x80FD;&#xFF0C;&#x5982;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#xFF0C;&#x533A;&#x57DF;&#x6301;&#x4E45;&#x6027;&#x548C;&#x6EA2;&#x51FA;&#x7684;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x4EE5;&#x53CA;&#x5BF9;&#x5E95;&#x5C42;&#x96C6;&#x7FA4;&#x7684;&#x8BBF;&#x95EE;&#x3002; <code>GemFireCache</code>&#x7531;<code>Cache</code>&#x548C;<code>ClientCache</code>&#x5B9E;&#x73B0;&#x3002;</li>
+<li><strong>org.apache.geode.cache.Cache</strong>. &#x4F7F;&#x7528;<code>Cache</code>&#x63A5;&#x53E3;&#x6765;&#x7BA1;&#x7406;&#x670D;&#x52A1;&#x5668;&#x548C;&#x5BF9;&#x7B49;&#x7F13;&#x5B58;&#x3002; &#x6BCF;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#x6216;&#x5BF9;&#x7B49;&#x8FDB;&#x7A0B;&#x90FD;&#x6709;&#x4E00;&#x4E2A;<code>Cache</code>&#x3002; <code>Cache</code>&#x6269;&#x5C55;&#x4E86;<code>GemFireCache</code>&#x5E76;&#x6DFB;&#x52A0;&#x4E86;&#x670D;&#x52A1;&#x5668;/&#x5BF9;&#x7B49;&#x7F13;&#x5B58;&#x529F;&#x80FD;&#xFF0C;&#x5982;&#x96C6;&#x7FA4;&#x5185;&#x7684;&#x901A;&#x4FE1;&#xFF0C;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#xFF0C;&#x4E8B;&#x52A1;&#x548C;&#x67E5;&#x8BE2;&#x4EE5;&#x53CA;&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#x529F;&#x80FD;&#x3002;</li>
+<li><strong>org.apache.geode&#x2248;setting_cache_initializer.cache.ClientCache</strong>. &#x4F7F;&#x7528;<code>ClientCache</code>&#x63A5;&#x53E3;&#x7BA1;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x4E2D;&#x7684;&#x7F13;&#x5B58;&#x3002; &#x6BCF;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x8FDB;&#x7A0B;&#x6709;&#x4E00;&#x4E2A;<code>ClientCache</code>&#x3002; &#x201C;ClientCache&#x201D;&#x6269;&#x5C55;&#x4E86;&#x201C;GemFireCache&#x201D;&#x5E76;&#x6DFB;&#x52A0;&#x4E86;&#x5BA2;&#x6237;&#x7AEF;&#x7279;&#x5B9A;&#x7684;&#x7F13;&#x5B58;&#x529F;&#x80FD;&#xFF0C;&#x5982;&#x5BA2;&#x6237;&#x7AEF;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#xFF0C;&#x6301;&#x4E45;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x8BA2;&#x9605;&#x4FDD;&#x6301;&#x6D3B;&#x52A8;&#x7BA1;&#x7406;&#xFF0C;&#x67E5;&#x8BE2;&#x670D;&#x52A1;&#x5668;&#x548C;&#x5BA2;&#x6237;&#x7AEF;&#x5C42;&#xFF0C;&#x4EE5;&#x53CA;RegionService&#x521B;&#x5EFA;&#xFF0C;&#x4EE5;&#x4FBF;&#x5BA2;&#x6237;&#x7AEF;&#x5185;&#x7684;&#x591A;&#x4E2A;&#x7528;&#x6237;&#x8FDB;&#x884C;&#x5B89;&#x5168;&#x8BBF;&#x95EE;&#x3002;</li>
+</ul>
+<p><strong>&#x7F13;&#x5B58;XML</strong></p>
+<p>&#x60A8;&#x7684;<code>cache.xml</code>&#x5FC5;&#x987B;&#x6839;&#x636E;&#x4EA7;&#x54C1;XML&#x6A21;&#x5F0F;&#x5B9A;&#x4E49;<code>cache-1.0.xsd</code>&#x8FDB;&#x884C;&#x683C;&#x5F0F;&#x5316;&#x3002; &#x67B6;&#x6784;&#x5B9A;&#x4E49;&#x6587;&#x4EF6;&#x4F4D;&#x4E8E;<a href="http://geode.apache.org/schema/cache/cache-1.0.xsd" target="_blank">http://geode.apache.org/schema/cache/cache-1.0.xsd</a>&#x3002;</p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x5C06;&#x4E00;&#x79CD;&#x683C;&#x5F0F;&#x7528;&#x4E8E;&#x5BF9;&#x7B49;&#x548C;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#xFF0C;&#x5C06;&#x53E6;&#x4E00;&#x79CD;&#x683C;&#x5F0F;&#x7528;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002;</p>
+<p>&#x5BF9;&#x7B49;/&#x670D;&#x52A1;&#x5668;&#x7684;<code>cache.xml</code>&#xFF1A;</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;cache xmlns=&quot;http://geode.apache.org/schema/cache&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd&quot;
+    version=&quot;1.0&#x201D;&gt;
+...
+&lt;/cache&gt;
+</code></pre><p>&#x5BA2;&#x6237;&#x7AEF;&#x7684;<code>cache.xml</code>&#xFF1A;</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;client-cache
+    xmlns=&quot;http://geode.apache.org/schema/cache&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd&quot;
+    version=&quot;1.0&#x201D;&gt;
+...
+&lt;/client-cache&gt;
+</code></pre><p>&#x6709;&#x5173;<code>cache.xml</code>&#x6587;&#x4EF6;&#x7684;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_cache_xml.html#cache_xml" target="_blank">cache.xml</a>&#x3002;</p>
+<p><strong>&#x521B;&#x5EFA;&#x5E76;&#x5173;&#x95ED;&#x7F13;&#x5B58;</strong></p>
+<p>&#x542F;&#x52A8;&#x6210;&#x5458;&#x8FDB;&#x7A0B;&#x5E76;&#x521B;&#x5EFA;&#x6BCF;&#x4E2A;&#x6210;&#x5458;&#x7684;Geode&#x7F13;&#x5B58;&#x65F6;&#xFF0C;&#x5C06;&#x521D;&#x59CB;&#x5316;&#x60A8;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x548C;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x3002; &#x5982;&#x679C;&#x60A8;&#x4F7F;&#x7528;&#x7684;&#x662F;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#xFF0C;&#x5219;&#x6210;&#x5458;&#x8FDB;&#x7A0B;&#x53EF;&#x4EE5;&#x4ECE;&#x96C6;&#x7FA4;&#x6216;&#x7EC4;&#x7684;&#x5F53;&#x524D;&#x914D;&#x7F6E;&#x4E2D;&#x83B7;&#x53D6;&#x5176;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x3002; &#x8BF7;&#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html" target="_blank">&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x6982;&#x8FF0;</a>&#x3002;</p>
+<p>&#x672C;&#x8282;&#x4E2D;&#x7684;&#x6B65;&#x9AA4;&#x4F7F;&#x7528;<code>gemfire.properties</code>&#x548C;<code>cache.xml</code>&#x6587;&#x4EF6;&#x793A;&#x4F8B;&#xFF0C;&#x9664;&#x975E;&#x9700;&#x8981;API&#x3002; &#x60A8;&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;API&#x914D;&#x7F6E;&#x96C6;&#x7FA4;&#x5C5E;&#x6027;&#x548C;&#x7F13;&#x5B58;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6587;&#x4EF6;&#x914D;&#x7F6E;&#x548C;API&#x914D;&#x7F6E;&#x7684;&#x7EC4;&#x5408;&#x3002;</p>
+<p>XML&#x793A;&#x4F8B;&#x53EF;&#x80FD;&#x4E0D;&#x5305;&#x542B;&#x5B8C;&#x6574;&#x7684;<code>cache.xml</code>&#x6587;&#x4EF6;&#x5217;&#x8868;&#x3002; &#x6240;&#x6709;&#x58F0;&#x660E;&#x6027;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x5FC5;&#x987B;&#x7B26;&#x5408;<a href="http://geode.apache.org/schema/cache/cache-1.0.xsd" target="_blank">http://geode.apache.org/schema/cache/cache-1.0.xsd</a>&#x4E0A;&#x7684;&#x7F13;&#x5B58;XSD&#x3002;</p>
+<p>&#x5BF9;&#x4E8E;&#x60A8;&#x7684;&#x6240;&#x6709;Geode&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF1A;</p>
+<ol>
+<li>&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x521B;&#x5EFA;&#x7528;&#x4E8E;&#x5BF9;&#x7B49;/&#x670D;&#x52A1;&#x5668;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7684;<code>Cache</code>&#x6216;<code>ClientCache</code>&#x3002; &#x8FD9;&#x5C06;&#x8FDE;&#x63A5;&#x5230;&#x60A8;&#x5DF2;&#x914D;&#x7F6E;&#x7684;Geode&#x7CFB;&#x7EDF;&#xFF0C;&#x5E76;&#x521D;&#x59CB;&#x5316;&#x4EFB;&#x4F55;&#x5DF2;&#x914D;&#x7F6E;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;&#x3002; &#x4F7F;&#x7528;&#x7F13;&#x5B58;&#x5B9E;&#x4F8B;&#x8BBF;&#x95EE;&#x60A8;&#x7684;&#x533A;&#x57DF;&#x5E76;&#x6267;&#x884C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5DE5;&#x4F5C;&#x3002;</li>
+<li>&#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#x3002; &#x8FD9;&#x5C06;&#x91CA;&#x653E;&#x8D44;&#x6E90;&#x5E76;&#x4EE5;&#x6709;&#x5E8F;&#x7684;&#x65B9;&#x5F0F;&#x65AD;&#x5F00;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E0E;&#x96C6;&#x7FA4;&#x7684;&#x8FDE;&#x63A5;&#x3002;</li>
+</ol>
+<p>&#x6309;&#x7167;<a href="http://geode.apache.org/docs/guide/17/basic_config/the_cache/chapter_overview.html#the_cache" target="_blank">&#x7F13;&#x5B58;&#x7BA1;&#x7406;</a>&#x4E0B;&#x7684;&#x5B50;&#x4E3B;&#x9898;&#x4E2D;&#x7684;&#x8BF4;&#x660E;&#x81EA;&#x5B9A;&#x4E49;&#x7F13;&#x5B58;&#x521B;&#x5EFA;&#x548C;&#x5173;&#x95ED;&#x4EE5;&#x6EE1;&#x8DB3;&#x60A8;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x9700;&#x6C42;&#x3002; &#x60A8;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x7EC4;&#x5408;&#x591A;&#x4E2A;&#x6307;&#x4EE4;&#x96C6;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x8981;&#x5728;&#x5177;&#x6709;&#x5B89;&#x5168;&#x6027;&#x7684;&#x7CFB;&#x7EDF;&#x4E2D;&#x521B;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x6309;&#x7167;&#x521B;&#x5EFA;&#x548C;&#x5173;&#x95ED;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x4EE5;&#x53CA;&#x5728;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x521B;&#x5EFA;&#x548C;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#x7684;&#x8BF4;&#x660E;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x3002;</p>
+<p><strong>&#x5BFC;&#x51FA;&#x548C;&#x5BFC;&#x5165;&#x7F13;&#x5B58;&#x5FEB;&#x7167;</strong></p>
+<p>&#x4E3A;&#x4E86;&#x5E2E;&#x52A9;&#x7BA1;&#x7406;&#x7F13;&#x5B58;&#x6570;&#x636E;&#x5E76;&#x52A0;&#x5FEB;&#x65B0;&#x73AF;&#x5883;&#x7684;&#x8BBE;&#x7F6E;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x5BFC;&#x51FA;&#x6574;&#x4E2A;&#x7F13;&#x5B58;&#xFF08;&#x6240;&#x6709;&#x533A;&#x57DF;&#xFF09;&#x7684;&#x5FEB;&#x7167;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x5FEB;&#x7167;&#x5BFC;&#x5165;&#x65B0;&#x7F13;&#x5B58;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x83B7;&#x53D6;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x7F13;&#x5B58;&#x7684;&#x5FEB;&#x7167;&#xFF0C;&#x4EE5;&#x4FBF;&#x5C06;&#x7F13;&#x5B58;&#x7684;&#x6570;&#x636E;&#x5BFC;&#x5165;&#x6D4B;&#x8BD5;&#x73AF;&#x5883;&#x3002;</p>
+<p>&#x6709;&#x5173;&#x5BFC;&#x51FA;&#x548C;&#x5BFC;&#x5165;&#x7F13;&#x5B58;&#x5FEB;&#x7167;&#x7684;&#x66F4;&#x591A;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/managing/cache_snapshots/chapter_overview.html#concept_E6AC3E25404D4D7788F2D52D83EE3071" target="_blank">&#x7F13;&#x5B58;&#x548C;&#x533A;&#x57DF;&#x5FEB;&#x7167;</a>&#x3002;</p>
+<p><strong>&#x4F7F;&#x7528;gfsh&#x548C;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x8FDB;&#x884C;&#x7F13;&#x5B58;&#x7BA1;&#x7406;</strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;gfsh&#x547D;&#x4EE4;&#x7BA1;&#x7406;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x3002; &#x6709;gfsh&#x547D;&#x4EE4;&#x53EF;&#x7528;&#x4E8E;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#xFF0C;&#x542F;&#x52A8;&#x670D;&#x52A1;&#x5668;&#x4EE5;&#x53CA;&#x521B;&#x5EFA;&#x961F;&#x5217;&#x548C;&#x5176;&#x4ED6;&#x5BF9;&#x8C61;&#x3002; &#x5728;&#x53D1;&#x51FA;&#x8FD9;&#x4E9B;&#x547D;&#x4EE4;&#x65F6;&#xFF0C;Cluster Configuration Service&#x4F1A;&#x5728;&#x5B9A;&#x4F4D;&#x5668;&#x4E0A;&#x4FDD;&#x5B58;cache.xml&#x548C;gemfire.properties&#x6587;&#x4EF6;&#xFF0C;&#x5E76;&#x5C06;&#x8FD9;&#x4E9B;&#x914D;&#x7F6E;&#x5206;&#x53D1;&#x7ED9;&#x4EFB;&#x4F55;&#x52A0;&#x5165;&#x96C6;&#x7FA4;&#x7684;&#x65B0;&#x6210;&#x5458;&#x3002; &#x8BF7;&#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html" target="_blank">&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x6982;&#x8FF0;</a>&#x3002;</p>
+<h3 id="&#x7BA1;&#x7406;&#x5BF9;&#x7B49;&#x6216;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;">&#x7BA1;&#x7406;&#x5BF9;&#x7B49;&#x6216;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;</h3>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;XML&#x58F0;&#x660E;&#x548C;API&#x8C03;&#x7528;&#x7684;&#x7EC4;&#x5408;&#x6765;&#x542F;&#x52A8;&#x5BF9;&#x7B49;&#x6216;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x3002; &#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#x3002;</p>
+<p>Geode&#x5BF9;&#x7B49;&#x4F53;&#x662F;Geode&#x96C6;&#x7FA4;&#x7684;&#x6210;&#x5458;&#xFF0C;&#x5B83;&#x4E0D;&#x5145;&#x5F53;&#x53E6;&#x4E00;&#x4E2A;Geode&#x96C6;&#x7FA4;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x3002; Geode&#x670D;&#x52A1;&#x5668;&#x662F;&#x540C;&#x65F6;&#x76D1;&#x542C;&#x548C;&#x5904;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x8BF7;&#x6C42;&#x7684;&#x5BF9;&#x7B49;&#x670D;&#x52A1;&#x5668;&#x3002;</p>
+<ol>
+<li><p>&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#xFF1A;</p>
+<ol>
+<li><p>&#x542F;&#x52A8;&#x96C6;&#x7FA4;&#x548C;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#xFF1A;</p>
+<ol>
+<li><p>&#x542F;&#x52A8;&#x201C;--enable-cluster-configuration&#x201D;&#x8BBE;&#x7F6E;&#x4E3A;true&#x7684;&#x5B9A;&#x4F4D;&#x5668;&#x3002; &#xFF08;&#x9ED8;&#x8BA4;&#x8BBE;&#x7F6E;&#x4E3A;true&#x3002;&#xFF09;</p>
+<pre><code>gfsh&gt;start locator --name=locator1
+</code></pre></li>
+<li><p>&#x542F;&#x52A8;&#x4F7F;&#x7528;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x7684;&#x6210;&#x5458;&#x8FDB;&#x7A0B;&#xFF08;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#x542F;&#x7528;&#xFF09;&#xFF1A;</p>
+<pre><code>gfsh&gt;start server --name=server1 --server-port=40404
+</code></pre></li>
+<li><p>&#x521B;&#x5EFA;&#x533A;&#x57DF;&#xFF1A;</p>
+<pre><code>gfsh&gt;create region --name=customerRegion --type=REPLICATE
+
+gfsh&gt;create region --name=ordersRegion --type=PARTITION
+</code></pre></li>
+</ol>
+</li>
+<li><p>&#x6216;&#x8005;&#xFF0C;&#x5982;&#x679C;&#x60A8;&#x672A;&#x4F7F;&#x7528;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#xFF0C;&#x8BF7;&#x76F4;&#x63A5;&#x5728;&#x96C6;&#x7FA4;&#x7684;&#x6BCF;&#x4E2A;&#x6210;&#x5458;&#x4E2D;&#x914D;&#x7F6E;cache.xml&#x3002; &#x5728;<code>cache.xml</code>&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>cache</code> DOCTYPE&#x5E76;&#x5728;<code>&lt;cache&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;cache
+    xmlns=&quot;http://geode.apache.org/schema/cache&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd&quot;
+    version=&quot;1.0&#x201D;&gt;
+    // NOTE: Use this &lt;cache-server&gt; element only for server processes 
+    &lt;cache-server port=&quot;40404&quot;/&gt;
+    &lt;region name=&quot;customerRegion&quot; refid=&quot;REPLICATE&quot; /&gt;
+    &lt;region name=&quot;ordersRegion&quot; refid=&quot;PARTITION&quot; /&gt;
+&lt;/cache&gt;
+</code></pre></li>
+<li><p>&#x4EE5;&#x7F16;&#x7A0B;&#x65B9;&#x5F0F;&#x521B;&#x5EFA;<code>Cache</code>&#x5B9E;&#x4F8B;&#xFF1A;</p>
+<ul>
+<li><p>&#x5728;Java&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>CacheFactory</code>&#x521B;&#x5EFA;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<pre><code>Cache cache = new CacheFactory().create();
+</code></pre></li>
+<li><p>&#x5982;&#x679C;&#x60A8;&#x4F7F;&#x7528;Geode<code>cacheserver</code>&#x8FDB;&#x7A0B;&#x8FD0;&#x884C;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x5B83;&#x4F1A;&#x5728;&#x542F;&#x52A8;&#x65F6;&#x81EA;&#x52A8;&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x548C;&#x8FDE;&#x63A5;&#xFF0C;&#x5E76;&#x5728;&#x9000;&#x51FA;&#x65F6;&#x5173;&#x95ED;&#x5B83;&#x4EEC;&#x3002;</p>
+</li>
+</ul>
+<p>&#x7CFB;&#x7EDF;&#x6839;&#x636E;&#x60A8;&#x7684;<code>gemfire.properties</code>&#x548C;<code>cache.xml</code>&#x89C4;&#x8303;&#x521B;&#x5EFA;&#x8FDE;&#x63A5;&#x5E76;&#x521D;&#x59CB;&#x5316;&#x7F13;&#x5B58;&#x3002;</p>
+</li>
+</ol>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>Cache</code>&#x5B9E;&#x4F8B;&#x7684;&#x7EE7;&#x627F;<code>close</code>&#x65B9;&#x6CD5;&#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#xFF1A;</p>
+<pre><code>cache.close();
+</code></pre></li>
+</ol>
+<h3 id="&#x7BA1;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;">&#x7BA1;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;</h3>
+<p>&#x60A8;&#x6709;&#x591A;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x914D;&#x7F6E;&#x9009;&#x9879;&#x3002; &#x4F7F;&#x7528;XML&#x58F0;&#x660E;&#x548C;API&#x8C03;&#x7528;&#x7684;&#x7EC4;&#x5408;&#x542F;&#x52A8;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002; &#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002;</p>
+<p>Geode&#x5BA2;&#x6237;&#x7AEF;&#x662F;&#x5C06;&#x5927;&#x90E8;&#x5206;&#x6216;&#x5168;&#x90E8;&#x6570;&#x636E;&#x8BF7;&#x6C42;&#x548C;&#x66F4;&#x65B0;&#x53D1;&#x9001;&#x5230;Geode&#x670D;&#x52A1;&#x5668;&#x7CFB;&#x7EDF;&#x7684;&#x8FDB;&#x7A0B;&#x3002; &#x5BA2;&#x6237;&#x7AEF;&#x4F5C;&#x4E3A;&#x72EC;&#x7ACB;&#x8FDB;&#x7A0B;&#x8FD0;&#x884C;&#xFF0C;&#x6CA1;&#x6709;&#x81EA;&#x5DF1;&#x7684;&#x540C;&#x7EA7;&#x8FDB;&#x7A0B;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> Geode&#x81EA;&#x52A8;&#x4E3A;&#x60A8;&#x7684;<code>ClientCache</code>&#x914D;&#x7F6E;&#x96C6;&#x7FA4;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x5BA2;&#x6237;&#x7AEF;&#x6CA1;&#x6709;&#x5BF9;&#x7B49;&#x4F53;&#x3002; &#x4E0D;&#x8981;&#x5C1D;&#x8BD5;&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x8BBE;&#x7F6E;<code>gemfire.properties``mcast-port</code>&#x6216;<code>locators</code>&#xFF0C;&#x5426;&#x5219;&#x7CFB;&#x7EDF;&#x5C06;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#x3002;</p>
+<ol>
+<li><p>&#x521B;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#xFF1A;</p>
+<ol>
+<li><p>&#x5728;<code>cache.xml</code>&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>client-cache</code> DOCTYPE&#x5E76;&#x5728;<code>&lt;client-cache&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x914D;&#x7F6E;&#x7F13;&#x5B58;&#x3002; &#x6839;&#x636E;&#x9700;&#x8981;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5668;&#x8FDE;&#x63A5;&#x6C60;&#x548C;&#x533A;&#x57DF;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;client-cache
+    xmlns=&quot;http://geode.apache.org/schema/cache&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd&quot;
+    version=&quot;1.0&quot;&gt;
+    &lt;pool name=&quot;serverPool&quot;&gt;
+        &lt;locator host=&quot;host1&quot; port=&quot;44444&quot;/&gt;
+    &lt;/pool&gt;
+    &lt;region name=&quot;exampleRegion&quot; refid=&quot;PROXY&quot;/&gt;
+&lt;/client-cache&gt;
+</code></pre><p><strong>&#x6CE8;&#x610F;:</strong> &#x4F7F;&#x7528;<code>client-cache</code>&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x53EF;&#x80FD;&#x5E0C;&#x671B;&#x4E3A;&#x533A;&#x57DF;&#x8BBE;&#x7F6E;<code>concurrency-checks-enabled</code>&#x4E3A;false&#xFF0C;&#x4EE5;&#x4FBF;&#x67E5;&#x770B;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x6240;&#x6709;&#x4E8B;&#x4EF6;&#x3002; Geode&#x670D;&#x52A1;&#x5668;&#x6210;&#x5458;&#x53EF;&#x4EE5;&#x7EE7;&#x7EED;&#x4F7F;&#x7528;&#x5E76;&#x53D1;&#x68C0;&#x67E5;&#xFF0C;&#x4F46;&#x662F;&#x5B83;&#x4EEC;&#x4F1A;&#x5C06;&#x6240;&#x6709;&#x4E8B;&#x4EF6;&#x4F20;&#x9012;&#x5230;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x3002; &#x6B64;&#x914D;&#x7F6E;&#x53EF;&#x786E;&#x4FDD;&#x5BA2;&#x6237;&#x7AEF;&#x67E5;&#x770B;&#x6240;&#x6709;&#x533A;&#x57DF;&#x4E8B;&#x4EF6;&#xFF0C;&#x4F46;&#x4E0D;&#x4F1A;&#x963B;&#x6B62;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x533A;&#x57DF;&#x4E0E;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x4E0D;&#x540C;&#x6B65;&#x3002; &#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/developing/distributed_regions/region_entry_versions.html#topic_CF2798D3E12647F182C2CEC4A46E2045" target="_blank">&#x533A;&#x57DF;&#x66F4;&#x65B0;&#x7684;&#x4E00;&#x81F4;&#x6027;</a>&#x3002;</p>
+</li>
+<li><p>&#x5982;&#x679C;&#x4F7F;&#x7528;&#x591A;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#x6C60;&#xFF0C;&#x8BF7;&#x4E3A;&#x6BCF;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x533A;&#x57DF;&#x663E;&#x5F0F;&#x914D;&#x7F6E;&#x6C60;&#x540D;&#x79F0;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>&lt;pool name=&quot;svrPool1&quot;&gt;
+    &lt;locator host=&quot;host1&quot; port=&quot;40404&quot;/&gt;
+&lt;/pool&gt;
+&lt;pool name=&quot;svrPool2&quot;&gt;
+    &lt;locator host=&quot;host2&quot; port=&quot;40404&quot;/&gt;
+&lt;/pool&gt;
+&lt;region name=&quot;clientR1&quot; refid=&quot;PROXY&quot; pool-name=&quot;svrPool1&quot;/&gt;  
+&lt;region name=&quot;clientR2&quot; refid=&quot;PROXY&quot; pool-name=&quot;svrPool2&quot;/&gt;
+&lt;region name=&quot;clientsPrivateR&quot; refid=&quot;LOCAL&quot;/&gt;
+</code></pre></li>
+<li><p>&#x5728;Java&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>ClientCacheFactory``create</code>method&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>ClientCache clientCache = new ClientCacheFactory().create();
+</code></pre><p>&#x8FD9;&#x5C06;&#x521B;&#x5EFA;&#x670D;&#x52A1;&#x5668;&#x8FDE;&#x63A5;&#x5E76;&#x6839;&#x636E;&#x60A8;&#x7684;<code>gemfire.properties</code>&#x548C;<code>cache.xml</code>&#x89C4;&#x8303;&#x521D;&#x59CB;&#x5316;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x7F13;&#x5B58;&#x3002;</p>
+</li>
+</ol>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>Cache</code>&#x5B9E;&#x4F8B;&#x7684;<code>close</code>&#x65B9;&#x6CD5;&#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#xFF1A;</p>
+<pre><code>cache.close();
+</code></pre><p>&#x5982;&#x679C;&#x60A8;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x662F;&#x6301;&#x4E45;&#x7684;&#xFF0C;&#x5E76;&#x4E14;&#x60A8;&#x5E0C;&#x671B;&#x5728;&#x5173;&#x95ED;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x65F6;&#x7EF4;&#x62A4;&#x6301;&#x4E45;&#x961F;&#x5217;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;&#xFF1A;</p>
+<pre><code>clientCache.close(true);
+</code></pre></li>
+</ol>
+<h3 id="&#x7BA1;&#x7406;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x7F13;&#x5B58;">&#x7BA1;&#x7406;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x7F13;&#x5B58;</h3>
+<p>&#x8981;&#x5728;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#xFF0C;&#x8FDE;&#x63A5;&#x65F6;&#x7684;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x5C06;&#x9700;&#x8981;&#x51ED;&#x636E;&#x3002; &#x6388;&#x6743;&#x5141;&#x8BB8;&#x6309;&#x914D;&#x7F6E;&#x64CD;&#x4F5C;&#x3002;</p>
+<p>&#x8FD9;&#x4E9B;&#x6B65;&#x9AA4;&#x6F14;&#x793A;&#x4E86;&#x7A0B;&#x5E8F;&#x5316;&#x7F13;&#x5B58;&#x521B;&#x5EFA;&#x3002;</p>
+<ol>
+<li><p>&#x8981;&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#xFF1A;</p>
+<ol>
+<li><p>&#x5411;<code>gemfire.properties</code>&#x6216;<code>gfsecurity.properties</code>&#x6587;&#x4EF6;&#x6DFB;&#x52A0;&#x5FC5;&#x8981;&#x7684;&#x5B89;&#x5168;&#x5C5E;&#x6027;&#xFF0C;&#x4EE5;&#x914D;&#x7F6E;&#x60A8;&#x7684;&#x7279;&#x5B9A;&#x5B89;&#x5168;&#x5B9E;&#x73B0;&#x3002; &#x4F8B;&#x5B50;&#xFF1A;</p>
+<pre><code>security-client-auth-init=mySecurity.UserPasswordAuthInit.create
+</code></pre><pre><code>security-peer-auth-init=myAuthPkg.myAuthInitImpl.create
+</code></pre></li>
+<li><p>&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x65F6;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x65B9;&#x6CD5;&#x4E4B;&#x4E00;&#x5C06;&#x5B89;&#x5168;&#x5B9E;&#x73B0;&#x6240;&#x9700;&#x7684;&#x4EFB;&#x4F55;&#x5C5E;&#x6027;&#x4F20;&#x9012;&#x7ED9;&#x7F13;&#x5B58;&#x5DE5;&#x5382;&#x521B;&#x5EFA;&#x8C03;&#x7528;&#xFF1A;</p>
+<ul>
+<li><p><code>ClientCacheFactory</code> or <code>CacheFactory</code> <code>set</code> methods. Example:</p>
+<pre><code>ClientCache clientCache = new ClientCacheFactory()
+    .set(&quot;security-username&quot;, username)
+    .set(&quot;security-password&quot;, password)
+    .create();
+</code></pre></li>
+<li><p>&#x4F20;&#x9012;&#x7ED9;<code>ClientCacheFactory</code>&#x6216;<code>CacheFactory``create</code>&#x65B9;&#x6CD5;&#x7684;Properties&#x5BF9;&#x8C61;&#x3002; &#x8FD9;&#x4E9B;&#x901A;&#x5E38;&#x662F;&#x654F;&#x611F;&#x6027;&#x8D28;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x60A8;&#x4E0D;&#x5E0C;&#x671B;&#x5C06;&#x5B83;&#x4EEC;&#x653E;&#x5728;<code>gfsecurity.properties</code>&#x6587;&#x4EF6;&#x4E2D;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>Properties properties = new Properties();
+properties.setProperty(&quot;security-username&quot;, username);
+properties.setProperty(&quot;security-password&quot;, password);
+Cache cache = new CacheFactory(properties).create();
+</code></pre><p><strong>&#x6CE8;&#x610F;:</strong> &#x4F20;&#x9012;&#x7ED9;&#x7F13;&#x5B58;&#x521B;&#x5EFA;&#x65B9;&#x6CD5;&#x7684;&#x5C5E;&#x6027;&#x4F1A;&#x8986;&#x76D6;<code>gemfire.properties</code>&#x6587;&#x4EF6;&#x6216;<code>gfsecurity.properties</code>&#x4E2D;&#x7684;&#x4EFB;&#x4F55;&#x8BBE;&#x7F6E;&#x3002;</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>&#x5B8C;&#x6210;&#x540E;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#xFF0C;&#x4F7F;&#x7528;<code>ClientCache</code>&#x5B9E;&#x4F8B;&#x7684;<code>close</code>&#x65B9;&#x6CD5;&#x6216;<code>Cache</code>&#x5B9E;&#x4F8B;&#x7684;&#x7EE7;&#x627F;<code>close</code>&#x65B9;&#x6CD5;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>cache.close();
+</code></pre></li>
+</ol>
+<h3 id="&#x7BA1;&#x7406;&#x591A;&#x4E2A;&#x5B89;&#x5168;&#x7528;&#x6237;&#x7684;regionservices">&#x7BA1;&#x7406;&#x591A;&#x4E2A;&#x5B89;&#x5168;&#x7528;&#x6237;&#x7684;RegionServices</h3>
+<p>&#x5728;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E0E;&#x6BCF;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x670D;&#x52A1;&#x5668;&#x5EFA;&#x7ACB;&#x591A;&#x4E2A;&#x5B89;&#x5168;&#x8FDE;&#x63A5;&#x6765;&#x521B;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x3002; &#x6700;&#x5E38;&#x89C1;&#x7684;&#x7528;&#x4F8B;&#x662F;&#x5D4C;&#x5165;&#x5728;&#x5E94;&#x7528;&#x670D;&#x52A1;&#x5668;&#x4E2D;&#x7684;Geode&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x8BE5;&#x670D;&#x52A1;&#x5668;&#x652F;&#x6301;&#x6765;&#x81EA;&#x8BB8;&#x591A;&#x7528;&#x6237;&#x7684;&#x6570;&#x636E;&#x8BF7;&#x6C42;&#x3002; &#x53EF;&#x4EE5;&#x6388;&#x6743;&#x6BCF;&#x4E2A;&#x7528;&#x6237;&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x7684;&#x6570;&#x636E;&#x5B50;&#x96C6;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x53EF;&#x4EE5;&#x5141;&#x8BB8;&#x5BA2;&#x6237;&#x7528;&#x6237;&#x4EC5;&#x67E5;&#x770B;&#x548C;&#x66F4;&#x65B0;&#x4ED6;&#x4EEC;&#x81EA;&#x5DF1;&#x7684;&#x8BA2;&#x5355;&#x548C;&#x8D27;&#x4EF6;&#x3002;</p>
+<p>&#x5728;&#x5355;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x4E2D;&#xFF0C;&#x591A;&#x4E2A;&#x7ECF;&#x8FC7;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x7684;&#x7528;&#x6237;&#x90FD;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;<code>RegionService</code>&#x63A5;&#x53E3;&#x7684;&#x5B9E;&#x4F8B;&#x8BBF;&#x95EE;&#x76F8;&#x540C;&#x7684;<code>ClientCache</code>&#x3002; &#x7531;&#x4E8E;&#x6709;&#x591A;&#x4E2A;&#x7528;&#x6237;&#x5177;&#x6709;&#x4E0D;&#x540C;&#x7684;&#x6388;&#x6743;&#x7EA7;&#x522B;&#xFF0C;&#x56E0;&#x6B64;&#x5BF9;&#x7F13;&#x5B58;&#x6570;&#x636E;&#x7684;&#x8BBF;&#x95EE;&#x5B8C;&#x5168;&#x901A;&#x8FC7;&#x670D;&#x52A1;&#x5668;&#x5B8C;&#x6210;&#xFF0C;&#x5176;&#x4E2D;&#x53EF;&#x4EE5;&#x7BA1;&#x7406;&#x6BCF;&#x4E2A;&#x7528;&#x6237;&#x7684;&#x6388;&#x6743;&#x3002;&#x9644;&#x52A0;&#x5F97;&#x6B65;&#x9AA4;&#x8BF7;&#x53C2;&#x7167; <a href="http://geode.apache.org/docs/guide/17/basic_config/the_cache/managing_a_secure_cache.html#managing_a_secure_cache" target="_blank">&#x7BA1;&#x7406;&#x5B89;&#x5168;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x7F13;&#x5B58;</a>.</p>
+<ol>
+<li><p>&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x548C;<code>RegionService</code>&#x5B9E;&#x4F8B;&#xFF1A;</p>
+<ol>
+<li><p>&#x914D;&#x7F6E;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x670D;&#x52A1;&#x5668;&#x6C60;&#x4EE5;&#x8FDB;&#x884C;&#x591A;&#x4E2A;&#x5B89;&#x5168;&#x7528;&#x6237;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code>&lt;pool name=&quot;serverPool&quot; multiuser-authentication=&quot;true&quot;&gt;
+    &lt;locator host=&quot;host1&quot; port=&quot;44444&quot;/&gt;
+    &lt;/pool&gt;
+</code></pre><p>&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x6C60;&#x8BBF;&#x95EE;<code>RegionService</code>&#x5B9E;&#x4F8B;&#xFF0C;&#x5E76;&#x4E3A;<code>ClientCache</code>&#x5B9E;&#x4F8B;&#x7981;&#x7528;&#x5B83;&#x3002;</p>
+</li>
+<li><p>&#x5728;&#x60A8;&#x7684;<code>ClientCache</code>&#x5B9E;&#x4F8B;&#x521B;&#x5EFA;<code>ClientCache</code>&#x4E4B;&#x540E;&#xFF0C;&#x4E3A;&#x6BCF;&#x4E2A;&#x7528;&#x6237;&#x8C03;&#x7528;<code>createAuthenticatedView</code>&#x65B9;&#x6CD5;&#xFF0C;&#x63D0;&#x4F9B;&#x7528;&#x6237;&#x7684;&#x7279;&#x5B9A;&#x51ED;&#x636E;&#x3002; &#x8FD9;&#x4E9B;&#x662F;&#x4E24;&#x4E2A;&#x7528;&#x6237;&#x7684;create&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#xFF1A;</p>
+<pre><code>Properties properties = new Properties();
+properties.setProperty(&quot;security-username&quot;, cust1Name);
+properties.setProperty(&quot;security-password&quot;, cust1Pwd);
+RegionService regionService1 = 
+    clientCache.createAuthenticatedView(properties);
+
+properties = new Properties();
+properties.setProperty(&quot;security-username&quot;, cust2Name);
+properties.setProperty(&quot;security-password&quot;, cust2Pwd);
+RegionService regionService2 =  
+    clientCache.createAuthenticatedView(properties);
+</code></pre></li>
+</ol>
+<p>&#x5BF9;&#x4E8E;&#x6BCF;&#x4E2A;&#x7528;&#x6237;&#xFF0C;&#x901A;&#x8FC7;&#x6307;&#x5B9A;&#x7684;<code>RegionService</code>instance&#x5B8C;&#x6210;&#x6240;&#x6709;&#x7F13;&#x5B58;&#x548C;&#x533A;&#x57DF;&#x7684;&#x5DE5;&#x4F5C;&#x3002; &#x5BF9;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x7684;&#x8BBF;&#x95EE;&#x5C06;&#x53D7;&#x670D;&#x52A1;&#x5668;&#x4E3A;&#x6BCF;&#x4E2A;&#x7528;&#x6237;&#x914D;&#x7F6E;&#x7684;&#x6388;&#x6743;&#x89C4;&#x5219;&#x7684;&#x7EA6;&#x675F;&#x3002;</p>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x4EC5;&#x5173;&#x95ED;&#x201C;ClientCache&#x201D;&#x5B9E;&#x4F8B;&#x6765;&#x5173;&#x95ED;&#x7F13;&#x5B58;&#x3002; &#x4E0D;&#x8981;&#x5148;&#x5173;&#x95ED;<code>RegionService</code>&#x5B9E;&#x4F8B;&#x3002; &#x8FD9;&#x662F;&#x6301;&#x4E45;&#x7684;&#x5BA2;&#x6237;&#x6765;&#x8BF4;&#x5C24;&#x5176;&#x91CD;&#x8981;&#x3002;</p>
+</li>
+</ol>
+<p><strong><code>RegionService</code>&#x7684;&#x8981;&#x6C42;&#x548C;&#x6CE8;&#x610F;&#x4E8B;&#x9879;</strong></p>
+<p>&#x521B;&#x5EFA;&#x6BCF;&#x4E2A;&#x533A;&#x57DF;&#x540E;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;<code>ClientCache</code>&#x5B9E;&#x4F8B;&#x6216;<code>RegionService</code>&#x5B9E;&#x4F8B;&#x5BF9;&#x5176;&#x6267;&#x884C;&#x64CD;&#x4F5C;&#xFF0C;&#x4F46;&#x4E0D;&#x80FD;&#x540C;&#x65F6;&#x5BF9;&#x5B83;&#x4EEC;&#x6267;&#x884C;&#x64CD;&#x4F5C;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>ClientCache</code>&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x533A;&#x57DF;&#xFF0C;&#x8BE5;&#x533A;&#x57DF;&#x4F7F;&#x7528;&#x4E3A;&#x591A;&#x7528;&#x6237;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x914D;&#x7F6E;&#x7684;&#x6C60;&#xFF0C;&#x7136;&#x540E;&#x4F7F;&#x7528;&#x60A8;&#x7684;<code>RegionService</code>&#x5B9E;&#x4F8B;&#x8BBF;&#x95EE;&#x5E76;&#x5BF9;&#x8BE5;&#x533A;&#x57DF;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x3002;</p>
+<p>&#x8981;&#x4F7F;&#x7528;<code>RegionService</code>&#xFF0C;&#x5FC5;&#x987B;&#x5C06;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x4E3A;<code>EMPTY</code>&#x3002; &#x6839;&#x636E;&#x60A8;&#x7684;&#x6570;&#x636E;&#x8BBF;&#x95EE;&#x8981;&#x6C42;&#xFF0C;&#x6B64;&#x914D;&#x7F6E;&#x53EF;&#x80FD;&#x4F1A;&#x5F71;&#x54CD;&#x6027;&#x80FD;&#xFF0C;&#x56E0;&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x4F1A;&#x5728;&#x6BCF;&#x6B21;&#x83B7;&#x53D6;&#x65F6;&#x8F6C;&#x5230;&#x670D;&#x52A1;&#x5668;&#x3002;</p>
+<h3 id="&#x521D;&#x59CB;&#x5316;&#x7F13;&#x5B58;&#x540E;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;">&#x521D;&#x59CB;&#x5316;&#x7F13;&#x5B58;&#x540E;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;</h3>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x6307;&#x5B9A;&#x5728;&#x7F13;&#x5B58;&#x521D;&#x59CB;&#x5316;&#x540E;&#x542F;&#x52A8;&#x7684;&#x56DE;&#x8C03;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x3002;</p>
+<p>&#x901A;&#x8FC7;&#x5728;cache.xml&#x6587;&#x4EF6;&#x4E2D;&#x6307;&#x5B9A;<code>&lt;initializer&gt;</code>&#x5143;&#x7D20;&#xFF0C;&#x53EF;&#x4EE5;&#x89E6;&#x53D1;&#x56DE;&#x8C03;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x8BE5;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5728;&#x521D;&#x59CB;&#x5316;&#x7F13;&#x5B58;&#x540E;&#x8FD0;&#x884C;&#x3002; &#x4F7F;&#x7528;cacheserver&#x811A;&#x672C;&#x542F;&#x52A8;&#x670D;&#x52A1;&#x5668;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6B64;&#x529F;&#x80FD;&#x6302;&#x94A9;&#x5230;&#x56DE;&#x8C03;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x3002; &#x8981;&#x4F7F;&#x7528;&#x6B64;&#x529F;&#x80FD;&#xFF0C;&#x9700;&#x8981;&#x5728;<code>&lt;initializer&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x6307;&#x5B9A;&#x56DE;&#x8C03;&#x7C7B;&#x3002; &#x5E94;&#x8BE5;&#x5C06;&#x6B64;&#x5143;&#x7D20;&#x6DFB;&#x52A0;&#x5230;<code>cache.xml</code>&#x6587;&#x4EF6;&#x7684;&#x672B;&#x5C3E;&#x3002;</p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4E3A;&#x670D;&#x52A1;&#x5668;&#x7F13;&#x5B58;&#x6216;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x6307;&#x5B9A;<code>&lt;initializer&gt;</code>&#x5143;&#x7D20;&#x3002;</p>
+<p>&#x56DE;&#x8C03;&#x7C7B;&#x5FC5;&#x987B;&#x5B9E;&#x73B0;<code>Declarable</code>&#x63A5;&#x53E3;&#x3002; &#x52A0;&#x8F7D;&#x56DE;&#x8C03;&#x7C7B;&#x65F6;&#xFF0C;&#x8C03;&#x7528;&#x5176;<code>init</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5E76;&#x5C06;<code>&lt;initializer&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x4EFB;&#x4F55;&#x53C2;&#x6570;&#x4F5C;&#x4E3A;&#x5C5E;&#x6027;&#x4F20;&#x9012;&#x3002;</p>
+<p>&#x4EE5;&#x4E0B;&#x662F;&#x793A;&#x4F8B;&#x89C4;&#x8303;&#x3002;</p>
+<p>&#x5728;cache.xml&#x4E2D;&#xFF1A;</p>
+<pre><code>&lt;initializer&gt;
+   &lt;class-name&gt;MyInitializer&lt;/class-name&gt;
+      &lt;parameter name=&quot;members&quot;&gt;
+         &lt;string&gt;2&lt;/string&gt;
+      &lt;/parameter&gt;
+&lt;/initializer&gt;
+</code></pre><p>&#x8FD9;&#x662F;&#x76F8;&#x5E94;&#x7684;&#x7C7B;&#x5B9A;&#x4E49;&#xFF1A;</p>
+<pre><code>import org.apache.geode.cache.Declarable;
+
+public class MyInitializer implements Declarable {
+   public void init(Properties properties) {
+      System.out.println(properties.getProperty(&quot;members&quot;));
+   }
+}
+</code></pre><p>&#x4EE5;&#x4E0B;&#x662F;&#x4E00;&#x4E9B;&#x5176;&#x4ED6;&#x5B9E;&#x9645;&#x4F7F;&#x7528;&#x573A;&#x666F;&#xFF1A;</p>
+<ol>
+<li><p>&#x542F;&#x52A8;<code>SystemMembershipListener</code></p>
+<pre><code>&lt;initializer&gt;
+   &lt;class-name&gt;TestSystemMembershipListener&lt;/class-name&gt;
+&lt;/initializer&gt;
+</code></pre></li>
+<li><p>&#x7F16;&#x5199;&#x4E00;&#x4E2A;&#x76D1;&#x89C6;&#x7F13;&#x5B58;&#x8D44;&#x6E90;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x5DE5;&#x5177;</p>
+<pre><code>&lt;initializer&gt;
+   &lt;class-name&gt;ResourceMonitorCacheXmlLoader&lt;/class-name&gt;
+&lt;/initializer&gt;
+</code></pre></li>
+</ol>
+<p>&#x53EF;&#x4EE5;&#x4F7F;&#x7528;initializer&#x5143;&#x7D20;&#x5B9E;&#x4F8B;&#x5316;&#x548C;&#x542F;&#x52A8;&#x4EFB;&#x4F55;&#x5355;&#x4F8B;&#x6216;&#x8BA1;&#x65F6;&#x5668;&#x4EFB;&#x52A1;&#x6216;&#x7EBF;&#x7A0B;&#x3002;</p>
+<h2 id="&#x6570;&#x636E;&#x533A;&#x57DF;">&#x6570;&#x636E;&#x533A;&#x57DF;</h2>
+<p>&#x8BE5;&#x533A;&#x57DF;&#x662F;Apache Geode&#x96C6;&#x7FA4;&#x7684;&#x6838;&#x5FC3;&#x6784;&#x5EFA;&#x5757;&#x3002; &#x6240;&#x6709;&#x7F13;&#x5B58;&#x7684;&#x6570;&#x636E;&#x90FD;&#x7EC4;&#x7EC7;&#x5230;&#x6570;&#x636E;&#x533A;&#x57DF;&#x4E2D;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x9488;&#x5BF9;&#x5B83;&#x4EEC;&#x6267;&#x884C;&#x6240;&#x6709;&#x6570;&#x636E;&#x7684;&#x653E;&#x7F6E;&#xFF0C;&#x83B7;&#x53D6;&#x548C;&#x67E5;&#x8BE2;&#x6D3B;&#x52A8;&#x3002;</p>
+<ul>
+<li><p><strong>&#x533A;&#x57DF;&#x7BA1;&#x7406;</strong></p>
+<p>Apache Geode&#x63D0;&#x4F9B;gfsh&#x547D;&#x4EE4;&#xFF0C;API&#x548C;XML&#x914D;&#x7F6E;&#x6A21;&#x578B;&#xFF0C;&#x4EE5;&#x652F;&#x6301;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x914D;&#x7F6E;&#x548C;&#x7BA1;&#x7406;&#x3002;</p>
+</li>
+<li><p><strong>&#x533A;&#x57DF;&#x547D;&#x540D;</strong></p>
+<p>&#x4E3A;&#x4E86;&#x80FD;&#x591F;&#x5BF9;&#x60A8;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;&#x6267;&#x884C;&#x6240;&#x6709;&#x53EF;&#x7528;&#x64CD;&#x4F5C;&#xFF0C;&#x8BF7;&#x9075;&#x5FAA;&#x8FD9;&#x4E9B;&#x533A;&#x57DF;&#x547D;&#x540D;&#x51C6;&#x5219;&#x3002;</p>
+</li>
+<li><p><strong>&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;</strong></p>
+<p>Geode&#x63D0;&#x4F9B;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#xFF0C;&#x5176;&#x4E2D;&#x5305;&#x542B;&#x6700;&#x5E38;&#x89C1;&#x533A;&#x57DF;&#x7C7B;&#x578B;&#x7684;&#x9884;&#x8BBE;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x3002; &#x5BF9;&#x4E8E;&#x6700;&#x7B80;&#x5355;&#x7684;&#x914D;&#x7F6E;&#xFF0C;&#x8BF7;&#x4ECE;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x5F00;&#x59CB;&#xFF0C;&#x5E76;&#x6839;&#x636E;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x81EA;&#x5B9A;&#x4E49;&#x3002; &#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x5C06;&#x81EA;&#x5DF1;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x914D;&#x7F6E;&#x5B58;&#x50A8;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x4EE5;&#x4F9B;&#x591A;&#x4E2A;&#x533A;&#x57DF;&#x4F7F;&#x7528;&#x3002;</p>
+</li>
+<li><p><strong>&#x5B58;&#x50A8;&#x548C;&#x68C0;&#x7D22;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;</strong></p>
+<p>&#x4F7F;&#x7528;&#x8FD9;&#x4E9B;&#x793A;&#x4F8B;&#x5F00;&#x59CB;&#x4F7F;&#x7528;Geode&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x3002;</p>
+</li>
+<li><p><strong>&#x7BA1;&#x7406;&#x533A;&#x57DF;&#x5C5E;&#x6027;</strong></p>
+<p>&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x53EF;&#x4EE5;&#x5FAE;&#x8C03;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x63D0;&#x4F9B;&#x7684;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x3002;</p>
+</li>
+<li><p><strong>&#x4E3A;&#x533A;&#x57DF;&#x548C;&#x6761;&#x76EE;&#x521B;&#x5EFA;&#x81EA;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;</strong></p>
+<p>&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;&#x53EF;&#x4EE5;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x5B58;&#x50A8;&#x4E0E;&#x60A8;&#x7684;&#x533A;&#x57DF;&#x6216;&#x5176;&#x6761;&#x76EE;&#x76F8;&#x5173;&#x7684;&#x4FE1;&#x606F;&#x3002; &#x8FD9;&#x4E9B;&#x5C5E;&#x6027;&#x4EC5;&#x5BF9;&#x672C;&#x5730;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x53EF;&#x89C1;&#xFF0C;&#x5E76;&#x4E14;&#x4E0D;&#x4F1A;&#x5206;&#x53D1;&#x3002;</p>
+</li>
+<li><p><strong>&#x7528;&#x73B0;&#x6709;&#x5185;&#x5BB9;&#x6784;&#x5EFA;&#x65B0;&#x533A;&#x57DF;</strong></p>
+<p>&#x53EF;&#x80FD;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x73B0;&#x6709;&#x7CFB;&#x7EDF;&#x7684;&#x6570;&#x636E;&#x52A0;&#x8F7D;&#x65B0;&#x7684;&#x533A;&#x57DF;&#x6216;&#x96C6;&#x7FA4;&#x3002; &#x6709;&#x4E24;&#x79CD;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x5B8C;&#x6210;&#x6B64;&#x4EFB;&#x52A1;&#x3002; &#x4F7F;&#x7528;&#x7684;&#x65B9;&#x6CD5;&#x53D6;&#x51B3;&#x4E8E;&#x65B0;&#x96C6;&#x7FA4;&#x548C;&#x73B0;&#x6709;&#x96C6;&#x7FA4;&#x7684;&#x7EC4;&#x7EC7;&#x3002;</p>
+</li>
+</ul>
+<h3 id="&#x533A;&#x57DF;&#x7BA1;&#x7406;">&#x533A;&#x57DF;&#x7BA1;&#x7406;</h3>
+<p>&#x521B;&#x5EFA;&#xFF0C;&#x9500;&#x6BC1;&#xFF0C;&#x65E0;&#x6548;&#xFF0C;&#x6E05;&#x9664;&#x548C;&#x66F4;&#x6539;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x7684;&#x64CD;&#x4F5C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;gfsh&#x547D;&#x4EE4;&#xFF0C;XML&#x63CF;&#x8FF0;&#x548C;API&#x8C03;&#x7528;&#x3002;</p>
+<p>&#x5C06;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x533A;&#x57DF;&#x6761;&#x76EE;&#x952E;/&#x503C;&#x5BF9;&#x4E2D;&#xFF0C;&#x952E;&#x548C;&#x503C;&#x662F;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x6240;&#x9700;&#x7684;&#x4EFB;&#x4F55;&#x5BF9;&#x8C61;&#x7C7B;&#x578B;&#x3002; <code>org.apache.geode.cache.Region</code>&#x63A5;&#x53E3;&#x5B9E;&#x73B0;&#x4E86;<code>java.util.Map</code>&#x3002;</p>
+<p>&#x6BCF;&#x4E2A;&#x533A;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x5B9A;&#x4E49;&#x5982;&#x4F55;&#x5B58;&#x50A8;&#xFF0C;&#x5206;&#x53D1;&#x548C;&#x7BA1;&#x7406;&#x533A;&#x57DF;&#x4E2D;&#x7684;&#x6570;&#x636E;&#x3002; &#x6570;&#x636E;&#x533A;&#x57DF;&#x53EF;&#x4EE5;&#x5728;&#x7CFB;&#x7EDF;&#x6210;&#x5458;&#x4E4B;&#x95F4;&#x5206;&#x914D;&#xFF0C;&#x5206;&#x533A;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x5728;&#x6210;&#x5458;&#x672C;&#x5730;&#x5206;&#x914D;&#x3002;</p>
+<p><em>&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;</em> &#x8BC6;&#x522B;&#x5E38;&#x7528;&#x7684;&#x533A;&#x57DF;&#x7C7B;&#x578B;&#x3002; &#x6709;&#x5173;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_regionshortcuts.html" target="_blank">&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;</a>&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x5982;&#x679C;&#x66F4;&#x6539;&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x5219;&#x5FC5;&#x987B;&#x91CD;&#x65B0;&#x542F;&#x52A8;&#x6210;&#x5458;&#x624D;&#x80FD;&#x4F7F;&#x66F4;&#x6539;&#x751F;&#x6548;&#x3002;</p>
+<p><strong>&#x521B;&#x5EFA;&#x533A;&#x57DF;</strong></p>
+<p><strong>&#x4F7F;&#x7528;gfsh&#x521B;&#x5EFA;&#x533A;&#x57DF;</strong></p>
+<p>&#x5728;Apache Geode&#x7F13;&#x5B58;&#x4E2D;&#x521B;&#x5EFA;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x4E00;&#x79CD;&#x7B80;&#x5355;&#x5FEB;&#x6377;&#x7684;&#x65B9;&#x6CD5;&#x662F;&#x4F7F;&#x7528;<code>gfsh</code>command-line&#x5DE5;&#x5177;&#x3002;</p>
+<p>&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x53D7;&#x5C5E;&#x6027;&#x4E00;&#x81F4;&#x6027;&#x68C0;&#x67E5;&#x7684;&#x7EA6;&#x675F;&#xFF0C;&#x8FD9;&#x4E24;&#x8005;&#x90FD;&#x5728;&#x7F13;&#x5B58;&#x5185;&#x90E8;&#xFF0C;&#x5982;&#x679C;&#x533A;&#x57DF;&#x4E0D;&#x662F;&#x672C;&#x5730;&#xFF0C;&#x5219;&#x5728;&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x7684;&#x6240;&#x6709;&#x7F13;&#x5B58;&#x4E4B;&#x95F4;&#x3002;</p>
+<p><code>gfsh create region</code> <a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html" target="_blank">&#x547D;&#x4EE4;&#x53C2;&#x8003;&#x9875;</a>&#x8BE6;&#x7EC6;&#x8BF4;&#x660E;&#x4E86;&#x4F7F;&#x7528;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x7684;&#x547D;&#x4EE4;&#x884C;&#x9009;&#x9879;<code>gfsh</code>&#x3002;</p>
+<p>&#x5C06;<code>gfsh</code>&#x8FDE;&#x63A5;&#x5230;JMX&#x670D;&#x52A1;&#x5668;&#x65F6;&#xFF0C;&#x521B;&#x5EFA;&#x590D;&#x5236;&#x533A;&#x57DF;&#x7684;&#x793A;&#x4F8B;&#x547D;&#x4EE4;&#x662F;</p>
+<pre><code>gfsh&gt;create region --name=region1 --type=REPLICATE
+</code></pre><p>&#x5BFC;&#x51FA;&#x670D;&#x52A1;&#x5668;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x4EE5;&#x4FBF;&#x5728;&#x4E0B;&#x6B21;&#x542F;&#x52A8;&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#x65F6;&#x4FDD;&#x5B58;&#x533A;&#x57DF;&#x7684;&#x914D;&#x7F6E;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;&#x5177;&#x6709;&#x76F8;&#x540C;&#x5C5E;&#x6027;&#x7684;&#x533A;&#x57DF;&#x3002; &#x6709;&#x5173;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/export.html#topic_C7C69306F93743459E65D46537F4A1EE" target="_blank">export config</a>&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#x542F;&#x7528;&#x7684;&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x4F1A;&#x81EA;&#x52A8;&#x5C06;&#x914D;&#x7F6E;&#x4FDD;&#x5B58;&#x5728;&#x96C6;&#x7FA4;&#x4E2D;&#x7684;&#x5B9A;&#x4F4D;&#x5668;&#x4E0A;&#x3002; &#x4F7F;&#x7528;<code>gfsh create region</code>&#x547D;&#x4EE4;&#x540E;&#xFF0C;&#x60A8;&#x542F;&#x52A8;&#x7684;&#x4EFB;&#x4F55;&#x8FDE;&#x63A5;&#x5230;&#x540C;&#x4E00;&#x5B9A;&#x4F4D;&#x5668;&#x7684;&#x65B0;&#x670D;&#x52A1;&#x5668;&#x90FD;&#x4F1A;&#x6536;&#x5230;&#x76F8;&#x540C;&#x7684;&#x914D;&#x7F6E;&#x3002; &#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5728;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x548C;&#x542F;&#x52A8;&#x670D;&#x52A1;&#x5668;&#x65F6;&#x6307;&#x5B9A;&#x7EC4;&#x6765;&#x5728;&#x96C6;&#x7FA4;&#x4E2D;&#x521B;&#x5EFA;&#x5907;&#x7528;&#x914D;&#x7F6E;&#x3002; &#x8BF7;&#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html" target="_blank">&#x96C6;&#x7FA4;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x6982;&#x8FF0;</a>&#x3002;</p>
+<p><strong>&#x901A;&#x8FC7;cache.xml&#x6587;&#x4EF6;&#x521B;&#x5EFA;&#x533A;&#x57DF;</strong></p>
+<p>&#x5728;Apache Geode&#x7F13;&#x5B58;&#x4E2D;&#x521B;&#x5EFA;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x5E38;&#x7528;&#x65B9;&#x6CD5;&#x662F;&#x901A;&#x8FC7;<code>cache.xml</code>&#x58F0;&#x660E;&#x3002; &#x4F7F;&#x7528;<code>cache.xml</code>&#x6587;&#x4EF6;&#x542F;&#x52A8;&#x6210;&#x5458;&#x65F6;&#xFF0C;&#x5C06;&#x521B;&#x5EFA;&#x8BE5;&#x533A;&#x57DF;&#x3002;</p>
+<p>&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x53D7;&#x5C5E;&#x6027;&#x4E00;&#x81F4;&#x6027;&#x68C0;&#x67E5;&#x7684;&#x7EA6;&#x675F;&#xFF0C;&#x8FD9;&#x4E24;&#x8005;&#x90FD;&#x5728;&#x7F13;&#x5B58;&#x5185;&#x90E8;&#xFF0C;&#x5982;&#x679C;&#x533A;&#x57DF;&#x4E0D;&#x662F;&#x672C;&#x5730;&#xFF0C;&#x5219;&#x5728;&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x7684;&#x6240;&#x6709;&#x7F13;&#x5B58;&#x4E4B;&#x95F4;&#x3002;</p>
+<ul>
+<li>&#x5728;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x4E3A;&#x65B0;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;<code>&lt;region&gt;</code>&#x5143;&#x7D20;&#x4F5C;&#x4E3A;<code>&lt;cache&gt;</code>&#x5143;&#x7D20;&#x6216;<code>&lt;client-cache&gt;</code>&#x5143;&#x7D20;&#x7684;&#x5B50;&#x5143;&#x7D20;&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x540D;&#x79F0;&#x5E76;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#xFF08;&#x5982;&#x679C;&#x9002;&#x7528;&#xFF09;&#x3002;</li>
+<li>&#x6839;&#x636E;&#x9700;&#x8981;&#x6DFB;&#x52A0;&#x5176;&#x4ED6;&#x5C5E;&#x6027;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x7684;&#x884C;&#x4E3A;&#x3002;</li>
+</ul>
+<p><strong>cache.xml&#x6587;&#x4EF6;&#x793A;&#x4F8B;</strong></p>
+<p>&#x540D;&#x4E3A;Portfolios&#x7684;&#x590D;&#x5236;&#x533A;&#x57DF;&#x7684;<code>region</code>&#x58F0;&#x660E;&#xFF1A;</p>
+<pre><code>&lt;region name=&quot;Portfolios&quot; refid=&quot;REPLICATE&quot;/&gt;
+</code></pre><p>&#x540D;&#x4E3A;myRegion&#x7684;&#x5206;&#x533A;&#x533A;&#x57DF;&#x7684;<code>region</code>&#x58F0;&#x660E;&#xFF1A;</p>
+<pre><code>&lt;region name=&quot;myRegion&quot; refid=&quot;PARTITION&quot;/&gt;
+</code></pre><p>&#x5C06;&#x5185;&#x5BB9;&#x5907;&#x4EFD;&#x5230;&#x78C1;&#x76D8;&#x7684;&#x5206;&#x533A;&#x533A;&#x57DF;&#x7684;<code>region</code>&#x58F0;&#x660E;&#xFF1A;</p>
+<pre><code>&lt;region name=&quot;myRegion&quot; refid=&quot;PARTITION_PERSISTENT&quot;/&gt;
+</code></pre><p>&#x5728;&#x533A;&#x57DF;&#x4E2D;&#x914D;&#x7F6E;&#x4E86;&#x9AD8;&#x53EF;&#x7528;&#x6027;&#x548C;&#x4FEE;&#x6539;&#x540E;&#x7684;&#x5B58;&#x50A8;&#x5BB9;&#x91CF;&#x7684;&#x5206;&#x533A;&#x533A;&#x57DF;&#x7684;<code>region</code>&#x58F0;&#x660E;&#xFF1A;</p>
+<pre><code>&lt;region name=&quot;myRegion&quot; refid=&quot;PARTITION_REDUNDANT&quot;&gt;
+    &lt;region-attributes&gt;
+        &lt;partition-attributes local-max-memory=&quot;512&quot; /&gt;
+    &lt;/region-attributes&gt;
+&lt;/region&gt;
+</code></pre><p>&#x590D;&#x5236;&#x533A;&#x57DF;&#x7684;<code>region</code>&#x58F0;&#x660E;&#xFF0C;&#x914D;&#x7F6E;&#x4E86;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#x76D1;&#x542C;&#x5668;&#xFF0C;&#x5176;&#x4E2D;&#x6761;&#x76EE;&#x5230;&#x671F;&#xFF1A;</p>
+<pre><code>&lt;region name=&quot;myRegion&quot; refid=&quot;REPLICATE&quot;&gt;
+    &lt;region-attributes statistics-enabled=&quot;true&quot;&gt;
+        &lt;entry-time-to-live&gt;
+            &lt;expiration-attributes timeout=&quot;60&quot; action=&quot;destroy&quot;/&gt;
+        &lt;/entry-time-to-live&gt;
+        &lt;cache-listener&gt;
+            &lt;class-name&gt;myPackage.MyCacheListener&lt;/class-name&gt;
+        &lt;/cache-listener&gt;
+    &lt;/region-attributes&gt;
+&lt;/region&gt;
+</code></pre><p><strong>&#x901A;&#x8FC7;API&#x521B;&#x5EFA;&#x533A;&#x57DF;</strong></p>
+<p>Geode&#x7684;&#x533A;&#x57DF;API&#x4E3A;&#x4E0D;&#x540C;&#x7684;&#x7CFB;&#x7EDF;&#x6210;&#x5458;&#x7C7B;&#x578B;&#x63D0;&#x4F9B;&#x4E13;&#x95E8;&#x7684;&#x884C;&#x4E3A;&#x3002;</p>
+<ul>
+<li><p><code>&#x5BF9;&#x7B49;/&#x670D;&#x52A1;&#x5668;</code> &#x533A;&#x57DF;API</p>
+<p>. &#x4F7F;&#x7528;&#x8FD9;&#x4E9B;&#x65B9;&#x6CD5;&#xFF0C;&#x63A5;&#x53E3;&#x548C;&#x7C7B;&#x6765;&#x521B;&#x5EFA;<code>&#x5BF9;&#x7B49;/&#x670D;&#x52A1;&#x5668;</code>&#x533A;&#x57DF;&#x3002; &#x8FD9;&#x4E9B;&#x90FD;&#x5728;</p>
+</li>
+</ul>
+<pre><code>  org.apache.geode.cache
+</code></pre><p>  package. &#x5B83;&#x4EEC;&#x5BF9;&#x5E94;&#x4E8E;</p>
+<pre><code>  cache.xml
+</code></pre><p>  &#x5185;&#x90E8;&#x7684;&#x58F0;&#x660E;</p>
+<pre><code>  &lt;cache&gt;
+</code></pre><p>  &#x7528;&#x4E8E;&#x521B;&#x5EFA;&#x548C;&#x914D;&#x7F6E;&#x533A;&#x57DF;&#x7684;&#x5143;&#x7D20;&#x3002;</p>
+<ul>
+<li><strong>org.apache.geode.cache.Cache.createRegionFactory</strong> . &#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x91C7;&#x7528;<code>RegionShortcut``enum</code>&#x6765;&#x542F;&#x52A8;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;<code>RegionFactory</code>&#x3002; &#x4F7F;&#x7528;<code>createRegionFactory()</code>&#x800C;&#x4E0D;&#x662F;<code>new RegionFactory</code>&#x6765;&#x521B;&#x5EFA;RegionFactory&#x3002;</li>
+<li><strong>org.apache.geode.cache.RegionFactory</strong>. &#x63D0;&#x4F9B;&#x8BBE;&#x7F6E;&#x5355;&#x4E2A;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x548C;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x7684;&#x65B9;&#x6CD5;&#x3002; <code>create</code>&#x8C03;&#x7528;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;<code>Region</code>&#x3002;</li>
+<li><strong>org.apache.geode.cache.RegionShortcut</strong>. &#x5B9A;&#x4E49;&#x516C;&#x5171;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x3002;</li>
+</ul>
+<ul>
+<li><p><strong>Client Region APIs</strong>. &#x4F7F;&#x7528;&#x8FD9;&#x4E9B;&#x65B9;&#x6CD5;&#xFF0C;&#x63A5;&#x53E3;&#x548C;&#x7C7B;&#x6765;&#x521B;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x533A;&#x57DF;&#x3002; &#x5B83;&#x4EEC;&#x4F4D;&#x4E8E;<code>org.apache.geode.cache.client</code>&#x5305;&#x4E2D;&#x3002; &#x5B83;&#x4EEC;&#x5BF9;&#x5E94;&#x4E8E;<code>&lt;client-cache&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x7684;<code>cache.xml</code>&#x58F0;&#x660E;&#xFF0C;&#x7528;&#x4E8E;&#x521B;&#x5EFA;&#x548C;&#x914D;&#x7F6E;&#x533A;&#x57DF;&#x3002;</p>
+<p>&#x8FD9;&#x4E9B;&#x662F;&#x5BF9;&#x7B49;/&#x670D;&#x52A1;&#x5668;&#x533A;&#x57DF;API&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x7248;&#x672C;&#x3002; &#x8FD9;&#x4E9B;&#x5BA2;&#x6237;&#x7AEF;API&#x63D0;&#x4F9B;&#x7C7B;&#x4F3C;&#x7684;&#x529F;&#x80FD;&#xFF0C;&#x4F46;&#x662F;&#x6839;&#x636E;&#x5BA2;&#x6237;&#x533A;&#x57DF;&#x7684;&#x9700;&#x6C42;&#x548C;&#x884C;&#x4E3A;&#x8FDB;&#x884C;&#x5B9A;&#x5236;&#x3002;</p>
+<ul>
+<li><strong>org.apache.geode.cache.clientCache.createRegionFactory</strong> . &#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x4F7F;&#x7528;<code>ClientRegionShortcut``enum</code>&#x6765;&#x542F;&#x52A8;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;<code>ClientRegionFactory</code>&#x3002;</li>
+<li><strong>org.apache.geode.cache.client.ClientRegionFactory</strong>. &#x63D0;&#x4F9B;&#x8BBE;&#x7F6E;&#x5355;&#x4E2A;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x548C;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x7684;&#x65B9;&#x6CD5;&#x3002; <code>create</code>&#x8C03;&#x7528;&#x8FD4;&#x56DE;<code>Region</code>&#x3002;</li>
+<li><strong>org.apache.geode.cache.client.ClientRegionShortcut</strong> . &#x5B9A;&#x4E49;&#x516C;&#x5171;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>Region APIs Used For All Member Types</strong>. &#x8FD9;&#x4E9B;&#x63A5;&#x53E3;&#x548C;&#x7C7B;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x533A;&#x57DF;&#x7BA1;&#x7406;&#x3002; &#x5B83;&#x4EEC;&#x4F4D;&#x4E8E;<code>org.apache.geode.cache</code>&#x5305;&#x4E2D;&#x3002; &#x5B83;&#x4EEC;&#x5BF9;&#x5E94;&#x4E8E;<code>&lt;cache&gt;</code>&#x548C;<code>&lt;client-cache&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x7684;<code>cache.xml</code>&#x58F0;&#x660E;&#xFF0C;&#x7528;&#x4E8E;&#x521B;&#x5EFA;&#x548C;&#x914D;&#x7F6E;&#x533A;&#x57DF;&#x3002;</p>
+<ul>
+<li><strong>org.apache.geode.cache.Region</strong> . &#x7528;&#x4E8E;&#x7BA1;&#x7406;&#x533A;&#x57DF;&#x53CA;&#x5176;&#x6761;&#x76EE;&#x7684;&#x63A5;&#x53E3;&#x3002;</li>
+<li><strong>org.apache.geode.cache.RegionAttributes</strong> . &#x5BF9;&#x8C61;&#x4FDD;&#x6301;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x8BBE;&#x7F6E;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<p>&#x4F7F;&#x7528;API&#x5728;&#x542F;&#x52A8;&#x540E;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x3002; &#x5BF9;&#x4E8E;&#x8FD0;&#x884C;&#x65F6;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x4F7F;&#x7528;API&#x3002;</p>
+<p>&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x53D7;&#x5C5E;&#x6027;&#x4E00;&#x81F4;&#x6027;&#x68C0;&#x67E5;&#x7684;&#x7EA6;&#x675F;&#xFF0C;&#x8FD9;&#x4E24;&#x8005;&#x90FD;&#x5728;&#x7F13;&#x5B58;&#x5185;&#x90E8;&#xFF0C;&#x5982;&#x679C;&#x533A;&#x57DF;&#x4E0D;&#x662F;&#x672C;&#x5730;&#xFF0C;&#x5219;&#x5728;&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x7684;&#x6240;&#x6709;&#x7F13;&#x5B58;&#x4E4B;&#x95F4;&#x3002;</p>
+<ol>
+<li>&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x5DE5;&#x5382;&#x3002;<ul>
+<li>&#x5728;&#x5BF9;&#x7B49;&#x4F53;&#x548C;&#x670D;&#x52A1;&#x5668;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>org.apache.geode.cache.RegionFactory</code>&#x3002;</li>
+<li>&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>org.apache.geode.cache.client.ClientRegionFactory</code>&#x3002;</li>
+</ul>
+</li>
+<li>(&#x53EF;&#x9009;&#x7684;) &#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5DE5;&#x5382;&#x8FDB;&#x4E00;&#x6B65;&#x914D;&#x7F6E;&#x60A8;&#x7684;&#x533A;&#x57DF;&#x3002;</li>
+<li>&#x4ECE;&#x914D;&#x7F6E;&#x7684;&#x533A;&#x57DF;&#x5DE5;&#x5382;&#x521B;&#x5EFA;&#x60A8;&#x7684;&#x533A;&#x57DF;&#x3002;</li>
+</ol>
+<p><strong>API &#x4F8B;&#x5B50;</strong></p>
+<p>&#x521B;&#x5EFA;&#x540D;&#x4E3A;Portfolios&#x7684;&#x590D;&#x5236;&#x533A;&#x57DF;&#xFF1A;</p>
+<pre><code>Cache cache = CacheFactory.create();
+RegionFactory rf = cache.createRegionFactory(REPLICATE);
+Region pfloRegion = rf.create(&quot;Portfolios&quot;);
+</code></pre><p>&#x4F7F;&#x7528;&#x4FA6;&#x542C;&#x5668;&#x521B;&#x5EFA;&#x5206;&#x533A;&#x533A;&#x57DF;&#xFF1A;</p>
+<pre><code>RegionFactory rf =   
+    cache.createRegionFactory(RegionShortcut.PARTITION);
+rf.addCacheListener(new LoggingCacheListener());
+custRegion = rf.create(&quot;customer&quot;);
+</code></pre><p>&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5206;&#x533A;&#x533A;&#x57DF;&#xFF0C;&#x5176;&#x4E2D;&#x5305;&#x542B;&#x7528;&#x4E8E;&#x5171;&#x5904;&#x533A;&#x57DF;&#x7684;&#x5206;&#x533A;&#x89E3;&#x6790;&#x7A0B;&#x5E8F;&#xFF1A;</p>
+<pre><code>PartitionAttributesFactory paf = new PartitionAttributesFactory&lt;CustomerId, String&gt;();
+paf.setPartitionResolver(new CustomerOrderResolver());
+
+RegionFactory rf = 
+    cache.createRegionFactory(RegionShortcut.PARTITION);
+rf.setPartitionAttributes(paf.create());
+rf.addCacheListener(new LoggingCacheListener());
+custRegion = rf.create(&quot;customer&quot;);
+</code></pre><p>&#x4F7F;&#x7528;&#x6C60;&#x89C4;&#x8303;&#x521B;&#x5EFA;&#x5BA2;&#x6237;&#x533A;&#x57DF;&#xFF1A;</p>
+<pre><code>ClientRegionFactory&lt;String,String&gt; cRegionFactory = 
+    cache.createClientRegionFactory(PROXY);
+Region&lt;String, String&gt; region = 
+    cRegionFactory.setPoolName(&quot;Pool3&quot;).create(&quot;DATA&quot;);
+</code></pre><p><strong>&#x521B;&#x5EFA;&#x548C;&#x8BBF;&#x95EE;&#x6570;&#x636E;&#x5B50;&#x533A;&#x57DF;</strong></p>
+<p>&#x5355;&#x4E2A;&#x533A;&#x57DF;&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x591A;&#x4E2A;&#x5B50;&#x533A;&#x57DF;&#x3002; &#x5B50;&#x533A;&#x57DF;&#x662F;&#x4E00;&#x9879;&#x8F83;&#x65E7;&#x7684;&#x529F;&#x80FD;&#xFF0C;&#x5728;&#x65B0;&#x8BBE;&#x8BA1;&#x548C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x65E0;&#x7528;&#x3002; &#x5B83;&#x4EEC;&#x7528;&#x4E8E;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x521B;&#x5EFA;&#x5206;&#x5C42;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#xFF0C;&#x63D0;&#x4F9B;&#x4E0E;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x8DEF;&#x5F84;&#x7C7B;&#x4F3C;&#x7684;&#x547D;&#x540D;&#x3002; &#x4EE5;&#x4E0B;&#x662F;&#x5BF9;&#x6B21;&#x533A;&#x57DF;&#x4F7F;&#x7528;&#x7684;&#x9650;&#x5236;&#xFF1A;</p>
+<ul>
+<li>&#x5177;&#x6709;LOCAL&#x8303;&#x56F4;&#x7684;&#x533A;&#x57DF;&#x53EA;&#x80FD;&#x5177;&#x6709;LOCAL&#x8303;&#x56F4;&#x7684;&#x5B50;&#x533A;&#x57DF;&#x3002;</li>
+<li>&#x5206;&#x533A;&#x533A;&#x57DF;&#x7C7B;&#x578B;&#x4E0D;&#x80FD;&#x4E0E;&#x5B50;&#x533A;&#x57DF;&#x4E00;&#x8D77;&#x4F7F;&#x7528;&#x3002; &#x5B50;&#x533A;&#x57DF;&#x53EF;&#x80FD;&#x6CA1;&#x6709;&#x4F5C;&#x4E3A;&#x5206;&#x533A;&#x533A;&#x57DF;&#x7684;&#x7236;&#x7EA7;&#xFF0C;&#x5B50;&#x533A;&#x57DF;&#x53EF;&#x80FD;&#x4E0D;&#x662F;PARTITION&#x7C7B;&#x578B;&#x3002;</li>
+<li>&#x5B50;&#x533A;&#x57DF;&#x5FC5;&#x987B;&#x5177;&#x6709;&#x4E0E;&#x5176;&#x7236;&#x533A;&#x57DF;&#x76F8;&#x540C;&#x7684;&#x8303;&#x56F4;&#xFF08;GLOBAL&#xFF0C;DISTRIBUTED_ACK&#xFF0C;DISTRIBUTED_NO_ACK&#xFF09;&#x3002;</li>
+<li>&#x5B50;&#x533A;&#x57DF;&#x540D;&#x79F0;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x5FC5;&#x987B;&#x662F;&#x552F;&#x4E00;&#x7684;&#x3002;</li>
+</ul>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x65B9;&#x6CD5;&#x4E4B;&#x4E00;&#x521B;&#x5EFA;&#x5B50;&#x533A;&#x57DF;&#xFF1A;</p>
+<ul>
+<li><p><code>cache.xml</code>&#x4E2D;&#x7684;&#x58F0;&#x660E;&#xFF1A;</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;cache
+    xmlns=&quot;http://geode.apache.org/schema/cache&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd&quot;
+    version=&quot;1.0&quot;
+    lock-lease=&quot;120&quot;
+    lock-timeout=&quot;60&quot;
+    search-timeout=&quot;300&quot;&gt;
+&lt;!-- Create a region named Portfolios --&gt;
+  &lt;region name=&quot;Portfolios&quot; refid=&quot;REPLICATE&quot;&gt;
+      &lt;region name=&quot;Private&quot; refid=&quot;REPLICATE&quot;&gt;
+      ...
+      &lt;/region&gt;
+  &lt;/region&gt;
+&lt;/cache&gt;
+</code></pre><p>&#x5728;&#x521B;&#x5EFA;&#x7F13;&#x5B58;&#x65F6;&#x52A0;&#x8F7D;<code>cache.xml</code>&#x65F6;&#xFF0C;&#x7CFB;&#x7EDF;&#x4F1A;&#x81EA;&#x52A8;&#x521B;&#x5EFA;&#x4EFB;&#x4F55;&#x58F0;&#x660E;&#x7684;&#x533A;&#x57DF;&#x548C;&#x5B50;&#x533A;&#x57DF;&#x3002;</p>
+</li>
+<li><p><code>RegionFactory</code> API&#x8C03;&#x7528;&#xFF1A;</p>
+<pre><code>Cache cache = CacheFactory.create();
+RegionFactory rf = cache.createRegionFactory(REPLICATE);
+Region pfloRegion = rf.create(&quot;Portfolios&quot;);
+Region pvtSubregion = rf.createSubregion(pfloRegion, &quot;Private&quot;);
+</code></pre></li>
+</ul>
+<p>&#x5E26;&#x6709;<code>recursive</code>&#x53C2;&#x6570;&#x7684;<code>Region</code>&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x5BF9;&#x7ED9;&#x5B9A;&#x7684;&#x533A;&#x57DF;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#xFF0C;&#x7136;&#x540E;&#x5BF9;&#x6240;&#x6709;&#x5305;&#x542B;&#x7684;&#x5B50;&#x533A;&#x57DF;&#x8FDB;&#x884C;&#x9012;&#x5F52;&#x64CD;&#x4F5C;&#x3002;</p>
+<p><strong>&#x66F4;&#x65B0;&#x6570;&#x636E;&#x533A;&#x57DF;&#x7684;&#x914D;&#x7F6E;</strong></p>
+<p>&#x901A;&#x8FC7;<code>alter region</code>&#x547D;&#x4EE4;&#xFF0C;API&#x6216;<code>cache.xml</code>&#x6587;&#x4EF6;&#x58F0;&#x660E;&#x66F4;&#x65B0;&#x60A8;&#x7684;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x548C;&#x5185;&#x5BB9;&#x3002;</p>
+<ul>
+<li>&#x4F7F;&#x7528;<a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/alter.html#topic_E74ED23CB60342538B2175C326E7D758" target="_blank">gfsh alter region</a>&#x547D;&#x4EE4;&#x3002;</li>
+<li>&#x5728;API&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>Cache</code>&#x548C;<code>Region</code>&#x65B9;&#x6CD5;&#x6765;&#x66F4;&#x6539;&#x914D;&#x7F6E;&#x53C2;&#x6570;&#x5E76;&#x4FEE;&#x6539;&#x533A;&#x57DF;&#x7ED3;&#x6784;&#x548C;&#x6570;&#x636E;&#x3002;</li>
+<li>&#x4F7F;&#x7528;<code>Cache.loadCacheXml</code>&#x65B9;&#x6CD5;&#x52A0;&#x8F7D;&#x65B0;&#x7684;XML&#x58F0;&#x660E;&#x3002; &#x5728;&#x53EF;&#x80FD;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x65B0;&#x7684;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x58F0;&#x660E;&#x5C06;&#x53D6;&#x4EE3;&#x73B0;&#x6709;&#x7684;&#x5B9A;&#x4E49;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x5982;&#x679C;&#x5728;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#x58F0;&#x660E;&#x7684;&#x533A;&#x57DF;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E8E;&#x7F13;&#x5B58;&#x4E2D;&#xFF0C;&#x5219;&#x6839;&#x636E;&#x6587;&#x4EF6;&#x58F0;&#x660E;&#x4FEE;&#x6539;&#x5176;&#x53EF;&#x53D8;&#x5C5E;&#x6027;&#x3002; &#x4E0D;&#x53EF;&#x53D8;&#x5C5E;&#x6027;&#x4E0D;&#x53D7;&#x5F71;&#x54CD;&#x3002; &#x5982;&#x679C;&#x67D0;&#x4E2A;&#x533A;&#x57DF;&#x5C1A;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x5219;&#x4F1A;&#x521B;&#x5EFA;&#x8BE5;&#x533A;&#x57DF;&#x3002; &#x6839;&#x636E;&#x7F13;&#x5B58;&#x72B6;&#x6001;&#x548C;&#x6587;&#x4EF6;&#x58F0;&#x660E;&#x521B;&#x5EFA;&#x6216;&#x66F4;&#x65B0;&#x6761;&#x76EE;&#x548C;&#x7D22;&#x5F15;&#x3002;</li>
+</ul>
+<p><strong>&#x4F7F;&#x533A;&#x57DF;&#x65E0;&#x6548;</strong></p>
+<p>&#x65E0;&#x6548;&#x533A;&#x57DF;&#x64CD;&#x4F5C;&#x5C06;&#x5220;&#x9664;&#x533A;&#x57DF;&#x7684;&#x6240;&#x6709;&#x6761;&#x76EE;&#x503C;&#xFF0C;&#x540C;&#x65F6;&#x4FDD;&#x6301;&#x6761;&#x76EE;&#x5BC6;&#x94A5;&#x4E0D;&#x53D8;&#x3002; &#x53EA;&#x80FD;&#x901A;&#x8FC7;&#x201C;Region&#x201D;&#x5B9E;&#x4F8B;&#x4E0A;&#x7684;API&#x8C03;&#x7528;&#x6B64;&#x64CD;&#x4F5C;&#x3002; &#x53D1;&#x751F;&#x4E8B;&#x4EF6;&#x901A;&#x77E5;&#x3002;</p>
+<pre><code>// Invalidate the entire distributed region 
+Region.invalidateRegion();
+</code></pre><p>API&#x8FD8;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x79CD;&#x65B9;&#x6CD5;&#xFF0C;&#x4EC5;&#x4F7F;&#x672C;&#x5730;&#x7F13;&#x5B58;&#x4E2D;&#x7684;&#x6761;&#x76EE;&#x65E0;&#x6548;&#x3002; &#x6B64;&#x65B9;&#x6CD5;&#x53EF;&#x80FD;&#x4E0D;&#x4F1A;&#x5728;&#x590D;&#x5236;&#x533A;&#x57DF;&#x4E0A;&#x4F7F;&#x7528;&#xFF0C;&#x56E0;&#x4E3A;&#x8FD9;&#x6837;&#x505A;&#x4F1A;&#x4F7F;&#x590D;&#x5236;&#x534F;&#x5B9A;&#x65E0;&#x6548;&#x3002;</p>
+<pre><code>// Invalidate the region within this member
+Region.localInvalidateRegion();
+</code></pre><p><strong>&#x6E05;&#x9664;&#x533A;&#x57DF;</strong></p>
+<p>&#x6E05;&#x9664;&#x533A;&#x57DF;&#x64CD;&#x4F5C;&#x5C06;&#x5220;&#x9664;&#x533A;&#x57DF;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x6761;&#x76EE;&#x3002; &#x6B64;&#x64CD;&#x4F5C;&#x4E0D;&#x9002;&#x7528;&#x4E8E;&#x5206;&#x533A;&#x533A;&#x57DF;&#x3002; &#x53EF;&#x4EE5;&#x901A;&#x8FC7;<code>Region</code>&#x5B9E;&#x4F8B;&#x4E0A;&#x7684;API&#x8C03;&#x7528;&#x6B64;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<pre><code>// Remove all entries for the region
+Region.clear();
+</code></pre><p>&#x5B83;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>gfsh</code>&#x547D;&#x4EE4;&#x8C03;&#x7528;&#xFF1A;</p>
+<pre><code>gfsh&gt;remove --region=Region1 --all
+</code></pre><p>&#x6E05;&#x9664;&#x533A;&#x57DF;&#x64CD;&#x4F5C;&#x53D1;&#x751F;&#x4E8B;&#x4EF6;&#x901A;&#x77E5;&#x3002;</p>
+<p><strong>&#x9500;&#x6BC1;&#x533A;&#x57DF;</strong></p>
+<p>&#x9500;&#x6BC1;&#x533A;&#x57DF;&#x64CD;&#x4F5C;&#x79FB;&#x9664;&#x6574;&#x4E2A;&#x533A;&#x57DF;&#x3002; &#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x201C;Region&#x201D;&#x5B9E;&#x4F8B;&#x4E0A;&#x7684;API&#x8C03;&#x7528;&#x6B64;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<pre><code>// Remove the entire region
+Region.destroyRegion();
+</code></pre><p>&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>gfsh</code>&#x547D;&#x4EE4;&#x8C03;&#x7528;destroy&#x533A;&#x57DF;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<pre><code>gfsh&gt;destroy region --name=Region1
+</code></pre><p>&#x9500;&#x6BC1;&#x533A;&#x57DF;&#x64CD;&#x4F5C;&#x53D1;&#x751F;&#x4E8B;&#x4EF6;&#x901A;&#x77E5;&#x3002;</p>
+<p>&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4ECE;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#x5220;&#x9664;&#x533A;&#x57DF;&#x7684;&#x89C4;&#x8303;&#x6765;&#x9500;&#x6BC1;&#x533A;&#x57DF;&#x3002;</p>
+<p>&#x5728;&#x6240;&#x6709;&#x6210;&#x5458;&#x8054;&#x673A;&#x65F6;&#x901A;&#x8FC7;API&#x8C03;&#x7528;&#x6216;&#x4F7F;&#x7528;<code>gfsh destroy</code>&#x547D;&#x4EE4;&#x9500;&#x6BC1;&#x533A;&#x57DF;&#x662F;&#x5220;&#x9664;&#x533A;&#x57DF;&#x7684;&#x6700;&#x4F73;&#x65B9;&#x5F0F;&#xFF0C;&#x56E0;&#x4E3A;Geode&#x5904;&#x7406;&#x5220;&#x9664;&#x7684;&#x6240;&#x6709;&#x65B9;&#x9762;&#xFF0C;&#x5305;&#x62EC;&#x5220;&#x9664;&#x533A;&#x57DF;&#x7684;&#x5728;&#x7EBF;&#x6210;&#x5458;&#x7684;&#x6301;&#x4E45;&#x78C1;&#x76D8;&#x5B58;&#x50A8; &#x4E3B;&#x529E;&#x8BE5;&#x5730;&#x533A;&#x3002; &#x901A;&#x8FC7;&#x4ECE;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#x5220;&#x9664;&#x5176;&#x89C4;&#x8303;&#x6765;&#x9500;&#x6BC1;&#x8BE5;&#x533A;&#x57DF;&#x4E0D;&#x4F1A;&#x5220;&#x9664;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x73B0;&#x6709;&#x6C38;&#x4E45;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x3002;</p>
+<p>&#x9500;&#x6BC1;&#x64CD;&#x4F5C;&#x53EA;&#x80FD;&#x4F20;&#x64AD;&#x7ED9;&#x5728;&#x7EBF;&#x6210;&#x5458;&#x3002; &#x5982;&#x679C;&#x67D0;&#x4E2A;&#x533A;&#x57DF;&#x5728;&#x7EBF;&#x5E76;&#x4E14;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x5904;&#x4E8E;&#x8131;&#x673A;&#x72B6;&#x6001;&#x65F6;&#xFF0C;&#x7CFB;&#x7EDF;&#x5C06;&#x9047;&#x5230;&#x91CD;&#x542F;&#x95EE;&#x9898;&#x3002; &#x4F5C;&#x4E3A;&#x8131;&#x673A;&#x91CD;&#x542F;&#x7684;&#x6210;&#x5458;&#xFF0C;&#x5B83;&#x4EEC;&#x5C06;&#x65E0;&#x9650;&#x671F;&#x5730;&#x963B;&#x585E;&#xFF0C;&#x7B49;&#x5F85;&#x4E0D;&#x518D;&#x5B58;&#x5728;&#x7684;&#x6301;&#x4E45;&#x533A;&#x57DF;&#x6570;&#x636E;&#x3002; &#x8981;&#x89E3;&#x51B3;&#x6B64;&#x95EE;&#x9898;&#xFF0C;&#x8BF7;&#x5173;&#x95ED;&#x6240;&#x6709;&#x88AB;&#x963B;&#x6B62;&#x7B49;&#x5F85;&#x5220;&#x9664;&#x533A;&#x57DF;&#x7684;&#x6210;&#x5458;&#x3002; &#x4E00;&#x65E6;&#x8FD9;&#x4E9B;&#x6210;&#x5458;&#x5904;&#x4E8E;&#x8131;&#x673A;&#x72B6;&#x6001;&#xFF0C;&#x4F7F;&#x7528;<code>gfsh alter disk-store</code>&#x547D;&#x4EE4;&#x548C;&#x6BCF;&#x4E2A;&#x8131;&#x673A;&#x6210;&#x5458;&#x4E0A;&#x7684;<code>--remove</code>&#x9009;&#x9879;&#x6765;&#x5220;&#x9664;&#x8BE5;&#x533A;&#x57DF;&#x3002; &#x7136;&#x540E;&#xFF0C;&#x91CD;&#x65B0;&#x542F;&#x52A8;&#x6BCF;&#x4E2A;&#x6210;&#x5458;&#x3002;</p>
+<p>&#x8FB9;&#x7F18;&#x60C5;&#x51B5;&#x5728;&#x901A;&#x8FC7;&#x4ECE;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#x5220;&#x9664;&#x5176;&#x89C4;&#x8303;&#x6765;&#x9500;&#x6BC1;&#x6301;&#x4E45;&#x533A;&#x57DF;&#xFF08;R-removed&#xFF09;&#x65F6;&#x5BFC;&#x81F4;&#x95EE;&#x9898;&#xFF0C;&#x5E76;&#x4E14;&#x533A;&#x57DF;R-removed&#x4E0E;&#x53E6;&#x4E00;&#x4E2A;&#x6301;&#x4E45;&#x533A;&#x57DF;&#xFF08;R-remain&#xFF09;&#x5171;&#x5B58;&#x3002; &#x51FA;&#x73B0;&#x6B64;&#x95EE;&#x9898;&#x662F;&#x56E0;&#x4E3A;R-remaining&#x4E2D;&#x5305;&#x542B;&#x7684;&#x6301;&#x4E45;&#x6027;&#x4FE1;&#x606F;&#x4E0E;R-removed&#x7684;&#xFF08;&#x7F3A;&#x4E4F;&#xFF09;&#x89C4;&#x8303;&#x4E0D;&#x4E00;&#x81F4;&#x3002; &#x91CD;&#x65B0;&#x542F;&#x52A8;R-remain&#x540E;&#xFF0C;&#x5176;&#x6301;&#x4E45;&#x5316;&#x5143;&#x6570;&#x636E;&#x5C06;R-remove&#x89C6;&#x4E3A;&#x5171;&#x7F6E;&#x533A;&#x57DF;&#xFF0C;R-remaining&#x7684;&#x542F;&#x52A8;&#x4F9D;&#x8D56;&#x4E8E;&#x5DF2;&#x5220;&#x9664;&#x7684;&#x533A;&#x57DF;&#x3002; &#x56E0;&#x6B64;&#xFF0C;R-started&#x7684;&#x542F;&#x52A8;&#x4ECD;&#x7136;&#x65E0;&#x6CD5;&#x5B8C;&#x6210;&#x3002; &#x8BE5;&#x95EE;&#x9898;&#x53EF;&#x80FD;&#x8868;&#x73B0;&#x4E3A;R-still&#x533A;&#x57DF;&#x4E0A;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x4F8B;&#x5982;&#x67E5;&#x8BE2;&#xFF0C;&#x653E;&#x7F6E;&#x6216;&#x83B7;&#x53D6;&#xFF0C;&#x4ECE;&#x672A;&#x5B8C;&#x6210;&#x3002; &#x8981;&#x89E3;&#x51B3;&#x6B64;&#x95EE;&#x9898;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;&#x5F15;&#x7528;&#x5DF2;&#x5220;&#x9664;&#x533A;&#x57DF;&#x7684;&#x6301;&#x4E45;&#x5143;&#x6570;&#x636E;&#x5173;&#x95ED;&#x6240;&#x6709;&#x6210;&#x5458;&#x3002; &#x4E00;&#x65E6;&#x8FD9;&#x4E9B;&#x6210;&#x5458;&#x5904;&#x4E8E;&#x8131;&#x673A;&#x72B6;&#x6001;&#xFF0C;&#x4F7F;&#x7528;<code>gfsh alter disk-store</code>&#x547D;&#x4EE4;&#x548C;&#x6BCF;&#x4E2A;&#x8131;&#x673A;&#x6210;&#x5458;&#x4E0A;&#x7684;<code>--remove</code>&#x9009;&#x9879;&#x5220;&#x9664;&#x8BE5;&#x533A;&#x57DF;&#x3002; &#x7136;&#x540E;&#xFF0C;&#x91CD;&#x65B0;&#x542F;&#x52A8;&#x6BCF;&#x4E2A;&#x6210;&#x5458;&#x3002;</p>
+<p><strong>&#x5173;&#x95ED;&#x533A;&#x57DF;</strong></p>
+<p>&#x4F7F;&#x7528;&#x6B64;&#x9009;&#x9879;&#x53EF;&#x4EE5;&#x5728;&#x4E0D;&#x5173;&#x95ED;&#x6574;&#x4E2A;&#x7F13;&#x5B58;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x505C;&#x6B62;&#x6301;&#x4E45;&#x548C;&#x5206;&#x533A;&#x533A;&#x57DF;&#x7684;&#x672C;&#x5730;&#x7F13;&#x5B58;&#xFF1A;</p>
+<pre><code>Region.close();
+</code></pre><p><code>Region.close</code>&#x64CD;&#x4F5C;&#x5C31;&#x50CF;<code>Region.localDestroyRegion</code>&#x64CD;&#x4F5C;&#x4E00;&#x6837;&#xFF0C;&#x5177;&#x6709;&#x4EE5;&#x4E0B;&#x663E;&#x7740;&#x5DEE;&#x5F02;&#xFF1A;</p>
+<ul>
+<li>&#x4E3A;&#x533A;&#x57DF;&#x4E0A;&#x5B89;&#x88C5;&#x7684;&#x6BCF;&#x4E2A;&#x56DE;&#x8C03;&#x8C03;&#x7528;<code>close</code>&#x65B9;&#x6CD5;&#x3002;</li>
+<li>&#x6CA1;&#x6709;&#x8C03;&#x7528;&#x4EFB;&#x4F55;&#x4E8B;&#x4EF6;&#x3002; &#x7279;&#x522B;&#x503C;&#x5F97;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x4E0D;&#x8C03;&#x7528;&#x5165;&#x53E3;&#x4E8B;&#x4EF6;<code>beforeDestroy</code>&#x548C;<code>afterDestroy</code>&#xFF0C;&#x4EE5;&#x53CA;&#x533A;&#x57DF;&#x4E8B;&#x4EF6;<code>beforeRegionDestroy</code>&#x548C;<code>afterRegionDestroy</code>&#x3002; &#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/developing/events/chapter_overview.html#implementing_event_handlers" target="_blank">&#x4E8B;&#x4EF6;&#x548C;&#x4E8B;&#x4EF6;&#x5904;&#x7406;</a>&#x3002;</li>
+<li>&#x5982;&#x679C;&#x6301;&#x4E45;&#xFF0C;&#x5219;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x5220;&#x9664;&#x8BE5;&#x533A;&#x57DF;&#xFF0C;&#x4F46;&#x4FDD;&#x7559;&#x5176;&#x78C1;&#x76D8;&#x6587;&#x4EF6;&#x3002;</li>
+<li>&#x5982;&#x679C;&#x5DF2;&#x5206;&#x533A;&#xFF0C;&#x5219;&#x4ECE;&#x672C;&#x5730;&#x7F13;&#x5B58;&#x4E2D;&#x5220;&#x9664;&#x8BE5;&#x533A;&#x57DF;&#x3002; &#x5982;&#x679C;&#x5206;&#x533A;&#x533A;&#x57DF;&#x662F;&#x5197;&#x4F59;&#x7684;&#xFF0C;&#x5219;&#x672C;&#x5730;&#x6570;&#x636E;&#x7F13;&#x5B58;&#x4F1A;&#x6545;&#x969C;&#x8F6C;&#x79FB;&#x5230;&#x53E6;&#x4E00;&#x4E2A;&#x7F13;&#x5B58;&#x3002; &#x5426;&#x5219;&#xFF0C;&#x672C;&#x5730;&#x6570;&#x636E;&#x5C06;&#x4E22;&#x5931;&#x3002;</li>
+</ul>
+<h3 id="&#x533A;&#x57DF;&#x547D;&#x540D;">&#x533A;&#x57DF;&#x547D;&#x540D;</h3>
+<p>&#x4E3A;&#x4E86;&#x80FD;&#x591F;&#x5BF9;&#x60A8;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;&#x6267;&#x884C;&#x6240;&#x6709;&#x53EF;&#x7528;&#x64CD;&#x4F5C;&#xFF0C;&#x8BF7;&#x9075;&#x5FAA;&#x8FD9;&#x4E9B;&#x533A;&#x57DF;&#x547D;&#x540D;&#x51C6;&#x5219;&#x3002;</p>
+<ul>
+<li>&#x533A;&#x57DF;&#x540D;&#x79F0;&#x4E2D;&#x5141;&#x8BB8;&#x7684;&#x5B57;&#x7B26;&#x662F;&#x5B57;&#x6BCD;&#x6570;&#x5B57;&#x5B57;&#x7B26;&#xFF08;<code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</code>&#xFF09;&#xFF0C;&#x4E0B;&#x5212;&#x7EBF;&#x5B57;&#x7B26;&#xFF08;<code>_</code>&#xFF09;&#x548C;&#x8FDE;&#x5B57;&#x7B26;&#xFF08;<code>-</code>&#xFF09;&#x3002;</li>
+<li>&#x4E0D;&#x8981;&#x4F7F;&#x7528;&#x659C;&#x6760;&#x5B57;&#x7B26;&#xFF08;<code>/</code>&#xFF09;&#x3002;</li>
+<li>&#x4E0D;&#x8981;&#x4F7F;&#x7528;&#x4E24;&#x4E2A;&#x4E0B;&#x5212;&#x7EBF;&#x5B57;&#x7B26;&#xFF08;<code>__</code>&#xFF09;&#x5F00;&#x59CB;&#x533A;&#x57DF;&#x540D;&#x79F0;&#xFF0C;&#x56E0;&#x4E3A;&#x8FD9;&#x662F;&#x4E3A;&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x800C;&#x4FDD;&#x7559;&#x7684;&#x3002;</li>
+</ul>
+<h3 id="&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;">&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;</h3>
+<p>Geode&#x63D0;&#x4F9B;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#xFF0C;&#x5176;&#x4E2D;&#x5305;&#x542B;&#x6700;&#x5E38;&#x89C1;&#x533A;&#x57DF;&#x7C7B;&#x578B;&#x7684;&#x9884;&#x8BBE;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x3002; &#x5BF9;&#x4E8E;&#x6700;&#x7B80;&#x5355;&#x7684;&#x914D;&#x7F6E;&#xFF0C;&#x8BF7;&#x4ECE;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x5F00;&#x59CB;&#xFF0C;&#x5E76;&#x6839;&#x636E;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x81EA;&#x5B9A;&#x4E49;&#x3002; &#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x5C06;&#x81EA;&#x5DF1;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x914D;&#x7F6E;&#x5B58;&#x50A8;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x4EE5;&#x4F9B;&#x591A;&#x4E2A;&#x533A;&#x57DF;&#x4F7F;&#x7528;&#x3002;</p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x914D;&#x7F6E;&#x6570;&#x636E;&#x533A;&#x57DF;&#x53CA;&#x5176;&#x6761;&#x76EE;&#x7684;&#x81EA;&#x52A8;&#x7BA1;&#x7406;&#x3002; &#x8FD9;&#x4E9B;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x8BBE;&#x7F6E;&#x786E;&#x5B9A;&#x6570;&#x636E;&#x6240;&#x5728;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x5185;&#x5B58;&#x4E2D;&#x5982;&#x4F55;&#x7BA1;&#x7406;&#x533A;&#x57DF;&#xFF0C;&#x53EF;&#x9760;&#x6027;&#x884C;&#x4E3A;&#x4EE5;&#x53CA;&#x6570;&#x636E;&#x6761;&#x76EE;&#x7684;&#x81EA;&#x52A8;&#x52A0;&#x8F7D;&#xFF0C;&#x5206;&#x53D1;&#x548C;&#x5230;&#x671F;&#x7B49;&#x5185;&#x5BB9;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x5C3D;&#x53EF;&#x80FD;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x914D;&#x7F6E;&#x60A8;&#x7684;&#x533A;&#x57DF;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x8FDB;&#x4E00;&#x6B65;&#x81EA;&#x5B9A;&#x4E49;&#x884C;&#x4E3A;&#x3002; &#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x4F7F;&#x7528;&#x6700;&#x5E38;&#x89C1;&#x7684;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x8FDB;&#x884C;&#x9884;&#x8BBE;&#x3002;</p>
+<p>Geode&#x63D0;&#x4F9B;&#x4E86;&#x8BB8;&#x591A;&#x9884;&#x5B9A;&#x4E49;&#x7684;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x4F9B;&#x60A8;&#x4F7F;&#x7528;&#x3002; &#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x81EA;&#x5DF1;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;&#x6807;&#x8BC6;&#x7B26;&#x5B58;&#x50A8;&#x5B83;&#x4EEC;&#x4EE5;&#x4F9B;&#x4EE5;&#x540E;&#x68C0;&#x7D22;&#x3002; &#x4E24;&#x79CD;&#x7C7B;&#x578B;&#x7684;&#x5B58;&#x50A8;&#x5C5E;&#x6027;&#x90FD;&#x79F0;&#x4E3A;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x5728;<code>cache.xml</code>&#x6587;&#x4EF6;&#x4E2D;&#x901A;&#x8FC7;API&#x521B;&#x5EFA;&#x548C;&#x5B58;&#x50A8;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x3002;</p>
+<p>&#x901A;&#x8FC7;&#x5728;<code>refid</code>&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x4E2D;&#x4E3A;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x63D0;&#x4F9B;ID&#x6765;&#x68C0;&#x7D22;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x5C5E;&#x6027;&#x3002; &#x6B64;&#x793A;&#x4F8B;&#x4F7F;&#x7528;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;REPLICATE&#x5C5E;&#x6027;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#xFF1A;</p>
+<pre><code>&lt;region name=&quot;testREP&quot; refid=&quot;REPLICATE&quot;/&gt;
+</code></pre><p>&#x60A8;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x9700;&#x8981;&#x901A;&#x8FC7;&#x5728;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x58F0;&#x660E;&#x4E2D;&#x63D0;&#x4F9B;<code>id</code>&#x6765;&#x521B;&#x5EFA;&#x81EA;&#x5DF1;&#x7684;&#x547D;&#x540D;&#x5C5E;&#x6027;&#x3002; &#x4EE5;&#x4E0B;&#x533A;&#x57DF;&#x58F0;&#x660E;&#xFF1A;</p>
+<ol>
+<li><p>&#x68C0;&#x7D22;&#x6301;&#x4E45;&#x5206;&#x533A;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x63D0;&#x4F9B;&#x7684;&#x6240;&#x6709;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;</p>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x6307;&#x5B9A;&#x7528;&#x4E8E;&#x6301;&#x4E45;&#x6027;&#x7684;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x540D;&#x79F0;&#x6765;&#x4FEE;&#x6539;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;</p>
+</li>
+<li><p>&#x5C06;&#x65B0;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x5206;&#x914D;&#x7ED9;&#x540D;&#x4E3A;<code>testPR</code>&#x7684;&#x65B0;&#x533A;&#x57DF;</p>
+</li>
+<li><p>&#x5C06;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x5B58;&#x50A8;&#x5728;&#x540D;&#x4E3A;<code>testPRPersist</code>&#x7684;&#x65B0;&#x81EA;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;&#x4E2D;&#xFF1A;</p>
+<pre><code>&lt;disk-store name=&quot;testDiskStore&quot; &gt;
+    &lt;disk-dirs&gt;
+        &lt;disk-dir&gt;PRPersist1&lt;/disk-dir&gt;
+        &lt;disk-dir&gt;PRPersist2&lt;/disk-dir&gt;
+    &lt;/disk-dirs&gt;
+&lt;/disk-store&gt;
+&lt;region name=&quot;testPR&quot; &gt;
+    &lt;region-attributes id=&quot;testPRPersist&quot;
+        refid=&quot;PARTITION_PERSISTENT&quot; disk-store-name=&quot;testDiskStore&quot;/&gt;
+&lt;/region&gt;
+</code></pre></li>
+</ol>
+<p><strong>&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x5C5E;&#x6027;&#x9009;&#x9879;</strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4ECE;Geode&#x5728;&#x8FD9;&#x4E9B;&#x7C7B;&#x4E2D;&#x9884;&#x5B9A;&#x4E49;&#x7684;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x4E2D;&#x9009;&#x62E9;&#x6700;&#x5E38;&#x7528;&#x7684;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#xFF1A;</p>
+<ul>
+<li><strong>org.apache.geode.cache.RegionShortcut</strong>. &#x5BF9;&#x4E8E;&#x5BF9;&#x7B49;&#x548C;&#x670D;&#x52A1;&#x5668;&#x3002;</li>
+<li><strong>org.apache.geode.cache.client.ClientRegionShortcut</strong>. &#x5BF9;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x3002;</li>
+</ul>
+<p>&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x5C5E;&#x6027;&#x4EC5;&#x4E3A;&#x65B9;&#x4FBF;&#x8D77;&#x89C1;&#x3002; &#x5B83;&#x4EEC;&#x53EA;&#x662F;Geode&#x5DF2;&#x7ECF;&#x4E3A;&#x60A8;&#x5B58;&#x50A8;&#x7684;&#x547D;&#x540D;&#x5C5E;&#x6027;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5B58;&#x50A8;&#x4E0E;&#x9884;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;&#x5177;&#x6709;&#x76F8;&#x540C;ID&#x7684;&#x65B0;&#x5C5E;&#x6027;&#x6765;&#x8986;&#x76D6;&#x5176;&#x8BBE;&#x7F6E;&#x3002;</p>
+<p>&#x6709;&#x5173;&#x6240;&#x6709;&#x53EF;&#x7528;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x7684;&#x5B8C;&#x6574;&#x5217;&#x8868;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_table.html#reference_ufj_5kz_4k" target="_blank">&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x5FEB;&#x901F;&#x53C2;&#x8003;</a>&#x3002;</p>
+<p><code>org.apache.geode.cache.RegionShortcut</code> Javadocs&#x63D0;&#x4F9B;&#x4E86;&#x5B8C;&#x6574;&#x7684;&#x9009;&#x9879;&#x5217;&#x8868;&#x3002;</p>
+<p><strong>&#x5BF9;&#x7B49;&#x548C;&#x670D;&#x52A1;&#x5668;&#x7684;<code>RegionShortcuts</code></strong></p>
+<p>&#x8FD9;&#x4E9B;&#x662F;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x4E2D;&#x53EF;&#x7528;&#x7684;&#x4E3B;&#x8981;&#x9009;&#x9879;&#x3002; &#x5217;&#x51FA;&#x7684;&#x540D;&#x79F0;&#x5355;&#x72EC;&#x6216;&#x7EC4;&#x5408;&#x663E;&#x793A;&#x5728;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x6807;&#x8BC6;&#x7B26;&#x4E2D;&#xFF0C;&#x5982;&#x201C;PARTITION&#x201D;&#xFF0C;&#x201C;PARTITION_PROXY&#x201D;&#x548C;&#x201C;PARTITION_REDUNDANT&#x201D;&#x4E2D;&#x7684;&#x201C;<code>PARTITION</code>&#x201D;&#x3002;</p>
+<p><strong>&#x7F13;&#x5B58;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x6A21;&#x5F0F;</strong></p>
+<ul>
+<li><code>PARTITION</code></li>
+</ul>
+<p>  . &#x521B;&#x5EFA;&#x5206;&#x533A;&#x533A;&#x57DF;&#x3002; &#x8FD9;&#x662F;&#x8BE5;&#x5730;&#x533A;&#x7684;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x3002; &#x60A8;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6307;&#x5B9A;&#x8FD9;&#x4E9B;&#x9009;&#x9879;</p>
+<pre><code>  PARTITION
+</code></pre><p>  :</p>
+<ul>
+<li><strong>PROXY</strong>. &#x6570;&#x636E;&#x4E0D;&#x5B58;&#x50A8;&#x5728;&#x672C;&#x5730;&#x7F13;&#x5B58;&#x4E2D;&#xFF0C;&#x6210;&#x5458;&#x662F;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x6570;&#x636E;&#x8BBF;&#x95EE;&#x8005;&#x3002; &#x8FD9;&#x9700;&#x8981;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x521B;&#x5EFA;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x975E;&#x4EE3;&#x7406;&#x526F;&#x672C;&#xFF0C;&#x56E0;&#x6B64;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x67D0;&#x5904;&#x3002;</li>
+<li><strong>REDUNDANT</strong>. &#x8BE5;&#x533A;&#x57DF;&#x5B58;&#x50A8;&#x6240;&#x6709;&#x6570;&#x636E;&#x7684;&#x8F85;&#x52A9;&#x526F;&#x672C;&#xFF0C;&#x4EE5;&#x5B9E;&#x73B0;&#x9AD8;&#x53EF;&#x7528;&#x6027;&#x3002;</li>
+</ul>
+<ul>
+<li><p><code>REPLICATE</code></p>
+<p>. &#x521B;&#x5EFA;&#x590D;&#x5236;&#x533A;&#x57DF;&#x3002; &#x8FD9;&#x662F;&#x8BE5;&#x5730;&#x533A;&#x7684;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x3002; &#x60A8;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6307;&#x5B9A;&#x8FD9;&#x4E9B;&#x9009;&#x9879;</p>
+</li>
+</ul>
+<pre><code>  REPLICATE
+</code></pre><p>  :</p>
+<ul>
+<li><strong>PROXY</strong>. &#x6570;&#x636E;&#x4E0D;&#x5B58;&#x50A8;&#x5728;&#x672C;&#x5730;&#x7F13;&#x5B58;&#x4E2D;&#xFF0C;&#x6210;&#x5458;&#x662F;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x6570;&#x636E;&#x8BBF;&#x95EE;&#x8005;&#x3002; &#x8FD9;&#x9700;&#x8981;&#x5176;&#x4ED6;&#x6210;&#x5458;&#x521B;&#x5EFA;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x975E;&#x4EE3;&#x7406;&#x526F;&#x672C;&#xFF0C;&#x56E0;&#x6B64;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x67D0;&#x5904;&#x3002;</li>
+</ul>
+<ul>
+<li><strong>LOCAL</strong>. &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x4E13;&#x7528;&#x4E8E;&#x5B9A;&#x4E49;&#x6210;&#x5458;&#x7684;&#x533A;&#x57DF;&#x3002;</li>
+</ul>
+<p><strong>Data Eviction</strong></p>
+<ul>
+<li><strong>HEAP_LRU</strong>.&#x5F53;Geode&#x8D44;&#x6E90;&#x7BA1;&#x7406;&#x5668;&#x786E;&#x5B9A;&#x7F13;&#x5B58;&#x5DF2;&#x8FBE;&#x5230;&#x914D;&#x7F6E;&#x7684;&#x5B58;&#x50A8;&#x9650;&#x5236;&#x65F6;&#xFF0C;&#x5BFC;&#x81F4;&#x6700;&#x8FD1;&#x6700;&#x5C11;&#x4F7F;&#x7528;&#x7684;&#x6570;&#x636E;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x9010;&#x51FA;&#x3002;</li>
+</ul>
+<p><strong>Disk Storage</strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x5355;&#x72EC;&#x6216;&#x7EC4;&#x5408;&#x6307;&#x5B9A;&#x8FD9;&#x4E9B;&#xFF1A;</p>
+<ul>
+<li><strong>PERSISTENT</strong>. &#x9664;&#x4E86;&#x5C06;&#x6240;&#x6709;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x4E4B;&#x5916;&#xFF0C;&#x8FD8;&#x5C06;&#x6240;&#x6709;&#x6570;&#x636E;&#x5907;&#x4EFD;&#x5230;&#x78C1;&#x76D8;&#x3002;</li>
+<li><strong>OVERFLOW</strong>. &#x5F53;&#x5185;&#x5B58;&#x4F7F;&#x7528;&#x7387;&#x8FC7;&#x9AD8;&#x65F6;&#xFF0C;&#x5C06;&#x6570;&#x636E;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x79FB;&#x51FA;&#x5E76;&#x79FB;&#x81F3;&#x78C1;&#x76D8;&#x4E0A;&#x3002;</li>
+</ul>
+<p><strong>&#x5BA2;&#x6237;&#x7AEF;&#x7684;<code>ClientRegionShortcuts</code></strong></p>
+<p>&#x8FD9;&#x4E9B;&#x662F;&#x5BA2;&#x6237;&#x7AEF;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x4E2D;&#x53EF;&#x7528;&#x7684;&#x4E3B;&#x8981;&#x9009;&#x9879;&#x3002; &#x5217;&#x51FA;&#x7684;&#x540D;&#x79F0;&#x5355;&#x72EC;&#x6216;&#x7EC4;&#x5408;&#x51FA;&#x73B0;&#x5728;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x6807;&#x8BC6;&#x7B26;&#x4E2D;&#xFF0C;&#x5982;&#x201C;PROXY&#x201D;&#x548C;&#x201C;CACHING_PROXY&#x201D;&#x4E2D;&#x7684;&#x201C;PROXY&#x201D;&#x3002;</p>
+<p><strong>&#x4E0E;&#x670D;&#x52A1;&#x5668;&#x548C;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x7684;&#x901A;&#x4FE1;</strong></p>
+<ul>
+<li><strong>PROXY</strong>. &#x4E0D;&#x5C06;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x4E2D;&#xFF0C;&#x800C;&#x662F;&#x5C06;&#x533A;&#x57DF;&#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5668;&#x4EE5;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x8BF7;&#x6C42;&#x548C;&#x66F4;&#x65B0;&#xFF0C;&#x5174;&#x8DA3;&#x6CE8;&#x518C;&#x7B49;&#x3002; &#x5BA2;&#x6237;&#x7AEF;&#x662F;&#x8BE5;&#x5730;&#x533A;&#x7684;&#x6570;&#x636E;&#x8BBF;&#x95EE;&#x8005;&#x3002;</li>
+<li><strong>CACHING_PROXY</strong>. &#x5C06;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x4E2D;&#xFF0C;&#x5E76;&#x5C06;&#x8BE5;&#x533A;&#x57DF;&#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5668;&#x4EE5;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x8BF7;&#x6C42;&#x548C;&#x66F4;&#x65B0;&#xFF0C;&#x5174;&#x8DA3;&#x6CE8;&#x518C;&#x7B49;&#x3002;</li>
+<li><strong>LOCAL</strong>. &#x5C06;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x7F13;&#x5B58;&#x4E2D;&#xFF0C;&#x5E76;&#x4E14;&#x4E0D;&#x5C06;&#x8BE5;&#x533A;&#x57DF;&#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5668;&#x3002; &#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x4EC5;&#x9650;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x533A;&#x57DF;&#x3002; &#x8BF7;&#x6CE8;&#x610F;&#xFF0C;&#x8FD9;&#x4E0E;&#x5C06;&#x533A;&#x57DF;&#x7684;<code>scope</code>&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x4E3A;<code>LOCAL</code>&#x4E0D;&#x540C;&#x3002;</li>
+</ul>
+<p><strong>Data Eviction</strong></p>
+<ul>
+<li><strong>HEAP_LRU</strong>. &#x5F53;Geode&#x8D44;&#x6E90;&#x7BA1;&#x7406;&#x5668;&#x786E;&#x5B9A;&#x7F13;&#x5B58;&#x5DF2;&#x8FBE;&#x5230;&#x914D;&#x7F6E;&#x7684;&#x5B58;&#x50A8;&#x9650;&#x5236;&#x65F6;&#xFF0C;&#x5BFC;&#x81F4;&#x6700;&#x8FD1;&#x6700;&#x5C11;&#x4F7F;&#x7528;&#x7684;&#x6570;&#x636E;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x9010;&#x51FA;&#x3002;</li>
+</ul>
+<p><strong>Disk Storage</strong></p>
+<p>&#x4F7F;&#x7528;LOCAL&#x548C;CACHING&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x9009;&#x9879;&#xFF0C;&#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x5355;&#x72EC;&#x6216;&#x7EC4;&#x5408;&#x6307;&#x5B9A;&#x8FD9;&#x4E9B;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x9009;&#x9879;&#xFF1A;</p>
+<ul>
+<li><strong>PERSISTENT</strong>. &#x9664;&#x4E86;&#x5C06;&#x6240;&#x6709;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x4E4B;&#x5916;&#xFF0C;&#x8FD8;&#x5C06;&#x6240;&#x6709;&#x6570;&#x636E;&#x5907;&#x4EFD;&#x5230;&#x78C1;&#x76D8;&#x3002;</li>
+<li><strong>OVERFLOW</strong>. &#x5F53;&#x5185;&#x5B58;&#x4F7F;&#x7528;&#x7387;&#x8FC7;&#x9AD8;&#x65F6;&#xFF0C;&#x5C06;&#x6570;&#x636E;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x79FB;&#x51FA;&#x5E76;&#x79FB;&#x81F3;&#x78C1;&#x76D8;&#x4E0A;&#x3002;</li>
+</ul>
+<h3 id="&#x5B58;&#x50A8;&#x548C;&#x68C0;&#x7D22;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;">&#x5B58;&#x50A8;&#x548C;&#x68C0;&#x7D22;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x548C;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;</h3>
+<p>&#x4F7F;&#x7528;&#x8FD9;&#x4E9B;&#x793A;&#x4F8B;&#x5F00;&#x59CB;&#x4F7F;&#x7528;Geode&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x3002;</p>
+<p>&#x5BF9;&#x4E8E;&#x5BF9;&#x7B49;&#x65B9;&#x548C;&#x670D;&#x52A1;&#x5668;&#x7684;<code>org.apache.geode.cache.RegionShortcut</code>&#x548C;&#x7528;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x7684;<code>org.apache.geode.cache.client.ClientRegionShortcut</code>&#x7684;Geode&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#xFF0C;&#x65E0;&#x8BBA;&#x60A8;&#x5728;<code>cache.xml</code>&#x4E2D;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#xFF0C;&#x90FD;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6216;&#x901A;&#x8FC7;API&#x3002; &#x60A8;&#x5B58;&#x50A8;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x5C5E;&#x6027;&#x4ECE;&#x60A8;&#x5B58;&#x50A8;&#x5B83;&#x4EEC;&#x7684;&#x90A3;&#x4E00;&#x523B;&#x8D77;&#x5C31;&#x53EF;&#x7528;&#x3002;</p>
+<p>&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x662F;&#x7279;&#x6B8A;&#x7684;Geode&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#xFF0C;&#x5177;&#x6709;&#x6807;&#x8BC6;&#x540D;&#x79F0;&#x3002; &#x901A;&#x8FC7;&#x8BBE;&#x7F6E;&#x5C5E;&#x6027;&#x5E76;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5C5E;&#x6027;<code>id</code>&#x4E2D;&#x7684;&#x552F;&#x4E00;&#x6807;&#x8BC6;&#x7B26;&#x5B58;&#x50A8;&#x5C5E;&#x6027;&#x6765;&#x521B;&#x5EFA;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x3002; &#x901A;&#x8FC7;&#x63D0;&#x4F9B;&#x5FEB;&#x6377;&#x679A;&#x4E3E;&#x503C;&#x6216;&#x60A8;&#x5728;<code>id</code>&#x4E2D;&#x4E3A;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x6307;&#x5B9A;&#x7684;&#x540D;&#x79F0;&#x6765;&#x68C0;&#x7D22;&#x547D;&#x540D;&#x5C5E;&#x6027;&#xFF1A;</p>
+<ul>
+<li>&#x5728;API&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5DE5;&#x5382;&#x521B;&#x5EFA;&#x4E2D;&#x7684;&#x6807;&#x8BC6;&#x7B26;</li>
+<li>&#x5728;<code>cache.xml</code>&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>&lt;region&gt;</code>&#x6216;<code>&lt;region-attribute&gt;``refid</code>&#x8BBE;&#x7F6E;&#x4E2D;&#x7684;&#x6807;&#x8BC6;&#x7B26;&#x3002; &#x4E3A;&#x65B9;&#x4FBF;&#x8D77;&#x89C1;&#xFF0C;<code>refid</code>&#x5728;&#x4E24;&#x4E2A;&#x5143;&#x7D20;&#x4E2D;&#x90FD;&#x53EF;&#x7528;</li>
+</ul>
+<p><strong>&#x4F8B;&#x5B50;</strong></p>
+<p><strong>Example #1</strong></p>
+<p>&#x6B64;&#x793A;&#x4F8B;&#x663E;&#x793A;<code>cache.xml</code>&#x4E2D;&#x7684;&#x5206;&#x533A;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#xFF1A;</p>
+<ul>
+<li><p>&#x7B2C;&#x4E00;&#x4E2A;<code>region-attributes</code>&#x58F0;&#x660E;&#x4EE5;&#x9884;&#x5B9A;&#x4E49;&#x7684;<code>PARTITION_REDUNDANT</code>&#x5C5E;&#x6027;&#x5F00;&#x5934;&#xFF0C;&#x4FEE;&#x6539;<code>local-max-memory</code>&#x8BBE;&#x7F6E;&#xFF0C;&#x5E76;&#x5C06;&#x7ED3;&#x679C;&#x5C5E;&#x6027;&#x5B58;&#x50A8;&#x5728;&#x81EA;&#x5B9A;&#x4E49;&#x547D;&#x540D;&#x7684;<code>myPartition</code>&#x5C5E;&#x6027;&#x4E2D;&#x3002;</p>
+</li>
+<li><p>&#x533A;&#x57DF;&#x58F0;&#x660E;&#x4F7F;&#x7528;&#x65B0;&#x5B58;&#x50A8;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x4F46;&#x6BCF;&#x4E2A;&#x5C5E;&#x6027;&#x90FD;&#x6709;&#x81EA;&#x5DF1;&#x7684;&#x5174;&#x8DA3;&#x7B56;&#x7565;&#xFF0C;&#x8BE5;&#x7B56;&#x7565;&#x5728;&#x5355;&#x4E2A;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x4E2D;&#x6307;&#x5B9A;&#x3002;</p>
+<pre><code class="lang-XML"><span class="hljs-comment">&lt;!-- Retrieving and storing attributes --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">region-attributes</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;myPartition&quot;</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;PARTITION_REDUNDANT&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span> <span class="hljs-attr">local-max-memory</span>=<span class="hljs-string">&quot;512&quot;</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">region-attributes</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Two partitioned regions, one colocated with the other --&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Attributes are retrieved and applied in the first region --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">region</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;PartitionedRegion1&quot;</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;myPartition&quot;</span>/&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Same stored attributes, modification for this region--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">region</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;PartitionedRegion2&quot;</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;myPartition&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">region-attributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span> <span class="hljs-attr">colocated-with</span>=<span class="hljs-string">&quot;PartitionedRegion1&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">region-attributes</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">region</span>&gt;</span>
+</code></pre>
+</li>
+</ul>
+<p><strong>Example #2</strong></p>
+<p>&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4F7F;&#x7528;<code>RegionFactory</code> API&#x6839;&#x636E;&#x9884;&#x5B9A;&#x4E49;&#x7684;<code>PARTITION</code>&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x533A;&#x57DF;&#xFF1A;</p>
+<pre><code>final Region diskPortfolios = 
+    new RegionFactory(&quot;PARTITION&quot;).create(&quot;Portfolios&quot;);
+</code></pre><p>&#x6B64;&#x793A;&#x4F8B;&#x68C0;&#x7D22;&#x5C5E;&#x6027;&#x6A21;&#x677F;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;&#x4FEE;&#x6539;&#x7684;&#x6C60;&#x89C4;&#x8303;&#x5C06;&#x5176;&#x4F20;&#x9012;&#x7ED9;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#xFF1A;</p>
+<pre><code class="lang-java">ClientRegionFactory&lt;String,String&gt; regionFactory =         
+    cache.createClientRegionFactory(PROXY);
+Region&lt;String, String&gt; region = regionFactory
+    .setPoolName(<span class="hljs-string">&quot;publisher&quot;</span>)
+    .create(<span class="hljs-string">&quot;DATA&quot;</span>);
+</code></pre>
+<h3 id="&#x7BA1;&#x7406;&#x533A;&#x57DF;&#x5C5E;&#x6027;">&#x7BA1;&#x7406;&#x533A;&#x57DF;&#x5C5E;&#x6027;</h3>
+<p>&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x53EF;&#x4EE5;&#x5FAE;&#x8C03;&#x533A;&#x57DF;&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x8BBE;&#x7F6E;&#x63D0;&#x4F9B;&#x7684;&#x533A;&#x57DF;&#x914D;&#x7F6E;&#x3002;</p>
+<p>&#x6240;&#x6709;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x90FD;&#x5177;&#x6709;&#x9ED8;&#x8BA4;&#x8BBE;&#x7F6E;&#xFF0C;&#x56E0;&#x6B64;&#x60A8;&#x53EA;&#x9700;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x6765;&#x8BBE;&#x7F6E;&#x8981;&#x8986;&#x76D6;&#x7684;&#x5C5E;&#x6027;&#x3002; &#x89C1;<a href="http://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes" target="_blank"></a>&#x3002;</p>
+<p><strong>&#x5B9A;&#x4E49;&#x533A;&#x57DF;&#x5C5E;&#x6027;</strong></p>
+<p>&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x4EFB;&#x4E00;&#x65B9;&#x6CD5;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#xFF1A;</p>
+<ul>
+<li><p><code>cache.xml`` &lt;region&gt;</code>&#x5143;&#x7D20;&#x4E2D;&#x7684;&#x58F0;&#x660E;&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cache</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">region</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;exampleRegion&quot;</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;REPLICATE&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">region-attributes</span> <span class="hljs-attr">statistics-enabled</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">entry-idle-time</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">expiration-attributes</span> <span class="hljs-attr">timeout</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;destroy&quot;</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">entry-idle-time</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">cache-listener</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">class-name</span>&gt;</span>quickstart.SimpleCacheListener<span class="hljs-tag">&lt;/<span class="hljs-name">class-name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">cache-listener</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">region-attributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">region</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">cache</span>&gt;</span>
+</code></pre>
+<p>&#x5728;&#x542F;&#x52A8;&#x65F6;&#x52A0;&#x8F7D;<code>cache.xml</code>&#x65F6;&#xFF0C;&#x4F1A;&#x81EA;&#x52A8;&#x521B;&#x5EFA;&#x58F0;&#x660E;&#x7684;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x5E76;&#x5C06;&#x5176;&#x5E94;&#x7528;&#x4E8E;&#x8BE5;&#x533A;&#x57DF;&#x3002;</p>
+</li>
+<li><p><code>RegionFactory</code> API<code>set</code> *&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-comment">// Creating a partitioned region using the RegionFactory</span>
+RegionFactory rf = cache.createRegionFactory(RegionShortcut.PARTITION);
+rf.addCacheListener(<span class="hljs-keyword">new</span> LoggingCacheListener());
+custRegion = rf.create(<span class="hljs-string">&quot;customer&quot;</span>);
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-comment">// Creating a partitioned region using the RegionFactory, with attribute modifications</span>
+RegionFactory rf = 
+  cache.createRegionFactory(RegionShortcut.PARTITION);
+rf.setPartitionResolver(<span class="hljs-keyword">new</span> CustomerOrderResolver());
+rf.addCacheListener(<span class="hljs-keyword">new</span> LoggingCacheListener());
+custRegion = rf.create(<span class="hljs-string">&quot;customer&quot;</span>);
+</code></pre>
+<pre><code class="lang-java"><span class="hljs-comment">// Creating a client with a Pool Specification Using ClientRegionFactory</span>
+ClientRegionFactory&lt;String,String&gt; cRegionFactory = 
+    cache.createClientRegionFactory(PROXY);
+Region&lt;String, String&gt; region = 
+    cRegionFactory.setPoolName(<span class="hljs-string">&quot;Pool3&quot;</span>).create(<span class="hljs-string">&quot;DATA&quot;</span>);
+</code></pre>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x53D1;&#x51FA;gfsh<code>create region</code>&#x547D;&#x4EE4;&#x3002;</p>
+</li>
+</ul>
+<p><strong>&#x4FEE;&#x6539;&#x533A;&#x57DF;&#x5C5E;&#x6027;</strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x5728;&#x521B;&#x5EFA;&#x533A;&#x57DF;&#x540E;&#x4FEE;&#x6539;&#x533A;&#x57DF;&#x7684;&#x4E8B;&#x4EF6;&#x5904;&#x7406;&#x7A0B;&#x5E8F;&#x4EE5;&#x53CA;&#x5230;&#x671F;&#x548C;&#x9010;&#x51FA;&#x5C5E;&#x6027;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x9664;&#x975E;&#x7EDD;&#x5BF9;&#x5FC5;&#x8981;&#xFF0C;&#x5426;&#x5219;&#x4E0D;&#x8981;&#x4FEE;&#x6539;&#x73B0;&#x6709;&#x533A;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x3002; &#x5728;&#x533A;&#x57DF;&#x521B;&#x5EFA;&#x65F6;&#x521B;&#x5EFA;&#x6240;&#x9700;&#x7684;&#x5C5E;&#x6027;&#x66F4;&#x6709;&#x6548;&#x3002;</p>
+<p>&#x4EE5;&#x4E0B;&#x5217;&#x65B9;&#x5F0F;&#x4E4B;&#x4E00;&#x4FEE;&#x6539;&#x5C5E;&#x6027;&#xFF1A;</p>
+<ul>
+<li><p>&#x901A;&#x8FC7;&#x52A0;&#x8F7D;&#x5E26;&#x6709;&#x4FEE;&#x6539;&#x7684;&#x533A;&#x57DF;&#x5C5E;&#x6027;&#x89C4;&#x8303;&#x7684;<code>cache.xml</code>&#xFF1A;</p>
+<pre><code class="lang-xml"><span class="hljs-comment">&lt;!-- Change the listener for exampleRegion
+...
+    &lt;region name=&quot;exampleRegion&quot;&gt;
+      &lt;region-attributes statistics-enabled=&quot;true&quot;&gt;
+        &lt;cache-listener&gt;
+          &lt;class-name&gt;quickstart.ComplicatedCacheListener&lt;/class-name&gt;
+        &lt;/cache-listener&gt;
+      &lt;/region-attributes&gt;
+    &lt;/region&gt;
+...
+</span></code></pre>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>AttributesMutator</code> API&#xFF1A;</p>
+<ol>
+<li>&#x4ECE;&#x533A;&#x57DF;&#x4E2D;&#x68C0;&#x7D22;<code>AttributesMutator</code></li>
+<li>&#x8C03;&#x7528;mutator set&#x65B9;&#x6CD5;&#x6765;&#x4FEE;&#x6539;&#x5C5E;&#x6027;&#xFF1A;</li>
+</ol>
+<pre><code class="lang-java">currRegion = cache.getRegion(<span class="hljs-string">&quot;root&quot;</span>);
+AttributesMutator mutator = <span class="hljs-keyword">this</span>.currRegion.getAttributesMutator();
+mutator.addCacheListener(<span class="hljs-keyword">new</span> LoggingCacheListener());
+</code></pre>
+</li>
+<li><p>&#x901A;&#x8FC7;&#x53D1;&#x51FA;gfsh<code>alter region</code>&#x547D;&#x4EE4;&#x3002; &#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/alter.html#topic_E74ED23CB60342538B2175C326E7D758" target="_blank">alter region</a>&#x3002;</p>
+</li>
+</ul>
+<h3 id="&#x4E3A;&#x533A;&#x57DF;&#x548C;&#x6761;&#x76EE;&#x521B;&#x5EFA;&#x81EA;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;">&#x4E3A;&#x533A;&#x57DF;&#x548C;&#x6761;&#x76EE;&#x521B;&#x5EFA;&#x81EA;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;</h3>
+<p>&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x5C5E;&#x6027;&#x53EF;&#x4EE5;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x5B58;&#x50A8;&#x4E0E;&#x60A8;&#x7684;&#x533A;&#x57DF;&#x6216;&#x5176;&#x6761;&#x76EE;&#x76F8;&#x5173;&#x7684;&#x4FE1;&#x606F;&#x3002; &#x8FD9;&#x4E9B;&#x5C5E;&#x6027;&#x4EC5;&#x5BF9;&#x672C;&#x5730;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x53EF;&#x89C1;&#xFF0C;&#x5E76;&#x4E14;&#x4E0D;&#x4F1A;&#x5206;&#x53D1;&#x3002;</p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x81EA;&#x5B9A;&#x4E49;&#x7528;&#x6237;&#x5C5E;&#x6027;&#xFF0C;&#x4EE5;&#x4FBF;&#x53EF;&#x4EE5;&#x5C06;&#x6570;&#x636E;&#x4E0E;&#x533A;&#x57DF;&#x6216;&#x6761;&#x76EE;&#x76F8;&#x5173;&#x8054;&#xFF0C;&#x5E76;&#x5728;&#x4EE5;&#x540E;&#x68C0;&#x7D22;&#x5B83;&#x3002; &#x4E0E;&#x5176;&#x4ED6;&#x914D;&#x7F6E;&#x8BBE;&#x7F6E;&#x4E0D;&#x540C;&#xFF0C;&#x8FD9;&#x4E9B;&#x5C5E;&#x6027;&#x4EC5;&#x4F9B;&#x60A8;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4F7F;&#x7528;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x7528;&#x6237;&#x5C5E;&#x6027;&#x4E0D;&#x662F;&#x5206;&#x5E03;&#x5F0F;&#x7684;&#x3002;</p>
+<ol>
+<li>&#x4F7F;&#x7528;&#x5C5E;&#x6027;&#x5B9A;&#x4E49;&#x521B;&#x5EFA;Java<code>Object</code>&#x3002;</li>
+<li>&#x5C06;&#x5BF9;&#x8C61;&#x9644;&#x52A0;&#x5230;&#x533A;&#x57DF;&#x6216;&#x6761;&#x76EE;&#xFF1A;<ul>
+<li><code>Region.setUserAttribute(userAttributeObject)</code></li>
+<li><code>Region.getEntry(key).setUserAttribute(userAttributeObject)</code></li>
+</ul>
+</li>
+<li>&#x83B7;&#x53D6;&#x5C5E;&#x6027;&#x503C;&#xFF1A;<ul>
+<li><code>Region.getUserAttribute()</code></li>
+<li><code>Region.getEntry(key).getUserAttribute()</code></li>
+</ul>
+</li>
+</ol>
+<p>&#x6B64;&#x793A;&#x4F8B;&#x5B58;&#x50A8;&#x5C5E;&#x6027;&#x4EE5;&#x4F9B;&#x7A0D;&#x540E;&#x7531;&#x7F13;&#x5B58;&#x7F16;&#x5199;&#x5668;&#x68C0;&#x7D22;&#x3002;</p>
+<pre><code>// Attach a user attribute to a Region with database info for table portfolio
+Object myAttribute = &quot;portfolio&quot;; 
+final Region portfolios = 
+      new RegionFactory().setCacheWriter(new PortfolioDBWriter()).create(&quot;Portfolios&quot;); 
+Portfolios.setUserAttribute(myAttribute);
+//Implement a cache writer that reads the user attribute setting
+public class PortfolioDBWriter extends CacheWriterAdapter {
+  public void beforeCreate(RegionEvent event) {
+    table = (String)event.getRegion().getUserAttribute();
+    // update database table using name from attribute
+        . . .
+  }
+}
+</code></pre><p><strong>&#x9650;&#x5236;&#x548C;&#x66FF;&#x4EE3;&#x65B9;&#x6848;</strong></p>
+<p>&#x7528;&#x6237;&#x5C5E;&#x6027;&#x4E0D;&#x4F1A;&#x5206;&#x53D1;&#x7ED9;&#x5176;&#x4ED6;&#x8FDB;&#x7A0B;&#xFF0C;&#x56E0;&#x6B64;&#x5982;&#x679C;&#x9700;&#x8981;&#x5728;&#x4F7F;&#x7528;&#x8BE5;&#x533A;&#x57DF;&#x6216;&#x6761;&#x76EE;&#x7684;&#x6BCF;&#x4E2A;&#x8FDB;&#x7A0B;&#x4E2D;&#x5B9A;&#x4E49;&#x6BCF;&#x4E2A;&#x5C5E;&#x6027;&#x3002; &#x60A8;&#x9700;&#x8981;&#x5355;&#x72EC;&#x66F4;&#x65B0;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x6BCF;&#x4E2A;&#x5B9E;&#x4F8B;&#x3002; &#x7528;&#x6237;&#x5C5E;&#x6027;&#x4E0D;&#x4F1A;&#x5B58;&#x50A8;&#x5230;&#x78C1;&#x76D8;&#x4EE5;&#x8FDB;&#x884C;&#x533A;&#x57DF;&#x6301;&#x4E45;&#x6027;&#x6216;&#x6EA2;&#x51FA;&#xFF0C;&#x56E0;&#x6B64;&#x65E0;&#x6CD5;&#x6062;&#x590D;&#x5B83;&#x4EEC;&#x4EE5;&#x91CD;&#x65B0;&#x521D;&#x59CB;&#x5316;&#x8BE5;&#x533A;&#x57DF;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x60A8;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x9700;&#x8981;&#x7528;&#x6237;&#x5C5E;&#x6027;&#x4E0D;&#x652F;&#x6301;&#x7684;&#x529F;&#x80FD;&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x533A;&#x57DF;&#x6765;&#x4FDD;&#x5B58;&#x6B64;&#x6570;&#x636E;&#x3002; &#x4F8B;&#x5982;&#xFF0C;&#x60A8;&#x5B9A;&#x4E49;&#x7684;&#x533A;&#x57DF;AttributesRegion&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x540D;&#x79F0;&#x4F5C;&#x4E3A;&#x952E;&#xFF0C;&#x4F7F;&#x7528;&#x7528;&#x6237;&#x5C5E;&#x6027;&#x4F5C;&#x4E3A;&#x503C;&#x3002; &#x5BF9;AttributesRegion&#x7684;&#x66F4;&#x6539;&#x5C06;&#x5206;&#x53D1;&#x7ED9;&#x5176;&#x4ED6;&#x8FDB;&#x7A0B;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x9700;&#x8981;&#x914D;&#x7F6E;&#x8BE5;&#x533A;&#x57DF;&#x7684;&#x6301;&#x4E45;&#x6027;&#x6216;&#x6EA2;&#x51FA;&#x3002;</p>
+<h3 id="&#x7528;&#x73B0;&#x6709;&#x5185;&#x5BB9;&#x6784;&#x5EFA;&#x65B0;&#x533A;&#x57DF;">&#x7528;&#x73B0;&#x6709;&#x5185;&#x5BB9;&#x6784;&#x5EFA;&#x65B0;&#x533A;&#x57DF;</h3>
+<p>&#x53EF;&#x80FD;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x73B0;&#x6709;&#x7CFB;&#x7EDF;&#x7684;&#x6570;&#x636E;&#x52A0;&#x8F7D;&#x65B0;&#x7684;&#x533A;&#x57DF;&#x6216;&#x96C6;&#x7FA4;&#x3002; &#x6709;&#x4E24;&#x79CD;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x5B8C;&#x6210;&#x6B64;&#x4EFB;&#x52A1;&#x3002; &#x4F7F;&#x7528;&#x7684;&#x65B9;&#x6CD5;&#x53D6;&#x51B3;&#x4E8E;&#x65B0;&#x96C6;&#x7FA4;&#x548C;&#x73B0;&#x6709;&#x96C6;&#x7FA4;&#x7684;&#x7EC4;&#x7EC7;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x65B0;&#x96C6;&#x7FA4;&#x548C;&#x73B0;&#x6709;&#x96C6;&#x7FA4;&#x4E2D;&#x6210;&#x5458;&#x7684;&#x6570;&#x91CF;&#x548C;&#x7C7B;&#x578B;&#x76F8;&#x540C;&#xFF0C;&#x5219;&#x6700;&#x7B80;&#x5355;&#x7684;&#x9009;&#x9879;&#x662F;&#x5BF9;&#x6C38;&#x4E45;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x5185;&#x5BB9;&#x4F7F;&#x7528;&#x5907;&#x4EFD;&#x548C;&#x8FD8;&#x539F;&#x3002; &#x5728;&#x73B0;&#x6709;&#x96C6;&#x7FA4;&#x7684;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x4E2D;&#x5BF9;&#x6301;&#x4E45;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x5B8C;&#x5168;&#x8054;&#x673A;&#x5907;&#x4EFD;&#x3002; &#x5C06;&#x7EC4;&#x6210;&#x5907;&#x4EFD;&#x7684;&#x6587;&#x4EF6;&#x590D;&#x5236;&#x5230;&#x65B0;&#x7684;&#x96C6;&#x7FA4;&#x4F4D;&#x7F6E;&#x3002; &#x8FD8;&#x539F;&#x5C06;&#x6570;&#x636E;&#x6CE8;&#x5165;&#x65B0;&#x96C6;&#x7FA4;&#x3002;&#x6709;&#x5173;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x5907;&#x4EFD;&#x4EE5;&#x53CA;&#x4F7F;&#x7528;&#x5907;&#x4EFD;&#x8FD8;&#x539F;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x7684;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x89C1;<a href="http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html" target="_blank">&#x521B;&#x5EFA;&#x7CFB;&#x7EDF;&#x6062;&#x590D;&#x548C;&#x64CD;&#x4F5C;&#x7BA1;&#x7406;&#x5907;&#x4EFD;</a>&#x3002;</p>
+<p>&#x5F53;&#x65B0;&#x6210;&#x5458;&#x548C;&#x73B0;&#x6709;&#x96C6;&#x7FA4;&#x4E2D;&#x6210;&#x5458;&#x7684;&#x6570;&#x91CF;&#x6216;&#x7C7B;&#x578B;&#x4E0D;&#x76F8;&#x540C;&#x65F6;&#xFF0C;&#x91C7;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x65B9;&#x6CD5;&#x3002; &#x6B64;&#x65B9;&#x6CD5;&#x4F7F;&#x7528;&#x533A;&#x57DF;&#x6570;&#x636E;&#x7684;&#x5BFC;&#x51FA;&#x548C;&#x5BFC;&#x5165;&#x3002; &#x5BFC;&#x51FA;&#x73B0;&#x6709;&#x96C6;&#x7FA4;&#x7684;&#x533A;&#x57DF;&#x6570;&#x636E;&#x4EE5;&#x521B;&#x5EFA;&#x5FEB;&#x7167;&#x3002; &#x5C06;&#x5FEB;&#x7167;&#x590D;&#x5236;&#x5230;&#x65B0;&#x7684;&#x96C6;&#x7FA4;&#x4F4D;&#x7F6E;&#x3002; &#x5C06;&#x5FEB;&#x7167;&#x5BFC;&#x5165;&#x65B0;&#x96C6;&#x7FA4;&#x3002;&#x6709;&#x5173;&#x5236;&#x4F5C;&#x548C;&#x4F7F;&#x7528;&#x5FEB;&#x7167;&#x7684;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/managing/cache_snapshots/chapter_overview.html" target="_blank">&#x7F13;&#x5B58;&#x548C;&#x533A;&#x57DF;&#x5FEB;&#x7167;</a>&#x4E2D;&#x7684;&#x76F8;&#x5E94;&#x90E8;&#x5206;&#x3002;</p>
+<h2 id="&#x6570;&#x636E;&#x6761;&#x76EE;">&#x6570;&#x636E;&#x6761;&#x76EE;</h2>
+<p>&#x6570;&#x636E;&#x6761;&#x76EE;&#x662F;&#x5B58;&#x50A8;&#x6570;&#x636E;&#x7684;&#x952E;/&#x503C;&#x5BF9;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x5355;&#x72EC;&#x548C;&#x6279;&#x91CF;&#x7BA1;&#x7406;&#x60A8;&#x7684;&#x6761;&#x76EE;&#x3002; &#x8981;&#x5C06;&#x57DF;&#x5BF9;&#x8C61;&#x7528;&#x4E8E;&#x6761;&#x76EE;&#x503C;&#x548C;&#x952E;&#xFF0C;&#x60A8;&#x9700;&#x8981;&#x9075;&#x5FAA;Apache Geode&#x8981;&#x6C42;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x548C;&#x5206;&#x53D1;&#x3002;</p>
+<ul>
+<li><p><strong>&#x7BA1;&#x7406;&#x6570;&#x636E;&#x6761;&#x76EE;</strong></p>
+<p>&#x7F16;&#x5199;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4EE5;&#x521B;&#x5EFA;&#xFF0C;&#x4FEE;&#x6539;&#x548C;&#x7BA1;&#x7406;&#x7F13;&#x5B58;&#x7684;&#x6570;&#x636E;&#x6761;&#x76EE;&#x3002;</p>
+</li>
+<li><p><strong>&#x5728;&#x6570;&#x636E;&#x7F13;&#x5B58;&#x4E2D;&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x7C7B;&#x7684;&#x8981;&#x6C42;</strong></p>
+<p>&#x8BF7;&#x9075;&#x5FAA;&#x4EE5;&#x4E0B;&#x51C6;&#x5219;&#xFF0C;&#x4E3A;&#x7F13;&#x5B58;&#x7684;&#x6761;&#x76EE;&#x952E;&#x548C;&#x503C;&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x57DF;&#x7C7B;&#x3002;</p>
+</li>
+</ul>
+<h3 id="&#x7BA1;&#x7406;&#x6570;&#x636E;&#x6761;&#x76EE;">&#x7BA1;&#x7406;&#x6570;&#x636E;&#x6761;&#x76EE;</h3>
+<p>&#x7F16;&#x5199;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4EE5;&#x521B;&#x5EFA;&#xFF0C;&#x4FEE;&#x6539;&#x548C;&#x7BA1;&#x7406;&#x7F13;&#x5B58;&#x7684;&#x6570;&#x636E;&#x6761;&#x76EE;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x5982;&#x679C;&#x6CA1;&#x6709;&#x5C06;&#x7F13;&#x5B58;&#x7684;<code>copy-on-read</code>&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x4E3A;true&#xFF0C;&#x8BF7;&#x4E0D;&#x8981;&#x66F4;&#x6539;&#x4ECE;Java&#x6761;&#x76EE;&#x8BBF;&#x95EE;&#x65B9;&#x6CD5;&#x8FD4;&#x56DE;&#x7684;&#x5BF9;&#x8C61;&#x3002; &#x800C;&#x662F;&#x521B;&#x5EFA;&#x5BF9;&#x8C61;&#x7684;&#x526F;&#x672C;&#xFF0C;&#x7136;&#x540E;&#x4FEE;&#x6539;&#x526F;&#x672C;&#x5E76;&#x5C06;&#x5176;&#x4F20;&#x9012;&#x7ED9;Java<code>put</code>&#x65B9;&#x6CD5;&#x3002; &#x4FEE;&#x6539;&#x9002;&#x5F53;&#x7684;&#x503C;&#x4F1A;&#x7ED5;&#x8FC7;Geode&#x63D0;&#x4F9B;&#x7684;&#x6574;&#x4E2A;&#x5206;&#x53D1;&#x6846;&#x67B6;&#xFF0C;&#x5305;&#x62EC;&#x7F13;&#x5B58;&#x4FA6;&#x542C;&#x5668;&#x548C;&#x5230;&#x671F;&#x6D3B;&#x52A8;&#xFF0C;&#x5E76;&#x53EF;&#x80FD;&#x4EA7;&#x751F;&#x4E0D;&#x5E0C;&#x671B;&#x7684;&#x7ED3;&#x679C;&#x3002;</p>
+<p><strong>&#x57FA;&#x672C;&#x521B;&#x5EFA;&#x548C;&#x66F4;&#x65B0;</strong></p>
+<p>&#x8981;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x521B;&#x5EFA;&#x6216;&#x66F4;&#x65B0;&#x6761;&#x76EE;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;&#x201C;Region.put&#x201D;&#x3002; &#x4F8B;&#x5982;&#xFF1A;</p>
+<pre><code>String name = ... 
+String value = ...  
+this.currRegion.put(name,value);
+</code></pre><p><strong>&#x6CE8;&#x610F;:</strong> &#x60A8;&#x8FD8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>gfsh put</code>&#x547D;&#x4EE4;&#x5411;&#x533A;&#x57DF;&#x6DFB;&#x52A0;&#x6761;&#x76EE;&#xFF0C;&#x4F7F;&#x7528;<code>get</code>&#x547D;&#x4EE4;&#x4ECE;&#x533A;&#x57DF;&#x4E2D;&#x68C0;&#x7D22;&#x6761;&#x76EE;&#x3002; &#x89C1;<a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/get.html" target="_blank">get</a>&#x548C;<a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/put.html" target="_blank">put</a>&#x4E86;&#x89E3;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x53EA;&#x60F3;&#x521B;&#x5EFA;&#x6761;&#x76EE;&#xFF08;&#x5982;&#x679C;&#x6761;&#x76EE;&#x5DF2;&#x5B58;&#x5728;&#xFF0C;&#x5219;&#x4E3A;&#x7A7A;&#x503C;&#x4E14;&#x65B9;&#x6CD5;&#x5931;&#x8D25;&#xFF09;&#xFF0C;&#x8BF7;&#x6539;&#x7528;<code>Region.create</code>&#x3002;</p>
+<p><strong>&#x6279;&#x5904;&#x7406;&#x64CD;&#x4F5C;(getAll&#xFF0C;putAll&#xFF0C;removeAll)</strong></p>
+<p>Geode&#x63D0;&#x4F9B;&#x4E86;&#x4E09;&#x4E2A;API&#x6765;&#x5BF9;&#x591A;&#x4E2A;&#x533A;&#x57DF;&#x6761;&#x76EE;&#x6267;&#x884C;&#x6279;&#x5904;&#x7406;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<ul>
+<li><code>Region.getAll</code></li>
+<li><code>Region.putAll</code></li>
+<li><code>Region.removeAll</code></li>
+</ul>
+<p><code>getAll</code>&#x65B9;&#x6CD5;&#x83B7;&#x53D6;&#x4E00;&#x7EC4;&#x952E;&#x5E76;&#x8FD4;&#x56DE;&#x6240;&#x63D0;&#x4F9B;&#x952E;&#x7684;&#x503C;&#x7684;&#x201C;Map&#x201D;&#x3002; &#x5982;&#x679C;&#x533A;&#x57DF;&#x4E2D;&#x4E0D;&#x5B58;&#x5728;&#x7ED9;&#x5B9A;&#x952E;&#xFF0C;&#x5219;&#x8FD4;&#x56DE;&#x6620;&#x5C04;&#x4E2D;&#x8BE5;&#x952E;&#x7684;&#x503C;&#x5C06;&#x4E3A;null&#x3002;</p>
+<p><code>putAll</code>&#x65B9;&#x6CD5;&#x63A5;&#x53D7;&#x952E;&#x503C;&#x5BF9;&#x7684;<code>Map</code>&#x5E76;&#x5C06;&#x5B83;&#x4EEC;&#x653E;&#x5165;&#x7F13;&#x5B58;&#x4E2D;&#x5E76;&#x5728;&#x5355;&#x4E2A;&#x64CD;&#x4F5C;&#x4E2D;&#x5206;&#x53D1;&#x5B83;&#x4EEC;&#x3002;</p>
+<p><strong>&#x4F8B;&#x5B50;:</strong></p>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">putAll</span><span class="hljs-params">(String command)</span> <span class="hljs-keyword">throws</span> CacheException 
+</span>{ 
+<span class="hljs-comment">// Get Entry keys and values into Strings key1, ... keyN and value1, ... valueN </span>
+  Map map = <span class="hljs-keyword">new</span> LinkedHashMap(); 
+  map.put(key1, value1)); 
+  ...
+  map.put(keyN, valueN));
+  <span class="hljs-keyword">this</span>.currRegion.putAll(map); 
+}
+</code></pre>
+<p>&#x7F13;&#x5B58;&#x7684;&#x66F4;&#x65B0;&#x6309;&#x7167;&#x5B83;&#x4EEC;&#x653E;&#x7F6E;&#x5728;&#x201C;Map&#x201D;&#x4E2D;&#x7684;&#x987A;&#x5E8F;&#x5355;&#x72EC;&#x5B8C;&#x6210;&#x3002; &#x5BF9;&#x4E8E;&#x5206;&#x533A;&#x533A;&#x57DF;&#xFF0C;&#x591A;&#x4E2A;&#x4E8B;&#x4EF6;&#x4F5C;&#x4E3A;&#x5355;&#x4E2A;&#x6D88;&#x606F;&#x53D1;&#x9001;&#x5230;&#x4E3B;&#x5B58;&#x50A8;&#x6876;&#xFF0C;&#x7136;&#x540E;&#x5206;&#x53D1;&#x5230;&#x8F85;&#x52A9;&#x5B58;&#x50A8;&#x6876;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x5904;&#x7406;&#x5177;&#x6709;&#x5F88;&#x591A;&#x6761;&#x76EE;<code>&#x548C;/&#x6216;</code>&#x975E;&#x5E38;&#x5927;&#x7684;&#x6570;&#x636E;&#x7684;&#x6620;&#x5C04;&#x53EF;&#x80FD;&#x4F1A;&#x5F71;&#x54CD;&#x7CFB;&#x7EDF;&#x6027;&#x80FD;&#x5E76;&#x5BFC;&#x81F4;&#x7F13;&#x5B58;&#x66F4;&#x65B0;&#x8D85;&#x65F6;&#xFF0C;&#x5C24;&#x5176;&#x662F;&#x5728;&#x8BE5;&#x533A;&#x57DF;&#x5BF9;&#x78C1;&#x76D8;&#x4F7F;&#x7528;&#x6EA2;&#x51FA;&#x6216;&#x6301;&#x4E45;&#x6027;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x3002;</p>
+<p><code>removeAll</code>&#x65B9;&#x6CD5;&#x83B7;&#x53D6;&#x4E00;&#x7EC4;&#x952E;&#xFF0C;&#x5E76;&#x4ECE;&#x8BE5;&#x533A;&#x57DF;&#x4E2D;&#x5220;&#x9664;&#x6307;&#x5B9A;&#x952E;&#x7684;&#x6240;&#x6709;&#x6761;&#x76EE;&#x3002; &#x5BF9;&#x4E8E;&#x6307;&#x5B9A;&#x96C6;&#x5408;&#x4E2D;&#x7684;&#x6BCF;&#x4E2A;&#x952E;&#xFF0C;&#x6B64;&#x8C03;&#x7528;&#x5BF9;&#x6B64;&#x533A;&#x57DF;&#x6267;&#x884C;&#x4E00;&#x6B21;&#x8C03;&#x7528;<code>destroy&#xFF08;Object&#xFF09;</code>&#x3002; &#x5982;&#x679C;&#x6761;&#x76EE;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x5219;&#x8DF3;&#x8FC7;&#x8BE5;&#x952E;&#x3002; &#x4E0D;&#x629B;&#x51FA;<code>EntryNotFoundException</code>&#x3002; &#x5982;&#x679C;&#x533A;&#x57DF;&#x7684;&#x8303;&#x56F4;&#x672A;&#x8BBE;&#x7F6E;&#x4E3A;<code>Scope.LOCAL</code>&#xFF0C;&#x5219;&#x6B64;&#x64CD;&#x4F5C;&#x5C06;&#x5206;&#x53D1;&#x7ED9;&#x5176;&#x4ED6;&#x7F13;&#x5B58;&#x3002;</p>
+<p><strong>&#x5B89;&#x5168;&#x6761;&#x76EE;&#x4FEE;&#x6539;</strong></p>
+<p>&#x4ECE;&#x7F13;&#x5B58;&#x4E2D;&#x83B7;&#x53D6;&#x6761;&#x76EE;&#x503C;&#x65F6;&#xFF0C;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x68C0;&#x7D22;&#x65B9;&#x6CD5;&#x4F1A;&#x8FD4;&#x56DE;&#x5BF9;&#x7F13;&#x5B58;&#x5BF9;&#x8C61;&#x7684;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#x3002; &#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x5C3D;&#x5FEB;&#x63D0;&#x4F9B;&#x503C;&#xFF0C;&#x4F46;&#x4E5F;&#x4F1A;&#x6253;&#x5F00;&#x7F13;&#x5B58;&#x4EE5;&#x8FDB;&#x884C;&#x76F4;&#x63A5;&#x7684;&#x5C31;&#x5730;&#x66F4;&#x6539;&#x3002;</p>
+<p><strong>&#x6CE8;&#x610F;:</strong> &#x4E0D;&#x8981;&#x76F4;&#x63A5;&#x4FEE;&#x6539;&#x7F13;&#x5B58;&#x7684;&#x503C;&#x3002; &#x4FEE;&#x6539;&#x9002;&#x5F53;&#x7684;&#x503C;&#x4F1A;&#x7ED5;&#x8FC7;Geode&#x5206;&#x53D1;&#x6846;&#x67B6;&#xFF0C;&#x5305;&#x62EC;&#x7F13;&#x5B58;&#x7F16;&#x5199;&#x5668;&#x548C;&#x4FA6;&#x542C;&#x5668;&#xFF0C;&#x5230;&#x671F;&#x6D3B;&#x52A8;&#x548C;&#x4E8B;&#x52A1;&#x7BA1;&#x7406;&#xFF0C;&#x5E76;&#x53EF;&#x80FD;&#x4EA7;&#x751F;&#x4E0D;&#x5E0C;&#x671B;&#x7684;&#x7ED3;&#x679C;&#x3002;</p>
+<p>&#x59CB;&#x7EC8;&#x4F7F;&#x7528;&#x68C0;&#x7D22;&#x5230;&#x7684;&#x5BF9;&#x8C61;&#x7684;&#x526F;&#x672C;&#x66F4;&#x6539;&#x6761;&#x76EE; - &#x6C38;&#x8FDC;&#x4E0D;&#x8981;&#x76F4;&#x63A5;&#x4FEE;&#x6539;&#x8FD4;&#x56DE;&#x7684;&#x5BF9;&#x8C61;&#x3002; &#x60A8;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x4E24;&#x79CD;&#x65B9;&#x5F0F;&#x4E4B;&#x4E00;&#x5B8C;&#x6210;&#x6B64;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<ol>
+<li><p>&#x901A;&#x8FC7;&#x5C06;&#x7F13;&#x5B58;&#x5C5E;&#x6027;<code>copy-on-read</code>&#x8BBE;&#x7F6E;&#x4E3A;true(&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;false)&#x6765;&#x66F4;&#x6539;&#x7F13;&#x5B58;&#x7684;&#x6761;&#x76EE;&#x68C0;&#x7D22;&#x884C;&#x4E3A;&#x3002;</p>
+<pre><code>&lt;cache copy-on-read=&quot;true&quot;&gt;
+ ...
+&lt;/cache&gt;
+</code></pre><p>&#x5F53;<code>copy-on-read</code>&#x4E3A;&#x771F;&#x65F6;&#xFF0C;&#x6761;&#x76EE;&#x8BBF;&#x95EE;&#x65B9;&#x6CD5;&#x8FD4;&#x56DE;&#x6761;&#x76EE;&#x7684;&#x526F;&#x672C;&#x3002; &#x8FD9;&#x53EF;&#x4EE5;&#x9632;&#x6B62;&#x60A8;&#x65E0;&#x610F;&#x4E2D;&#x5C31;&#x5730;&#x4FEE;&#x6539;&#xFF0C;&#x4F46;&#x5728;&#x4E0D;&#x9700;&#x8981;&#x590D;&#x5236;&#x65F6;&#x4F1A;&#x5BF9;&#x6027;&#x80FD;&#x548C;&#x5185;&#x5B58;&#x6D88;&#x8017;&#x4EA7;&#x751F;&#x8D1F;&#x9762;&#x5F71;&#x54CD;&#x3002;</p>
+<p>&#x5982;&#x679C;<code>copy-on-read</code>&#x4E3A;false&#xFF0C;&#x5219;&#x8FD9;&#x4E9B;&#x6761;&#x76EE;&#x8BBF;&#x95EE;&#x65B9;&#x6CD5;&#x8FD4;&#x56DE;&#x6761;&#x76EE;&#x5F15;&#x7528;;&#x5982;&#x679C;<code>copy-on-read</code>&#x4E3A;true&#xFF0C;&#x5219;&#x8FD4;&#x56DE;&#x6761;&#x76EE;&#x7684;&#x526F;&#x672C;&#xFF1A;</p>
+<p><code>Region.get</code> result of <code>Region.put</code> <code>EntryEvent.getNewValue</code> <code>Region.values</code> <code>Region.Entry.getValue</code> <code>EntryEvent.getOldValue</code> <code>Query.select</code></p>
+</li>
+<li><p>&#x521B;&#x5EFA;&#x8FD4;&#x56DE;&#x5BF9;&#x8C61;&#x7684;&#x526F;&#x672C;&#x5E76;&#x4F7F;&#x7528;&#x5B83;&#x3002; &#x5BF9;&#x4E8E;&#x53EF;&#x514B;&#x9686;&#x6216;&#x53EF;&#x5E8F;&#x5217;&#x5316;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>org.apache.geode.CopyHelper.copy</code>&#x5C06;&#x6761;&#x76EE;&#x503C;&#x590D;&#x5236;&#x5230;&#x65B0;&#x5BF9;&#x8C61;&#x3002; &#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-java">Object o = (StringBuffer)region.get(<span class="hljs-string">&quot;stringBuf&quot;</span>);
+StringBuffer s = (StringBuffer) CopyHelper.copy(o);
+s.append(<span class="hljs-string">&quot;Changes to value, added using put.&quot;</span>);
+region.put(<span class="hljs-string">&quot;stringBuf&quot;</span>, s);
+</code></pre>
+</li>
+</ol>
+<p><strong>&#x4ECE;&#x4EE3;&#x7406;&#x6210;&#x5458;&#x4E2D;&#x68C0;&#x7D22;&#x533A;&#x57DF;&#x6761;&#x76EE;</strong></p>
+<p><code>Region.values</code>&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x4EC5;&#x9002;&#x7528;&#x4E8E;&#x672C;&#x5730;&#x533A;&#x57DF;&#x5B9E;&#x4F8B;&#x3002; &#x5982;&#x679C;&#x4F7F;&#x7528;PROXY&#x5FEB;&#x6377;&#x65B9;&#x5F0F;&#x4ECE;&#x5BA2;&#x6237;&#x533A;&#x57DF;&#x8C03;&#x7528;<code>values</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5219;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x5C06;&#x4E0D;&#x4F1A;&#x91CD;&#x5B9A;&#x5411;&#x5230;&#x670D;&#x52A1;&#x5668;&#x533A;&#x57DF;&#x3002; &#x8981;&#x4ECE;&#x5BA2;&#x6237;&#x7AEF;&#x83B7;&#x53D6;Region&#x4E2D;&#x6240;&#x6709;&#x503C;&#x7684;&#x96C6;&#x5408;&#xFF0C;&#x60A8;&#x5E94;&#x8BE5;&#x5728;ALL_KEYS&#x4E0A;&#x4F7F;&#x7528;&#x5174;&#x8DA3;&#x6CE8;&#x518C;&#xFF0C;&#x6216;&#x4F7F;&#x7528;&#x67E5;&#x8BE2;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4ECE;&#x4EE3;&#x7406;&#x6210;&#x5458;&#x4F7F;&#x7528;<code>Region.get</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5219;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x5C06;&#x91CD;&#x5B9A;&#x5411;&#x5230;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x7684;&#x533A;&#x57DF;&#xFF0C;&#x5982;&#x679C;&#x5B83;&#x65E0;&#x6CD5;&#x5728;&#x672C;&#x5730;&#x627E;&#x5230;&#x5BC6;&#x94A5;&#x3002;</p>
+<p><strong>&#x4F7F;&#x7528;gfsh&#x6765;<code>get</code>&#x548C;<code>put</code></strong></p>
+<p>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;gfsh<code>get</code>&#x548C;<code>put</code>&#x547D;&#x4EE4;&#x6765;&#x7BA1;&#x7406;&#x6570;&#x636E;&#x3002; &#x89C1;<a href="http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/get.html" target="_blank">get</a>&#x548C;<a href="http://geode.apache.org/docs/&#x5F15;&#x5BFC;/17/tools_modules/gfsh/&#x547D;&#x4EE4;&#x9875;/put.html" target="_blank">put</a>&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF1A;</p>
+<pre><code class="lang-java">get --key=(<span class="hljs-string">&apos;id&apos;</span>:<span class="hljs-string">&apos;133abg124&apos;</span>) --region=region1
+
+<span class="hljs-comment">// Retrieving when key type is a wrapper(primitive)/String</span>
+get --key=(<span class="hljs-string">&apos;133abg124&apos;</span>) --region=/region1/region12 --value-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=data.ProfileDetails
+
+get --key=(<span class="hljs-string">&apos;100L&apos;</span>) --region=/region1/region12 --value-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=data.ProfileDetails 
+--key-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=java.lang.Long
+put --key=(<span class="hljs-string">&apos;id&apos;</span>:<span class="hljs-string">&apos;133abg125&apos;</span>) --value=(<span class="hljs-string">&apos;firstname&apos;</span>:<span class="hljs-string">&apos;James&apos;</span>,<span class="hljs-string">&apos;lastname&apos;</span>:<span class="hljs-string">&apos;Gosling&apos;</span>) 
+--region=/region1 --key-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=data.ProfileKey --value-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=data.ProfileDetails
+
+put --key=(<span class="hljs-string">&apos;133abg124&apos;</span>) --value=(<span class="hljs-string">&apos;Hello World!!&apos;</span>) --region=/region2
+
+put --key=(<span class="hljs-string">&apos;100F&apos;</span>) --value=(<span class="hljs-string">&apos;2146547689879658564&apos;</span>)  --region=/region1/region12 
+--key-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=java.lang.Float --value-<span class="hljs-class"><span class="hljs-keyword">class</span></span>=java.lang.Long
+</code></pre>
+<h3 id="&#x5728;&#x6570;&#x636E;&#x7F13;&#x5B58;&#x4E2D;&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x7C7B;&#x7684;&#x8981;&#x6C42;">&#x5728;&#x6570;&#x636E;&#x7F13;&#x5B58;&#x4E2D;&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x7C7B;&#x7684;&#x8981;&#x6C42;</h3>
+<p>&#x8BF7;&#x9075;&#x5FAA;&#x4EE5;&#x4E0B;&#x51C6;&#x5219;&#xFF0C;&#x4E3A;&#x7F13;&#x5B58;&#x7684;&#x6761;&#x76EE;&#x952E;&#x548C;&#x503C;&#x4F7F;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x57DF;&#x7C7B;&#x3002;</p>
+<p><strong>CLASSPATH</strong></p>
+<p>&#x6BCF;&#x4E2A;&#x6210;&#x5458;&#x7684;<code>CLASSPATH</code>&#x5FC5;&#x987B;&#x5305;&#x542B;&#x6210;&#x5458;&#x8BBF;&#x95EE;&#x7684;&#x6240;&#x6709;&#x5BF9;&#x8C61;&#x7684;&#x7C7B;&#x3002;</p>
+<ul>
+<li>&#x5BF9;&#x4E8E;Java&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;&#x6807;&#x51C6;Java<code>CLASSPATH</code>&#x3002;</li>
+<li>&#x5BF9;&#x4E8E;&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x5668;&#x8FDB;&#x7A0B;&#xFF0C;&#x4F7F;&#x7528;<code>CLASSPATH</code>&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x6216;<code>gfsh start server</code>&#x7684;<code>--classpath</code>&#x53C2;&#x6570;&#x3002; &#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/configuring/running/running_the_cacheserver.html" target="_blank">&#x8FD0;&#x884C;Geode&#x670D;&#x52A1;&#x5668;&#x8FDB;&#x7A0B;</a>&#x3002;</li>
+</ul>
+<p>&#x6570;&#x636E;&#x4EE5;&#x5E8F;&#x5217;&#x5316;&#x5F62;&#x5F0F;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x548C;&#x670D;&#x52A1;&#x5668;&#x4E4B;&#x95F4;&#x53D1;&#x9001;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x4EE5;&#x5E8F;&#x5217;&#x5316;&#x5F62;&#x5F0F;&#x5B58;&#x50A8;&#x5BA2;&#x6237;&#x7AEF;&#x6570;&#x636E;&#x3002; &#x670D;&#x52A1;&#x5668;&#x4E0D;&#x9700;&#x8981;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x6570;&#x636E;&#x4EE5;&#x5C06;&#x5176;&#x53D1;&#x9001;&#x5230;&#x53E6;&#x4E00;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x6216;&#x901A;&#x8FC7;<code>PDXInstance</code>&#x8BBF;&#x95EE;&#x5B83;&#xFF0C;&#x4F46;&#x5B83;&#x9700;&#x8981;&#x53CD;&#x5E8F;&#x5217;&#x5316;&#x5B83;&#x4EE5;&#x901A;&#x8FC7;&#x5176;&#x4ED6;&#x65B9;&#x5F0F;&#x8BBF;&#x95EE;&#x5B83;&#x3002; &#x670D;&#x52A1;&#x5668;<code>CLASSPATH</code>&#x5FC5;&#x987B;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x7C7B;&#xFF1A;</p>
+<ul>
+<li>&#x6240;&#x6709;&#x6761;&#x76EE;&#x952E;</li>
+<li>&#x670D;&#x52A1;&#x5668;&#x6301;&#x4E45;&#x4FDD;&#x5B58;&#x5230;&#x78C1;&#x76D8;&#x7684;&#x533A;&#x57DF;&#x4E2D;&#x7684;&#x6761;&#x76EE;&#x503C;</li>
+<li>&#x670D;&#x52A1;&#x5668;&#x8BBF;&#x95EE;&#x7684;&#x6761;&#x76EE;&#x503C;&#xFF0C;&#x9664;&#x4E86;&#x4F7F;&#x7528;<code>PdxInstance</code>&#x6216;&#x5C06;&#x5B8C;&#x6574;&#x6761;&#x76EE;&#x503C;&#x4F20;&#x8F93;&#x5230;&#x5BA2;&#x6237;&#x7AEF;&#x4E4B;&#x5916;&#x7684;&#x4EFB;&#x4F55;&#x5176;&#x4ED6;&#x539F;&#x56E0;</li>
+</ul>
+<p>&#x6709;&#x5173;<code>PdxInstance</code>s&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/developing/data_serialization/chapter_overview.html#data_serialization" target="_blank">&#x6570;&#x636E;&#x5E8F;&#x5217;&#x5316;</a>&#x3002;</p>
+<p><strong>&#x6570;&#x636E;&#x5E8F;&#x5217;&#x5316;</strong></p>
+<p>Geode&#x5E8F;&#x5217;&#x5316;&#x6570;&#x636E;&#x8F93;&#x5165;&#x952E;&#x548C;&#x503C;&#x4EE5;&#x8FDB;&#x884C;&#x5206;&#x53D1;&#xFF0C;&#x56E0;&#x6B64;Geode&#x56E0;&#x4EFB;&#x4F55;&#x539F;&#x56E0;&#x79FB;&#x51FA;&#x672C;&#x5730;&#x7F13;&#x5B58;&#x7684;&#x6240;&#x6709;&#x6570;&#x636E;&#x90FD;&#x5FC5;&#x987B;&#x662F;&#x53EF;&#x5E8F;&#x5217;&#x5316;&#x7684;&#x3002; &#x53E6;&#x5916;&#xFF0C;&#x5206;&#x533A;&#x533A;&#x57DF;&#x4EE5;&#x5E8F;&#x5217;&#x5316;&#x5F62;&#x5F0F;&#x5B58;&#x50A8;&#x6570;&#x636E;&#x3002; &#x51E0;&#x4E4E;&#x6BCF;&#x4E2A;&#x914D;&#x7F6E;&#x90FD;&#x9700;&#x8981;&#x5E8F;&#x5217;&#x5316;&#x3002;</p>
+<p>&#x6709;&#x5173;&#x6570;&#x636E;&#x5E8F;&#x5217;&#x5316;&#x7684;&#x8981;&#x6C42;&#x548C;&#x9009;&#x9879;&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;<a href="http://geode.apache.org/docs/guide/17/developing/data_serialization/chapter_overview.html#data_serialization" target="_blank">&#x6570;&#x636E;&#x5E8F;&#x5217;&#x5316;</a>&#x3002;</p>
+<p><strong>&#x7528;&#x4F5C;&#x952E;&#x7684;&#x7C7B;</strong></p>
+<p>&#x8BE5;&#x533A;&#x57DF;&#x4F7F;&#x7528;&#x952E;&#x4E0A;&#x7684;&#x6563;&#x5217;&#x3002; &#x5982;&#x679C;&#x60A8;&#x5B9A;&#x4E49;&#x8981;&#x7528;&#x4F5C;&#x952E;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x7C7B;&#xFF0C;&#x5219;&#x5BF9;&#x4E8E;&#x8BE5;&#x7C7B;&#xFF0C;&#x91CD;&#x5199;&#xFF1A;</p>
+<ul>
+<li><code>equals</code></li>
+<li><code>hashCode</code>. &#x4ECE;<code>Object</code>&#x7EE7;&#x627F;&#x7684;&#x9ED8;&#x8BA4;<code>hashCode</code>&#x4F7F;&#x7528;identity&#xFF0C;&#x5728;&#x6BCF;&#x4E2A;&#x7CFB;&#x7EDF;&#x6210;&#x5458;&#x4E2D;&#x90FD;&#x662F;&#x4E0D;&#x540C;&#x7684;&#x3002; &#x5728;&#x5206;&#x533A;&#x533A;&#x57DF;&#x4E2D;&#xFF0C;&#x57FA;&#x4E8E;&#x6807;&#x8BC6;&#x7684;&#x6563;&#x5217;&#x5C06;&#x6570;&#x636E;&#x653E;&#x5728;&#x9519;&#x8BEF;&#x7684;&#x4F4D;&#x7F6E;&#x3002; &#x6709;&#x5173;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;&#x201C;java.lang.Object&#x201D;&#x7684;Java API&#x6587;&#x6863;&#x3002;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Geode_2_Configuring_and_Running_a_Cluster.html#防火墙和端口" class="navigation navigation-prev " aria-label="Previous page: 防火墙和端口">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="Geode_3_Basic_Configuration_and_Programming.html#集群和缓存配置" class="navigation navigation-next " aria-label="Next page: 集群和缓存配置">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"基本配置和编程","level":"2.1","depth":1,"next":{"title":"集群和缓存配置","level":"2.1.1","depth":2,"anchor":"#集群和缓存配置","path":"Geode_3_Basic_Configuration_and_Programming.md","ref":"Geode_3_Basic_Configuration_and_Programming.md#集群和缓存配置","articles":[{"title":"集群成员","level":"2.1.1.1","depth":3,"anchor":"#集群成员","path":"Geode_3_Basic_Configuration_and_Programming.md","ref":"Geode_3_Basic_Configuration_and_Programming.md#集群成员","articles":[]},{"title":"设置属性","level":"2.1.1.2","depth":3,"anchor":"#设置属性","path":"Geode_3_Basic_Configuration_and_Programming.md","ref":"Geode_3_Basic_Configuration_and_Programming.md#设置属性","articles":[]},{"title":"配置缓存和数据区域的选项","level":"2.1.1.3","depth":3,"anchor":"#配置缓存和数据区域的选项","path":"Geode_3_Basic_Configuration_and_Programming.md","ref":"Geode_3_Basic_Configuration_and_Programming.md#配置缓存和数据区域的选项","articles":[]},{"title":"本地和远程成员身份和缓存","level":"2.1.1.4","depth":3,"anchor":"#本地和远程成员身份和缓存","path":"Geode_3_Basic_Configuration_and_Programming.md","ref":"Geode_3_Basic_Configuration_and_Programming.md#本地和远程成员身份和缓存","articles":[]}]},"previous":{"title":"防火墙和端口","level":"1.3.13.2","depth":3,"anchor":"#防火墙和端口","path":"Geode_2_Configuring_and_Running_a_Cluster.md","ref":"Geode_2_Configuring_and_Running_a_Cluster.md#防火墙和端口","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","back-to-top-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"splitter":{},"back-to-top-button":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Geode参考指南","language":"zh-hans","gitbook":"*","description":"Geode参考指南"},"file":{"path":"Geode_3_Basic_Configuration_and_Programming.md","mtime":"2018-12-19T06:14:13.496Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-15T09:55:26.450Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

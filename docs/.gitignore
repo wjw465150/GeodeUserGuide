@@ -1,0 +1,10 @@
+*.pdf
+*~
+*.bak
+*.off
+*.old
+.DS_Store
+
+/_book/
+/node_modules/
+
