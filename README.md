@@ -1,5 +1,5 @@
 # GeodeUserGuide
-Geode User Guide 中文翻译版本
+Geode User Guide 中文翻译版本! 生成的文档在这里:[GeodeUserGuide中文版](https://wjw465150.github.io/GeodeUserGuide/)
 
 
 
