@@ -3,7 +3,12 @@
   "description": "Geode参考指南",
   "language": "zh-hans",
   "plugins": [
+    "anchors",
+    "book-summary-scroll-position-saver",
+    "expandable-chapters",
+
     "splitter",
     "back-to-top-button"
+    
   ]
 }

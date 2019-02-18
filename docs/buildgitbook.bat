@@ -1,1 +1,1 @@
-gitbook build ./docs
+gitbook build . ./docs
