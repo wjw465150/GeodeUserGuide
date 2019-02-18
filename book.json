@@ -10,5 +10,10 @@
     "splitter",
     "back-to-top-button"
     
-  ]
+  ],
+  "pluginsConfig": {
+    "theme-default": {
+      "showLevel": true
+    }
+  }  
 }
