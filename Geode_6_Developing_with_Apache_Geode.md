@@ -1476,7 +1476,7 @@ PartitionRegionHelper.moveData(r, source, destination, 20);
 ![img](assets/distributed_how_3.svg)
 
 
-### 区域分布是选项
+### 区域分布式选项
 
 您可以使用包含和不包含确认的分发，或使用区域分布的全局锁定。 配置为通过确认分发的区域也可以配置为在托管该区域的所有Geode成员之间一致地解析并发更新。
 
@@ -1807,7 +1807,7 @@ Geode默认启用一致性检查。 您无法禁用持久性区域的一致性�
   通过编程和安装适用于您所在地区的应用程序插件，使分布式缓存与外部数据源保持同步。
 
 
-### Persistence and Overflow((持久性和溢出))
+### Persistence and Overflow（持久性和溢出）
 
 您可以将数据保留在磁盘上以进行备份，并将其溢出到磁盘以释放内存，而无需从缓存中完全删除数据。
 
@@ -1964,7 +1964,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 ```
 
 
-### Eviction(逐出)
+### Eviction（逐出）
 
 使用逐出来控制数据区域大小。 驱逐行动由基于空间的阈值触发。
 
@@ -2049,7 +2049,7 @@ gfsh>create region --name=myRegion --type=PARTITION --eviction-action=overflow-t
 ```
 
 
-### Expiration(到期)
+### Expiration（到期）
 
 使用到期可以保持数据最新并通过删除过时条目来减小区域大小。 到期操作由基于时间的阈值触发。
 
@@ -4522,7 +4522,7 @@ Region nr = cache.createRegionFactory()
 
 
 
-### 配置客户端/服务器事件消息
+### 配置客户端服务器事件消息
 
 您可以从服务器接收服务器端缓存事件和查询结果更改的事件。
 
@@ -4618,7 +4618,7 @@ Region nr = cache.createRegionFactory()
 
 
 
-##### 高度可用的客户端/服务器事件消息
+##### 高度可用的客户端服务器事件消息
 
 使用服务器冗余，每个池都有一个主服务器和一些辅助服务器。 初选和辅助是基于每个池分配的，并且通常分散用于负载平衡，因此具有多个池的单个客户端可以在多个服务器中具有主队列。
 
@@ -4693,7 +4693,7 @@ Region nr = cache.createRegionFactory()
 
 
 
-#### 实施持久的客户端/服务器消息传递
+#### 实施持久的客户端服务器消息传递
 
 即使客户端关闭或断开连接，也需要为客户端维护的订阅使用持久消息传递。 您可以将任何事件订阅配置为持久。 当客户端断开连接时，持久查询和订阅的事件将保存在队列中，并在客户端重新连接时播放。 其他查询和订阅将从队列中删除。
 
@@ -4875,7 +4875,7 @@ Geode处理应用程序和兴趣注册之间的冲突，因此它们不会创建
 
 
 
-#### 调整客户端/服务器事件消息
+#### 调整客户端服务器事件消息
 
 服务器使用异步消息传递队列将事件发送到其客户端。 队列中的每个事件都源自客户端，服务器中的线程或服务器或某个其他集群中的应用程序执行的操作。 事件消息具有唯一标识符，该标识符由始发线程的ID与其成员的分布式系统成员ID以及操作的顺序ID组成。 因此，源自任何单个线程的事件消息可以按时间从最低序列ID到最高序列进行分组和排序。 服务器和客户端跟踪每个成员线程ID的最高顺序ID。
 
@@ -6442,7 +6442,7 @@ Geode QueryService提供了创建Query对象的方法。 然后，您可以使�
 
 
 
-##### IMPORT Statement(IMPORT语句)
+##### IMPORT Statement（IMPORT语句）
 
 有时OQL查询需要引用对象的类。 如果相同的类名存在于两个不同的名称范围（包）中，则必须能够区分具有相同名称的类。
 
@@ -6455,7 +6455,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 
 
-##### FROM Clause(FROM子句)
+##### FROM Clause（FROM子句）
 
 使用FROM子句将所需的数据放入查询的其余部分的范围内。 FROM子句还包括对象类型和迭代器变量。
 
@@ -6545,7 +6545,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 
 
-##### WHERE Clause(WHERE子句)
+##### WHERE Clause（WHERE子句）
 
 每个FROM子句表达式必须解析为一组对象。 然后，该集合可用于WHERE子句中的查询表达式中的迭代。
 
@@ -6915,7 +6915,7 @@ String query = "SELECT * FROM /people p WHERE p.height * p.height/p.weight < 25"
 
 
 
-##### SELECT Statement(SELECT语句)
+##### SELECT Statement（SELECT语句）
 
 SELECT语句允许您从WHERE搜索操作返回的对象集合中筛选数据。投影列表可以指定为*，也可以指定为以逗号分隔的表达式列表。
 
@@ -8393,7 +8393,7 @@ gfsh> create index --name=myHashIndex --expression=mktValue --region=/exampleReg
 
 
 
-#### 在映射字段上创建索引(“映射索引”)
+#### 在映射字段上创建索引（映射索引）
 
 为了帮助快速查找Map(或HashMap)类型字段中的多个值，可以在该字段中的特定(或所有)键上创建索引(有时称为“Map索引”)。
 
@@ -8488,7 +8488,7 @@ gfsh> clear defined indexes
 
 
 
-#### 维护索引(同步或异步)和索引存储
+#### 维护索引（同步或异步）和索引存储
 
 索引与它们引用的区域数据自动保持同步。区域属性`indexmaintenancesyn`指定在修改区域时同步更新区域索引，还是在后台线程中异步更新区域索引。
 
