@@ -1,7 +1,9 @@
 # Summary
 
+-----
 * [前言](README.md)
 
+-----
 * [Apache Geode入门](Geode_1_Getting_Started_with_Apache_Geode.md)
   * [关于Apache](Geode_1_Getting_Started_with_Apache_Geode.md#关于Apache)
   * [Apache Geode的主要特点](Geode_1_Getting_Started_with_Apache_Geode.md#Apache Geode的主要特点)
@@ -12,6 +14,7 @@
     * [如何卸载](Geode_1_Getting_Started_with_Apache_Geode.md#如何卸载)
   * [Apache Geode在15分钟或更短时间内完成](Geode_1_Getting_Started_with_Apache_Geode.md#Apache Geode在15分钟或更短时间内完成)
 
+-----
 * [配置和运行集群](Geode_2_Configuring_and_Running_a_Cluster.md)
   * [集群配置服务概述](Geode_2_Configuring_and_Running_a_Cluster.md#集群配置服务概述)
   * [教程 - 创建和使用集群配置](Geode_2_Configuring_and_Running_a_Cluster.md#教程 - 创建和使用集群配置)
@@ -33,7 +36,7 @@
     * [防火墙和连接](Geode_2_Configuring_and_Running_a_Cluster.md#防火墙和连接)
     * [防火墙和端口](Geode_2_Configuring_and_Running_a_Cluster.md#防火墙和端口)
 
-
+-----
 * [基本配置和编程](Geode_3_Basic_Configuration_and_Programming.md)
   * [集群和缓存配置](Geode_3_Basic_Configuration_and_Programming.md#集群和缓存配置)
     * [集群成员](Geode_3_Basic_Configuration_and_Programming.md#集群成员)
@@ -59,7 +62,7 @@
     * [管理数据条目](Geode_3_Basic_Configuration_and_Programming.md#管理数据条目)
     * [在数据缓存中使用自定义类的要求](Geode_3_Basic_Configuration_and_Programming.md#在数据缓存中使用自定义类的要求)
 
-
+-----
 * [拓扑和通信](Geode_4_Topologies_and_Communication.md)
   * [拓扑和通信一般概念](Geode_4_Topologies_and_Communication.md#拓扑和通信一般概念)
     * [拓扑类型](Geode_4_Topologies_and_Communication.md#拓扑类型)
@@ -92,7 +95,7 @@
     * [过滤多站点(WAN)分发的事件](Geode_4_Topologies_and_Communication.md#过滤多站点(WAN)分发的事件)
     * [解决冲突事件](Geode_4_Topologies_and_Communication.md#解决冲突事件)
 
-
+-----
 * [管理 Apache Geode](Geode_5_Managing_Apache_Geode.md)
   * [Apache Geode管理和监控](Geode_5_Managing_Apache_Geode.md#Apache Geode管理和监控)
     * [管理和监控功能](Geode_5_Managing_Apache_Geode.md#管理和监控功能)
@@ -239,7 +242,7 @@
     * [防止和恢复磁盘完全错误](Geode_5_Managing_Apache_Geode.md#防止和恢复磁盘完全错误)
     * [理解和恢复网络中断](Geode_5_Managing_Apache_Geode.md#理解和恢复网络中断)
 
-
+-----
 * [使用Apache Geode进行开发](Geode_6_Developing_with_Apache_Geode.md)
   * [区域数据存储和分发](Geode_6_Developing_with_Apache_Geode.md#区域数据存储和分发)
     * [存储和分配选项](Geode_6_Developing_with_Apache_Geode.md#存储和分配选项)
@@ -429,6 +432,4 @@
   * [函数执行](Geode_6_Developing_with_Apache_Geode.md#函数执行)
     * [函数执行如何工作](Geode_6_Developing_with_Apache_Geode.md#函数执行如何工作)
     * [在Apache Geode中执行一个函数](Geode_6_Developing_with_Apache_Geode.md#在Apache Geode中执行一个函数)
-
-
 
