@@ -9162,63 +9162,63 @@ for (Object o : cqResults.asList()) {
 
 ## 事务
 
-This section describes Geode transactions. Geode offers an API for client applications that do transactional work. Geode implements optimistic transactions, with the familiar `begin`, `commit`, and `rollback` methods that implement the same operations as in relational database transactions methods.
+本节描述Geode事务。Geode为执行事务性工作的客户机应用程序提供了一个API。Geode使用熟悉的`begin`、`commit`和`rollback`方法实现乐观事务，这些方法实现与关系数据库事务方法相同的操作。
 
-- **Adherence to ACID Promises**
+- **遵守ACID语义**
 
-  This section explains the ways in which Geode’s implementation of optimistic transactions provides ACID semantics.
+  本节解释Geode的乐观事务实现提供ACID语义的方式。
 
-- **Code Examples**
+- **代码示例**
 
-  An application-based transaction and a transaction embedded in a function provide examples to model.
+  基于应用程序的事务和嵌入在函数中的事务为建模提供了示例。
 
-- **Design Considerations**
+- **设计注意事项**
 
-  Designs that extend beyond the basics introduce other considerations. This section identifies and discusses how transactions interact with other aspects of the system.
-
-
-
-### Adherence to ACID Promises
-
-This section introduces Geode transactions. Geode offers an API for client applications that do transactional work. Geode implements optimistic transactions, choosing the much higher transaction performance they offer over the slow, locking methods of a traditional relational database.
-
-Optimistic transaction semantics are not identical to the Atomicity-Consistency-Isolation-Durability (ACID) semantics of a traditional relational database.
-
-**Atomicity**
-
-Atomicity is “all or nothing” behavior: a transaction completes successfully only when all of the operations it contains complete successfully. If problems occur during a transaction, perhaps due to other transactions with overlapping changes, the transaction cannot successfully complete until the problems are resolved.
-
-Optimistic transactions provide atomicity and realize speed by using a reservation system, instead of using the traditional relational database technique of a two-phase locking of rows. The reservation prevents other, intersecting transactions from completing, allowing the commit to check for conflicts and to reserve resources in an all-or-nothing fashion prior to making changes to the data. After all changes have been made, locally and remotely, the reservation is released. With the reservation system, an intersecting transaction is simply discarded. The serialization of obtaining locks is avoided.
-
-**Consistency**
-
-Consistency requires that data written within a transaction must observe the key and value constraints established for the affected region. Note that validity of the transaction is the responsibility of the application.
-
-**Isolation**
-
-Isolation is the level at which transactional state is visible to system components. Geode transactions have repeatable read isolation. Once the committed value is read for a given key, it always returns that same value. If a write within a transaction deletes a value for a key that has already been read, subsequent reads return the transactional reference.
-
-The default configuration isolates transactions at the process thread level. While a transaction is in progress, its changes are visible only inside the thread that is running the transaction. Other threads within that same process and threads in other processes cannot see changes until after the commit operation begins. After beginning the commit, the changes are visible in the cache, but other threads that access the changing data might see partial results of the transaction, leading to a dirty read. See [Changing the Handling of Dirty Reads](https://geode.apache.org/docs/guide/17/developing/transactions/design_considerations.html#transactions-dirty-reads) for how to change the default behavior.
-
-**Durability**
-
-Relational databases provide durability by using disk storage for recovery and transaction logging. Geode is optimized for performance and does not support on-disk durability for transactions.
-
-See [Allowing Transactions to Work on Persistent Regions](https://geode.apache.org/docs/guide/17/developing/transactions/design_considerations.html#transactions-persistence) for how to allow a transaction that operates on a persistent region in a non-durable way.
+  超越基础的设计引入了其他考虑因素。本节标识并讨论事务如何与系统的其他方面交互。
 
 
 
-### Code Examples
+### 遵守ACID语义
 
-An application can run a transaction directly or invoke a function which contains a transaction. This section illustrates these two use cases with code fragments that demonstrate the proper way to program a transaction.
+本节介绍Geode事务。Geode为执行事务性工作的客户机应用程序提供了一个API。Geode实现了乐观的事务，选择了它们提供的更高的事务性能，而不是传统关系数据库中缓慢的锁定方法。
 
-An expected use case operates on two regions within a transaction. For performance purposes the Geode transaction implementation requires that region entries of partitioned regions be colocated. See [Custom-Partitioning and Colocating Data](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/overview_custom_partitioning_and_data_colocation.html) for details on how to colocate region entries.
+乐观事务语义与传统关系数据库的原子-一致性-隔离-持久性(ACID)语义并不相同。
 
-**Transaction within an Application**
+**原子性**
 
-An application/client uses the `CacheTransactionManager` API. This most basic code fragment shows the structure of a transaction, with its `begin` to start the transaction, `commit` to end the transaction, and handling of exceptions that these methods may throw.
+原子性是“全有或全无”的行为:只有当事务包含的所有操作都成功完成时，事务才会成功完成。如果在事务期间出现问题(可能是由于具有重叠更改的其他事务造成的)，在问题解决之前，事务无法成功完成。
 
-```
+乐观事务通过使用预约系统提供原子性并实现速度，而不是使用传统的两阶段锁行关系数据库技术。这种保留阻止了其他交叉事务的完成，允许提交检查冲突，并在对数据进行更改之前以全有或全无的方式保留资源。在本地和远程完成所有更改之后，将释放预订。在预订系统中，交叉事务将被简单地丢弃。避免了获取锁的序列化。
+
+**一致性**
+
+一致性要求在事务中编写的数据必须遵守为受影响区域建立的键和值约束。请注意，事务的有效性是应用程序的责任。
+
+**隔离**
+
+隔离是事务状态对系统组件可见的级别。Geode事务具有可重复的读隔离。一旦为给定的键读取提交的值，它总是返回相同的值。如果事务中的写操作删除了已读取的键的值，则后续的读操作将返回事务引用。
+
+默认配置在流程线程级别隔离事务。当一个事务正在进行时，它的更改只在运行该事务的线程中可见。同一进程中的其他线程和其他进程中的线程在提交操作开始之前不能看到更改。在开始提交之后，更改在缓存中是可见的，但是访问更改数据的其他线程可能会看到事务的部分结果，从而导致脏读。有关如何更改默认行为，请参见[更改脏读的处理](https://geode.apache.org/docs/guide/17/developing/transactions/design_considerations.html#transactions-dirty-reads)。
+
+**持久性**
+
+关系数据库通过使用磁盘存储进行恢复和事务日志记录来提供持久性。Geode针对性能进行了优化，不支持事务的磁盘持久性。
+
+参见[允许事务在持久区域上工作](https://geode.apache.org/docs/guide/17/developing/transactions/design_considerations.html#transactions-persistence)了解如何允许以非持久方式在持久区域上操作的事务。
+
+
+
+### 代码示例
+
+应用程序可以直接运行事务或调用包含事务的函数。本节用代码片段演示了这两个用例，这些代码片段演示了正确的事务编程方法。
+
+预期的用例操作事务中的两个区域。出于性能目的，Geode事务实现要求对分区区域的区域项进行colocated。参见[自定义分区和配置数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/overview_custom_partitioning_and_data_colocation.html)了解如何配置区域条目的详细信息。
+
+**应用程序中的事务**
+
+应用程序/客户机使用CacheTransactionManagerAPI。这段最基本的代码片段显示了事务的结构，以它的begin开始事务，commit结束事务，以及处理这些方法可能抛出的异常。
+
+```java
 CacheTransactionManager txManager =
           cache.getCacheTransactionManager();
 
@@ -9240,13 +9240,13 @@ try {
 }
 ```
 
-More details of a transaction appear in this next application/client code fragment example. In this typical transaction, the put operations must be atomic and two regions are involved.
+下一个应用程序/客户端代码片段示例中将显示事务的更多细节。在这个典型的事务中，put操作必须是原子的，涉及两个区域。
 
-In this transaction, a customer’s purchase is recorded. The `cash` region contains each customer’s cash balance available for making trades. The `trades` region records each customer’s balance spent on trades.
+在此交易中，记录客户的购买行为。`现金`区域包含每个客户可用来进行交易的现金余额。`交易`区域记录每个客户用于交易的余额。
 
-If there is a conflict upon commit of the transaction, an exception is thrown, and this example tries again.
+如果事务提交时发生冲突，则抛出异常，本示例将再次尝试。
 
-```
+```java
 // inputs needed for this transaction; shown as variables for simplicity
 final String customer = "Customer1";
 final Integer purchase = 1000;
@@ -9300,17 +9300,17 @@ do {
 } while (retryTransaction);
 ```
 
-Design transactions such that any get operations are within the transaction. This causes those entries to be part of the transactional state, which is desired such that intersecting transactions can be detected and signal commit conficts.
+设计事务，使任何get操作都在事务中。这将导致这些条目成为事务状态的一部分，这样就可以检测到交叉的事务并发出提交conficts的信号。
 
-**Transaction within a Function**
+**函数内的事务**
 
-A transaction may be embedded in a function. The application invokes the function, and the function contains the transaction that does the `begin`, the region operations, and the `commit` or `rollback`.
+事务可以嵌入到函数中。应用程序调用该函数，该函数包含执行`begin`、区域操作和`commit`或`rollback`的事务。
 
-This use of a function can have performance benefits. The performance benefit results from both the function and the region data residing on servers. As the function invokes region operations, those operations on region entries stay on the server, so there is no network round trip time to do get or put operations on region data.
+这种函数的使用可以带来性能上的好处。性能优势来自于驻留在服务器上的函数和区域数据。当该函数调用区域操作时，那些对区域条目的操作将保留在服务器上，因此不存在对区域数据执行get或put操作的网络往返时间。
 
-This function example accomplishes atomic updates on a single region representing the quantity of products available in inventory. Doing this in a transaction prevents double allocating inventory for two orders placed simultaneously.
+这个函数示例在表示库存中可用产品数量的单个区域上完成原子更新。在事务中这样做可以防止为同时下单的两个订单重复分配库存。
 
-```
+```java
 /**
  * Atomically reduce inventory quantity
  */
@@ -9386,250 +9386,250 @@ public class TransactionalFunction extends Function {
 }
 ```
 
-The application-side details on function implementation are not covered in this example. The application sets up the function context and the argument. See the section on [Function Execution](https://geode.apache.org/docs/guide/17/developing/function_exec/chapter_overview.html)for details on functions.
+本例中不讨论关于函数实现的应用程序端细节。应用程序设置函数上下文和参数。有关函数的详细信息，请参见[函数执行]一节(https://geode.apache.org/docs/guide/17/developing/function_exec/chapter_overview.html)。
 
-The function implementation needs to catch the commit conflict exception such that it can retry the entire transaction. The exception only occurs if another request for the same product intersected with this one, and that other request’s transaction committed first.
+函数实现需要捕获提交冲突异常，以便能够重试整个事务。只有当对同一产品的另一个请求与此产品相交，且该请求的事务首先提交时，才会出现异常。
 
-The `optimizeForWrite` method is defined to cause the system to execute the function on the server that holds the primary bucket for the given key. It can save a network hop from the secondary to the primary.
+定义` optimizeForWrite`方法是为了使系统在保存给定键的主桶的服务器上执行函数。它可以保存从辅助服务器到主服务器的网络跳转。
 
-Note that the variable `qtyAvailable` is a reference, because the `Region.get` operation returns a reference within this server-side code. Read [Region Operations Return References](https://geode.apache.org/docs/guide/17/developing/transactions/design_considerations.html#copy-on-read-transactions) for details and how to work around the implications of a reference as a return value when working with server code.
+注意变量`qtyAvailable`是一个引用，因为`Region.get`操作返回服务器端代码中的引用。参见[Region Operations Return References](https://geode.apache.org/docs/guide/17/developing/transactions/design_considerations.html#copy-on-read-transactions)了解详细信息，以及在使用服务器代码时如何处理引用作为返回值的含义。
 
 
 
-### Design Considerations
+### 设计注意事项
 
-Designs that incorporate more complex features introduce further considerations. This section discusses how transactions interact with other Geode features.
+包含更复杂特性的设计会引入更多的考虑。本节讨论事务如何与其他Geode特性交互。
 
-- **Colocate Partitioned Regions**
-- **Region Operations Return References**
-- **First Operation with Mixed Region Types**
-- **Allowing Transactions to Work on Persistent Regions**
-- **Mixing Transactions with Queries and Indexes**
-- **Mixing Transactions with Eviction**
-- **Mixing Transactions with Expiration**
-- **Changing the Handling of Dirty Reads**
+- **按区域划分**
+- **区域操作返回引用**
+- **首先使用混合区域类型进行操作**
+- **允许事务在持久区域上工作**
+- **将事务与查询和索引混合在一起**
+- **将事务与驱逐混合在一起**
+- **将事务与过期混合**
+- **更改脏读的处理**
 
-**Colocate Partitioned Regions**
+**按区域划分**
 
-For performance, transactions that operate on more than one partitioned region require that those partitioned regions colocate their entries. [Colocate Data from Different Partitioned Regions](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html)describes how to colocate entries.
+为了提高性能，对多个分区区域进行操作的事务需要这些分区区域对其条目进行共定位。[来自不同分区区域的Colocate数据](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/colocating_partitioned_region_data.html)描述了如何对条目进行Colocate。
 
-**Region Operations Return References**
+**区域操作返回引用**
 
-For performance, server-invoked region operations return references to region entries. Any assignment to that reference changes the entry within the region. This subverts the system’s ability to maintain consistency and the callback chain for handlers such as cache writers and cache loaders.
+为了提高性能，服务器调用的区域操作返回对区域条目的引用。对该引用的任何赋值都会更改区域内的条目。这破坏了系统为处理程序(如缓存写入器和缓存加载器)维护一致性和回调链的能力。
 
-Changing an entry using a reference from within a transaction executing on a server has the same consistency issues, but is even worse, as the change will not be seen as part of the transactional state.
+使用在服务器上执行的事务中的引用更改条目具有相同的一致性问题，但更糟糕的是，更改不会被视为事务状态的一部分。
 
-There are two ways to work with a reference: make a copy, or configure the system to return copies instead of references. There is a performance penalty to having the system return copies. Both ways are detailed in [Safe Entry Modification](https://geode.apache.org/docs/guide/17/basic_config/data_entries_custom_classes/managing_data_entries.html#managing_data_entries__section_A0E0F889AC344EFA8DF304FD64418809).
+使用引用有两种方法:创建一个副本，或者配置系统返回副本而不是引用。让系统返回副本会带来性能损失。 这两种方法在[安全条目修改](https://geode.apache.org/docs/guide/17/basic_config/data_entries_custom_classes/managing_data_entries.html#managing_data_entries__section_A0E0F889AC344EFA8DF304FD64418809)中都有详细说明。
 
-**First Operation with Mixed Region Types**
+**首先使用混合区域类型进行操作**
 
-When more than one region participates in a transaction, and there is at least one partitioned and at least one replicated region, the code must do its first operation on the partitioned region to avoid a `TransactionDataNotColocatedException`. Write the transaction to do its first operation on a partitioned region, even if the operation will be spurious.
+当一个事务中有多个区域参与，且至少有一个分区和至少一个复制区域时，代码必须对分区区域执行第一次操作，以避免`TransactionDataNotColocatedException`。编写事务以在分区区域上执行其第一个操作，即使该操作是假的。
 
-**Allowing Transactions to Work on Persistent Regions**
+**允许事务在持久区域上工作**
 
-Geode’s implementation of atomic transactions prohibits regions with persistence from participating in transactions. The invocation of a persistent region operation within a transaction throws an `UnsupportedOperationException` with an associated message of
+Geode的原子事务实现禁止具有持久性的区域参与事务。在事务中对持久区域操作的调用会抛出一个`UnsupportedOperationException`异常和一条相关的消息
 
 ```
 Operations on persist-backup regions are not allowed because this thread
 has an active transaction
 ```
 
-An application that wishes to allow operations on a persistent region during a transaction can set this system property:
+希望在事务期间允许对持久区域进行操作的应用程序可以设置此系统属性:
 
 ```
 -Dgemfire.ALLOW_PERSISTENT_TRANSACTIONS=true
 ```
 
-Setting this system property eliminates the exception. It does not change the fact that atomicity is not enforced for disk writes that occur with the commit of a transaction. A server crash during the commit may succeed in some, but not all of the disk writes.
+设置此系统属性可以消除异常。它不会改变事务提交时发生的磁盘写不强制原子性这一事实。提交期间的服务器崩溃可能在某些情况下成功，但不是所有的磁盘写操作都成功。
 
-**Mixing Transactions with Queries and Indexes**
+**将事务与查询和索引混合在一起**
 
-Queries and query results reflect region state, and not any state or changes that occur within a transaction. Likewise, the contents and updates to an index do not intersect with any changes made within a transaction. Therefore, do not mix transactions with queries or indexed regions.
+查询和查询结果反映区域状态，而不是事务中发生的任何状态或更改。同样，索引的内容和更新不会与事务中的任何更改相交。因此，不要将事务与查询或索引区域混合。
 
-**Mixing Transactions with Eviction**
+**将事务与驱逐混合在一起**
 
-LRU eviction and transactions work well together. Any eviction operation on a region entry that is operated on from within a transaction is deferred until the transaction is committed. Further, because any entry touched by the transaction has had its LRU clock reset, eviction is not likely to choose those entries as victims immediately after the commit.
+LRU驱逐和事务可以很好地协作。从事务中操作的区域条目上的任何回收操作都将延迟到提交事务时才执行。此外，由于事务所接触的任何条目都已经重置了其LRU时钟，所以收回不太可能在提交之后立即选择这些条目作为受害者。
 
-**Mixing Transactions with Expiration**
+**将事务与过期混合**
 
-A transaction disables expiration on any region entries affected by the transaction.
+事务禁用受事务影响的任何区域条目的过期。
 
-**Changing the Handling of Dirty Reads**
+**更改脏读的处理**
 
-An application requiring a strict, but slower isolation model, such that dirty reads of transitional states are not allowed, should set a property and encapsulate read operations within the transaction. Configure this strict isolation model with the property:
+应用程序需要严格但较慢的隔离模型(比如不允许对过渡状态进行脏读)，应该设置一个属性并将读操作封装在事务中。使用属性配置这个严格的隔离模型:
 
 ```
 -Dgemfire.detectReadConflicts=true
 ```
 
-This property causes read operations to succeed only when they read a consistent pre- or post-transactional state. If not consistent, Geode throws a `CommitConflictException`.
+此属性仅当读取一致的事务前或事务后状态时，才会导致读取操作成功。如果不一致，Geode抛出一个`CommitConflictException`异常。
 
 
 
 ## 函数执行
 
-A function is a body of code that resides on a server and that an application can invoke from a client or from another server without the need to send the function code itself. The caller can direct a data-dependent function to operate on a particular dataset, or can direct a data-independent function to operate on a particular server, member, or member group.
+函数是驻留在服务器上的代码体，应用程序可以从客户机或另一台服务器调用它，而不需要发送函数代码本身。调用方可以指示依赖于数据的函数对特定数据集进行操作，也可以指示独立于数据的函数对特定服务器、成员或成员组进行操作。
 
-The function execution service provides solutions for a variety of use cases, including:
+函数执行服务为各种用例提供解决方案，包括:
 
-- An application needs to perform an operation on the data associated with a key. A registered server-side function can retrieve the data, operate on it, and put it back, with all processing performed locally to the server.
-- An application needs to initialize some of its components once on each server, which might be used later by executed functions.
-- A third-party service, such as a messaging service, requires initialization and startup.
-- Any arbitrary aggregation operation requires iteration over local data sets that can be done more efficiently through a single call to the cache server.
-- An external resource needs provisioning that can be done by executing a function on a server.
-- **How Function Execution Works**
-- **Executing a Function in Apache Geode**
+- 应用程序需要对与key关联的数据执行操作。注册的服务器端函数可以检索数据、对其进行操作并将其返回，所有处理都在服务器本地执行。
+- 应用程序需要在每个服务器上初始化一些组件，稍后执行的函数可能会使用这些组件。
+- 第三方服务(如消息传递服务)需要初始化和启动。
+- 任何任意聚合操作都需要对本地数据集进行迭代，可以通过对缓存服务器的一次调用更有效地进行迭代。
+- 外部资源需要通过在服务器上执行函数来提供。
+- **函数执行如何工作**
+- **在Apache Geode中执行一个函数**
 
 
 
-### How Function Execution Works
+### 函数执行如何工作
 
-**Where Functions Are Executed**
+**函数在哪里执行**
 
-You can execute data-independent functions or data-dependent functions in Geode in the following places:
+在Geode中，您可以在以下位置执行独立于数据的函数或依赖于数据的函数:
 
-**For Data-independent Functions**
+**Data-independent函数**
 
-- **On a specific member or members—**Execute the function within a peer-to-peer cluster, specifying the member or members where you want to run the function by using `FunctionService` methods `onMember()` and `onMembers()`.
-- **On a specific server or set of servers—**If you are connected to a cluster as a client, you can execute the function on a server or servers configured for a specific connection pool, or on a server or servers connected to a given cache using the default connection pool. For data-independent functions on client/server architectures, a client invokes `FunctionService`methods `onServer()` or `onServers()`. (See [How Client/Server Connections Work](https://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/how_the_pool_manages_connections.html) for details regarding pool connections.)
-- **On member groups or on a single member within each member group—**You can organize members into logical member groups. (See [Configuring and Running a Cluster](https://geode.apache.org/docs/guide/17/configuring/chapter_overview.html#concept_lrh_gyq_s4) for more information about using member groups.) You can invoke a data independent function on all members in a specified member group or member groups, or execute the function on only one member of each specified member group.
+- **在一个或多个特定的成员上—**在对等集群中执行函数，通过使用`FunctionService`的方法`onMember()`和`onMembers()`指定希望在其中运行函数的成员。
+- **在特定的服务器或服务器集上—**如果作为客户机连接到集群，则可以在为特定连接池配置的服务器或服务器上执行该函数，或者在使用默认连接池连接到给定缓存的服务器或服务器上执行该函数。对于客户机/服务器架构上的独立于数据的函数，客户机调用`FunctionService`的方法`onServer()`或`onServers()`。(有关池连接的详细信息，请参见[客户机/服务器连接如何工作](https://geode.apache.org/docs/guide/17/topologies_and_comm/topology_concepts/how_the_pool_manages_connections.html)。)
+- **在成员组上或在每个成员组中的单个成员上—**您可以将成员组织为逻辑成员组。(有关使用成员组的更多信息，请参见[配置和运行集群](https://geode.apache.org/docs/guide/17/configuring/chapter_overview.html#concept_lrh_gyq_s4)。您可以对指定成员组或成员组中的所有成员调用独立于数据的函数，或者仅对每个指定成员组中的一个成员执行该函数。
 
-**For Data-dependent Functions**
+**对于依赖数据的函数**
 
-- **On a region—**If you are executing a data-dependent function, specify a region and, optionally, a set of keys on which to run the function. The method `FunctionService.onRegion()` directs a data-dependent function to execute on a specific region.
+- **在一个区域上—**如果您正在执行一个依赖于数据的函数，请指定一个区域和一组键(可选)，在这些键上运行函数。方法`FunctionService.onRegion()`指导依赖于数据的函数在特定区域上执行。
 
-See the `org.apache.geode.cache.execute.FunctionService` Java API documentation for more details.
+更多详细信息，请参阅FunctionService的Java API文档的`org.apache.geode.cache.execute`。
 
-**How Functions Are Executed**
+**如何执行函数**
 
-The following things occur when executing a function:
+在执行一个函数时，会发生以下情况:
 
-1. For security-enabled clusters, prior to executing the function, a check is made to see that that caller is authorized to execute the function. The required permissions for authorization are provided by the function’s `Function.getRequiredPermissions()` method. See [Authorization of Function Execution](https://geode.apache.org/docs/guide/17/managing/security/implementing_authorization.html#AuthorizeFcnExecution) for a discussion of this method.
-2. Given successful authorization, Geode invokes the function on all members where it needs to run. The locations are determined by the `FunctionService` `on*` method calls, region configuration, and any filters.
-3. If the function has results, they are returned to the `addResult` method call in a `ResultCollector` object.
-4. The originating member collects results using `ResultCollector.getResult`.
+1. 对于启用安全的集群，在执行函数之前，要检查调用者是否被授权执行函数。授权所需的权限由函数的`function .getrequiredpermissions()`方法提供。有关此方法的讨论，请参见[函数执行的授权](https://geode.apache.org/docs/guide/17/managing/security/implementing_authorization.html#AuthorizeFcnExecution)。
+2. 如果授权成功，Geode将在需要运行该函数的所有成员上调用该函数。位置由`FunctionService`的`on*`方法调用、区域配置和任何筛选器确定。
+3. 如果函数有结果，则将结果返回给`ResultCollector`对象中的`addResult`方法调用。
+4. 发起成员使用`ResultCollector.getResult收集结果。
 
-**Highly Available Functions**
+**高度可用的函数**
 
-Generally, function execution errors are returned to the calling application. You can code for high availability for `onRegion` functions that return a result, so Geode automatically retries a function if it does not execute successfully. You must code and configure the function to be highly available, and the calling application must invoke the function using the results collector `getResult`method.
+通常，函数执行错误返回给调用应用程序。您可以为返回结果的`onRegion`函数编写高可用性代码，因此如果一个函数没有成功执行，Geode将自动重试该函数。您必须对函数进行编码和配置，使其具有高可用性，调用该函数的应用程序必须使用结果收集器` getResult`方法调用该函数。
 
-When a failure (such as an execution error or member crash while executing) occurs, the system responds by:
+当发生故障(如执行错误或执行时成员崩溃)时，系统的响应方式为:
 
-1. Waiting for all calls to return
-2. Setting a boolean indicating a re-execution
-3. Calling the result collector’s `clearResults` method
-4. Executing the function
+1. 等待所有调用返回
+2. 设置指示重新执行的布尔值
+3. 调用结果收集器的`clearResults`方法
+4. 执行函数
 
-For client regions, the system retries the execution according to `org.apache.geode.cache.client.Pool` `retryAttempts`. If the function fails to run every time, the final exception is returned to the `getResult` method.
+对于客户端区域，系统根据`org.apache.geode.cache.client.Pool` `retryAttempts`重试执行。如果函数每次都不能运行，那么最后的异常将返回给`getResult`方法。
 
-For member calls, the system retries until either it succeeds or no data remains in the system for the function to operate on.
+对于成员调用，系统将重试，直到成功或系统中没有数据保留以供函数操作为止。
 
-**Function Execution Scenarios**
+**函数执行场景**
 
-This figure shows the sequence of events for a data-independent function invoked from a client on all available servers.
+此图显示了从所有可用服务器上的客户机调用的独立于数据的函数的事件序列。
 
 
 
 ![A diagram showing the sequence of events for a data-independent function invoked from a client on all available servers](assets/FuncExecOnServers.png)
 
-The client contacts a locator to obtain host and port identifiers for each server in the cluster and issues calls to each server. As the instigator of the calls, the client also receives the call results.
+客户端联系定位器以获取集群中每个服务器的主机和端口标识符，并发出对每个服务器的调用。作为调用的发起者，客户机还接收调用结果。
 
-This figure shows the sequence of events for a data-independent function executed against members in a peer-to-peer cluster.
+此图显示了对对等集群中的成员执行的独立于数据的函数的事件序列。
 
 
 
 ![The sequence of events for a data-independent function executed against members in a peer-to-peer cluster.](assets/FuncExecOnMembers.png)
 
-You can think of `onMembers()` as the peer-to-peer counterpart of a client-server call to `onServers()`. Because it is called from a peer of other members in the cluster, an `onMembers()`function invocation has access to detailed metadata and does not require the services of a locator. The caller invokes the function on itself, if appropriate, as well as other members in the cluster and collects the results of all of the function executions.
+您可以将`onMembers()`视为对`onServers()`的客户机-服务器调用的对等对等点。因为它是从集群中其他成员的对等点调用的，所以`onMembers()`函数调用可以访问详细的元数据，不需要定位器的服务。调用者调用函数本身(如果合适的话)以及集群中的其他成员，并收集所有函数执行的结果。
 
-[Data-dependent Function on a Region](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_region) shows a data-dependent function run on a region.
+[区域上的数据依赖函数](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_region) 显示了在区域上运行的数据依赖函数。
 
 
 
-Figure: Data-dependent Function on a Region
+图:一个区域的数据相关函数
 
 ![The path followed when the client lacks detailed metadata regarding target locations](assets/FuncExecOnRegionNoMetadata.png)
 
-An `onRegion()` call requires more detailed metadata than a locator provides in its host:port identifier. This diagram shows the path followed when the client lacks detailed metadata regarding target locations, as on the first call or when previously obtained metadata is no longer up to date.
+`onRegion()`调用需要比定位器在其主机:端口标识符中提供的更详细的元数据。此图显示了当客户机缺少关于目标位置的详细元数据(如第一次调用时)或以前获得的元数据不再是最新数据时所遵循的路径。
 
-The first time a client invokes a function to be executed on a particular region of a cluster, the client’s knowledge of target locations is limited to the host and port information provided by the locator. Given only this limited information, the client sends its execution request to whichever server is next in line to be called according to the pool allocation algorithm. Because it is a participant in the cluster, that server has access to detailed metadata and can dispatch the function call to the appropriate target locations. When the server returns results to the client, it sets a flag indicating whether a request to a different server would have provided a more direct path to the intended target. To improve efficiency, the client requests a copy of the metadata. With additional details regarding the bucket layout for the region, the client can act as its own dispatcher on subsequent calls and identify multiple targets for itself, eliminating at least one hop.
+当客户机第一次调用要在集群的特定区域上执行的函数时，客户机对目标位置的了解仅限于定位器提供的主机和端口信息。由于只有这些有限的信息，客户机将其执行请求发送到下一个根据池分配算法将要调用的服务器。因为它是集群中的参与者，所以该服务器可以访问详细的元数据，并可以将函数调用分派到适当的目标位置。当服务器将结果返回给客户机时，它设置一个标志，指示对不同服务器的请求是否提供了到目标的更直接的路径。为了提高效率，客户机请求元数据的副本。关于区域bucket布局的其他详细信息，客户机可以在后续调用中充当自己的分派器，并为自己标识多个目标，从而消除至少一个跃点。
 
-After it has obtained current metadata, the client can act as its own dispatcher on subsequent calls, identifying multiple targets for itself and eliminating one hop, as shown in [Data-dependent function after obtaining current metadata](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_obtaining_current_metadata).
+在获得当前元数据之后，客户机可以在后续调用中充当自己的分派器，为自己标识多个目标并消除一个跳转，如[获得当前元数据后依赖于数据的函数]所示(https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_obtaining_current_metadata)。
 
 
 
-Figure: Data-dependent function after obtaining current metadata
+图:获取当前元数据后的数据相关函数
 
 ![A diagram showing the client acting as its own dispatcher after having obtained current metadata.](assets/FuncExecOnRegionWithMetadata.png)
 
-[Data-dependent Function on a Region with Keys](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_region_keys) shows the same data-dependent function with the added specification of a set of keys on which to run.
+(https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_region_keys)显示了相同的依赖于数据的函数，其中添加了一组要在其上运行的键的规范。
 
 
 
-Figure: Data-dependent Function on a Region with Keys
+图:数据相关的函数，该函数依赖于带有键的区域
 
 ![A data-dependent function on a region with specification of keys on which to run](assets/FuncExecOnRegionWithFilter.png)
 
-Servers that do not hold any keys are left out of the function execution.
+不保存任何key的服务器被排除在函数执行之外。
 
-[Peer-to-peer Data-dependent Function](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_peer_data_dependent_function) shows a peer-to-peer data-dependent call.
+[对等数据相关函数](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_peer_data_dependent_function)显示了一个对等数据相关调用。
 
 
 
-Figure: Peer-to-peer Data-dependent Function
+图:点对点数据相关函数
 
 ![A data-dependent function where the caller is not an external client](assets/FuncExecOnRegionPeersWithFilter.png)
 
-The caller is a member of the cluster, not an external client, so the function runs in the caller’s cluster. Note the similarities between this diagram and the preceding figure ([Data-dependent Function on a Region with Keys](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_region_keys)), which shows a client-server model where the client has up-to-date metadata regarding target locations within the cluster.
+调用者是集群的成员，而不是外部客户端，因此函数在调用者的集群中运行。请注意此图与前面的图([依赖于具有键的区域的数据函数](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_data_dependent_function_region_keys)之间的相似性)，其中显示了一个客户机-服务器模型，其中客户机具有关于集群中目标位置的最新元数据。
 
-[Client-server system with Up-to-date Target Metadata](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_client_server_system_target_metadata) demonstrates a sequence of steps in a call to a highly available function in a client-server system in which the client has up-to-date metadata regarding target locations.
+[具有最新目标元数据的客户机-服务器系统](https://geode.apache.org/docs/guide/17/developing/function_exec/how_function_execution_works.html#how_function_execution_works__fig_client_server_system_target_metadata)演示了在客户机-服务器系统中调用高可用函数的一系列步骤，其中客户机具有关于目标位置的最新元数据。
 
-Figure: Client-server system with Up-to-date Target Metadata
+图:具有最新目标元数据的客户机-服务器系统
 
 ![A sequence of steps in a call to a highly available function in a client-server system in which the client has up-to-date metadata regarding target locations](assets/FuncExecOnRegionHAWithFilter-1545276886457.png)
 
-In this example, three primary keys (X, Y, Z) and their secondary copies (X’, Y’, Z’) are distributed among three servers. Because `optimizeForWrite` is `true`, the system first attempts to invoke the function where the primary keys reside: Server 1 and Server 2. Suppose, however, that Server 2 is off-line for some reason, so the call targeted for key Y fails. Because `isHA` is set to `true`, the call is retried on Server 1 (which succeeded the first time, so likely will do so again) and Server 3, where key Y’ resides. This time, the function call returns successfully. Calls to highly available functions retry until they obtain a successful result or they reach a retry limit.
+在本例中，三个主键(X, Y, Z)及其辅助副本(X '， Y '， Z ')分布在三个服务器之间。因为`optimizeForWrite`是`true`，系统首先尝试调用主键所在的函数:Server 1和Server 2。但是，假设服务器2由于某种原因离线，因此针对键Y的调用失败。因为`isHA`被设置为`true`，所以调用在服务器1(第一次成功，很可能会再次成功)和服务器3(键Y '所在)上重试。这一次，函数调用成功返回。对高可用函数的调用重试，直到获得成功的结果或达到重试限制。
 
 
 
-### Executing a Function in Apache Geode
+### 在Apache Geode中执行一个函数
 
-In this procedure it is assumed that you have your members and regions defined where you want to run functions.
+在这个过程中，假设您已经定义了想要运行函数的成员和区域。
 
-Main tasks:
+主要任务:
 
-1. Write the function code.
-2. Register the function on all servers where you want to execute the function. The easiest way to register a function is to use the `gfsh` `deploy` command to deploy the JAR file containing the function code. Deploying the JAR automatically registers the function for you. See [Register the Function Automatically by Deploying a JAR](https://geode.apache.org/docs/guide/17/developing/function_exec/function_execution.html#function_execution__section_164E27B88EC642BA8D2359B18517B624) for details. Alternatively, you can write the XML or application code to register the function. See [Register the Function Programmatically](https://geode.apache.org/docs/guide/17/developing/function_exec/function_execution.html#function_execution__section_1D1056F843044F368FB76F47061FCD50) for details.
-3. Write the application code to run the function and, if the function returns results, to handle the results.
-4. If your function returns results and you need special results handling, code a custom `ResultsCollector` implementation and use it in your function execution.
+1. 编写函数代码。
+2. 在希望执行该函数的所有服务器上注册该函数。注册函数最简单的方法是使用`gfsh`的`deploy`命令来部署包含函数代码的JAR文件。部署JAR会自动为您注册函数。有关详细信息，请参见[通过部署JAR自动注册函数](https://geode.apache.org/docs/guide/17/developing/function_exec/function_execution.html#function_execution__section_164E27B88EC642BA8D2359B18517B624)。或者，您可以编写XML或应用程序代码来注册函数。有关详细信息，请参见[以编程方式注册函数](https://geode.apache.org/docs/guide/17/developing/function_exec/function_execution.html#function_execution__section_1D1056F843044F368FB76F47061FCD50)。
+3. 编写应用程序代码以运行函数，如果函数返回结果，则处理结果。
+4. 如果函数返回结果，并且需要特殊的结果处理，那么编写一个定制的`ResultsCollector`实现并在函数执行中使用它。
 
-**Write the Function Code**
+**编写函数代码**
 
-To write the function code, you implement the `Function` interface in the `org.apache.geode.cache.execute` package.
+要编写函数代码，您需要在`org.apache.geode.cache`中实现`function`接口。执行的方案。
 
-Code the methods you need for the function. These steps do not have to be done in this order.
+编写函数所需的方法。这些步骤不必按此顺序执行。
 
-- Implement `getId` to return a unique name for your function. You can use this name to access the function through the `FunctionService` API.
-- For high availability:
-  1. Code `isHa` to return true to indicate to Geode that it can re-execute your function after one or more members fails
-  2. Code your function to return a result
-  3. Code `hasResult` to return true
-- Code `hasResult` to return true if your function returns results to be processed and false if your function does not return any data - the fire and forget function.
-- If the function will be executed on a region, implement `optimizeForWrite` to return false if your function only reads from the cache, and true if your function updates the cache. The method only works if, when you are running the function, the `Execution` object is obtained through a `FunctionService` `onRegion` call. `optimizeForWrite` returns false by default.
-- If the function should be run with an authorization level other than the default of `DATA:WRITE`, implement an override of the `Function.getRequiredPermissions()` method. See [Authorization of Function Execution](https://geode.apache.org/docs/guide/17/managing/security/implementing_authorization.html#AuthorizeFcnExecution) for details on this method.
-- Code the `execute` method to perform the work of the function.
-  1. Make `execute` thread safe to accommodate simultaneous invocations.
-  2. For high availability, code `execute` to accommodate multiple identical calls to the function. Use the `RegionFunctionContext` `isPossibleDuplicate` to determine whether the call may be a high-availability re-execution. This boolean is set to true on execution failure and is false otherwise. **注意:** The `isPossibleDuplicate` boolean can be set following a failure from another member’s execution of the function, so it only indicates that the execution might be a repeat run in the current member.
-  3. Use the function context to get information about the execution and the data:
-     - The context holds the function ID, the `ResultSender` object for passing results back to the originator, and function arguments provided by the member where the function originated.
-     - The context provided to the function is the `FunctionContext`, which is automatically extended to `RegionFunctionContext` if you get the `Execution` object through a `FunctionService` `onRegion` call.
-     - For data dependent functions, the `RegionFunctionContext` holds the `Region` object, the `Set` of key filters, and a boolean indicating multiple identical calls to the function, for high availability implementations.
-     - For partitioned regions, the `PartitionRegionHelper` provides access to additional information and data for the region. For single regions, use `getLocalDataForContext`. For colocated regions, use `getLocalColocatedRegions`. **注意:** When you use `PartitionRegionHelper.getLocalDataForContext`, `putIfAbsent` may not return expected results if you are working on local data set instead of the region.
-  4. To propagate an error condition or exception back to the caller of the function, throw a FunctionException from the `execute` method. Geode transmits the exception back to the caller as if it had been thrown on the calling side. See the Java API documentation for [FunctionException](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/execute/FunctionException.html) for more information.
+- 实现`getId`返回函数的唯一名称。您可以使用这个名称通过`FunctionService`API访问函数。
+- 高可用性:
+  1. 代码`isHa`返回true，向Geode表明在一个或多个成员失败后，它可以重新执行您的函数
+  2. 编写函数代码以返回结果
+  3. 代码`hasResult`返回true
+- 如果你的函数返回要处理的结果，则返回true;如果你的函数不返回任何数据，则返回false。
+- 如果函数将在一个区域上执行，则实现`optimizeForWrite`返回false(如果函数只从缓存中读取数据)，如果函数更新缓存则返回true。该方法只有在运行函数时，通过`FunctionService` `onRegion`调用获得`Execution`对象时才有效。`optimizeForWrite`'默认返回false。
+- 如果函数运行时的授权级别不是默认的`DATA:WRITE`，则实现`function.getrequiredpermissions()`方法的覆盖。有关此方法的详细信息，请参见[函数执行授权](https://geode.apache.org/docs/guide/17/managing/security/implementing_authorization.html#AuthorizeFcnExecution)。
+- 编写`execute`方法来执行函数的工作。
+  1. 使`execute`线程安全以适应同步调用。
+  2. 对于高可用性，代码`execute`可容纳对该函数的多个相同调用。使用`RegionFunctionContext` `isPossibleDuplicate`来确定调用是否是高可用性的重新执行。这个布尔值在执行失败时设置为true，否则为false。 **注意:** 可以在另一个成员执行函数失败后设置`isPossibleDuplicate`布尔值，因此它只表明执行可能是当前成员中的重复运行。
+  3. 使用函数上下文获取关于执行和数据的信息:
+     - 上下文保存函数ID、用于将结果传递回发起者的`ResultSender`对象，以及函数起源的成员提供的函数参数。
+     - 提供给该函数的上下文是`FunctionContext`，如果通过`FunctionService`  `onRegion`调用获得`Execution`对象，该上下文将自动扩展到`RegionFunctionContext`。
+     - 对于依赖于数据的函数，`RegionFunctionContext`保存`Region`对象、键筛选器的`Set`和指示对该函数的多个相同调用的布尔值，以实现高可用性。
+     - 对于分区区域，`PartitionRegionHelper`提供对该区域的其他信息和数据的访问。对于单个区域，使用`getLocalDataForContext`。对于被着色的区域，使用`getLocalColocatedRegions`。 **注意:** 当您使用`PartitionRegionHelper.getLocalDataForContext`时。如果您处理的是本地数据集而不是区域，则`putIfAbsent`可能不返回预期的结果。
+  4. 要将错误条件或异常传播回函数的调用方，请从`execute`方法中抛出FunctionException。Geode将异常传递回调用方，就像它被抛出到调用方一样。有关[FunctionException]的更多信息，请参见[FunctionException]的Java API文档(https://geode.apache.org/releases/latest/javadoc/org/apache/geode/cache/execute/FunctionException.html)。
 
-Example function code:
+示例函数代码:
 
-```
+```java
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9674,41 +9674,41 @@ public class MultiGetFunction implements Function {
 }
 ```
 
-**Register the Function Automatically by Deploying a JAR**
+**通过部署JAR自动注册函数**
 
-When you deploy a JAR file that contains a Function (in other words, contains a class that implements the Function interface), the Function will be automatically registered via the `FunctionService.registerFunction` method.
+当您部署包含函数(换句话说，包含实现函数接口的类)的JAR文件时，该函数将通过`FunctionService.registerFunction`方法自动注册。
 
-To register a function by using `gfsh`:
+使用`gfsh`注册函数:
 
-1. Package your class files into a JAR file.
+1. 将类文件打包到JAR文件中。
 
-2. Start a `gfsh` prompt. If necessary, start a locator and connect to the cluster where you want to run the function.
+2. 启动`gfsh`提示符。如果需要，启动定位器并连接到要运行该函数的集群。
 
-3. At the gfsh prompt, type the following command:
+3. 在gfsh提示符下，键入以下命令:
 
    ```
    gfsh>deploy --jar=group1_functions.jar
    ```
 
-   where group1_functions.jar corresponds to the JAR file that you created in step 1.
+   其中group1_functions.jar对应于步骤1中创建的JAR文件。
 
-If another JAR file is deployed (either with the same JAR filename or another filename) with the same Function, the new implementation of the Function will be registered, overwriting the old one. If a JAR file is undeployed, any Functions that were auto-registered at the time of deployment will be unregistered. Since deploying a JAR file that has the same name multiple times results in the JAR being un-deployed and re-deployed, Functions in the JAR will be unregistered and re-registered each time this occurs. If a Function with the same ID is registered from multiple differently named JAR files, the Function will be unregistered if either of those JAR files is re-deployed or un-deployed.
+如果使用相同的函数部署了另一个JAR文件(使用相同的JAR文件名或另一个文件名)，则将注册该函数的新实现，覆盖旧的实现。如果一个JAR文件被取消部署，那么在部署时自动注册的任何函数都将被取消注册。由于多次部署具有相同名称的JAR文件会导致JAR被取消部署和重新部署，因此每次发生这种情况时，JAR中的函数都将被取消注册和重新注册。如果从多个不同名称的JAR文件中注册了具有相同ID的函数，那么如果其中一个JAR文件被重新部署或取消部署，那么该函数将被取消注册。
 
-See [Deploying Application JARs to Apache Geode Members](https://geode.apache.org/docs/guide/17/configuring/cluster_config/deploying_application_jars.html#concept_4436C021FB934EC4A330D27BD026602C) for more details on deploying JAR files.
+有关部署JAR文件的详细信息，请参见[将应用程序JAR部署到Apache Geode成员](https://geode.apache.org/docs/guide/17/configuring/cluster_config/deploying_application_jars.html#concept_4436C021FB934EC4A330D27BD026602C)。
 
-**Register the Function Programmatically**
+**以编程方式注册函数**
 
-This section applies to functions that are invoked using the `Execution.execute(String functionId)`signature. When this method is invoked, the calling application sends the function ID to all members where the `Function.execute` is to be run. Receiving members use the ID to look up the function in the local `FunctionService`. In order to do the lookup, all of the receiving member must have previously registered the function with the function service.
+本节适用于使用`Execution.execute(String functionId)`签名调用的函数。当调用此方法时，调用应用程序将函数ID发送到将要运行`Function.execute`的所有成员。接收成员使用ID在本地`FunctionService`中查找函数。为了进行查找，所有接收成员必须事先在函数服务中注册了函数。
 
-The alternative to this is the `Execution.execute(Function function)` signature. When this method is invoked, the calling application serializes the instance of `Function` and sends it to all members where the `Function.execute` is to be run. Receiving members deserialize the `Function` instance, create a new local instance of it, and run execute from that. This option is not available for non-Java client invocation of functions on servers.
+另一种方法是“执行”签名。当调用此方法时，调用应用程序序列化`Execution.execute(Function function)`的实例并将其发送到运行`Function.execute`的所有成员。接收成员反序列化`Function`实例，创建它的新本地实例，并从中运行execute。此选项不适用于服务器上的非java客户端函数调用。
 
-Your Java servers must register functions that are invoked by non-Java clients. You may want to use registration in other cases to avoid the overhead of sending `Function` instances between members.
+Java服务器必须注册由非Java客户机调用的函数。您可能希望在其他情况下使用注册，以避免成员之间发送`Function`实例的开销。
 
-Register your function using one of these methods:
+注册您的函数使用以下方法之一:
 
 - XML:
 
-  ```
+  ```xml
   <cache>
       ...
       </region>
@@ -9721,48 +9721,48 @@ Register your function using one of these methods:
 
 - Java:
 
-  ```
+  ```java
   myFunction myFun = new myFunction();
   FunctionService.registerFunction(myFun);
   ```
 
-  **注意:** Modifying a function instance after registration has no effect on the registered function. If you want to execute a new function, you must register it with a different identifier.
+  **注意:** 注册后修改函数实例对注册的函数没有影响。如果要执行新函数，必须使用不同的标识符注册它。
 
-**Run the Function**
+**运行函数**
 
-This assumes you’ve already followed the steps for writing and registering the function.
+这假设您已经遵循了编写和注册函数的步骤。
 
-In every member where you want to explicitly execute the function and process the results, you can use the `gfsh` command line to run the function or you can write an application to run the function.
+在需要显式执行函数并处理结果的每个成员中，可以使用`gfsh`命令行运行函数，也可以编写应用程序来运行函数。
 
-**Running the Function Using gfsh**
+**使用gfsh运行函数**
 
-1. Start a gfsh prompt.
+1. 启动gfsh提示符。
 
-2. If necessary, start a locator and connect to the cluster where you want to run the function.
+2. 如果需要，启动定位器并连接到要运行该函数的集群。
 
-3. At the gfsh prompt, type the following command:
+3. 在gfsh提示符下，键入以下命令:
 
    ```
    gfsh> execute function --id=function_id
    ```
 
-   Where *function_id* equals the unique ID assigned to the function. You can obtain this ID using the `Function.getId` method.
+   其中*function_id*等于分配给函数的唯一ID。您可以使用`Function.getId`方法获得此ID。
 
-See [Function Execution Commands](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_8BB061D1A7A9488C819FE2B7881A1278) for more `gfsh` commands related to functions.
+有关函数的更多`gfsh`命令，请参见[函数执行命令](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/quick_ref_commands_by_area.html#topic_8BB061D1A7A9488C819FE2B7881A1278)。
 
-**Running the Function via API Calls**
+**通过API调用运行函数**
 
-1. Use one of the `FunctionService` `on*` methods to create an `Execute` object. The `on*`methods, `onRegion`, `onMembers`, etc., define the highest level where the function is run. For colocated partitioned regions, use `onRegion` and specify any one of the colocated regions. The function run using `onRegion` is referred to as a data dependent function - the others as data-independent functions.
-2. Use the `Execution` object as needed for additional function configuration. You can:
-   - Provide a key `Set` to `withFilters` to narrow the execution scope for `onRegion` `Execution`objects. You can retrieve the key set in your `Function` `execute` method through `RegionFunctionContext.getFilter`.
-   - Provide function arguments to `setArguments`. You can retrieve these in your `Function` `execute` method through `FunctionContext.getArguments`.
-   - Define a custom `ResultCollector`
-3. Call the `Execution` object to `execute` method to run the function.
-4. If the function returns results, call `getResult` from the results collector returned from `execute`and code your application to do whatever it needs to do with the results. **注意:** For high availability, you must call the `getResult` method.
+1. 使用一个`FunctionService`  `on*`方法创建一个`Execute`对象。`on*`方法、`onRegion`、`onMembers`等定义函数运行的最高级别。对于经过colocated分区的区域，使用`onRegion`并指定任何一个经过colocated分区。使用`onRegion`运行的函数称为数据依赖函数，其他函数称为数据独立函数。
+2. 根据需要使用`Execution`对象进行额外的函数配置。您可以:
+   - 提供一个键` Set` to `withFilters`来缩小`onRegion`  `execution`对象的执行范围。您可以通过`RegionFunctionContext.getFilter`检索`Function` `execute`方法中的键集。
+   - 为`setArguments`提供函数参数。您可以通过`FunctionContext.getArguments`在`Function` `execute`方法中检索这些内容。
+   - 定义一个自定义的`ResultCollector`
+3. 调用`execute`对象以`execute`方法运行函数。
+4. 如果函数返回结果，则从`execute`返回的结果收集器调用`getResult`，并编写应用程序代码来处理结果。**注意:** 实现高可用性,您必须调用`getResult`方法。
 
-Example of running the function - for executing members:
+运行函数的例子-执行成员:
 
-```
+```java
 MultiGetFunction function = new MultiGetFunction();
 FunctionService.registerFunction(function);
 
@@ -9784,43 +9784,43 @@ ResultCollector rc = execution.execute(function);
 List result = (List)rc.getResult();
 ```
 
-**Write a Custom Results Collector**
+**编写自定义结果收集器**
 
-This topic applies to functions that return results.
+本主题适用于返回结果的函数。
 
-When you execute a function that returns results, the function stores the results into a `ResultCollector` and returns the `ResultCollector` object. The calling application can then retrieve the results through the `ResultCollector` `getResult` method. Example:
+当您执行一个返回结果的函数时，该函数将结果存储到`ResultCollector`中，并返回`ResultCollector`对象。然后调用应用程序可以通过`ResultCollector` `getResult`方法检索结果。例子:
 
-```
+```java
 ResultCollector rc = execution.execute(function);
 List result = (List)rc.getResult();
 ```
 
-Geode’s default `ResultCollector` collects all results into an `ArrayList`. Its `getResult` methods block until all results are received. Then they return the full result set.
+Geode的默认`ResultCollector`将所有结果收集到一个`ArrayList`中。它的`getResult`方法阻塞，直到收到所有结果。然后返回完整的结果集。
 
-To customize results collecting:
+定制结果收集:
 
-1. Write a class that extends `ResultCollector` and code the methods to store and retrieve the results as you need. Note that the methods are of two types:
+1. 编写一个扩展`ResultCollector`的类，并根据需要编写存储和检索结果的方法。注意，这些方法有两种类型:
 
-   1. `addResult` and `endResults` are called by Geode when results arrive from the `Function`instance `SendResults` methods
-   2. `getResult` is available to your executing application (the one that calls `Execution.execute`) to retrieve the results
+   1. 当`Function`实例`SendResults`方法的结果到达时，Geode调用`addResult`和`endResults`
+   2. `getResult`可用于正在执行的应用程序(调用`Execute .execute`的应用程序)检索结果
 
-2. Use high availability for `onRegion` functions that have been coded for it:
+2. 使用高可用性的`onRegion`功能，已为其编码:
 
-   1. Code the `ResultCollector` `clearResults` method to remove any partial results data. This readies the instance for a clean function re-execution.
-   2. When you invoke the function, call the result collector `getResult` method. This enables the high availability functionality.
+   1. 编写`ResultCollector`  `clearResults`方法的代码，以删除任何部分结果数据。这为重新执行干净的函数做好了准备。
+   2. 当您调用该函数时，调用结果收集器`getResult`方法。这支持高可用性功能。
 
-3. In your member that calls the function execution, create the `Execution` object using the `withCollector` method, and passing it your custom collector. Example:
+3. 在调用函数执行的成员中，使用`withCollector`方法创建`Execution`对象，并将其传递给自定义收集器。例子:
 
-   ```
+   ```java
    Execution execution = FunctionService.onRegion(exampleRegion)
        .withFilter(keysForGet)
        .setArguments(Boolean.TRUE)
        .withCollector(new MyArrayListResultCollector());
    ```
 
-**Targeting Single Members of a Member Group or Entire Member Groups**
+**针对成员组中的单个成员或整个成员组**
 
-To execute a data independent function on a group of members or one member in a group of members, you can write your own nested function. You will need to write one nested function if you are executing the function from client to server and another nested function if you are executing a function from server to all members.
+要在一组成员或一组成员中的一个成员上执行独立于数据的函数，可以编写自己的嵌套函数。如果从客户机到服务器执行一个函数，则需要编写一个嵌套函数;如果从服务器到所有成员执行一个函数，则需要编写另一个嵌套函数。
 
 
 

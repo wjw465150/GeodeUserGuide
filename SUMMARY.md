@@ -423,7 +423,12 @@
     * [实现连续查询](Geode_6_Developing_with_Apache_Geode.md#实现连续查询)
     * [管理连续查询](Geode_6_Developing_with_Apache_Geode.md#管理连续查询)
   * [事务](Geode_6_Developing_with_Apache_Geode.md#事务)
+    * [遵守ACID语义](Geode_6_Developing_with_Apache_Geode.md#遵守ACID语义)
+    * [代码示例](Geode_6_Developing_with_Apache_Geode.md#代码示例)
+    * [设计注意事项](Geode_6_Developing_with_Apache_Geode.md#设计注意事项)
   * [函数执行](Geode_6_Developing_with_Apache_Geode.md#函数执行)
+    * [函数执行如何工作](Geode_6_Developing_with_Apache_Geode.md#函数执行如何工作)
+    * [在Apache Geode中执行一个函数](Geode_6_Developing_with_Apache_Geode.md#在Apache Geode中执行一个函数)
 
 
 
