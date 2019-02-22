@@ -12,7 +12,8 @@
     "tbfed-pagefooter@^0.0.1",
     "expandable-chapters-small@^0.1.7",
     "anchor-navigation-ex@0.1.8",
-    "book-summary-scroll-position-saver"
+    "book-summary-scroll-position-saver",
+    "-lunr", "-search", "search-plus"
   ],
   "pluginsConfig": {
     "github": {
@@ -28,7 +29,7 @@
       "modify_format": "YYYY-MM-DD HH:mm:ss"
     },
     "theme-default": {
-      "showLevel": true
+      "showLevel": false
     },
     "include-codeblock": {
       "template": "ace",

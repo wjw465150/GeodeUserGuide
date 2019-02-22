@@ -172,7 +172,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
 如果您不想使用集群配置服务，请启动定位器，并将`--enable-cluster-configuration`参数设置为false，或者不要使用独立定位器。 然后，您需要在所有集群成员上单独配置缓存（通过cache.xml或API）。
 
 
-## 教程 - 创建和使用集群配置
+## 教程 - 创建和使用集群配置 {#教程创建和使用集群配置}
 
 一个简短的演练，使用一台计算机演示如何使用`gfsh`为Geode集群创建集群配置。
 
@@ -493,7 +493,7 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
     No longer connected to 192.0.2.0[1099].
     ```
 
-## 将应用程序JAR部署到Apache Geode成员
+## 将应用程序JAR部署到Apache Geode成员 {#将应用程序JAR部署到ApacheGeode成员}
 
 您可以将应用程序JAR文件动态部署到特定成员或集群中的所有成员。 Geode自动跟踪JAR文件版本; 将已部署的JAR文件自动加载到CLASSPATH; 并自动注册JAR包含的任何函数。
 
@@ -732,7 +732,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 
 
-## 使用gfsh通过HTTP或HTTPS管理远程集群
+## 使用gfsh通过HTTP或HTTPS管理远程集群 {#使用gfsh通过HTTP或HTTPS管理远程集群}
 
 您可以通过HTTP或HTTPS将`gfsh`连接到远程集群，并使用`gfsh`commands管理集群。
 
@@ -907,7 +907,7 @@ locators=cache-xml-file=/gemfireSamples/examples/dist/cacheRunner/queryPortfolio
 4. 验证jar文件副本是运行时应用程序唯一可见的副本。 Geode在搜索其他位置后搜索`CLASSPATH`，因此这些文件在其他搜索区域中无法使用。
 5. 启动应用程序。 配置文件从jar文件加载。
 
-### 部署配置JAR的示例
+### 部署配置JAR的示例 {#部署配置JAR的示例}
 
 以下示例在`my.jar`中部署缓存配置文件`myCache.xml`。 以下显示了'my.jar`的内容：
 
@@ -1065,7 +1065,7 @@ gfsh>start server --J=-DDistributionManager.DISCONNECT_WAIT=<milliseconds>
 
 
 
-## 运行Geode定位器进程
+## 运行Geode定位器进程 {#运行Geode定位器进程}
 
 定位器是一个Geode进程，它告诉运行成员所在的新连接成员，并为服务器使用提供负载均衡。
 
@@ -1302,7 +1302,7 @@ gfsh> start locator --name=locator1 --port=9009 --mcast-port=0 \
 
 
 
-## 运行Geode服务器进程
+## 运行Geode服务器进程 {#运行Geode服务器进程}
 
 Geode服务器是一个作为客户端/服务器系统的长期可配置成员运行的进程。
 

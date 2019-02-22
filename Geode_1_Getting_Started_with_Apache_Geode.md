@@ -9,7 +9,7 @@
 
 [TOC]
 
-# Apache Geode入门 {#Apache Geode入门}
+# Apache Geode入门
 
 教程演示了功能，主要功能部分介绍了主要功能。
 
@@ -29,7 +29,7 @@
 
   需要快速介绍Apache Geode？ 参加这个简短的游览，尝试基本功能。
 
-## 关于Apache {#About Apache Geode}
+## 关于 Apache {#关于Apache}
 
 Apache Geode是一个数据管理平台，可在广泛分布的云架构中提供对数据密集型应用程序的实时，一致的访问。
 
@@ -46,7 +46,7 @@ Geode跨多个进程汇集内存，CPU，网络资源和可选的本地磁盘，
 有关产品功能的更多信息，请参阅 [Apache Geode的主要特点](#Apache Geode的主要特点).
 
 
-## Apache Geode的主要特点 {#Apache Geode的主要特点}
+## Apache Geode的主要特点 {#ApacheGeode的主要特点}
 
 本节总结了主要功能和主要功能。
 
@@ -401,7 +401,7 @@ com.mycompany.package.ApplicationWithEmbeddedCache
 
 关闭所有正在运行的Geode进程，然后删除整个目录树。 不需要对Windows注册表项进行其他系统修改或修改。  
 
-## Apache Geode在15分钟或更短时间内完成 {#Apache Geode在15分钟或更短时间内完成}
+## Apache Geode在15分钟或更短时间内完成 {#ApacheGeode在15分钟或更短时间内完成}
 
 需要快速介绍Apache Geode？ 参加这个简短的游览，尝试基本功能。
 

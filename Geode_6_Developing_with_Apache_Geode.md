@@ -150,7 +150,7 @@ Geode提供了多种数据存储和分发模型，包括分区或复制区域以
 - **高性能数据访问**. 复制保证了堆对应用程序线程的本地访问，从而为数据访问提供尽可能低的延迟。
 - **异步分发**. 所有分布式区域（复制和非复制）都提供最快的分发速度。
 
-#### 分布式，非复制区域
+#### 分布式，非复制区域 {#分布式非复制区域}
 
 分布式区域提供与复制区域相同的性能，但每个成员仅通过订阅来自其他成员的事件或通过在其缓存中定义数据条目来仅存储其表达兴趣的数据。
 
@@ -1761,7 +1761,7 @@ Geode默认启用一致性检查。 您无法禁用持久性区域的一致性�
 
 ![img](assets/region_entry_versions_3.svg)
 
-### 如何解决Destroy和Clear操作
+### 如何解决Destroy和Clear操作 {#如何解决Destroy和Clear操作}
 
 为区域启用一致性检查时，当应用程序销毁该条目时，Geode成员不会立即从该区域中删除条目。 相反，成员将条目保留其当前版本标记一段时间，以便检测可能与已发生的操作发生冲突。 保留的条目称为*墓碑*。 为了提供一致性，Geode保留了分区区域和非复制区域以及复制区域的逻辑删除。
 
@@ -1807,7 +1807,7 @@ Geode默认启用一致性检查。 您无法禁用持久性区域的一致性�
   通过编程和安装适用于您所在地区的应用程序插件，使分布式缓存与外部数据源保持同步。
 
 
-### Persistence and Overflow（持久性和溢出）
+### Persistence and Overflow（持久性和溢出） {#PersistenceandOverflow持久性和溢出}
 
 您可以将数据保留在磁盘上以进行备份，并将其溢出到磁盘以释放内存，而无需从缓存中完全删除数据。
 
@@ -1964,7 +1964,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 ```
 
 
-### Eviction（逐出）
+### Eviction（逐出）{#Eviction逐出}
 
 使用逐出来控制数据区域大小。 驱逐行动由基于空间的阈值触发。
 
@@ -2049,7 +2049,7 @@ gfsh>create region --name=myRegion --type=PARTITION --eviction-action=overflow-t
 ```
 
 
-### Expiration（到期）
+### Expiration（到期） {#Expiration到期}
 
 使用到期可以保持数据最新并通过删除过时条目来减小区域大小。 到期操作由基于时间的阈值触发。
 
@@ -2223,7 +2223,7 @@ Apache Geode具有应用程序插件，可将数据读入缓存并将其写出�
 除了使用应用程序插件外，还可以在cache.xml中配置外部JNDI数据库源，并在事务中使用这些数据源。 有关详细信息，请参阅[使用JNDI配置数据库连接](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html)。
 
 
-#### 使用JNDI配置数据库连接
+#### 使用JNDI配置数据库连接 {#使用JNDI配置数据库连接}
 
 要连接到外部数据库，例如在使用JTA事务时，可以在`cache.xml`中配置数据库JNDI数据源。 `DataSource`对象指向JDBC连接，或者更常见的是JDBC连接池。 连接池通常是首选，因为程序可以根据需要使用和重用连接，然后释放它以供另一个线程使用。
 
@@ -2761,7 +2761,7 @@ Geode数据序列化比PDX序列化快约25％，但使用PDX序列化将帮助�
 Geode序列化（PDX序列化或数据序列化）不支持循环对象图，而Java序列化则支持循环对象图。 在Geode序列化中，如果在对象图中多次引用同一对象，则为每个引用序列化对象，并且反序列化生成对象的多个副本。 相比之下，在这种情况下，Java序列化将对象序列化一次，并且在反序列化对象时，它会生成具有多个引用的对象的一个实例。
 
 
-### Geode PDX序列化
+### Geode PDX序列化 {#GeodePDX序列化}
 
 Geode的便携式数据交换（PDX）是一种跨语言数据格式，可以降低分发和序列化对象的成本。 PDX将数据存储在您可以单独访问的命名字段中，以避免反序列化整个数据对象的成本。 PDX还允许您混合已添加或删除字段的对象版本。
 
@@ -2806,7 +2806,7 @@ Geode的便携式数据交换（PDX）是一种跨语言数据格式，可以降
   Using PDX objects as region entry keys is highly discouraged.
 
 
-#### Geode PDX序列化功能
+#### Geode PDX序列化功能 {#GeodePDX序列化功能}
 
 Geode PDX序列化在功能方面具有多项优势。
 
@@ -2829,7 +2829,7 @@ PDX序列化对象的访问方法允许您检查域对象的特定字段，而�
 Java和其他客户端可以针对服务器缓存中的对象运行查询和执行函数，而无需反序列化服务器端的整个对象。 查询引擎自动识别PDX对象，检索对象的`PdxInstance`并仅使用它需要的字段。 同样，对等体只能访问序列化对象中的必要字段，从而使对象以序列化形式保存在缓存中。
 
 
-#### 使用PDX序列化的高级步骤
+#### 使用PDX序列化的高级步骤 {#使用PDX序列化的高级步骤}
 
 要使用PDX序列化，您可以配置和使用Geode基于反射的自动化程序，也可以使用PDX接口和类对对象的序列化进行编程。
 
@@ -2860,7 +2860,7 @@ Java和其他客户端可以针对服务器缓存中的对象运行查询和执�
 仅对于多站点（WAN）安装 - 如果要在任何启用WAN的区域中使用PDX序列化，则对于每个群集，必须选择介于0（零）和255之间的唯一整数并设置`distributed-system-id` 在每个成员的`gemfire.properties`文件中。 请参见[配置多站点（WAN）系统](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html).
 
 
-#### 使用基于自动反射的PDX序列化
+#### 使用基于自动反射的PDX序列化 {#使用基于自动反射的PDX序列化}
 
 您可以将缓存配置为自动序列化和反序列化域对象，而无需向其添加任何额外代码。
 
@@ -3038,7 +3038,7 @@ com.company.special.Patient#identity=ssn
   ```
 
 
-##### 扩展ReflectionBasedAutoSerializer
+##### 扩展ReflectionBasedAutoSerializer {#扩展ReflectionBasedAutoSerializer}
 
 您可以扩展`ReflectionBasedAutoSerializer`以自定义方式处理序列化。 本节概述了可用的基于方法的自定义选项以及扩展序列化程序以支持BigDecimal和BigInteger类型的示例。
 
@@ -3144,7 +3144,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 ```
 
 
-#### 使用PdxSerializer序列化您的域对象
+#### 使用PdxSerializer序列化您的域对象 {#使用PdxSerializer序列化您的域对象}
 
 对于您不能或不想修改的域对象，请使用`PdxSerializer`类来序列化和反序列化对象的字段。 您对整个缓存使用一个`PdxSerializer`实现，为您以这种方式处理的所有域对象编程。
 
@@ -3269,7 +3269,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 4. 如果需要，您还可以在使用`PdxWriter`时启用额外验证。 您可以通过将系统属性`gemfire.validatePdxWriters`设置为**true**来设置此项。 请注意，如果要调试新代码，则只应设置此选项，因为此选项会降低系统性能。
 
 
-#### 在域对象中实现PdxSerializable
+#### 在域对象中实现PdxSerializable {#在域对象中实现PdxSerializable}
 
 对于可以修改源的域对象，在对象中实现`PdxSerializable`接口，并使用其方法序列化和反序列化对象的字段。
 
@@ -3367,7 +3367,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 - 根据需要，配置和编程Geode应用程序以使用`PdxInstance`进行选择性对象反序列化。 请参阅[编写应用程序以使用Pdx实例](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
 
 
-#### 编写应用程序以使用PdxInstances
+#### 编写应用程序以使用PdxInstances {#编写应用程序以使用PdxInstances}
 
 `PdxInstance`是PDX序列化字节周围的轻量级包装器。 它为应用程序提供对PDX序列化对象字段的运行时访问。
 
@@ -3447,7 +3447,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
    **注意:** 由于PDX的限制，如果启用PDX的缓存包含TreeSet域对象，则应实现可以处理域对象和PdxInstance对象的Comparator。 您还需要在服务器上提供域类。
 
 
-#### 将JSON文档添加到Geode缓存
+#### 将JSON文档添加到Geode缓存 {#将JSON文档添加到Geode缓存}
 
 `JSONFormatter` API允许您将JSON格式的文档放入区域，然后通过将文档作为PdxInstances存储在内部来检索它们。
 
@@ -3482,7 +3482,7 @@ Geode本身支持使用JSON格式的文档。 将JSON文档添加到Geode缓存�
 如果您希望仅按指定字段顺序不同的JSON文档映射到相同的typeID，请将属性`gemfire.pdx.mapper.sort-json-field-names`设置为“true”。 这告诉系统在序列化之前对JSON字段进行排序，允许系统识别匹配的条目，并有助于减少序列化机制生成的pdx typeID的数量。
 
 
-#### 使用PdxInstanceFactory创建PdxInstances
+#### 使用PdxInstanceFactory创建PdxInstances {#使用PdxInstanceFactory创建PdxInstances}
 
 当域类在服务器上不可用时，您可以使用`PdxInstanceFactory`接口从原始数据创建`PdxInstance`。
 
@@ -3514,7 +3514,7 @@ PdxInstance pi = cache.createPdxInstanceFactory("com.company.DomainObject")
 `RegionService`有一个方法，允许你创建一个表示枚举的`PdxInstance`。 请参阅Java API文档中的`RegionService.createPdxEnum`。
 
 
-#### 将PDX元数据保留到磁盘
+#### 将PDX元数据保留到磁盘 {#将PDX元数据保留到磁盘}
 
 Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存储。
 
@@ -3544,7 +3544,7 @@ Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存
 ```
 
 
-#### 使用PDX对象作为区域输入键
+#### 使用PDX对象作为区域输入键 {#使用PDX对象作为区域输入键}
 
 强烈建议不要将PDX对象用作区域条目键。
 
@@ -3555,7 +3555,8 @@ Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存
 如果您使用PDX序列化对象作为区域条目键并且您使用的是持久区域，则必须将PDX磁盘存储配置为与持久区域使用的磁盘存储不同。
 
 
-### Geode数据序列化（DataSerializable和DataSerializer）
+
+### Geode数据序列化（DataSerializable和DataSerializer） {#Geode数据序列化DataSerializable和DataSerializer}
 
 Geode的`DataSerializable`接口为您提供了对象的快速序列化。
 
@@ -3590,7 +3591,7 @@ Geode的`DataSerializable`接口为您提供比标准Java序列化或Geode PDX�
 请参阅[DataSerializable]上的JavaDocs(https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializable.html)和[DataSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializer.html) 了解更多信息。
 
 
-### 标准Java序列化
+### 标准Java序列化 {#标准Java序列化}
 
 您可以对仅在Java应用程序之间分发的数据使用标准Java序列化。 如果在非Java客户端和Java服务器之间分发数据，则需要执行其他编程以获取各种类格式之间的数据。
 
@@ -3835,7 +3836,7 @@ Geode集群中的成员通过缓存事件从其他成员接收缓存更新。 �
   **注意:** 冗余管理由客户端处理，因此当持久客户端与服务器断开连接时，不会维护客户端事件冗余。 即使服务器一次失败一个，以便运行的客户端有时间进行故障转移并选择新的辅助服务器，脱机持久客户端也无法进行故障转移。 结果，客户端丢失其排队的消息。
 
 
-#### 多站点（WAN）事件分发
+#### 多站点（WAN）事件分发 {#多站点WAN事件分发}
 
 Geode在集群之间分配缓存事件的子集，对每个系统的性能影响最小。 仅为您配置为使用网关发件人进行分发的区域分发事件。
 
@@ -3925,7 +3926,7 @@ Geode提供了许多类型的事件和事件处理程序，可帮助您管理不
 | `TransactionEvent`                  | `TransactionListener`, `TransactionWriter`                   | 描述事务中完成的工作。 此事件可能用于挂起或已提交的事务，也可能用于显式回滚或失败提交放弃的工作。 该工作由`EntryEvent`实例的有序列表表示。 条目事件按事务中执行操作的顺序列出。在执行事务操作时，条目事件被混合，每个条目的最后一个事件仅保留在列表中。 因此，如果修改了条目A，然后是条目B，那么条目A，该列表将包含条目B的事件，后面是条目A的第二个事件。 |
 
 
-### 实现Geode事件处理程序
+### 实现Geode事件处理程序 {#实现Geode事件处理程序}
 
 您可以为区域和区域条目操作以及管理事件指定事件处理程序。
 
@@ -4081,7 +4082,7 @@ Region nr = cache.createRegionFactory()
 ```
 
 
-#### 为Write-Behind Cache事件处理实现AsyncEventListener
+#### 为Write-Behind Cache事件处理实现AsyncEventListener {#为WriteBehindCache事件处理实现AsyncEventListener}
 
 `AsyncEventListener`在将批量事件应用于区域后异步处理这些事件。 您可以使用`AsyncEventListener`实现作为后写缓存事件处理程序，以将区域更新与数据库同步。
 
@@ -5003,7 +5004,7 @@ conflate-events=false
 
 
 
-### 配置多站点（WAN）事件队列
+### 配置多站点（WAN）事件队列 {#配置多站点WAN事件队列}
 
 在多站点（WAN）安装中，Geode使用网关发件人队列来分配使用网关发件人配置的区域的事件。 AsyncEventListeners还使用异步事件队列来分配已配置区域的事件。 本节介绍用于配置网关发件人或AsyncEventListener实现使用的事件队列的其他选项。
 
@@ -5121,7 +5122,7 @@ conflate-events=false
 
 
 
-#### 为事件分发配置Dispatcher线程和顺序策略
+#### 为事件分发配置Dispatcher线程和顺序策略 {#为事件分发配置Dispatcher线程和顺序策略}
 
 默认情况下，Geode使用多个调度程序线程在网关发送方队列中同时处理区域事件，以便在站点之间进行分配，或者在异步事件队列中用于分发事务以进行后写式高速缓存。 使用串行队列，您还可以配置用于分派这些事件的排序策略。
 
@@ -6306,7 +6307,7 @@ SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 
 
 
-### 使用OQL查询
+### 使用OQL查询 {#使用OQL查询}
 
 本节提供Geode查询的高级介绍，例如构建查询字符串和描述查询语言功能。
 
@@ -6334,7 +6335,7 @@ Geode查询要注意的一个重要特征是，默认情况下，Geode会查询�
 
 
 
-#### OQL的优点
+#### OQL的优点 {#OQL的优点}
 
 以下列表描述了使用基于OQL的查询语言的一些优点：
 
@@ -6347,7 +6348,7 @@ Geode查询要注意的一个重要特征是，默认情况下，Geode会查询�
 
 
 
-#### 在Geode中编写和执行查询
+#### 在Geode中编写和执行查询 {#在Geode中编写和执行查询}
 
 Geode QueryService提供了创建Query对象的方法。 然后，您可以使用Query对象执行与查询相关的操作。
 
@@ -6442,7 +6443,7 @@ Geode QueryService提供了创建Query对象的方法。 然后，您可以使�
 
 
 
-##### IMPORT Statement（IMPORT语句）
+##### IMPORT Statement（IMPORT语句） {#IMPORTStatementIMPORT语句}
 
 有时OQL查询需要引用对象的类。 如果相同的类名存在于两个不同的名称范围（包）中，则必须能够区分具有相同名称的类。
 
@@ -6455,7 +6456,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 
 
-##### FROM Clause（FROM子句）
+##### FROM Clause（FROM子句） {#FROMClauseFROM子句}
 
 使用FROM子句将所需的数据放入查询的其余部分的范围内。 FROM子句还包括对象类型和迭代器变量。
 
@@ -6545,7 +6546,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 
 
-##### WHERE Clause（WHERE子句）
+##### WHERE Clause（WHERE子句） {#WHEREClauseWHERE子句}
 
 每个FROM子句表达式必须解析为一组对象。 然后，该集合可用于WHERE子句中的查询表达式中的迭代。
 
@@ -6915,7 +6916,7 @@ String query = "SELECT * FROM /people p WHERE p.height * p.height/p.weight < 25"
 
 
 
-##### SELECT Statement（SELECT语句）
+##### SELECT Statement（SELECT语句） {#SELECTStatementSELECT语句}
 
 SELECT语句允许您从WHERE搜索操作返回的对象集合中筛选数据。投影列表可以指定为*，也可以指定为以逗号分隔的表达式列表。
 
@@ -7064,7 +7065,7 @@ OR pos.secId = 'IBM'
 
 
 
-##### OQL聚合函数
+##### OQL聚合函数 {#OQL聚合函数}
 
 支持针对不同表达式的聚合函数`MIN`、`MAX`、`AVG`、`AVG`、`SUM`、`COUNT`和`COUNT`。在适当的情况下，还支持`GROUP BY`扩展。
 
@@ -7098,7 +7099,7 @@ SELECT ID, MAX(e.sales) FROM /employees e GROUP BY ID
 
 
 
-#### OQL语法和语义
+#### OQL语法和语义 {#OQL语法和语义}
 
 本节介绍以下查询语言特性:
 
@@ -7682,7 +7683,7 @@ Geode允许您使用分区区域跨分布式节点管理和存储大量数据。
 
 
 
-##### 对分区区域使用ORDER BY
+##### 对分区区域使用ORDER BY {#对分区区域使用ORDERBY}
 
 要在分区区域上使用ORDER BY子句执行查询，ORDER BY子句中指定的字段必须是投影列表的一部分。
 
@@ -8204,7 +8205,7 @@ Geode查询引擎支持索引。索引可以为查询执行提供显著的性能
 
 
 
-#### 创建、列出和删除索引
+#### 创建、列出和删除索引 {#创建列出和删除索引}
 
 Geode的`QueryService` API提供了创建、列出和删除索引的方法。您还可以使用`gfsh`命令行界面创建、列出和删除索引，并使用cache.xml创建索引。
 
@@ -8393,7 +8394,7 @@ gfsh> create index --name=myHashIndex --expression=mktValue --region=/exampleReg
 
 
 
-#### 在映射字段上创建索引（映射索引）
+#### 在映射字段上创建索引（映射索引） {#在映射字段上创建索引映射索引}
 
 为了帮助快速查找Map(或HashMap)类型字段中的多个值，可以在该字段中的特定(或所有)键上创建索引(有时称为“Map索引”)。
 
@@ -8488,7 +8489,7 @@ gfsh> clear defined indexes
 
 
 
-#### 维护索引（同步或异步）和索引存储
+#### 维护索引（同步或异步）和索引存储 {#维护索引同步或异步和索引存储}
 
 索引与它们引用的区域数据自动保持同步。区域属性`indexmaintenancesyn`指定在修改区域时同步更新区域索引，还是在后台线程中异步更新区域索引。
 
@@ -9178,7 +9179,7 @@ for (Object o : cqResults.asList()) {
 
 
 
-### 遵守ACID语义
+### 遵守ACID语义 {#遵守ACID语义}
 
 本节介绍Geode事务。Geode为执行事务性工作的客户机应用程序提供了一个API。Geode实现了乐观的事务，选择了它们提供的更高的事务性能，而不是传统关系数据库中缓慢的锁定方法。
 
@@ -9592,7 +9593,7 @@ LRU驱逐和事务可以很好地协作。从事务中操作的区域条目上�
 
 
 
-### 在Apache Geode中执行一个函数
+### 在Apache Geode中执行一个函数 {#在ApacheGeode中执行一个函数}
 
 在这个过程中，假设您已经定义了想要运行函数的成员和区域。
 
