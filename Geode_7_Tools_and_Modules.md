@@ -2426,11 +2426,11 @@ Occurred on following members
 ##### create jndi-binding {#create_jndi_binding}
 创建一个JNDI绑定，指定描述JDBC连接的资源属性。
 
-**可用性:** Online. You must be connected in gfsh to a JMX Manager member to use this command.
+**可用性:** Online. 必须在gfsh中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 create jndi-binding --name=value --type=value --jdbc-driver-class=value
  --connection-url=value [--blocking-timeout-seconds=value]
  [--conn-pooled-datasource-class=value] [--idle-timeout-seconds=value]
@@ -2440,64 +2440,64 @@ create jndi-binding --name=value --type=value --jdbc-driver-class=value
  [--if-not-exists(=value)?] [--datasource-config-properties=value(,value)*]
 ```
 
-**Parameters, create jndi-binding:**
+**参数，创建jndi绑定:**
 
-| Name                           | Description                                                  | Default |
+| 名称                           | 描述                                                  | 默认值 |
 | :----------------------------- | :----------------------------------------------------------- | :------ |
-| --name                         | *Required.* Name of the binding to create.                   |         |
-| --type                         | *Required.* Type of the XA datasource. One of: `MANAGED`, `SIMPLE`, `POOLED`, or `XAPOOLED`. |         |
-| --jdbc-driver-class            | *Required.* The fully qualified name of the JDBC driver class. |         |
-| --connection-url               | *Required.* the JDBC driver connection URL string. For example, `jdbc:hsqldb:hsql://localhost:1701`. |         |
-| --blocking-timeout-seconds     | Specifies the maximum time, in seconds, to block while waiting for a connection before throwing an exception. |         |
-| --conn-pooled-datasource-class | The fully qualified name of the connection pool implementation that holds XA datasource connections. |         |
-| --idle-timeout-seconds         | Specifies the time, in seconds, that a connection may be idle before being closed. |         |
-| --init-pool-size               | Specifies the initial number of connections the pool should hold. |         |
-| --login-timeout-seconds        | The quantity of seconds after which the client thread will be disconnected due to inactivity. |         |
-| --managed-conn-factory-class   | The fully qualified name of the connection factory implementation. |         |
-| --max-pool-size                | The maximum number of connections that may be created in a pool. |         |
-| --password                     | The default password used when creating a new connection.    |         |
-| --transaction-type             | Type of the transaction. One of `XATransaction`, `NoTransaction`, or `LocalTransaction`. |         |
-| --username                     | Specifies the default user name to be used when creating a new connection. |         |
-| --xa-datasource-class          | The fully qualified name of the `javax.sql.XADataSource`implementation class. |         |
-| --if-not-exists                | When true, a duplicate jndi binding will not be created if one with the same name already exists. When false, an attempt to create a duplicate jndi binding results in an error. The option is set to true if the option is specified without a value. | false   |
-| --datasource-config-properties | Properties for the custom `XADataSource` driver. Append a JSON string containing a (name, type, value) tuple to set any property. For example: `--datasource-config-properties={'name':'name1','type':'type1','value':'value1'},{'name':'name2','type':'type2','value':'value2'}` |         |
+| --name                         | *Required.* 要创建的绑定的名称。                   |         |
+| --type                         | *Required.* XA数据源的类型。 其中之一：`MANAGED`，`SIMPLE`，`POOLED`或`XAPOOLED`。 |         |
+| --jdbc-driver-class            | *Required.* JDBC驱动程序类的标准名称。 |         |
+| --connection-url               | *Required.* JDBC驱动程序连接URL字符串。 例如，`jdbc:hsqldb:hsql://localhost:1701`。 |         |
+| --blocking-timeout-seconds     | 指定在抛出异常之前等待连接时阻塞的最长时间（以秒为单位）。 |         |
+| --conn-pooled-datasource-class | 包含XA数据源连接的连接池实现的标准名称。 |         |
+| --idle-timeout-seconds         | 指定连接在关闭之前可能处于空闲状态的时间（以秒为单位）。 |         |
+| --init-pool-size               | 指定池应保留的初始连接数。 |         |
+| --login-timeout-seconds        | 客户端线程因不活动而断开连接的秒数。 |         |
+| --managed-conn-factory-class   | 连接工厂实现的完全限定名称。 |         |
+| --max-pool-size                | 池中可以创建的最大连接数。 |         |
+| --password                     | 创建新连接时使用的默认密码。    |         |
+| --transaction-type             | 交易类型。 一个是`XATransaction`，`NoTransaction`或`LocalTransaction`。 |         |
+| --username                     | 指定创建新连接时要使用的默认用户名。 |         |
+| --xa-datasource-class          | `javax.sql.XADataSource`实现类的完全限定名。 |         |
+| --if-not-exists                | 如果为true，则如果已存在具有相同名称的jndi绑定，则不会创建重复的jndi绑定。 如果为false，则尝试创建重复的jndi绑定会导致错误。 如果指定的选项没有值，则该选项设置为true。 | false   |
+| --datasource-config-properties | 自定义`XADataSource`驱动程序的属性。 附加包含（名称，类型，值）元组的JSON字符串以设置任何属性。 例如：`--datasource-config-properties={'name':'name1','type':'type1','value':'value1'},{'name':'name2','type':'type2','value':'value2'}` |         |
 
 **示例命令:**
 
-```
+```bash
 gfsh>create jndi-binding --name=jndi1 --type=SIMPLE \
   --jdbc-driver-class=org.apache.derby.jdbc.EmbeddedDriver \
   --connection-url="jdbc:derby:newDB;create=true"
 ```
 
 ##### create lucene index {#create_lucene_index}
-Create a Lucene index. For details on Lucene index creation, see [Apache Lucene Integration](https://geode.apache.org/docs/guide/17/tools_modules/lucene_integration.html).
+创建Lucene索引。 有关Lucene索引创建的详细信息，请参阅[Apache Lucene Integration](https://geode.apache.org/docs/guide/17/tools_modules/lucene_integration.html)。
 
-For additional Lucene-related gfsh commands, see [describe lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/describe.html#describe_lucene_index), [destroy lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/destroy.html#destroy_lucene_index), [list lucene indexes](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#list_lucene_indexes) and [search lucene](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/search.html#search_lucene).
+有关Lucene相关的其他gfsh命令，请参阅[describe lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/describe.html#describe_lucene_index), [destroy lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/destroy.html#destroy_lucene_index), [list lucene indexes](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#list_lucene_indexes) 和 [search lucene](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/search.html#search_lucene)。
 
-**可用性:** Online. You must be connected in gfsh to a JMX Manager member to use this command.
+**可用性:** Online. 必须在gfsh中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 create lucene index --name=value --region=value --field=value(,value)*
   [--analyzer=value(,value)*] [--serializer=value] [--group=value(,value)*]
 ```
 
-**Parameters, create lucene index:**
+**参数，创建lucene索引:**
 
-| Name         | Description                                                  | Default                   |
+| 名称         | 描述                                                  | 默认值                   |
 | :----------- | :----------------------------------------------------------- | :------------------------ |
-| --name       | *Required.* Name of the index to create.                     |                           |
-| --region     | *Required.* Name/Path of the region on which to define the index. |                           |
-| --field      | *Required.* Field(s) of the region values that are referenced by the index, specified as a comma-separated list. To treat the entire value as a single field, specify `__REGION_VALUE_FIELD`. |                           |
-| ‑‑analyzer   | Analyzer(s) to extract terms from text, specified as a comma-separated list. If not specified, the default analyzer is used for all fields. If specified, the number of analyzers must exactly match the number of fields specified. When listing analyzers, use the keyword `DEFAULT` for any field that will use the default analyzer. | Lucene `StandardAnalyzer` |
-| ‑‑serializer | Fully qualified class name of the serializer to be used with this index. The serializer must implement the `LuceneSerializer`interface. You can use the built-in `org.apache.geode.cache.lucene.FlatFormatSerializer` to index and search collections and nested fields. If not specified, the simple default serializer is used, which indexes and searches only the top level fields of the region objects. | simple serializer         |
-| --group      | The index will be created on all the members in the specified member groups. |                           |
+| --name       | *Required.* 要创建的索引的名称.                     |                           |
+| --region     | *Required.* 要定义索引的区域的名称/路径. |                           |
+| --field      | *Required.* 索引引用的区域值的字段，指定为以逗号分隔的列表。 要将整个值视为单个字段，请指定`__REGION_VALUE_FIELD`. |                           |
+| ‑‑analyzer   | 分析器从文本中提取术语，指定为以逗号分隔的列表。 如果未指定，则默认分析器将用于所有字段。 如果指定，分析器的数量必须与指定的字段数完全匹配。 列出分析器时，对于将使用默认分析器的任何字段使用关键字`DEFAULT`。 | Lucene `StandardAnalyzer` |
+| ‑‑serializer | 与此索引一起使用的序列化程序的完全限定类名。 序列化器必须实现`LuceneSerializer`接口。 您可以使用内置的`org.apache.geode.cache.lucene.FlatFormatSerializer`来索引和搜索集合和嵌套字段。 如果未指定，则使用简单的默认序列化程序，该序列化程序仅索引和搜索区域对象的顶级字段. | simple serializer         |
+| --group      | 将在指定成员组中的所有成员上创建索引. |                           |
 
 **示例命令:**
 
-```
+```bash
 gfsh>create lucene index --name=customerIndex --region=/Customer 
    --field=__REGION_VALUE_FIELD
 
@@ -2509,7 +2509,7 @@ gfsh>create lucene index --name=analyzerIndex --region=/Person
 
 **示例输出:**
 
-```
+```bash
 gfsh>create lucene index --name=testIndex --region=testRegion
     --field=__REGION_VALUE_FIELD
                Member                  | Status
@@ -2518,19 +2518,19 @@ gfsh>create lucene index --name=testIndex --region=testRegion
 ```
 
 ##### create region {#create_region}
-Create a region with given path and configuration.
+创建具有给定路径和配置的区域。
 
-You must specify either a `--type` or a `--template-region` for initial configuration when creating a region. Specifying a `--key-constraint` and `--value-constraint` makes object type information available during querying and indexing.
+在创建区域时，必须为初始配置指定`--type`或`--template-region`。 指定`--key-constraint`和`--value-constraint`会在查询和索引期间使对象类型信息可用。
 
-See [Region Data Storage and Distribution](https://geode.apache.org/docs/guide/17/developing/region_options/chapter_overview.html).
+请参阅[区域数据存储和分发](https://geode.apache.org/docs/guide/17/developing/region_options/chapter_overview.html)。
 
-See [Specifying JSON within Command-Line Options](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/json_in_gfsh.html) for syntax details.
+有关语法详细信息，请参阅[在命令行选项中指定JSON](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/json_in_gfsh.html)。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
  create region --name=value [--type=value] [--template-region=value]
     [--groups=value(,value)*] [--if-not-exists(=value)?]
     [--key-constraint=value] [--value-constraint=value]
@@ -2557,60 +2557,60 @@ See [Specifying JSON within Command-Line Options](https://geode.apache.org/docs/
     [--eviction-max-memory=value] [--eviction-action=value] [--eviction-object-sizer=value]
 ```
 
-**Parameters, create region:**
+**参数，创建区域:**
 
-| Name                                    | Description                                                  | Default                                                      |
+| 名称                                    | 描述                                                  | 默认值                                                      |
 | :-------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| --name                                  | *Required.* Name/Path of the region to be created.           |                                                              |
-| --type                                  | *Required* (if template-region is not specified.) Type of region to create. Options include: PARTITION, PARTITION_REDUNDANT, REPLICATE, LOCAL, etc.To get a list of of all region type options, add the --typeparameter and then select the TAB key to display a full list. |                                                              |
-| --template-region                       | *Required* (if type is not specified.) Name/Path of the region whose attributes should be duplicated when creating this region. |                                                              |
-| --groups                                | Group(s) of members on which the region will be created.     |                                                              |
-| --if-not-exists                         | A new region will not be created if a region with the same name already exists. By default, an attempt to create a duplicate region is reported as an error. If this option is specified without a value or is specified with a value of `true`, then gfsh displays a “Skipping…” acknowledgement, but does not throw an error. | false                                                        |
-| --key-constraint                        | Fully qualified class name of the objects allowed as region keys. Ensures that keys for region entries are all of the same class. |                                                              |
-| --value-constraint                      | Fully qualified class name of the objects allowed as region values. If not specified, then region values can be of any class. |                                                              |
-| --enable-statistics                     | Whether to gather statistics for the region. Must be true to use expiration on the region. |                                                              |
-| --entry-idle-time-expiration            | How long the region’s entries can remain in the cache without being accessed. | no expiration                                                |
-| --entry-idle-time-expiration-action     | Action to be taken on an entry that has exceeded the idle expiration. Valid expiration actions include destroy, local-destroy, invalidate (default), local-invalidate. |                                                              |
-| --entry-time-to-live-expiration         | How long the region’s entries can remain in the cache without being accessed or updated. The default is no expiration of this type. | no expiration                                                |
-| --entry-time-to-live-expiration-action  | Action to be taken on an entry that has exceeded the TTL expiration. Valid expiration actions include destroy, local-destroy, invalidate (default), local-invalidate. |                                                              |
-| --entry-idle-time-custom-expiry         | The name of a class implementing CustomExpiry for entry idle time. Append a JSON string for initialization properties. |                                                              |
-| --entry-time-to-live-custom-expiry      | The name of a class implementing CustomExpiry for entry time to live. Append a JSON string for initialization properties. |                                                              |
-| --region-idle-time-expiration           | How long the region can remain in the cache without being accessed. The default is no expiration of this type. |                                                              |
-| --region-idle-time-expiration-action    | Action to be taken on a region that has exceeded the idle expiration. Valid expiration actions include destroy, local-destroy, invalidate (default), local-invalidate. |                                                              |
-| --region-time-to-live-expiration        | How long the region can remain in the cache without being accessed or updated. The default is no expiration of this type. | no expiration                                                |
-| --region-time-to-live-expiration-action | Action to be taken on a region that has exceeded the TTL expiration. Valid expiration actions include destroy, local-destroy, invalidate (default), local-invalidate. |                                                              |
-| --disk-store                            | Disk Store to be used by this region. The [list disk-stores](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#topic_BC14AD57EA304FB3845766898D01BD04)command can be used to display existing disk stores. |                                                              |
-| --enable-synchronous-disk               | Whether writes are done synchronously for regions that persist data to disk. |                                                              |
-| --enable-async-conflation               | Whether to allow aggregation of asynchronous TCP/IP messages sent by the producer member of the region. A false value causes all asynchronous messages to be sent individually. |                                                              |
-| --enable-subscription-conflation        | Whether the server should conflate its messages to the client. A false value causes all server-client messages to be sent individually. |                                                              |
-| --cache-listener                        | Fully qualified class name of a plug-in to be instantiated for receiving after-event notification of changes to the region and its entries. Any number of cache listeners can be configured. A fully qualified class name may be appended with a JSON specification that will be parsed to become the fields of the parameter to the `init()`method for a class that implements the `Declarable`interface. |                                                              |
-| --cache-loader                          | Fully qualified class name of a plug-in to be instantiated for receiving notification of cache misses in the region. At most, one cache loader can be defined in each member for the region. For distributed regions, a cache loader may be invoked remotely from other members that have the region defined. A fully qualified class name may be appended with a JSON specification that will be parsed to become the fields of the parameter to the `initialize()`method for a class that implements the `Declarable`interface. |                                                              |
-| --cache-writer                          | Fully qualified class name of a plug-in to be instantiated for receiving before-event notification of changes to the region and its entries. The plug-in may cancel the event. At most, one cache writer can be defined in each member for the region. A fully qualified class name may be appended with a JSON specification that will be parsed to become the fields of the parameter to the `init()`method for a class that implements the `Declarable`interface. |                                                              |
-| --async-event-queue-id                  | IDs of the Async Event Queues that will be used for write-behind operations. |                                                              |
-| --gateway-sender-id                     | IDs of the Gateway Senders to which data will be routed.     |                                                              |
-| --enable-concurrency-checks             | Whether Region Version Vectors are implemented. Region Version Vectors are an extension to the versioning scheme that aid in synchronization of replicated regions. |                                                              |
-| --enable-cloning                        | Determines how fromDelta applies deltas to the local cache for delta propagation. When true, the updates are applied to a clone of the value and then the clone is saved to the cache. When false, the value is modified in place in the cache. |                                                              |
-| --concurrency-level                     | Estimate of the maximum number of application threads that will concurrently access a region entry at one time. This attribute does not apply to partitioned regions. |                                                              |
-| --colocated-with                        | Central Region with which this region should be colocated.   |                                                              |
-| --local-max-memory                      | Maximum amount of memory, in megabytes, to be used by the region in this process. (The default is 90% of available heap.) |                                                              |
-| --recovery-delay                        | Delay in milliseconds that existing members will wait after a member crashes before restoring this region’s redundancy on the remaining members. The default value (-1) indicates that redundancy will not be recovered after a failure. |                                                              |
-| --redundant-copies                      | Number of extra copies of buckets desired. Extra copies allow for both high availability in the face of VM departure (intended or unintended) and load balancing read operations. (Allowed values: 0, 1, 2 and 3) |                                                              |
-| --startup-recovery-delay                | Delay in milliseconds that new members will wait before assuming their share of cluster-level redundancy. This allows time for multiple regions to start before the redundancy workload is parceled out to the new members. A value of -1 indicates that adding new members will not trigger redundancy recovery. | The default is to recover redundancy immediately when a new member is added. |
-| --total-max-memory                      | Maximum amount of memory, in megabytes, to be used by the region in all processes. |                                                              |
-| --total-num-buckets                     | Total number of hash buckets to be used by the region in all processes. | 113                                                          |
-| --compressor                            | Java class name that implements compression for the region. You can write a custom compressor that implements `org.apache.geode.compression.Compressor` or you can specify the Snappy compressor (`org.apache.geode.compression.SnappyCompressor`), which is bundled with Geode. See [Region Compression](https://geode.apache.org/docs/guide/17/managing/region_compression.html#topic_r43_wgc_gl). | no compression                                               |
-| --off-heap                              | Specifies whether the region values are stored in heap memory or off-heap memory. When true, region values are in off-heap memory. If the parameter is specified without a value, the value of true is used. | false                                                        |
-| --partition-resolver                    | Specifies the full path to a custom partition resolver. Specify `org.apache.geode.cache.util.StringPrefixPartitionResolver`to use the included string prefix partition resolver. |                                                              |
-| --eviction-entry-count                  | Enables eviction, where the eviction policy is based on the number of entries in the region. |                                                              |
-| --eviction-max-memory                   | Enables eviction, where the eviction policy is based on the amount of memory consumed by the region, specified in megabytes. |                                                              |
-| --eviction-action                       | Action to take when the eviction threshold is reached.local-destroyEntry is destroyed locally. Use with caution - may lead to inconsistencies.overflow-to-diskEntry is overflowed to disk. For partitioned regions, this provides the most reliable read behavior across the region. |                                                              |
-| –eviction-object-sizer                  | Specifies your implementation of the ObjectSizer interface to measure the size of objects in the region. The sizer applies only to heap and memory based eviction. |                                                              |
+| --name                                  | *Required.* 要创建的区域的名称/路径.           |                                                              |
+| --type                                  | *Required* （如果未指定template-region。）要创建的区域类型。 选项包括：PARTITION，PARTITION_REDUNDANT，REPLICATE，LOCAL等。要获取所有区域类型选项的列表，请添加--type参数，然后选择TAB键以显示完整列表. |                                                              |
+| --template-region                       | *Required* （如果未指定type。）创建此区域时应重复其属性的区域的名称/路径. |                                                              |
+| --groups                                | 将在其上创建区域的成员组.     |                                                              |
+| --if-not-exists                         | 如果已存在具有相同名称的区域，则不会创建新区域。 默认情况下，尝试创建重复区域会报告为错误。 如果指定此选项没有值或指定值为`true`，则gfsh会显示“跳过...”确认，但不会引发错误. | false                                                        |
+| --key-constraint                        | 作为区域键允许的对象的完全限定类名。 确保区域条目的键都属于同一类. |                                                              |
+| --value-constraint                      | 允许作为区域值的对象的完全限定类名。 如果未指定，则区域值可以是任何类. |                                                              |
+| --enable-statistics                     | 是否收集该地区的统计数据。 必须为true才能在该地区使用expiration. |                                                              |
+| --entry-idle-time-expiration            | 区域的条目可以在未被访问的情况下保留在缓存中多长时间. | no expiration                                                |
+| --entry-idle-time-expiration-action     | 对超过空闲到期的条目采取的操作。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
+| --entry-time-to-live-expiration         | 区域的条目可以在未被访问或更新的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 | no expiration                                                |
+| --entry-time-to-live-expiration-action  | 对超过TTL到期的条目采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
+| --entry-idle-time-custom-expiry         | 为入口空闲时间实现CustomExpiry的类的名称。 为初始化属性附加JSON字符串。 |                                                              |
+| --entry-time-to-live-custom-expiry      | 实现CustomExpiry以进入生存时间的类的名称。 为初始化属性附加JSON字符串。 |                                                              |
+| --region-idle-time-expiration           | 该区域可以在未被访问的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 |                                                              |
+| --region-idle-time-expiration-action    | 对超过空闲到期的区域采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
+| --region-time-to-live-expiration        | 该区域可以在未被访问或更新的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 | no expiration                                                |
+| --region-time-to-live-expiration-action | 对超过TTL到期的区域采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
+| --disk-store                            | 此区域使用的磁盘存储。 [list disk-stores](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#topic_BC14AD57EA304FB3845766898D01BD04)命令可用于显示现有磁盘存储。 |                                                              |
+| --enable-synchronous-disk               | 对于将数据持久保存到磁盘的区域，是否同步完成写入。 |                                                              |
+| --enable-async-conflation               | 是否允许聚合由该区域的生产者成员发送的异步TCP/IP消息。 false值会导致所有异步消息单独发送。 |                                                              |
+| --enable-subscription-conflation        | 服务器是否应将其消息与客户端混淆。 false值会导致所有服务器 - 客户端消息单独发送。 |                                                              |
+| --cache-listener                        | 要实例化的插件的完全限定类名，用于接收对区域及其条目的更改的事件后通知。 可以配置任意数量的缓存侦听器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`init()`方法的参数字段。 |                                                              |
+| --cache-loader                          | 要实例化的插件的完全限定类名，用于接收区域中缓存未命中的通知。 最多可以在该区域的每个成员中定义一个缓存加载器。 对于分布式区域，可以从具有定义区域的其他成员远程调用缓存加载器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`initialize()`方法的参数字段。 |                                                              |
+| --cache-writer                          | 要实例化的插件的完全限定类名，用于接收区域及其条目更改的事件前通知。 插件可能会取消该事件。 最多可以在该区域的每个成员中定义一个缓存写入器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`init()`方法的参数字段。 |                                                              |
+| --async-event-queue-id                  | 将用于后写操作的异步事件队列的ID。 |                                                              |
+| --gateway-sender-id                     | 要将数据路由到的网关发件人的ID。     |                                                              |
+| --enable-concurrency-checks             | 是否实现了区域版本向量。 区域版本向量是版本控制方案的扩展，有助于复制区域的同步。 |                                                              |
+| --enable-cloning                        | 确定fromDelta如何将增量应用于本地缓存以进行增量传播。 如果为true，则将更新应用于值的克隆，然后将克隆保存到缓存中。 如果为false，则在缓存中就地修改该值。 |                                                              |
+| --concurrency-level                     | 估计将同时访问区域条目的最大应用程序线程数。 此属性不适用于分区区域。 |                                                              |
+| --colocated-with                        | 与该地区相关的中部地区。   |                                                              |
+| --local-max-memory                      | 此进程中区域使用的最大内存量（以兆字节为单位）。 (默认值为可用堆的90%。) |                                                              |
+| --recovery-delay                        | 现有成员在成员崩溃之后等待的延迟（以毫秒为单位），然后在其余成员上恢复此区域的冗余。 默认值（-1）表示在发生故障后不会恢复冗余。 |                                                              |
+| --redundant-copies                      | 所需桶的额外副本数量。 额外的副本允许面对VM离开（有意或无意）的高可用性和负载平衡读取操作。 （允许值：0,1,2和3） |                                                              |
+| --startup-recovery-delay                | 新成员在假定其共享级别冗余之前将等待的延迟（以毫秒为单位）。 这允许在将冗余工作负载分配给新成员之前启动多个区域的时间。 值-1表示添加新成员不会触发冗余恢复。 | 默认设置是在添加新成员时立即恢复冗余。 |
+| --total-max-memory                      | 所有进程中该区域使用的最大内存量（以兆字节为单位）。 |                                                              |
+| --total-num-buckets                     | 所有进程中该区域使用的哈希桶总数。 | 113                                                          |
+| --compressor                            | 实现区域压缩的Java类名称。 您可以编写一个实现`org.apache.geode.compression.Compressor`的自定义压缩器，或者您可以指定与Geode捆绑在一起的Snappy压缩器(`org.apache.geode.compression.SnappyCompressor`)。 请参阅[区域压缩](https://geode.apache.org/docs/guide/17/managing/region_compression.html#topic_r43_wgc_gl)。 | no compression                                               |
+| --off-heap                              | 指定区域值是存储在堆内存还是堆外内存中。 如果为true，则区域值位于堆外内存中。 如果指定的参数没有值，则使用true值。 | false                                                        |
+| --partition-resolver                    | 指定自定义分区解析程序的完整路径。 指定`org.apache.geode.cache.util.StringPrefixPartitionResolver`以使用包含的字符串前缀分区解析程序。 |                                                              |
+| --eviction-entry-count                  | 实现驱逐，驱逐政策基于该地区的条目数量。 |                                                              |
+| --eviction-max-memory                   | 启用驱逐，其中驱逐策略基于区域消耗的内存量（以兆字节为单位）。 |                                                              |
+| --eviction-action                       | 达到驱逐阈值时采取的行动。本地销毁当地销毁物品。 请谨慎使用 - 可能导致不一致.overflow-to-diskEntry溢出到磁盘。 对于分区区域，这提供了整个区域中最可靠的读取行为。 |                                                              |
+| –eviction-object-sizer                  | 指定ObjectSizer接口的实现，以测量区域中对象的大小。 sizer仅适用于基于堆和内存的驱逐。 |                                                              |
 
 
 
 **示例命令:**
 
-```
+```bash
 create region --name=region1 --type=REPLICATE_PERSISTENT \
 --cache-writer=org.apache.geode.examples.MyCacheWriter \
 --group=Group1 --disk-store=DiskStore1
@@ -2639,7 +2639,7 @@ create region --name=r1 --type=PARTITION \
 
 **示例输出:**
 
-```
+```bash
 gfsh>create region --name=myRegion --type=LOCAL
 Member  | Status
 ------- | ---------------------------------------
@@ -2649,34 +2649,34 @@ server1 | Region "/myRegion" created on "server1"
 
 
 #### debug {#debug}
-Enable or disable debugging output in `gfsh`.
+在`gfsh`中启用或禁用调试输出。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 debug --state=value
 ```
 
 
 
-| Name    | Description                                                  | Default Value |
+| 名称    | 描述                                                  | 默认值 |
 | :------ | :----------------------------------------------------------- | :------------ |
-| ‑‑state | Whether to turn debugging ON or OFF. Valid options are: ON, OFF (Case insensitive) | OFF           |
+| ‑‑state | 是否打开或关闭调试。 有效选项包括：ON，OFF（不区分大小写） | OFF           |
 
-Table 1. Debug Parameters
+Table 1. 调试参数
 
 **示例命令:**
 
-```
+```bash
 debug --state=off
 debug --state=on
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>debug --state=on
 Debug is on
 ```
@@ -2684,30 +2684,30 @@ Debug is on
 
 
 #### define index {#define_index}
-Define an index that can be used when executing queries. Then, you can execute a single command to create multiple indexes all at once using `create defined indexes`.
+定义可在执行查询时使用的索引。 然后，您可以使用`create defined indexes`执行单个命令以一次创建多个索引。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 define index --name=value --expression=value --region=value [--type=value]
 ```
 
 
 
-| Name         | Description                                                  | Default Value |
+| 名称         | 描述                                                  | 默认值 |
 | :----------- | :----------------------------------------------------------- | :------------ |
-| --name       | *Required.* Name of the index to define.                     |               |
-| ‑‑expression | *Required.* Field of the region values that are referenced by the index. |               |
+| --name       | *Required.* 要定义的索引的名称。                     |               |
+| ‑‑expression | *Required.* 索引引用的区域值的字段。 |               |
 | --region     | *Required.* Name/Path of the region which corresponds to the “from” clause in a query. |               |
 | --type       | Type of the index. Valid values are: range, key and hash.    | range         |
 
-Table 1. Define Index Parameters
+Table 1. 定义索引参数
 
 **示例命令:**
 
-```
+```bash
 gfsh> define index --name=myIndex1 --expression=exp1 --region=/exampleRegion 
 
 gfsh> define index --name=myIndex2 --expression=”c.exp2” --region="/exampleRegion e, e.collection1 c" 
@@ -2721,7 +2721,7 @@ gfsh> create defined indexes
 
 **示例输出:**
 
-```
+```bash
 gfsh>define index --name=myIndex1 --expression=exp1 --region=/exampleRegion
 Index successfully defined with following details
 Name       : myIndex1
@@ -2732,31 +2732,31 @@ RegionPath : /exampleRegion
 
 
 #### deploy {#deploy}
-Deploy JAR-packaged applications to a member or members.
+将JAR打包的应用程序部署到一个或多个成员。
 
-Only one of either `--jars` or `--dir` may be specified.
+只能指定`--jars`或`--dir`中的一个。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 deploy [--groups=value(,value)*] [--jars=value(,value)*] [--dir=value]
 ```
 
 
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| ‑‑groups | Group(s) to which the specified JARs will be deployed. If this option is not specified, the deployment will occur on all members. |
-| --jars   | Path(s) of the JAR(s) to deploy.                             |
-| --dir    | Directory from which to deploy the JARs.                     |
+| ‑‑groups | 将部署指定JAR的组。 如果未指定此选项，则将在所有成员上进行部署。 |
+| --jars   | 要部署的JAR的路径。                             |
+| --dir    | 从中部署JAR的目录。                     |
 
-Table 1. Deploy Parameters
+Table 1. 部署参数
 
 **示例命令:**
 
-```
+```bash
 deploy --jars=group1_functions.jar --groups=Group1
 
 deploy --dir=libs/group1-libs --groups=Group2
@@ -2764,7 +2764,7 @@ deploy --dir=libs/group1-libs --groups=Group2
 
 **示例输出:**
 
-```
+```bash
 gfsh> deploy --jars=group1_functions.jar --groups=Group1
 
  Member   |     Deployed JAR     |                Deployed JAR Location            
@@ -2791,70 +2791,70 @@ datanode4 | group2_dependencies.jar | /usr/local/gemfire/deploy/GF#group2_depend
 
 
 #### describe {#describe}
-Display details of a member’s configuration, shell connection, disk-stores, members, or regions.
+显示成员配置，shell连接，磁盘存储，成员或区域的详细信息。
 
 - **describe client**
 
-  Displays details about a specified client.
+  显示指定客户端的详细信息。
 
 - **describe config**
 
-  Display the configuration of a member.
+  显示成员的配置。
 
 - **describe connection**
 
-  Display connection information details.
+  显示连接信息详细信息
 
 - **describe disk-store**
 
-  Display information about a member’s disk store.
+  显示有关成员磁盘存储的信息。
 
 - **describe jndi-binding**
 
-  Display information about the configuration of a JNDI binding.
+  显示有关JNDI绑定配置的信息。
 
 - **describe lucene index**
 
-  Display information about a Lucene index.
+  显示有关Lucene索引的信息。
 
 - **describe member**
 
-  Display details of a member with given name/id.
+  显示具有给定名称/ID的成员的详细信息。
 
 - **describe offline-disk-store**
 
-  Display information about an offline member’s disk store.
+  显示有关脱机成员磁盘存储的信息。
 
 - **describe region**
 
-  Display the attributes and key information of a region.
+  显示区域的属性和关键信息。
 
 ##### describe client {#describe_client}
-Displays details about a specified client.
+显示指定客户端的详细信息。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe client --clientID=value
 ```
 
-**Parameters, describe client:**
+**参数，描述客户端:**
 
-| Name       | Description                                                  |
+| 名称       | 描述                                                  |
 | :--------- | :----------------------------------------------------------- |
-| ‑‑clientID | *Required.* ID of the client. To find a client ID, you can use the `list clients`command to display a list of connected clients and their IDs. |
+| ‑‑clientID | *Required.* 客户的ID。 要查找客户端ID，可以使用`list clients`命令显示已连接客户端及其ID的列表。 |
 
 **示例命令:**
 
-```
+```bash
 describe client --clientID=192.0.2.0(4987:loner):58922:7b3398cf
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe client --clientID=192.0.2.0(4987:loner):58922:7b3398cf
 -------------------------------------------------------------------
 Primary Servers                : 192.0.2.0(server1:5764)<v1>:15189
@@ -2872,32 +2872,32 @@ Is Durable                     : No
 ```
 
 ##### describe config {#describe_config}
-Display the configuration of a member.
+显示成员的配置。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe config --member=value [--hide-defaults(=value)?]
 ```
 
-**Parameters, describe config:**
+**参数，描述配置:**
 
-| Name            | Description                                                  | Default Value |
+| 名称            | 描述                                                  | 默认值 |
 | :-------------- | :----------------------------------------------------------- | :------------ |
-| --member        | Name or ID of a member whose configuration is to be shown.   |               |
-| --hide-defaults | Whether to hide configuration information for properties with the default value. | true          |
+| --member        | 要显示其配置的成员的名称或ID。   |               |
+| --hide-defaults | 是否使用默认值隐藏属性的配置信息。 | true          |
 
 **示例命令:**
 
-```
+```bash
 describe config --member=Member1;
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe config --member=server1
 Configuration of member : "server1"
 
@@ -2926,25 +2926,25 @@ Cache-server attributes
 ```
 
 ##### describe connection {#describe_connection}
-Display connection information details.
+显示连接信息详细信息
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe connection
 ```
 
 **示例命令:**
 
-```
+```bash
 describe connection
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe connection
 Connection Endpoints
 --------------------
@@ -2952,32 +2952,32 @@ GemFireUser[1099]
 ```
 
 ##### describe disk-store {#describe_disk_store}
-Display information about a member’s disk store.
+显示有关成员磁盘存储的信息。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe disk-store --member=value --name=value
 ```
 
-**Parameters, describe disk-store:**
+**参数，描述磁盘存储:**
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| --member | *Required.* Name/ID of the member with the disk store to be described. |
-| --name   | *Required*. Name of the disk store to be described.          |
+| --member | *Required.* 具有要描述的磁盘存储的成员的名称/ID。 |
+| --name   | *Required*. 要描述的磁盘存储的名称。          |
 
 **示例命令:**
 
-```
+```bash
 describe disk-store --member=server1 --name=DiskStore1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe disk-store --name=disk1 --member=server1
 Disk Store ID                      : a531bc7b-5188-4510-85d7-de7de30c6671
 Disk Store Name                    : disk1
@@ -3001,31 +3001,31 @@ PDX Serialization Meta-Data Stored : No
 ```
 
 ##### describe jndi-binding {#describe_jndi_binding}
-Print the configuration information that describes a JDBC connection.
+打印描述JDBC连接的配置信息。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe jndi-binding --name=value
 ```
 
-**Parameters, describe jndi-binding:**
+**参数，描述jndi绑定:**
 
-| Name   | Description                                           |
+| 名称   | 描述                                           |
 | :----- | :---------------------------------------------------- |
-| --name | *Required.* Name of the JNDI binding to be described. |
+| --name | *Required.* 要描述的JNDI绑定的名称。 |
 
 **示例命令:**
 
-```
+```bash
 describe jndi-binding --name=jndi1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe jndi-binding --name=jndi1
     Property      | Value
 ----------------- | ------------------------------------
@@ -3037,34 +3037,34 @@ connection-url    | jdbc:derby:newDB
 ```
 
 ##### describe lucene index {#describe_lucene_index}
-Describe a Lucene index.
+描述一个Lucene索引。
 
-See also [create lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#create_lucene_index), [destroy lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/destroy.html#destroy_lucene_index), [list lucene indexes](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#list_lucene_indexes) and [search lucene](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/search.html#search_lucene).
+另请参阅[create lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#create_lucene_index), [destroy lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/destroy.html#destroy_lucene_index), [list lucene indexes](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#list_lucene_indexes) 和 [search lucene](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/search.html#search_lucene).
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe lucene index --name=value --region=value
 ```
 
-**Parameters, describe lucene index:**
+**参数，描述lucene索引:**
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| --name   | *Required.* Name of the Lucene index to describe             |
-| --region | *Required.* Name and path of the region in which the Lucene index exists |
+| --name   | *Required.* 要描述的Lucene索引的名称             |
+| --region | *Required.* Lucene索引所在区域的名称和路径 |
 
 **示例命令:**
 
-```
+```bash
 gfsh>describe lucene index --name=personIndex --region=/Person
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe lucene index --name=personIndex --region=/Person
 Index Name  | Region Path |                 Indexed Fields                 | Field Analyzer |   Status    | Query Executions | Updates | Commits | Documents
 ----------- | ----------- | ---------------------------------------------- | -------------- | ----------- | ---------------- | ------- | ------- | ---------
@@ -3077,31 +3077,31 @@ analyzerIndex | /Person     | [address, name, email] | {address=MyCharacterAnaly
 ```
 
 ##### describe member {#describe_member}
-Display details of a member with given name/id.
+显示具有给定名称/ID的成员的详细信息。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe member --name=value
 ```
 
-**Parameters, describe member:**
+**参数，描述成员:**
 
-| Name   | Description                                                  |
+| 名称   | 描述                                                  |
 | :----- | :----------------------------------------------------------- |
-| ‑‑name | *Required.* Display information about a member, including name, ID, groups, regions, etc. |
+| ‑‑name | *Required.* 显示有关成员的信息，包括姓名，ID，组，区域等。 |
 
 **示例命令:**
 
-```
+```bash
 describe member --name=server1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe member --name=server1
 Name        : server1
 Id          : GemFireUser(server1:240)<v1>:64871
@@ -3127,28 +3127,28 @@ Client Connections : 0
 ```
 
 ##### describe offline-disk-store {#describe_offline_disk_store}
-Display information about an offline member’s disk store.
+显示有关脱机成员磁盘存储的信息。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe offline-disk-store --name=value --disk-dirs=value(,value)* [--pdx=value] [--region=value]
 ```
 
-**Parameters, describe offline-disk-store:**
+**参数，描述offline-disk-store:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --name      | *Required.* Name of the disk store to be described.          |
-| --disk-dirs | *Required.* Directory that contains the disk store files.    |
-| --pdx       | If set (or set to true), display all the pdx types stored in the disk store. |
-| --region    | Name and path of the region in the disk store to be described. |
+| --name      | *Required.* 要描述的磁盘存储的名称。          |
+| --disk-dirs | *Required.* 包含磁盘存储文件的目录。    |
+| --pdx       | 如果设置（或设置为true），则显示存储在磁盘存储中的所有pdx类型。 |
+| --region    | 要描述的磁盘存储区中的区域的名称和路径。 |
 
 **示例命令:**
 
-```
+```bash
 describe offline-disk-store --name=DiskStore1\
  --disk-dirs=/home/username/gemfire/mydiskStore1Dir
 
@@ -3157,7 +3157,7 @@ describe offline-disk-store --name=DiskStore1 --disk-dirs=/DiskDir1  --pdx=true
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe offline-disk-store --name=DiskStore1 --disk-dirs=/DiskDir1 --pdx=true
 Regions in the disk store:
   /PdxTypes: -lru=none -concurrencyLevel=16 -initialCapacity=16 -loadFactor=0.75 -compressor=none -statisticsEnabled=false
@@ -3201,31 +3201,31 @@ PDX Enums:
 ```
 
 ##### describe region {#describe_region}
-Display the attributes and key information of a region.
+显示区域的属性和关键信息。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 describe region --name=value
 ```
 
-**Parameters, describe region:**
+**参数，描述区域:**
 
-| Name   | Description                                          |
+| 名称   | 描述                                          |
 | :----- | :--------------------------------------------------- |
-| --name | *Required.* Name/Path of the region to be described. |
+| --name | *Required.* 要描述的区域的名称/路径。 |
 
 **示例命令:**
 
-```
+```bash
 describe region --name=region1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>describe region --name=Region1
 ..........................................................
 Name : Region1
@@ -3261,93 +3261,93 @@ Region | data-policy | EMPTY
 
 
 #### destroy {#destroy}
-Delete or unregister functions, remove indexes, disk stores and regions.
+删除或取消注册功能，删除索引，磁盘存储和区域。
 
 - **destroy async-event-queue**
 
-  Destroy an asynchronous event queue.
+  销毁异步事件队列。
 
 - **destroy disk-store**
 
-  Delete a disk store and all files on disk used by the disk store.
+  删除磁盘存储以及磁盘存储使用的磁盘上的所有文件。
 
 - **destroy function**
 
-  Destroy or unregister a function.
+  销毁或取消注册功能。
 
 - **destroy gateway-sender**
 
-  Destroy a gateway sender.
+  销毁网关发件人。
 
 - **destroy index**
 
-  Destroy or remove the specified index.
+  销毁或删除指定的索引。
 
 - **destroy jndi-binding**
 
-  Destroy the specified JNDI binding.
+  销毁指定的JNDI绑定。
 
 - **destroy lucene index**
 
-  Destroy or remove the specified Lucene index.
+  销毁或删除指定的Lucene索引。
 
 - **destroy region**
 
-  Destroy or remove a region.
+  销毁或删除某个地区。
 
 ##### destroy async-event-queue {#destroy_async_event_queue}
-Destroy an asynchronous event queue.
+销毁异步事件队列。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy async-event-queue --id=value [--groups=value(,value)*] [--if-exists=value]
 ```
 
-**Parameters, destroy async-event-queue:**
+**参数，销毁async-event-queue:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --id        | *Required.* ID of the async event queue to be deleted.       |
-| ‑‑groups    | Group(s) of members on which the async event queue will be destroyed. If no group is specified, the queue is destroyed on all members. |
-| ‑‑if‑exists | If the specified async event queue does not exist, gfsh responds with a message to that effect. If this parameter is true, the response is prefixed with the label “Skipping: ”. Useful for scripted tests. Default (if the parameter is not specified): false. Default (if the parameter is specified without value): true. |
+| --id        | *Required.* 要删除的异步事件队列的ID.       |
+| ‑‑groups    | 将销毁异步事件队列的成员组。 如果未指定组，则会在所有成员上销毁队列. |
+| ‑‑if‑exists | 如果指定的异步事件队列不存在，gfsh将响应该消息。 如果此参数为true，则响应的前缀为“跳过：”标签。 对脚本测试很有用。 默认（如果未指定参数）：false。 默认值（如果指定的参数没有值）：true。 |
 
 **示例命令:**
 
-```
+```bash
 destroy async-event-queue --id=myAsyncEventQueue
 ```
 
 ##### destroy disk-store {#destroy_disk_store}
-Delete a disk store and all files on disk used by the disk store. Data for closed regions that previously used this disk store are lost.
+删除磁盘存储以及磁盘存储使用的磁盘上的所有文件。 先前使用此磁盘存储的封闭区域的数据将丢失。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy disk-store --name=value [--groups=value(,value)*] [--if-exists=value]
 ```
 
-**Parameters, destroy disk-store:**
+**参数，销毁磁盘存储:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --name      | *Required.* Name of the disk store to be deleted.            |
-| ‑‑groups    | Group(s) of members on which the disk store will be destroyed. If no group is specified, the disk store is destroyed on all members. |
-| ‑‑if‑exists | If the specified disk store does not exist, gfsh responds with a message to that effect. If this parameter is true, the response is prefixed with the label “Skipping: ”. Useful for scripted tests. Default (if the parameter is not specified): false. Default (if the parameter is specified without value): true. |
+| --name      | *Required.* 要删除的磁盘存储的名称。            |
+| ‑‑groups    | 将销毁磁盘存储的成员组。 如果未指定任何组，则会在所有成员上销毁磁盘存储。 |
+| ‑‑if‑exists | 如果指定的磁盘存储不存在，gfsh将响应该消息。 如果此参数为true，则响应的前缀为“跳过：”标签。 对脚本测试很有用。 默认（如果未指定参数）：false。 默认值（如果指定的参数没有值）：true。 |
 
 **示例命令:**
 
-```
+```bash
 destroy disk-store --name=store1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>destroy disk-store --name=store1
 Member  | Result
 ------- | -------
@@ -3355,186 +3355,186 @@ server1 | Success
 ```
 
 ##### destroy function {#destroy_function}
-Destroy or unregister a function.
+销毁或取消注册一个函数。
 
-The default is for the function to be unregistered from all members.
+默认设置是从所有成员取消注册该函数。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy function --id=value [--groups=value(,value)*] [--member=value]
 ```
 
-**Parameters, destroy function:**
+**参数，销毁函数:**
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| --id     | *Required.* Unique function identifier. Use the `list functions` command to obtain the ID. |
-| --groups | One or more groups of members from which this function will be unregistered. |
-| ‑‑member | Name or ID of the member from which this function will be unregistered. |
+| --id     | *Required.* 唯一函数标识符。 使用`list functions`命令获取ID。 |
+| --groups | 一个或多个成员组，从中取消注册此函数。 |
+| ‑‑member | 将从中取消注册此函数的成员的名称或ID。 |
 
 **示例命令:**
 
-```
+```bash
 (1) destroy function --id=InterestCalculations
 (2) destroy function --id=InterestCalculations --member=server1
 (3) destroy function --id=InterestCalculations --group=Group1
 ```
 
 ##### destroy gateway-sender {#destroy_gateway_sender}
-Destroy a gateway sender that is no longer used by a region.
+销毁区域不再使用的网关发件人。
 
-The default is for the gateway sender to be destroyed on all members.
+默认设置是在所有成员上销毁网关发件人。
 
-No region may be attached to the gateway sender to be destroyed. If a region is still attached, the system issues an error message similar to:
+没有区域可以附加到要销毁的网关发送方。 如果仍然附加了某个区域，系统会发出类似于以下内容的错误消息：
 
-```
+```bash
 ERROR: The GatewaySender ParallelGatewaySender{id=ln,remoteDsId=2,isRunning =false}
 could not be destroyed as it is still used by region(s).
 ```
 
-Remove the gateway sender from the region with a command similar to:
+使用类似于以下命令的命令从区域中删除网关发件人：
 
-```
+```bash
 gfsh>alter region --name=regionA --gateway-sender-id=""
 ```
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy gateway-sender --id=value [--groups=value(,value)*]
   [--members=value(,value)*] [--if-exists=value]
 ```
 
-**Parameters, destroy gateway-sender:**
+**参数，销毁网关发送者:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --id        | *Required.* Unique gateway sender identifier. Use the `list gateways` command to obtain the ID. |
-| --groups    | One or more groups of members from which this gateway sender will be destroyed. |
-| ‑‑members   | Name or ID of the member(s) from which this gateway sender will be destroyed. |
-| ‑‑if‑exists | If the specified gateway sender does not exist, gfsh responds with a message to that effect. If this parameter is true, the response is prefixed with the label “Skipping: ”. Useful for scripted tests. Default (if the parameter is not specified): false. Default (if the parameter is specified without value): true. |
+| --id        | *Required.* 唯一网关发件人标识 使用`list gateways`命令获取ID。 |
+| --groups    | 将从中销毁此网关发件人的一个或多个成员组。 |
+| ‑‑members   | 将从中销毁此网关发件人的成员的名称或ID。 |
+| ‑‑if‑exists | 如果指定的网关发送方不存在，gfsh将响应该消息。 如果此参数为true，则响应的前缀为“跳过：”标签。 对脚本测试很有用。 默认（如果未指定参数）：false。 默认值（如果指定的参数没有值）：true。 |
 
 **示例命令:**
 
-```
+```bash
 destroy gateway-sender --id=SiteASender
 ```
 
 ##### destroy index {#destroy_index}
-Destroy or remove the specified index.
+销毁或删除指定的索引。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy index [--name=value] [--region=value] [--members=value(,value)*]
 [--groups=value(,value)*] [--if-exists=value]
 ```
 
-**注意:** You must specify at least one of the parameter options. If you enter `destroy index` without any parameters, the command will ask you to specify at least one option.
+**注意:** 您必须至少指定一个参数选项。 如果输入`destroy index`而没有任何参数，该命令将要求您指定至少一个选项。
 
-**Parameters, destroy index:**
+**参数，销毁索引:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --name      | Name of the index to be removed.                             |
-| ‑‑members   | Id of the member(s) on which index is to be removed.         |
-| --region    | Name of the region from which an index or all indexes are to be destroyed. |
-| --groups    | The index will be removed on all the members in the group(s). |
-| ‑‑if‑exists | If the specified index does not exist, gfsh responds with a message to that effect. If this parameter is true, the response is prefixed with the label “Skipping: ”. Useful for scripted tests. Default (if the parameter is not specified): false. Default (if the parameter is specified without value): true. |
+| --name      | 要删除的索引的名称。                             |
+| ‑‑members   | 要删除索引的成员的ID。         |
+| --region    | 要从中销毁索引或所有索引的区域的名称。 |
+| --groups    | 将删除该组中所有成员的索引。 |
+| ‑‑if‑exists | 如果指定的索引不存在，gfsh将响应该消息。 如果此参数为true，则响应的前缀为“跳过：”标签。 对脚本测试很有用。 默认（如果未指定参数）：false。 默认值（如果指定的参数没有值）：true。 |
 
 **示例命令:**
 
-```
+```bash
 destroy index --members=server2
 destroy index --name=MyKeyIndex
 ```
 
 ##### destroy jndi-binding {#destroy_jndi_binding}
-Destroy a specified JNDI binding that holds the configuration for an XA data source.
+销毁包含XA数据源配置的指定JNDI绑定。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy jndi-binding --name=value [--if-exists=value]
 ```
 
-**Parameters, destroy jndi-binding:**
+**参数，破坏jndi绑定:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --name      | *Required.* Name of the JNDI binding to be destroyed.        |
-| ‑‑if‑exists | Skip the destroy operation when the specified JNDI binding does not exist. Without this option, an error results from the specification of a JNDI binding that does not exist. Default (if the parameter is not specified): false. Default (if the parameter is specified without value): true. |
+| --name      | *Required.* 要销毁的JNDI绑定的名称。        |
+| ‑‑if‑exists | 当指定的JNDI绑定不存在时，跳过destroy操作。 如果没有此选项，则会因不存在的JNDI绑定的规范而导致错误。 默认（如果未指定参数）：false。 默认值（如果指定的参数没有值）：true。 |
 
-**Example Command:**
+**示例命令:**
 
-```
+```bash
 destroy jndi-binding --name=jndi1
 ```
 
 ##### destroy lucene index {#destroy_lucene_index}
-Destroy or remove the specified Lucene index.
+销毁或删除指定的Lucene索引。
 
-See also [create lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#create_lucene_index), [describe lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/describe.html#describe_lucene_index), [list lucene indexes](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#list_lucene_indexes) and [search lucene](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/search.html#search_lucene).
+参见 [create lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#create_lucene_index), [describe lucene index](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/describe.html#describe_lucene_index), [list lucene indexes](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#list_lucene_indexes) 和 [search lucene](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/search.html#search_lucene).
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy lucene index --region=value [--name=value]
 ```
 
-**Parameters, destroy lucene index:**
+**参数，销毁lucene索引:**
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| ‑‑region | *Required.* Name of the region from which indexes are to be removed. If no `--name`option is specified, all indexes associated with the region are destroyed. |
-| ‑‑name   | Name of the index to be removed.                             |
+| ‑‑region | *Required.* 要从中删除索引的区域的名称。 如果未指定`--name`选项，则销毁与该区域关联的所有索引。 |
+| ‑‑name   | 要删除的索引的名称。                             |
 
 **示例命令:**
 
-```
+```bash
 destroy lucene index --region=region1
 destroy lucene index --region=region1 --name=MyKeyIndex
 ```
 
 ##### destroy region {#destroy_region}
-Destroy or remove a region.
+销毁或删除某个地区。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 destroy region --name=value [--if-exists=value]
 ```
 
-**Parameters, destroy region:**
+**参数，销毁区域:**
 
-| Name        | Description                                                  |
+| 名称        | 描述                                                  |
 | :---------- | :----------------------------------------------------------- |
-| --name      | *Required.* Name and path of the region to be removed.       |
-| ‑‑if‑exists | If the specified region does not exist, gfsh responds with a message to that effect. If this parameter is true, the response is prefixed with the label “Skipping: ”. Useful for scripted tests. Default (if the parameter is not specified): false. Default (if the parameter is specified without value): true. |
+| --name      | *Required.* 要删除的区域的名称和路径。       |
+| ‑‑if‑exists | 如果指定的区域不存在，gfsh将响应该消息。 如果此参数为true，则响应的前缀为“跳过：”标签。 对脚本测试很有用。 默认（如果未指定参数）：false。 默认值（如果指定的参数没有值）：true。 |
 
 **示例命令:**
 
-```
+```bash
 destroy region --name=region4
 destroy region --name=/region1/subregion1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>destroy region --name=region1
 "region1"  destroyed successfully.
 ```
@@ -3542,25 +3542,25 @@ gfsh>destroy region --name=region1
 
 
 #### disconnect {#disconnect}
-Close any active connection(s).
+关闭所有活动连接。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 disconnect
 ```
 
 **示例命令:**
 
-```
+```bash
 disconnect
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>disconnect
 Disconnecting from: Locator1[1099]
 Disconnected from : Locator1[1099]
@@ -3568,7 +3568,7 @@ Disconnected from : Locator1[1099]
 
 **错误消息:**
 
-```
+```bash
 Error occurred while disconnecting: {0}
 Not connected!
 ```
@@ -3577,48 +3577,45 @@ Not connected!
 
 #### echo {#echo}
 
+回显给定文本，其中可能包括系统和用户变量。
 
+该命令还可以回显gfsh环境属性（使用 ’[set variable](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/set.html)’命令）如果变量名称 预先加上`$` - 就像UNIX一样。
 
-
-Echo the given text, which may include system and user variables.
-
-The command can also echo gfsh environment properties (using ’[set variable](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/set.html)’ command) if variable name is pre-pended with ’$’ - like UNIX.
-
-See [Useful gfsh Shell Variables](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/useful_gfsh_shell_variables.html#concept_731ECA5E40E943CBA5C1198A0745D8EE) for a list of gfsh environment variables.
+有关gfsh环境变量的列表，请参阅[有用的gfsh Shell变量](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/useful_gfsh_shell_variables.html#concept_731ECA5E40E943CBA5C1198A0745D8EE)。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 echo [--string=value]
 ```
 
 
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| --string | String to be echoed. For example, `SYS_USER variable is set to ${SYS_USER}`. |
+| --string | 要回显的字符串。 例如，`SYS_USER变量设置为${SYS_USER}`。 |
 
-Table 1. Echo Parameters
+Table 1. 回显参数
 
 **示例命令:**
 
-```
+```bash
 echo --string="Hello World!"
 echo --string="Hello World! This is ${SYS_USER}"
 echo --string=${APP_FETCH_SIZE}
 ```
 
-To see all the variable set in the shell:
+要查看shell中设置的所有变量：
 
-```
+```bash
 echo --string=$*
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>echo --string=${SYS_JAVA_VERSION}
 Post substitution: echo --string=1.8.0_60
 1.8.0_60
@@ -3627,17 +3624,17 @@ Post substitution: echo --string=1.8.0_60
 
 
 #### execute function {#execute_function}
-Execute functions on members or regions.
+在成员或区域上执行函数。
 
-**execute function**
+**执行函数**
 
-Execute the function with the specified ID. By default, the function executes on all members.
+执行具有指定ID的函数。 默认情况下，该函数在所有成员上执行。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 execute function --id=value [--groups=value(,value)*]
 [--members=value(,value)*] [--region=value] 
 [--arguments=value(,value)*] [--result-collector=value] [--filter=value]
@@ -3655,11 +3652,11 @@ execute function --id=value [--groups=value(,value)*]
 | --result-collector | Fully qualified class name of the `ResultCollector` to instantiate for gathering results. |
 | --filter           | Key list which causes the function to only be executed on members which have entries with these keys. |
 
-Table 1. Execute Function Parameters
+Table 1. 执行函数参数
 
 **示例命令:**
 
-```
+```bash
 execute function --id=InterestCalculations --region=/InterestRegion
 execute function --id=InterestCalculations --members=server1
 execute function --id=InterestCalculations --groups=Group1
@@ -3668,80 +3665,80 @@ execute function --id=InterestCalculations --groups=Group1
 
 
 #### exit {#exit}
-Exit the `gfsh` shell. You can also use `quit` to exit the shell.
+退出`gfsh` shell。 您也可以使用`quit`退出shell。
 
-Exits the gfsh shell and returns to the OS shell.
+退出gfsh shell并返回OS shell。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 exit
 ```
 
 **示例命令:**
 
-```
+```bash
 exit
 ```
 
 
 
 #### export {#export}
-Export configurations, data, logs and stack-traces.
+导出配置，数据，日志和堆栈跟踪。
 
 - **export cluster-configuration**
 
-  Export a cluster configuration ZIP file that contains the `cache.xml` files, `gemfire.properties`files, and application JAR files needed to configure and operate a cluster.
+  导出包含配置和操作集群所需的`cache.xml`文件，`gemfire.properties`文件和应用程序JAR文件的集群配置ZIP文件。
 
 - **export config**
 
-  Export configuration properties for a member or members.
+  导出成员或成员的配置属性。
 
 - **export data**
 
-  Export user data from a region to a file.
+  将用户数据从区域导出到文件。
 
 - **export logs**
 
-  Export logs to a given directory.
+  将日志导出到给定目录。
 
 - **export offline-disk-store**
 
-  Export region data from an offline disk store into gemfire snapshot files.
+  将区域数据从脱机磁盘存储导出到gemfire快照文件。
 
 - **export stack-traces**
 
-  Export the stack trace for a member or members.
+  导出一个或多个成员的堆栈跟踪。
 
 ##### export cluster-configuration {#export_cluster_configuration}
-Exports a single XML file or a ZIP file with cluster configuration that contains the `cache.xml` files, `gemfire.properties` files, and application JAR files needed to configure and operate a cluster.
+使用群集配置导出单个XML文件或ZIP文件，其中包含配置和操作群集所需的`cache.xml`文件，`gemfire.properties`文件和应用程序JAR文件。
 
-When neither a file name nor a ZIP file name is specified, the cluster configuration is written to standard output.
+如果既未指定文件名也未指定ZIP文件名，则群集配置将写入标准输出。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
-See [Overview of the Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html#concept_r22_hyw_bl).
+参见 [Overview of the Cluster Configuration Service](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html#concept_r22_hyw_bl).
 
 **句法:**
 
-```
+```bash
 export cluster-configuration [--group(=value)?] [--xml-file=value]
  [--zip-file-name=value]
 ```
 
-**Export Cluster-Configuration Parameters:**
+**导出群集配置参数:**
 
-| Name            | Description                                                  | Default Value |
+| 名称            | 描述                                                  | 默认值 |
 | :-------------- | :----------------------------------------------------------- | :------------ |
-| ‑‑group         | Export the configuration for the specified server group. When no group is specified, use the default `cluster` group. |               |
-| ‑‑xml-file      | Filename to contain the exported cluster configuration. May also include an absolute or relative path. Only specify one of `--xml-file` or `--zip-file-name`. |               |
-| ‑‑zip-file-name | Filename of the ZIP file to contain the exported cluster configuration. May also include an absolute or relative path. Only specify one of `--xml-file`or `--zip-file-name`. |               |
+| ‑‑group         | 导出指定服务器组的配置。 如果未指定组，请使用默认的`cluster`组。 |               |
+| ‑‑xml-file      | 用于包含导出的群集配置的文件名。 也可能包括绝对或相对路径。 只指定`--xml-file`或`--zip-file-name`中的一个。 |               |
+| ‑‑zip-file-name | 包含导出的群集配置的ZIP文件的文件名。 也可能包括绝对或相对路径。 只指定`--xml-file`或`--zip-file-name`中的一个。 |               |
 
 **示例命令:**
 
-```
+```bash
 gfsh>export cluster-configuration --zip-file-name=/group/shared-configs/devClusterConfig.zip
 gfsh>export cluster-configuration --zip-file-name=my-configs/myClusterConfig.zip
 gfsh>export cluster-configuration --zip-file-name=myClusterConfig.zip
@@ -3750,43 +3747,43 @@ gfsh>export cluster-configuration --xml-file=Cluster3Config.xml
 
 **示例输出:**
 
-```
+```bash
 gfsh>export cluster-configuration --zip-file-name=mySharedConfig.zip
 Downloading cluster configuration : /home/username/gemfire/mySharedConfig.zip
 ```
 
 ##### export config {#export_config}
-Export configuration properties for a member or members.
+导出成员或成员的配置属性。
 
-If you do not specify any parameters, all member configurations will be exported.
+如果未指定任何参数，则将导出所有成员配置。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 export config [--members=value(,value)*] [--groups=value(,value)*]
 [--dir=value]
 ```
 
-**Export Config Parameters:**
+**导出配置参数:**
 
-| Name      | Description                                                  |
+| 名称      | 描述                                                  |
 | :-------- | :----------------------------------------------------------- |
-| --members | Name/Id of the member(s) whose configuration will be exported. |
-| --groups  | Group(s) of members whose configuration will be exported.    |
-| --dir     | Directory to which the exported configuration files will be written. |
+| --members | 将导出其配置的成员的名称/ID。 |
+| --groups  | 将导出其配置的成员组。    |
+| --dir     | 将写入导出的配置文件的目录。 |
 
 **示例命令:**
 
-```
+```bash
 export config
 export config --members=member1
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>export config --members=member1
 Downloading Cache XML file: c:\PivotalGemFire\Latest\.\member1-cache.xml
 Downloading properties file: c:\PivotalGemFire\Latest\.\member1-gf.properties
@@ -3843,42 +3840,42 @@ Latest\server1\region2_20121001.gfd on host : 192.0.2.0
 ```
 
 ##### export logs {#export_logs}
-Export logs to a given directory.
+将日志导出到给定目录。
 
-All files that have logs in the specified time range will be exported. If no time range is specified, all logs will be exported.
+将导出具有指定时间范围内日志的所有文件。 如果未指定时间范围，则将导出所有日志。
 
-The `--dir` parameter specifies a local directory to which log files will be written. This is used only when you are exporting logs using an http connection. If executed over http, the zip archive will be saved in the specified directory on the user’s client machine. If not specified, logs are written to the location specified by the `user.dir` system property. When the command is executed over JMX, logs will be saved as `exportedlogs_xxx.zip` in the connected locator’s working directory.
+`--dir`参数指定将写入日志文件的本地目录。 仅在使用http连接导出日志时使用。 如果通过http执行，则zip存档将保存在用户客户端计算机上的指定目录中。 如果未指定，则将日志写入`user.dir`系统属性指定的位置。 当命令在JMX上执行时，日志将在连接的定位器的工作目录中保存为`exportedlogs_xxx.zip`。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 export logs [--dir=value] [--groups=value(,value)*] [--members=value(,value)*] 
 [--log-level=value] [--only-log-level=value] [--merge-log=value] 
 [--start-time=value] [--end-time=value] [logs-only(=value)?] 
 [--stats-only(=value)?] [--file-size-limit(=value)?]
 ```
 
-**Export Logs Parameters:**
+**导出日志参数:**
 
-| Name              | Description                                                  | Default Value                                                |
+| 名称              | 描述                                                  | 默认值                                                |
 | :---------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| --dir             | Local directory to which log files will be written when logs are exported using an http connection. Ignored when the command is executed over JMX. |                                                              |
-| --groups          | Group(s) of members whose log files will be exported.        |                                                              |
-| ‑‑members         | Name/ID of the member(s) whose log files will be exported.   |                                                              |
-| --log-level       | Minimum level of log entries to export. Valid values are: `OFF`, `FATAL`, `ERROR`, `WARN`, `INFO`, `DEBUG`, `TRACE`, and `ALL`. | `INFO`                                                       |
-| --only-log-level  | Whether to only include only entries that exactly match the --log-level specified. | false                                                        |
-| ‑‑merge‑log       | Whether to merge logs after exporting to the target directory (deprecated). | false                                                        |
-| --start-time      | Log entries that occurred after this time will be exported. Format: yyyy/MM/dd/HH/mm/ss/SSS/z OR yyyy/MM/dd | no limit                                                     |
-| --end-time        | Log entries that occurred before this time will be exported. Format: yyyy/MM/dd/HH/mm/ss/SSS/z OR yyyy/MM/dd | no limit                                                     |
-| --logs-only       | Whether to export only logs (not statistics)                 | If parameter not specified: false. If parameter specified without a value: true |
-| --stats-only      | Whether to export only statistics (not logs)                 | If parameter not specified: false. If parameter specified without a value: true |
-| --file-size-limit | Limits total unzipped size of the exported files. Specify 0 (zero) for no limit. Value is in megabytes by default or [k,m,g,t] may be specified. | If parameter not specified: 100m. If parameter specified without a value: 0 |
+| --dir             | 使用http连接导出日志时将写入日志文件的本地目录。 在JMX上执行命令时忽略。 |                                                              |
+| --groups          | 将导出其日志文件的成员组。        |                                                              |
+| ‑‑members         | 将导出其日志文件的成员的名称/ID。   |                                                              |
+| --log-level       | 要导出的最低日志条目级别。 有效值包括：`OFF`，`FATAL`，`ERROR`，`WARN`，`INFO`，`DEBUG`，`TRACE`和`ALL`。 | `INFO`                                                       |
+| --only-log-level  | 是否仅包含与指定的`--log-level`完全匹配的条目。 | false                                                        |
+| ‑‑merge‑log       | 导出到目标目录后是否合并日志（不建议使用）。 | false                                                        |
+| --start-time      | 将导出此时间之后发生的日志条目。 格式：yyyy/MM/dd/HH/mm/ss/SSS/z 或者 yyyy/MM/dd | no limit                                                     |
+| --end-time        | 将导出在此时间之前发生的日志条目。 格式：yyyy/MM/dd/HH/mm/ss/SSS/z 或者 yyyy/MM/dd | no limit                                                     |
+| --logs-only       | 是否仅导出日志（不是统计信息）                 | 如果未指定参数：false。 如果指定的参数没有值：true |
+| --stats-only      | 是否仅导出统计信息（不是日志）                 | 如果未指定参数：false。 如果指定的参数没有值：true |
+| --file-size-limit | 限制导出文件的总解压缩大小。 指定0（零）无限制。 默认值为兆字节，或者可以指定[k，m，g，t]。 | 如果未指定参数：100m。 如果指定的参数没有值：0 |
 
-**Example commands, showing output:**
+**示例命令，显示输出:**
 
-```
+```bash
 gfsh>export logs --dir=data/logs
 Logs exported to the connected member's file system: /my-locator/data/logs/exportedLogs_1489513007261.zip
 gfsh>export logs --dir=data/logs --file-size-limit=1k
@@ -3890,59 +3887,59 @@ Logs exported to the connected member's file system: /my-locator/data/logs/expor
 ```
 
 ##### export offline-disk-store {#export_offline_disk_store}
-Export region data from an offline disk store into gemfire snapshot files.
+将区域数据从脱机磁盘存储导出到gemfire快照文件。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 export offline-disk-store --name=value --disk-dirs=value(,value)* --dir=value
 ```
 
-**Export Offline-Disk-Store Parameters:**
+**导出脱机磁盘存储参数:**
 
-| Name        | Description                                        |
+| 名称        | 描述                                        |
 | :---------- | :------------------------------------------------- |
-| --name      | *Required.* Name of the disk store to be exported. |
-| --disk-dirs | Directories which contain the disk store files.    |
-| --dir       | Directory to export the snapshot files to.         |
+| --name      | *Required.* 要导出的磁盘存储的名称。 |
+| --disk-dirs | 包含磁盘存储文件的目录。    |
+| --dir       | 将快照文件导出到的目录。         |
 
 **示例命令:**
 
-```
+```bash
  export offline-disk-store --name= DiskStore1 \
 --disk-dirs=/home/username/gemfire/mydiskStore1Dir --dir=/home/username/gemfire/export
 ```
 
 ##### export stack-traces {#export_stack_traces}
-Export the stack trace for a member or members.
+导出一个或多个成员的堆栈跟踪。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 export stack-traces --file=value [--members=value(,value)*] [--groups=value(,value)*]
 ```
 
-**Export Stack-Traces Parameters:**
+**导出堆栈跟踪参数:**
 
-| Name      | Description                                                  |
+| 名称      | 描述                                                  |
 | :-------- | :----------------------------------------------------------- |
-| --file    | *Required.* Filename to which the stack-traces will be written. |
-| --members | Name or ID of the member(s) whose log files will be exported. |
-| --groups  | Group(s) of members whose log files will be exported.        |
+| --file    | *Required.* 要写入堆栈跟踪的文件名。 |
+| --members | 将导出其日志文件的成员的名称或ID。 |
+| --groups  | 将导出其日志文件的成员组。        |
 
 **示例命令:**
 
-```
+```bash
 export stack-traces --file=stack.txt
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>export stack-traces --file=stack.txt
 stack-trace(s) exported to file: C:\PivotalGemFire\Latest\locator1\stack.txt
 On host : GemFireStymon
@@ -3951,30 +3948,30 @@ On host : GemFireStymon
 
 
 #### gc {#gc}
-Force GC (Garbage Collection) on a member or members.
+对一个或多个成员强制GC（垃圾收集）。
 
-The default is for garbage collection to occur on all caching members.
+默认设置是在所有缓存成员上进行垃圾收集。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 gc [--groups=value(,value)*] [--member=value]
 ```
 
 
 
-| Name     | Description                                                  |
+| 名称     | 描述                                                  |
 | :------- | :----------------------------------------------------------- |
-| --groups | One or more group(s) of members on which garbage collection will be forced. |
-| --member | Name/ID of the member on which garbage collection will be forced. |
+| --groups | 将强制进行垃圾收集的一个或多个成员组。 |
+| --member | 将强制进行垃圾收集的成员的名称/ID。 |
 
-Table 1. GC Parameters
+Table 1. GC 参数
 
 **示例命令:**
 
-```
+```bash
 gc --member=server1
 gc --groups=Group1
 gc
@@ -3982,7 +3979,7 @@ gc
 
 **示例输出:**
 
-```
+```bash
 gfsh>gc
 Sucessfully executed GC
 ```
@@ -3990,31 +3987,31 @@ Sucessfully executed GC
 
 
 #### get {#get}
-Display an entry in a region.
+显示区域中的条目。
 
-**可用性:** Online. You must be connected in `gfsh` to a JMX Manager member to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到JMX Manager成员才能使用此命令。
 
 **句法:**
 
-```
+```bash
 get --key=value --region=value [--key-class=value] [--value-class=value]
 ```
 
 
 
-| Name                 | Description                                                  | Default Value                                                |
+| 名称                 | 描述                                                  | 默认值                                                |
 | :------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| --key                | *Required.* String or JSON text from which to create the key. For example: “`James`”, “`100L`” and “`('id': 'l34s')`”. |                                                              |
-| ‑‑region             | *Required.* Region from which to get the entry.              |                                                              |
-| --key-class          | Fully qualified class name of the key’s type.                | The default is the key constraint for the current region or String. |
-| --value-class        | Fully qualified class name of the value’s type.              | The default is the value constraint for the current region or String. |
-| --load-on-cache-miss | Explicitly enables or disables the use of any registered CacheLoaders on the specified Region when retrieving a value for the specified Key on Cache misses. | true (enabled)                                               |
+| --key                | *Required.* 从中创建键的字符串或JSON文本。 例如：“`James`”, “`100L`” and “`('id': 'l34s')`”。 |                                                              |
+| ‑‑region             | *Required.* 从中获取条目的区域。              |                                                              |
+| --key-class          | 键类型的完全限定类名。                | 默认值是当前区域或String的键约束。 |
+| --value-class        | 值类型的完全限定类名。              | 默认值是当前区域或String的值约束。 |
+| --load-on-cache-miss | 在为高速缓存未命中时检索指定Key的值时，显式启用或禁用在指定Region上使用任何已注册的CacheLoader。 | true (enabled)                                               |
 
-Table 1. Get Parameters
+Table 1. Get 参数
 
 **示例命令:**
 
-```
+```bash
 get --key=('id':'133abg124') --region=region1
 
 // Retrieving when key type is a wrapper(primitive)/String
@@ -4026,7 +4023,7 @@ get --key=('100L') --region=/region1/region12 --value-class=data.ProfileDetails
 
 **示例输出:**
 
-```
+```bash
 gfsh>get --key=('123') --region=region1
 Result      : true
 Key Class   : java.lang.String
@@ -4038,28 +4035,28 @@ Value       : ABC
 
 
 #### help {#help}
-Display syntax and usage information for all the available commands.
+显示所有可用命令的语法和用法信息。
 
-Typing help without a command as an argument lists all available commands.
+在没有命令作为参数的情况下键入帮助会列出所有可用命令。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 help [command]
 ```
 
 **Examples Commands:**
 
-```
+```bash
 help
 help rebalance
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>help rebalance
 NAME
         rebalance
@@ -4096,28 +4093,28 @@ s not available when simulating.
 
 
 #### hint {#hint}
-Display information on topics and a list of commands associated with a topic.
+显示有关主题的信息以及与主题关联的命令列表。
 
-Provide hints for a topic or lists all available topics if a topic is not specified.
+提供主题提示或列出所有可用主题（如果未指定主题）。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 hint [topic]
 ```
 
 **示例命令:**
 
-```
+```bash
 hint
 hint Server
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>hint
 Hints are available for the following topics. Use "hint <topic-name>" for a specific
  hint.
@@ -4154,46 +4151,46 @@ stop server     : Stop a GemFire Cache Server..
 
 
 #### history {#history}
-Show or save the command history.
+显示或保存命令历史记录。
 
-This history can be saved to a file which can also be used as a script later.
+此历史记录可以保存到文件中，以后也可以用作脚本。
 
-A history of commands that have been executed successfully is also logged in the `.geode/.gfsh.history` file within the home directory of the user running gfsh.
+已成功执行的命令历史记录也记录在运行gfsh的用户的主目录中的`.geode/.gfsh.history`文件中。
 
 **可用性:** Online or offline.
 
 **句法:**
 
-```
+```bash
 history [--file=<history text file>]
 ```
 
 
 
-| Name    | Description                                              | Default Value |
+| 名称    | 描述                                              | 默认值 |
 | :------ | :------------------------------------------------------- | :------------ |
-| --file  | File to which the history is to be saved.                |               |
-| --clear | When set to `true`, clears the history of gfsh commands. | false         |
+| --file  | 要保存历史记录的文件。                |               |
+| --clear | 设置为`true`时，清除gfsh命令的历史记录。 | false         |
 
-Table 1. History Parameters
+Table 1. History 参数
 
 **示例命令:**
 
-```
+```bash
 history
 history --file=./mycommands.gfsh;
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>history --file=./mycommands.gfsh
 Wrote successfully to file ./mycommands.gfsh
 ```
 
 
 
-#### 导入
+#### import {#import}
 
 您可以导入导出的群集配置以创建新群集或将数据导入区域。
 
@@ -4206,41 +4203,41 @@ Wrote successfully to file ./mycommands.gfsh
   将用户数据从文件导入区域。
 
 ##### import cluster-configuration {#import_cluster_configuration}
-Imports a previously exported cluster configuration from a ZIP file or an XML file. This command is useful when spinning up a new cluster.
+从ZIP文件或XML文件导入以前导出的群集配置。 在启动新群集时，此命令很有用。
 
-- In a given cluster, only one locator needs to perform the import. That locator shares the imported configuration with all other connected locators in the cluster.
-- Locators share the imported configuration with data members (servers) when the servers start, or if the servers have been recently started, have no regions defined in them, and have been given no other configuration changes since they started.
+- 在给定群集中，只有一个定位器需要执行导入。 该定位器与集群中所有其他连接的定位器共享导入的配置。
+- 当服务器启动时，定位器与数据成员（服务器）共享导入的配置，或者最近启动了服务器，没有在其中定义区域，并且自启动以来没有给出任何其他配置更改。
 
-To import a cluster configuration, start one or more locators and then run the `gfsh` `import cluster-configuration` command.
+要导入集群配置，请启动一个或多个定位器，然后运行`gfsh``import cluster-configuration`命令。
 
-**可用性:** Online. You must be connected in `gfsh` to a locator to use this command.
+**可用性:** Online. 您必须在`gfsh`中连接到定位器才能使用此命令。
 
 **句法:**
 
-```
+```bash
 import cluster-configuration [--action=value] [--group(=value)?]
  [--xml-file=value] [--zip-file-name=value]
 ```
 
-**Import Cluster-Configuration Parameters:**
+**Import Cluster-Configuration 参数:**
 
-| Name            | Description                                                  |
+| 名称            | 描述                                                  |
 | :-------------- | :----------------------------------------------------------- |
-| ‑‑action        | When the value is `APPLY` (the default), the configuration is applied to the running servers that have no configuration. If any servers already have configuration, the command fails. When the value is `STAGE`, the configuration is overwritten and will be used during future server creation; the configuration of currently running servers is not changed. |
-| ‑‑group         | Do the import for the specified server group. When no group is specified, the `cluster` is implied. |
-| ‑‑xml-file      | Filename from which to import the cluster configuration. May also include an absolute or relative path. Only specify one of `--xml-file` or `--zip-file-name`. |
-| --zip-file-name | Name of the ZIP file containing the cluster configuration artifacts to be imported. Only specify one of `--xml-file` or `--zip-file-name`. |
+| ‑‑action        | 当值为`APPLY`（默认值）时，配置将应用于没有配置的正在运行的服务器。 如果任何服务器已配置，则命令失败。 当值为`STAGE`时，配置将被覆盖，并将在将来的服务器创建期间使用; 当前运行的服务器的配置不会更改。 |
+| ‑‑group         | 执行指定服务器组的导入。 如果没有指定组，则隐含`cluster`。 |
+| ‑‑xml-file      | 用于导入群集配置的文件名。 也可能包括绝对或相对路径。 只指定`--xml-file`或`--zip-file-name`中的一个。 |
+| --zip-file-name | 包含要导入的集群配置工件的ZIP文件的名称。 只指定`--xml-file`或`--zip-file-name`中的一个。 |
 
 **示例命令:**
 
-```
+```bash
 gfsh>import cluster-configuration --zip-file-name=/home/username/myClusterConfig.zip
 gfsh>import cluster-configuration --xml-file=configs/Cluster3Config.xml
 ```
 
 **示例输出:**
 
-```
+```bash
 gfsh>import cluster-configuration --zip-file-name=/home/username/myClusterConfig.zip
 Cluster configuration successfully imported
 ```
