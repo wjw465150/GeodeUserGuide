@@ -628,7 +628,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   **Java API:**
 
-  ```
+  ```java
   PartitionResolver resolver = new TradesPartitionResolver();
   PartitionAttributes attrs = 
       new PartitionAttributesFactory()
@@ -643,7 +643,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   **字符串前缀分区解析器的Java API:**
 
-  ```
+  ```java
   PartitionAttributes attrs = 
       new PartitionAttributesFactory()
       .setPartitionResolver(new StringPrefixPartitionResolver()).create();
@@ -657,7 +657,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   **XML:**
 
-  ```
+  ```xml
   <region name="trades">
       <region-attributes>
           <partition-attributes>
@@ -672,7 +672,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   **字符串前缀分区解析器的XML:**
 
-  ```
+  ```xml
   <region name="customers">
       <region-attributes>
           <partition-attributes>
@@ -731,7 +731,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   此示例根据日期放置数据，每个季度使用不同的分区名称，每个月使用不同的路由对象。
 
-  ```
+  ```java
   /**
    * Returns one of four different partition names
    * (Q1, Q2, Q3, Q4) depending on the entry's date
@@ -794,7 +794,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   - XML:
 
-    ```
+    ```xml
     <cache>
        <region name="Trades">
           <region-attributes>
@@ -813,7 +813,7 @@ Geode在`org.apache.geode.cache.util.StringPrefixPartitionResolver`中提供了�
 
   - Java:
 
-    ```
+    ```java
     FixedPartitionAttribute fpa1 = FixedPartitionAttributes
          .createFixedPartition("Q1", true);
     FixedPartitionAttribute fpa3 = FixedPartitionAttributes

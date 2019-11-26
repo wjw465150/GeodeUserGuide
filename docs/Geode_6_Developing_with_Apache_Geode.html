@@ -6693,49 +6693,53 @@ custRegion = rf.create(&quot;customer&quot;);
 <p><strong>&#x5B57;&#x7B26;&#x4E32;&#x524D;&#x7F00;&#x5206;&#x533A;&#x89E3;&#x6790;&#x5668;&#x7684;gfsh:</strong></p>
 <p>&#x5C06;<code>--partition-resolver = org.apache.geode.cache.util.StringPrefixPartitionResolver</code>&#x9009;&#x9879;&#x6DFB;&#x52A0;&#x5230;<code>gfsh create region</code>&#x547D;&#x4EE4;&#x3002;</p>
 <p><strong>Java API:</strong></p>
-<pre><code>PartitionResolver resolver = new TradesPartitionResolver();
+<pre><code class="lang-java">PartitionResolver resolver = <span class="hljs-keyword">new</span> TradesPartitionResolver();
 PartitionAttributes attrs = 
-    new PartitionAttributesFactory()
+    <span class="hljs-keyword">new</span> PartitionAttributesFactory()
     .setPartitionResolver(resolver).create();
 
-Cache c = new CacheFactory().create();
+Cache c = <span class="hljs-keyword">new</span> CacheFactory().create();
 
 Region r = c.createRegionFactory()
     .setPartitionAttributes(attrs)
-    .create(&quot;trades&quot;);
-</code></pre><p><strong>&#x5B57;&#x7B26;&#x4E32;&#x524D;&#x7F00;&#x5206;&#x533A;&#x89E3;&#x6790;&#x5668;&#x7684;Java API:</strong></p>
-<pre><code>PartitionAttributes attrs = 
-    new PartitionAttributesFactory()
-    .setPartitionResolver(new StringPrefixPartitionResolver()).create();
+    .create(<span class="hljs-string">&quot;trades&quot;</span>);
+</code></pre>
+<p><strong>&#x5B57;&#x7B26;&#x4E32;&#x524D;&#x7F00;&#x5206;&#x533A;&#x89E3;&#x6790;&#x5668;&#x7684;Java API:</strong></p>
+<pre><code class="lang-java">PartitionAttributes attrs = 
+    <span class="hljs-keyword">new</span> PartitionAttributesFactory()
+    .setPartitionResolver(<span class="hljs-keyword">new</span> StringPrefixPartitionResolver()).create();
 
-Cache c = new CacheFactory().create();
+Cache c = <span class="hljs-keyword">new</span> CacheFactory().create();
 
 Region r = c.createRegionFactory()
     .setPartitionAttributes(attrs)
-    .create(&quot;customers&quot;);
-</code></pre><p><strong>XML:</strong></p>
-<pre><code>&lt;region name=&quot;trades&quot;&gt;
-    &lt;region-attributes&gt;
-        &lt;partition-attributes&gt;
-            &lt;partition-resolver&gt; 
-                &lt;class-name&gt;myPackage.TradesPartitionResolver
-                &lt;/class-name&gt;
-            &lt;/partition-resolver&gt;
-        &lt;partition-attributes&gt;
-    &lt;/region-attributes&gt;
-&lt;/region&gt;
-</code></pre><p><strong>&#x5B57;&#x7B26;&#x4E32;&#x524D;&#x7F00;&#x5206;&#x533A;&#x89E3;&#x6790;&#x5668;&#x7684;XML:</strong></p>
-<pre><code>&lt;region name=&quot;customers&quot;&gt;
-    &lt;region-attributes&gt;
-        &lt;partition-attributes&gt;
-            &lt;partition-resolver&gt; 
-                &lt;class-name&gt;org.apache.geode.cache.util.StringPrefixPartitionResolver
-                &lt;/class-name&gt;
-            &lt;/partition-resolver&gt;
-        &lt;partition-attributes&gt;
-    &lt;/region-attributes&gt;
-&lt;/region&gt;
-</code></pre></li>
+    .create(<span class="hljs-string">&quot;customers&quot;</span>);
+</code></pre>
+<p><strong>XML:</strong></p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">region</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;trades&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">region-attributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">partition-resolver</span>&gt;</span> 
+                <span class="hljs-tag">&lt;<span class="hljs-name">class-name</span>&gt;</span>myPackage.TradesPartitionResolver
+                <span class="hljs-tag">&lt;/<span class="hljs-name">class-name</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">partition-resolver</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">region-attributes</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">region</span>&gt;</span>
+</code></pre>
+<p><strong>&#x5B57;&#x7B26;&#x4E32;&#x524D;&#x7F00;&#x5206;&#x533A;&#x89E3;&#x6790;&#x5668;&#x7684;XML:</strong></p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">region</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;customers&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">region-attributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">partition-resolver</span>&gt;</span> 
+                <span class="hljs-tag">&lt;<span class="hljs-name">class-name</span>&gt;</span>org.apache.geode.cache.util.StringPrefixPartitionResolver
+                <span class="hljs-tag">&lt;/<span class="hljs-name">class-name</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">partition-resolver</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">region-attributes</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">region</span>&gt;</span>
+</code></pre>
+</li>
 <li><p>&#x5982;&#x679C;&#x60A8;&#x7684;&#x540C;&#x5730;&#x6570;&#x636E;&#x4F4D;&#x4E8E;&#x670D;&#x52A1;&#x5668;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x8BF7;&#x5C06;<code>PartitionResolver</code>&#x5B9E;&#x73B0;&#x7C7B;&#x6DFB;&#x52A0;&#x5230;Java&#x5BA2;&#x6237;&#x7AEF;&#x7684;<code>CLASSPATH</code>&#x4E2D;&#x3002; &#x5BF9;&#x4E8E;Java&#x5355;&#x8DF3;&#x8BBF;&#x95EE;&#xFF0C;&#x89E3;&#x6790;&#x5668;&#x7C7B;&#x9700;&#x8981;&#x5177;&#x6709;&#x96F6;&#x53C2;&#x6570;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x5E76;&#x4E14;&#x89E3;&#x6790;&#x5668;&#x7C7B;&#x4E0D;&#x80FD;&#x5177;&#x6709;&#x4EFB;&#x4F55;&#x72B6;&#x6001;; <code>init</code>&#x65B9;&#x6CD5;&#x5305;&#x542B;&#x5728;&#x6B64;&#x9650;&#x5236;&#x4E2D;&#x3002;</p>
 </li>
 </ul>
@@ -6769,55 +6773,56 @@ Region r = c.createRegionFactory()
 </li>
 <li><p>&#x5B9E;&#x73B0;<code>getPartitionName</code>&#x65B9;&#x6CD5;&#xFF0C;&#x6839;&#x636E;&#x60A8;&#x5E0C;&#x671B;&#x6761;&#x76EE;&#x9A7B;&#x7559;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x4E3A;&#x6BCF;&#x4E2A;&#x6761;&#x76EE;&#x8FD4;&#x56DE;&#x5206;&#x533A;&#x7684;&#x540D;&#x79F0;&#x3002; &#x5206;&#x533A;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x6761;&#x76EE;&#x90FD;&#x5C06;&#x4F4D;&#x4E8E;&#x5355;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x3002;</p>
 <p>&#x6B64;&#x793A;&#x4F8B;&#x6839;&#x636E;&#x65E5;&#x671F;&#x653E;&#x7F6E;&#x6570;&#x636E;&#xFF0C;&#x6BCF;&#x4E2A;&#x5B63;&#x5EA6;&#x4F7F;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x5206;&#x533A;&#x540D;&#x79F0;&#xFF0C;&#x6BCF;&#x4E2A;&#x6708;&#x4F7F;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x8DEF;&#x7531;&#x5BF9;&#x8C61;&#x3002;</p>
-<pre><code>/**
+<pre><code class="lang-java"><span class="hljs-comment">/**
  * Returns one of four different partition names
  * (Q1, Q2, Q3, Q4) depending on the entry&apos;s date
- */
-class QuarterFixedPartitionResolver implements
-    FixedPartitionResolver&lt;String, String&gt; {
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QuarterFixedPartitionResolver</span> <span class="hljs-keyword">implements</span>
+    <span class="hljs-title">FixedPartitionResolver</span>&lt;<span class="hljs-title">String</span>, <span class="hljs-title">String</span>&gt; </span>{
 
-  @Override
-  public String getPartitionName(EntryOperation&lt;String, String&gt; opDetails,
-      Set&lt;String&gt; targetPartitions) {
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getPartitionName</span><span class="hljs-params">(EntryOperation&lt;String, String&gt; opDetails,
+      Set&lt;String&gt; targetPartitions)</span> </span>{
 
      Date date = (Date)opDetails.getKey();
      Calendar cal = Calendar.getInstance();
      cal.setTime(date);
-     int month = cal.get(Calendar.MONTH);
-     if (month &gt;= 0 &amp;&amp; month &lt; 3) {
-        if (targetPartitions.contains(&quot;Q1&quot;)) return &quot;Q1&quot;;
+     <span class="hljs-keyword">int</span> month = cal.get(Calendar.MONTH);
+     <span class="hljs-keyword">if</span> (month &gt;= <span class="hljs-number">0</span> &amp;&amp; month &lt; <span class="hljs-number">3</span>) {
+        <span class="hljs-keyword">if</span> (targetPartitions.contains(<span class="hljs-string">&quot;Q1&quot;</span>)) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Q1&quot;</span>;
      }
-     else if (month &gt;= 3 &amp;&amp; month &lt; 6) {
-        if (targetPartitions.contains(&quot;Q2&quot;)) return &quot;Q2&quot;;
+     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (month &gt;= <span class="hljs-number">3</span> &amp;&amp; month &lt; <span class="hljs-number">6</span>) {
+        <span class="hljs-keyword">if</span> (targetPartitions.contains(<span class="hljs-string">&quot;Q2&quot;</span>)) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Q2&quot;</span>;
      }
-     else if (month &gt;= 6 &amp;&amp; month &lt; 9) {
-        if (targetPartitions.contains(&quot;Q3&quot;)) return &quot;Q3&quot;;
+     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (month &gt;= <span class="hljs-number">6</span> &amp;&amp; month &lt; <span class="hljs-number">9</span>) {
+        <span class="hljs-keyword">if</span> (targetPartitions.contains(<span class="hljs-string">&quot;Q3&quot;</span>)) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Q3&quot;</span>;
      }
-     else if (month &gt;= 9 &amp;&amp; month &lt; 12) {
-        if (targetPartitions.contains(&quot;Q4&quot;)) return &quot;Q4&quot;;
+     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (month &gt;= <span class="hljs-number">9</span> &amp;&amp; month &lt; <span class="hljs-number">12</span>) {
+        <span class="hljs-keyword">if</span> (targetPartitions.contains(<span class="hljs-string">&quot;Q4&quot;</span>)) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Q4&quot;</span>;
      }
-     return &quot;Invalid Quarter&quot;;
+     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Invalid Quarter&quot;</span>;
   }
 
-  @Override
-  public String getName() {
-     return &quot;QuarterFixedPartitionResolver&quot;;
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>{
+     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;QuarterFixedPartitionResolver&quot;</span>;
   }
 
-  @Override
-  public Serializable getRoutingObject(EntryOperation&lt;String, String&gt; opDetails) {
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> Serializable <span class="hljs-title">getRoutingObject</span><span class="hljs-params">(EntryOperation&lt;String, String&gt; opDetails)</span> </span>{
      Date date = (Date)opDetails.getKey();
      Calendar cal = Calendar.getInstance();
      cal.setTime(date);
-     int month = cal.get(Calendar.MONTH);
-     return month;
+     <span class="hljs-keyword">int</span> month = cal.get(Calendar.MONTH);
+     <span class="hljs-keyword">return</span> month;
   }
 
-  @Override
-  public void close() {
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">close</span><span class="hljs-params">()</span> </span>{
   }
 }
-</code></pre></li>
+</code></pre>
+</li>
 </ul>
 <p><strong>&#x914D;&#x7F6E;&#x56FA;&#x5B9A;&#x81EA;&#x5B9A;&#x4E49;&#x5206;&#x533A;</strong></p>
 <ul>
@@ -6827,40 +6832,42 @@ class QuarterFixedPartitionResolver implements
 <p>&#x8FD9;&#x4E9B;&#x793A;&#x4F8B;&#x5C06;&#x6210;&#x5458;&#x7684;&#x5206;&#x533A;&#x5C5E;&#x6027;&#x8BBE;&#x7F6E;&#x4E3A;&#x201C;Q1&#x201D;&#x5206;&#x533A;&#x6570;&#x636E;&#x7684;&#x4E3B;&#x8981;&#x4E3B;&#x673A;&#x548C;&#x201C;Q3&#x201D;&#x5206;&#x533A;&#x6570;&#x636E;&#x7684;&#x8F85;&#x52A9;&#x4E3B;&#x673A;&#x3002;</p>
 <ul>
 <li><p>XML:</p>
-<pre><code>&lt;cache&gt;
-   &lt;region name=&quot;Trades&quot;&gt;
-      &lt;region-attributes&gt;
-         &lt;partition-attributes redundant-copies=&quot;1&quot;&gt;
-           &lt;partition-resolver&gt;
-              &lt;class-name&gt;myPackage.QuarterFixedPartitionResolver&lt;/class-name&gt;
-           &lt;/partition-resolver&gt;
-           &lt;fixed-partition-attributes partition-name=&quot;Q1&quot; is-primary=&quot;true&quot;/&gt;
-           &lt;fixed-partition-attributes partition-name=&quot;Q3&quot; is-primary=&quot;false&quot;
-                num-buckets=&quot;6&quot;/&gt;
-         &lt;/partition-attributes&gt; 
-      &lt;/region-attributes&gt;
-   &lt;/region&gt;
-&lt;/cache&gt;
-</code></pre></li>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cache</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">region</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;Trades&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">region-attributes</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">partition-attributes</span> <span class="hljs-attr">redundant-copies</span>=<span class="hljs-string">&quot;1&quot;</span>&gt;</span>
+           <span class="hljs-tag">&lt;<span class="hljs-name">partition-resolver</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">class-name</span>&gt;</span>myPackage.QuarterFixedPartitionResolver<span class="hljs-tag">&lt;/<span class="hljs-name">class-name</span>&gt;</span>
+           <span class="hljs-tag">&lt;/<span class="hljs-name">partition-resolver</span>&gt;</span>
+           <span class="hljs-tag">&lt;<span class="hljs-name">fixed-partition-attributes</span> <span class="hljs-attr">partition-name</span>=<span class="hljs-string">&quot;Q1&quot;</span> <span class="hljs-attr">is-primary</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span>
+           <span class="hljs-tag">&lt;<span class="hljs-name">fixed-partition-attributes</span> <span class="hljs-attr">partition-name</span>=<span class="hljs-string">&quot;Q3&quot;</span> <span class="hljs-attr">is-primary</span>=<span class="hljs-string">&quot;false&quot;</span>
+                <span class="hljs-attr">num-buckets</span>=<span class="hljs-string">&quot;6&quot;</span>/&gt;</span>
+         <span class="hljs-tag">&lt;/<span class="hljs-name">partition-attributes</span>&gt;</span> 
+      <span class="hljs-tag">&lt;/<span class="hljs-name">region-attributes</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">region</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">cache</span>&gt;</span>
+</code></pre>
+</li>
 <li><p>Java:</p>
-<pre><code>FixedPartitionAttribute fpa1 = FixedPartitionAttributes
-     .createFixedPartition(&quot;Q1&quot;, true);
+<pre><code class="lang-java">FixedPartitionAttribute fpa1 = FixedPartitionAttributes
+     .createFixedPartition(<span class="hljs-string">&quot;Q1&quot;</span>, <span class="hljs-keyword">true</span>);
 FixedPartitionAttribute fpa3 = FixedPartitionAttributes
-     .createFixedPartition(&quot;Q3&quot;, false, 6);
+     .createFixedPartition(<span class="hljs-string">&quot;Q3&quot;</span>, <span class="hljs-keyword">false</span>, <span class="hljs-number">6</span>);
 
-PartitionAttributesFactory paf = new PartitionAttributesFactory()
-     .setPartitionResolver(new QuarterFixedPartitionResolver())
-     .setTotalNumBuckets(12)
-     .setRedundantCopies(2)
+PartitionAttributesFactory paf = <span class="hljs-keyword">new</span> PartitionAttributesFactory()
+     .setPartitionResolver(<span class="hljs-keyword">new</span> QuarterFixedPartitionResolver())
+     .setTotalNumBuckets(<span class="hljs-number">12</span>)
+     .setRedundantCopies(<span class="hljs-number">2</span>)
      .addFixedPartitionAttribute(fpa1)
      .addFixedPartitionAttribute(fpa3);
 
-Cache c = new CacheFactory().create();
+Cache c = <span class="hljs-keyword">new</span> CacheFactory().create();
 
 Region r = c.createRegionFactory()
     .setPartitionAttributes(paf.create())
-    .create(&quot;Trades&quot;);
-</code></pre></li>
+    .create(<span class="hljs-string">&quot;Trades&quot;</span>);
+</code></pre>
+</li>
 <li><p>gfsh:</p>
 <p>&#x60A8;&#x4E0D;&#x80FD;&#x4F7F;&#x7528;gfsh&#x6307;&#x5B9A;&#x56FA;&#x5B9A;&#x5206;&#x533A;&#x89E3;&#x6790;&#x7A0B;&#x5E8F;&#x3002;</p>
 </li>
@@ -13788,7 +13795,7 @@ List result = (List)rc.getResult();
 <p><strong>&#x9488;&#x5BF9;&#x6210;&#x5458;&#x7EC4;&#x4E2D;&#x7684;&#x5355;&#x4E2A;&#x6210;&#x5458;&#x6216;&#x6574;&#x4E2A;&#x6210;&#x5458;&#x7EC4;</strong></p>
 <p>&#x8981;&#x5728;&#x4E00;&#x7EC4;&#x6210;&#x5458;&#x6216;&#x4E00;&#x7EC4;&#x6210;&#x5458;&#x4E2D;&#x7684;&#x4E00;&#x4E2A;&#x6210;&#x5458;&#x4E0A;&#x6267;&#x884C;&#x72EC;&#x7ACB;&#x4E8E;&#x6570;&#x636E;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x53EF;&#x4EE5;&#x7F16;&#x5199;&#x81EA;&#x5DF1;&#x7684;&#x5D4C;&#x5957;&#x51FD;&#x6570;&#x3002;&#x5982;&#x679C;&#x4ECE;&#x5BA2;&#x6237;&#x673A;&#x5230;&#x670D;&#x52A1;&#x5668;&#x6267;&#x884C;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x7F16;&#x5199;&#x4E00;&#x4E2A;&#x5D4C;&#x5957;&#x51FD;&#x6570;;&#x5982;&#x679C;&#x4ECE;&#x670D;&#x52A1;&#x5668;&#x5230;&#x6240;&#x6709;&#x6210;&#x5458;&#x6267;&#x884C;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x7F16;&#x5199;&#x53E6;&#x4E00;&#x4E2A;&#x5D4C;&#x5957;&#x51FD;&#x6570;&#x3002;</p>
 <footer class="page-footer"><span class="copyright">Copyright &#xA9; WS 2019 all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">&#x8BE5;&#x6587;&#x4EF6;&#x4FEE;&#x8BA2;&#x65F6;&#x95F4;&#xFF1A;
-2019-02-22 12:04:15
+2019-10-14 11:39:02
 </span></footer>
                                 
                                 </section>
@@ -13832,7 +13839,7 @@ List result = (List)rc.getResult();
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"使用Apache Geode进行开发","level":"7.1","depth":1,"next":{"title":"区域数据存储和分发","level":"7.1.1","depth":2,"anchor":"#区域数据存储和分发","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#区域数据存储和分发","articles":[{"title":"存储和分配选项","level":"7.1.1.1","depth":3,"anchor":"#存储和分配选项","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#存储和分配选项","articles":[{"title":"点对点区域存储和分发","level":"7.1.1.1.1","depth":4,"anchor":"#点对点区域存储和分发","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#点对点区域存储和分发","articles":[]}]},{"title":"区域类型","level":"7.1.1.2","depth":3,"anchor":"#区域类型","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#区域类型","articles":[{"title":"复制区域","level":"7.1.1.2.1","depth":4,"anchor":"#复制区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#复制区域","articles":[]},{"title":"分布式，非复制区域","level":"7.1.1.2.2","depth":4,"anchor":"#分布式非复制区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#分布式非复制区域","articles":[]},{"title":"本地区域","level":"7.1.1.2.3","depth":4,"anchor":"#本地区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#本地区域","articles":[]}]},{"title":"区域数据存储和数据访问器","level":"7.1.1.3","depth":3,"anchor":"#区域数据存储和数据访问器","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#区域数据存储和数据访问器","articles":[]},{"title":"动态创建区域","level":"7.1.1.4","depth":3,"anchor":"#动态创建区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#动态创建区域","articles":[]}]},"previous":{"title":"理解和恢复网络中断","level":"6.1.11.9","depth":3,"anchor":"#理解和恢复网络中断","path":"Geode_5_Managing_Apache_Geode.md","ref":"Geode_5_Managing_Apache_Geode.md#理解和恢复网络中断","articles":[]},"dir":"ltr"},"config":{"plugins":["github@^2.0.0","edit-link@^2.0.2","anchors@^0.7.1","include-codeblock@^3.0.2","splitter@^0.0.8","tbfed-pagefooter@^0.0.1","expandable-chapters-small@^0.1.7","anchor-navigation-ex@0.1.8","book-summary-scroll-position-saver","-lunr","-search","search-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © WS 2019","modify_label":"该文件修订时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"github":{"url":"https://github.com/wjw465150/GeodeUserGuide"},"book-summary-scroll-position-saver":{},"splitter":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":false,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"expandable-chapters-small":{},"include-codeblock":{"check":false,"edit":true,"fixlang":false,"lang":"","template":"ace","theme":"chrome","unindent":true},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"编辑此页面","base":"https://github.com/wjw465150/GeodeUserGuide/edit/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"WS","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Geode参考指南中文版","language":"zh-hans","gitbook":"*","description":"Geode参考指南版"},"file":{"path":"Geode_6_Developing_with_Apache_Geode.md","mtime":"2019-02-22T04:04:15.737Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-22T04:09:57.423Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"使用Apache Geode进行开发","level":"7.1","depth":1,"next":{"title":"区域数据存储和分发","level":"7.1.1","depth":2,"anchor":"#区域数据存储和分发","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#区域数据存储和分发","articles":[{"title":"存储和分配选项","level":"7.1.1.1","depth":3,"anchor":"#存储和分配选项","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#存储和分配选项","articles":[{"title":"点对点区域存储和分发","level":"7.1.1.1.1","depth":4,"anchor":"#点对点区域存储和分发","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#点对点区域存储和分发","articles":[]}]},{"title":"区域类型","level":"7.1.1.2","depth":3,"anchor":"#区域类型","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#区域类型","articles":[{"title":"复制区域","level":"7.1.1.2.1","depth":4,"anchor":"#复制区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#复制区域","articles":[]},{"title":"分布式，非复制区域","level":"7.1.1.2.2","depth":4,"anchor":"#分布式非复制区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#分布式非复制区域","articles":[]},{"title":"本地区域","level":"7.1.1.2.3","depth":4,"anchor":"#本地区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#本地区域","articles":[]}]},{"title":"区域数据存储和数据访问器","level":"7.1.1.3","depth":3,"anchor":"#区域数据存储和数据访问器","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#区域数据存储和数据访问器","articles":[]},{"title":"动态创建区域","level":"7.1.1.4","depth":3,"anchor":"#动态创建区域","path":"Geode_6_Developing_with_Apache_Geode.md","ref":"Geode_6_Developing_with_Apache_Geode.md#动态创建区域","articles":[]}]},"previous":{"title":"理解和恢复网络中断","level":"6.1.11.9","depth":3,"anchor":"#理解和恢复网络中断","path":"Geode_5_Managing_Apache_Geode.md","ref":"Geode_5_Managing_Apache_Geode.md#理解和恢复网络中断","articles":[]},"dir":"ltr"},"config":{"plugins":["github@^2.0.0","edit-link@^2.0.2","anchors@^0.7.1","include-codeblock@^3.0.2","splitter@^0.0.8","tbfed-pagefooter@^0.0.1","expandable-chapters-small@^0.1.7","anchor-navigation-ex@0.1.8","book-summary-scroll-position-saver","-lunr","-search","search-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © WS 2019","modify_label":"该文件修订时间：","modify_format":"YYYY-MM-DD HH:mm:ss"},"github":{"url":"https://github.com/wjw465150/GeodeUserGuide"},"book-summary-scroll-position-saver":{},"splitter":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"isRewritePageTitle":false,"tocLevel1Icon":"fa fa-hand-o-right","tocLevel2Icon":"fa fa-hand-o-right","tocLevel3Icon":"fa fa-hand-o-right"},"expandable-chapters-small":{},"include-codeblock":{"check":false,"edit":true,"fixlang":false,"lang":"","template":"ace","theme":"chrome","unindent":true},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"编辑此页面","base":"https://github.com/wjw465150/GeodeUserGuide/edit/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"WS","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Geode参考指南中文版","language":"zh-hans","gitbook":"*","description":"Geode参考指南版"},"file":{"path":"Geode_6_Developing_with_Apache_Geode.md","mtime":"2019-10-14T03:39:02.290Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-11-26T03:40:36.267Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
