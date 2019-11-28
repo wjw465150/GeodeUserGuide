@@ -1004,8 +1004,8 @@ gfsh>shutdown --include-locators=true
 | [describe config](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/describe.html#topic_3C2C817D999C4E40AF788808B7B6AF99) | 显示成员的配置.                       | online                                                       |
 | [export config](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/export.html#topic_C7C69306F93743459E65D46537F4A1EE) | 导出配置，数据，日志和堆栈跟踪.          | online                                                       |
 | [export cluster-configuration](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/export.html#topic_mdv_jgz_ck) | 导出共享配置ZIP文件，其中包含配置和操作集群所需的cache.xml文件，gemfire.properties文件和JAR文件. | online                                                       |
-| [import cluster-configuration](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/import.html#topic_vnv_grz_ck) | 导入导出的配置.                            | online                                                       |
-| [status cluster-config-service](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/status.html#topic_ts1_qb1_dk2) | 报告群集配置服务器的状态.   | online                                                       |
+| [`import cluster-configuration`](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/import.html#topic_vnv_grz_ck) | 导入导出的配置.                            | online                                                       |
+| [`status cluster-config-service`](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/status.html#topic_ts1_qb1_dk2) | 报告群集配置服务器的状态.   | online                                                       |
 
 #### 数据命令 {#Data_Commands}
 
@@ -1014,7 +1014,7 @@ gfsh>shutdown --include-locators=true
 | :----------------------------------------------------------- | :---------------------------------------- | :----- |
 | [export data](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/export.html#topic_263B70069BFC4A7185F86B3272011734) | 将用户数据从区域导出到文件. | online |
 | [get](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/get.html) | 显示区域中的条目.             | online |
-| [import data](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/import.html#topic_jw2_2ld_2l) | 将用户数据从文件导入区域. | online |
+| [`import data`](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/import.html#topic_jw2_2ld_2l) | 将用户数据从文件导入区域. | online |
 | [locate entry](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/locate.html#concept_73B980C1138743DDBBFACE68009BD1E3__section_04BD7EC0032147DFA9CCD1331EE3B694) | 在成员上找到区域条目.        | online |
 | [put](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/put.html) | 添加或更新区域条目.             | online |
 | [query](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/query.html) | 对Geode区域运行查询.        | online |
