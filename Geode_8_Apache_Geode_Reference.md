@@ -1,6 +1,6 @@
-# Apache Geode Reference
+# Apache Geode Reference {#Apache_Geode_Reference}
 
-# gemfire.properties and gfsecurity.properties: Geode Properties
+# gemfire.properties and gfsecurity.properties: Geode Properties {#gemfire_properties_and_gfsecurity_properties__Geode_Properties}
 
 您使用`gemfire.properties`设置加入集群并配置系统成员行为。 集群成员包括应用程序，缓存服务器，定位器和其他Geode进程。
 
@@ -121,8 +121,7 @@
 
 
 
-### Using Non-ASCII Strings in Apache Geode Property Files
-
+### Using Non-ASCII Strings in Apache Geode Property Files {#Using_Non_ASCII_Strings_in_Apache_Geode_Property_Files}
 You can specify Unicode (non-ASCII) characters in Apache Geode property files by using a `\uXXXX`escape sequence.
 
 For a supplementary character, you need two escape sequences, one for each of the two UTF-16 code units. The XXXX denotes the 4 hexadecimal digits for the value of the UTF-16 code unit. For example, a properties file might have the following entries:
@@ -146,7 +145,7 @@ For more information on internationalization in Java, see http://www.oracle.com/
 
 
 
-# cache.xml
+# cache.xml {#cache_xml}
 
 Use the cache.xml file to set up general cache facilities and behavior and to create and initialize cached data regions. These sections document cache.xml requirements; provide hierarchical diagrams of `<cache>` and `<client-cache>`elements; and describe the function of each element.
 
@@ -154,7 +153,7 @@ Use the cache.xml file to set up general cache facilities and behavior and to cr
 
 
 
-# cache.xml Quick Reference
+# cache.xml Quick Reference {#cache_xml_Quick_Reference}
 
 
 
@@ -166,8 +165,7 @@ This section documents cache.xml file requirements and variables. It also points
 - [Variables in cache.xml](https://geode.apache.org/docs/guide/17/reference/topics/elements_ref.html#topic_7B1CABCAD056499AA57AF3CFDBF8ABE3__section_5DBA12F9FC08406AAD5557E13A3DEDF2)
 - [Configuration Quick Reference](https://geode.apache.org/docs/guide/17/reference/topics/elements_ref.html#topic_7B1CABCAD056499AA57AF3CFDBF8ABE3__section_2076DDF1F0464CF8894B42ABC32AE4CB)
 
-## Cache XML Requirements
-
+## Cache XML Requirements {#Cache_XML_Requirements}
 The cache.xml file has these requirements:
 
 - The contents must conform to the XML schema definition provided in cache-1.0.xsd. The schema definition file is available at http://geode.apache.org/schema/cache/cache-1.0.xsd.
@@ -202,8 +200,7 @@ The cache.xml file has these requirements:
 
 - Any class name specified in the file **must have a public zero-argument constructor** and must implement the `org.apache.geode.cache.Declarable` interface. Parameters declared in the XML for the class are passed to the class init method.
 
-## Variables in cache.xml
-
+## Variables in cache.xml {#Variables_in_cache_xml}
 You can use variables in the `cache.xml` to customize your settings without modifying the XML file.
 
 Set your variables in Java system properties when you start your cache server or application process.
@@ -225,8 +222,7 @@ Example cache.xml with variables and the gfsh `start server` command that sets t
 gfsh>start server --name=server2 --cache-xml-file=cache.xml --J=-DPORT=30333 --J=-DMAXCNXS=77
 ```
 
-## Configuration Quick Reference
-
+## Configuration Quick Reference {#Configuration_Quick_Reference}
 To configure cache servers, clients, and WAN topologies, see the following sections:
 
 - Server Configuration
@@ -256,7 +252,7 @@ To configure cache servers, clients, and WAN topologies, see the following secti
 
 
 
-# <cache> Element Hierarchy
+# `<cache>` Element Hierarchy {#_cache__ Element Hierarchy}
 
 
 
@@ -468,8 +464,7 @@ For Geode client configuration, see [ Element Reference](https://geode.apache.or
 </cache>
 ```
 
-## `<cache-transaction-manager>`
-
+## `<cache-transaction-manager>` {#cache_transaction_manager>}
 Specifies a transaction listener.
 
 **API:** `CacheTransactionManager`
@@ -497,20 +492,17 @@ Specifies a transaction listener.
 </cache>
 ```
 
-## `<transaction-listener>`
-
+## `<transaction-listener>` {#transaction_listener>}
 When a transaction ends, its thread calls the TransactionListener to perform the appropriate follow-up for successful commits, failed commits, or voluntary rollbacks.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
 
-## <transaction-writer>
-
+## <transaction-writer> {#transaction_writer>}
 When you commit a transaction, a TransactionWriter can perform additional tasks, including aborting the transaction.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
 
-## <dynamic-region-factory>
-
+## <dynamic-region-factory> {#dynamic_region_factory>}
 The `<dynamic-region-factory>` element configures a dynamic region factory for this cache. You can use this element to dynamically create regions in your application code. Use the createDynamicRegion() method of the org.apache.geode.cache.DynamicRegionFactory class in your Java code to dynamically create regions.
 
 **Note:** You can not use this element to dynamically create *partitioned* regions.
@@ -540,8 +532,7 @@ Set the `pool-name` attribute to set the name of the connection pool used by cli
 </dynamic-region-factory>
 ```
 
-## <disk-dir>
-
+## <disk-dir> {#disk_dir>}
 Specifies a region or disk store’s disk directory.
 
 **<disk-dir> Attributes**
@@ -557,8 +548,7 @@ Specifies a region or disk store’s disk directory.
     dir-size="20480">/host3/users/gf/memberA_DStore</disk-dir> 
 ```
 
-## <gateway-sender>
-
+## <gateway-sender> {#gateway_sender>}
 Configures a gateway sender to distribute region events to another Geode site. See [Configuring a Multi-site (WAN) System](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html#setting_up_a_multisite_system).
 
 **API:** `GatewaySender`
@@ -614,8 +604,7 @@ Configures a gateway sender to distribute region events to another Geode site. S
 </cache>
 ```
 
-## <gateway-event-filter>
-
+## <gateway-event-filter> {#gateway_event_filter>}
 A GatewayEventFilter implementation determines whether a region event is placed in a gateway sender queue and/or whether an event in a gateway queue is distributed to a remote site. You can optionally add one or more GatewayEventFilter implementations to a gateway sender, either in the cache.xml configuration file or using the Java API.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -631,8 +620,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </gateway-event-filter>
 ```
 
-## <gateway-event-substitution-filter>
-
+## <gateway-event-substitution-filter> {#gateway_event_substitution_filter>}
 A GatewayEventSubstitutionFilter provides a way to specify a substitute value to be stored in the GatewayQueueEvent and enqueued in the RegionQueue. You can optionally add one GatewayEventSubstitutionFilter implementation to a gateway sender.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -648,8 +636,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </gateway-event-substitution-filter>
 ```
 
-## <gateway-transport-filter>
-
+## <gateway-transport-filter> {#gateway_transport_filter>}
 Use a GatewayTransportFilter implementation to process the TCP stream that sends a batch of events that is distributed from one Geode cluster to another over a WAN. A GatewayTransportFilter is typically used to perform encryption or compression on the data that distributed. You install the same GatewayTransportFilter implementation on both a gateway sender and gateway receiver.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -666,8 +653,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </gateway-transport-filter>
 ```
 
-## <gateway-receiver>
-
+## <gateway-receiver> {#gateway_receiver>}
 Configures a gateway receiver to receive and apply region events that were distributed from another Geode site. You can only specify one gateway receiver on a member. See [Configuring a Multi-site (WAN) System](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html#setting_up_a_multisite_system).
 
 **API:** `GatewayReceiverFactory`, `GatewayTransportFilter`
@@ -700,8 +686,7 @@ Configures a gateway receiver to receive and apply region events that were distr
 </cache>
 ```
 
-## <gateway-transport-filter>
-
+## <gateway-transport-filter> {#gateway_transport_filter>}
 Use a GatewayTransportFilter implementation to process the TCP stream that sends a batch of events that is distributed from one Geode cluster to another over a WAN. A GatewayTransportFilter is typically used to perform encryption or compression on the data that distributed. You install the same GatewayTransportFilter implementation on both a gateway sender and gateway receiver.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -718,8 +703,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </gateway-transport-filter>
 ```
 
-## <gateway-conflict-resolver>
-
+## <gateway-conflict-resolver> {#gateway_conflict_resolver>}
 An event-handler plug-in that is called in order to determine whether a potentially conflicting WAN update should be applied to the local cache. A GatewayConflictResolver is invoked if the current value in a cache entry was established by a different cluster (with a different distributed-system-id) than an event that is attempting to modify the entry. It is not invoked if the event has the same distributed system ID as the event that last changed the entry. See [Resolving Conflicting Events](https://geode.apache.org/docs/guide/17/developing/events/resolving_multisite_conflicts.html#topic_E97BB68748F14987916CD1A50E4B4542)
 
 Specify the Java class for the gateway conflict resolver plug-in and its initialization parameters with the `<class-name>` and `<parameter>` sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -736,8 +720,7 @@ Specify the Java class for the gateway conflict resolver plug-in and its initial
   </gateway-conflict-resolver>
 ```
 
-## <async-event-queue>
-
+## <async-event-queue> {#async_event_queue>}
 Configures a queue for sending region events to an AsyncEventListener implementation (for example, for write-behind event handling).
 
 **API:** `org.apache.geode.cache.asyncqueue.AsyncEventQueue`
@@ -785,8 +768,7 @@ Configures a queue for sending region events to an AsyncEventListener implementa
 </cache>
 ```
 
-## <async-event-listener>
-
+## <async-event-listener> {#async_event_listener>}
 An AsyncEventListener receives callbacks for events that change region data. You can use an AsyncEventListener implementation as a write-behind cache event handler to synchronize region updates with a database.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -812,8 +794,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 ...
 ```
 
-## <cache-server>
-
+## <cache-server> {#cache_server>}
 Configures the cache to serve region data to clients in a client/server caching system. This element indicates the port the server listens on for client communication.
 
 The `cacheserver` process uses only `cache.xml` configuration. For application servers, you can set the same configuration properties using the `org.apache.geode.cache.server.CacheServer` and `org.apache.geode.cache.Cache` interfaces. For detailed information, see the online Java API documentation.
@@ -847,8 +828,7 @@ The `cacheserver` process uses only `cache.xml` configuration. For application s
 </cache>
 ```
 
-## <client-subscription>
-
+## <client-subscription> {#client_subscription>}
 Overflow specification for client subscription queues. Sets a capacity limit on the in-memory queue and specifies where to overflow when capacity is reached. By default no overflow is used. Specified in three parts:
 
 **Default:** no overflow
@@ -874,8 +854,7 @@ Overflow specification for client subscription queues. Sets a capacity limit on 
 </cache>
 ```
 
-## <custom-load-probe>
-
+## <custom-load-probe> {#custom_load_probe>}
 Application plug-in used to provide current and predicted server load information to the server locators.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -894,8 +873,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
   </custom-load-probe>
 ```
 
-## <pool>
-
+## <pool> {#pool>}
 Use for client caches. Defines a client’s server pool used to communicate with servers running in a different cluster.
 
 **API:** `org.apache.geode.cache.client.PoolFactory`
@@ -939,8 +917,7 @@ Use for client caches. Defines a client’s server pool used to communicate with
 </pool>
 ```
 
-## <locator>
-
+## <locator> {#locator>}
 Addresses and ports of the locators to connect to. You can define multiple locators for the pool.
 
 **Note:** Provide a locator list or `server` list, but not both.
@@ -963,8 +940,7 @@ Addresses and ports of the locators to connect to. You can define multiple locat
        port="12345"/>
 ```
 
-## <server>
-
+## <server> {#server>}
 Addresses and ports of the servers to connect to.
 
 **Note:** Provide a server list or `locator` list, but not both.
@@ -990,8 +966,7 @@ Addresses and ports of the servers to connect to.
 </pool>
 ```
 
-## <disk-store>
-
+## <disk-store> {#disk_store>}
 Defines a pool of one or more disk stores, which can be used by regions, and client subscription queues.
 
 **Default:** The cache default disk store, named “DEFAULT”, is used when disk is used but no disk store is named.
@@ -1027,12 +1002,10 @@ Defines a pool of one or more disk stores, which can be used by regions, and cli
 </disk-store>
 ```
 
-## <disk-dirs>
-
+## <disk-dirs> {#disk_dirs>}
 An element of a disk store that defines a set of `<disk-dir>` elements.
 
-## <disk-dir>
-
+## <disk-dir> {#disk_dir>}
 Specifies a region or disk store’s disk directory.
 
 **<disk-dir> Attributes**
@@ -1048,8 +1021,7 @@ Specifies a region or disk store’s disk directory.
     dir-size="20480">/host3/users/gf/memberA_DStore</disk-dir> 
 ```
 
-## <pdx>
-
+## <pdx> {#pdx>}
 Specifies the configuration for the Portable Data eXchange (PDX) method of serialization.
 
 **API:** `org.apache.geode.cache.CacheFactory.setPdxReadSerialized`, `setPdxDiskStore`, `setPdxPersistent`, `setPdxIgnoreUnreadFields` and `org.apache.geode.cache.ClientCacheFactory.setPdxReadSerialized`, `setPdxDiskStore`, `setPdxPersistent`, `setPdxIgnoreUnreadFields`
@@ -1081,8 +1053,7 @@ Specifies the configuration for the Portable Data eXchange (PDX) method of seria
 </cache>
 ```
 
-## <pdx-serializer>
-
+## <pdx-serializer> {#pdx_serializer>}
 Allows you to configure the PdxSerializer for this Geode member.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -1104,8 +1075,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </cache>
 ```
 
-## <region-attributes>
-
+## <region-attributes> {#region_attributes>}
 Specifies a region attributes template that can be named (by `id`) and referenced (by `refid`) later in the `cache.xml` and through the API.
 
 **API:** `org.apache.geode.cache.RegionFactory` or `org.apache.geode.cache.ClientRegionFactory`
@@ -1141,8 +1111,7 @@ Specifies a region attributes template that can be named (by `id`) and reference
 
 
 
-## <key-constraint>
-
+## <key-constraint> {#key_constraint>}
 Defines the type of object to be allowed for the region entry keys. This must be a fully-qualified class name. The attribute ensures that the keys for the region entries are all of the same class. If key-constraint is not used, the region’s keys can be of any class. This attribute, along with value-constraint, is useful for querying and indexing because it provides object type information to the query engine.
 
 **Note:** Set the constraint in every cache where you create or update the region entries. For client/server installations, match constraints between client and server and between clusters. The constraint is only checked in the cache that does the entry `put` or `create` operation. To avoid deserializing the object, the constraint is not checked when the entry is distributed to other caches.
@@ -1161,8 +1130,7 @@ Defines the type of object to be allowed for the region entry keys. This must be
 </region-attributes>
 ```
 
-## <value-constraint>
-
+## <value-constraint> {#value_constraint>}
 Defines the type of object to be allowed for the region entry values. This must be a fully-qualified class name. If value constraint isn’t used, the region’s value can be of any class. This attribute, along with `key-constraint`, is useful for querying and indexing because it provides object type information to the query engine.
 
 **Note:** Set the constraint in every cache where you create or update the region entries. For client/server installations, match constraints between client and server and between clusters. The constraint is only checked in the cache that does the entry `put` or `create` operation. To avoid deserializing the object, the constraint is not checked when the entry is distributed to other caches.
@@ -1181,8 +1149,7 @@ Defines the type of object to be allowed for the region entry values. This must 
 </region-attributes>
 ```
 
-## <region-time-to-live>
-
+## <region-time-to-live> {#region_time_to_live>}
 Expiration setting that specifies how long the region can remain in the cache without anyone accessing or updating it.
 
 **Default:** not set - no expiration of this type
@@ -1202,8 +1169,7 @@ Expiration setting that specifies how long the region can remain in the cache wi
 </region-attributes>
 ```
 
-## <expiration-attributes>
-
+## <expiration-attributes> {#expiration_attributes>}
 Within the `entry-time-to-live` or `entry-idle-time` element, this element specifies the expiration rules for removing old region entries that you are not using. You can destroy or invalidate entries, either locally or across the cluster. Within the `region-time-to-live` or `region-idle-time` element, this element specifies the expiration rules for the entire region.
 
 **API:** See APIs for `entry-time-to-live`, `entry-idle-time`, `region-time-to-live`, `region-idle-time`
@@ -1230,8 +1196,7 @@ Within the `entry-time-to-live` or `entry-idle-time` element, this element speci
 </region-attributes>
 ```
 
-## <custom-expiry>
-
+## <custom-expiry> {#custom_expiry>}
 Specifies the custom class that implements `org.apache.geode.cache.CustomExpiry`. You define this class in order to override the region-wide settings for specific entries. See [Configure Data Expiration](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html) for an example.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -1255,8 +1220,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
 
-## <region-idle-time>
-
+## <region-idle-time> {#region_idle_time>}
 Expiration setting that specifies how long the region can remain in the cache without anyone accessing it.
 
 **Note:** To ensure reliable read behavior across the partitioned region, use `region-time-to-live` for region expiration instead of this setting.
@@ -1277,8 +1241,7 @@ Expiration setting that specifies how long the region can remain in the cache wi
 </region-attributes>
 ```
 
-## <expiration-attributes>
-
+## <expiration-attributes> {#expiration_attributes>}
 Within the `entry-time-to-live` or `entry-idle-time` element, this element specifies the expiration rules for removing old region entries that you are not using. You can destroy or invalidate entries, either locally or across the cluster. Within the `region-time-to-live` or `region-idle-time` element, this element specifies the expiration rules for the entire region.
 
 **API:** See APIs for `entry-time-to-live`, `entry-idle-time`, `region-time-to-live`, `region-idle-time`
@@ -1305,8 +1268,7 @@ Within the `entry-time-to-live` or `entry-idle-time` element, this element speci
 </region-attributes>
 ```
 
-## <custom-expiry>
-
+## <custom-expiry> {#custom_expiry>}
 Specifies the custom class that implements `org.apache.geode.cache.CustomExpiry`. You define this class in order to override the region-wide settings for specific entries. See [Configure Data Expiration](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html) for an example.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -1330,8 +1292,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
 
-## <entry-time-to-live>
-
+## <entry-time-to-live> {#entry_time_to_live>}
 Expiration setting that specifies how long the region’s entries can remain in the cache without anyone accessing or updating them. See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#expiration-attributes) for details.
 
 **Default:** not set - no expiration of this type.
@@ -1351,8 +1312,7 @@ Expiration setting that specifies how long the region’s entries can remain in 
 </region-attributes>
 ```
 
-## <expiration-attributes>
-
+## <expiration-attributes> {#expiration_attributes>}
 Within the `entry-time-to-live` or `entry-idle-time` element, this element specifies the expiration rules for removing old region entries that you are not using. You can destroy or invalidate entries, either locally or across the cluster. Within the `region-time-to-live` or `region-idle-time` element, this element specifies the expiration rules for the entire region.
 
 **API:** See APIs for `entry-time-to-live`, `entry-idle-time`, `region-time-to-live`, `region-idle-time`
@@ -1379,8 +1339,7 @@ Within the `entry-time-to-live` or `entry-idle-time` element, this element speci
 </region-attributes>
 ```
 
-## <custom-expiry>
-
+## <custom-expiry> {#custom_expiry>}
 Specifies the custom class that implements `org.apache.geode.cache.CustomExpiry`. You define this class in order to override the region-wide settings for specific entries. See [Configure Data Expiration](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html) for an example.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -1404,8 +1363,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
 
-## <entry-idle-time>
-
+## <entry-idle-time> {#entry_idle_time>}
 Expiration setting that specifies how long the region’s entries can remain in the cache without anyone accessing them. See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#expiration-attributes) for details.
 
 **Note:** To ensure reliable read behavior across the partitioned region, use `entry-time-to-live` for entry expiration instead of this setting.
@@ -1426,8 +1384,7 @@ Expiration setting that specifies how long the region’s entries can remain in 
 </region-attributes>
 ```
 
-## <expiration-attributes>
-
+## <expiration-attributes> {#expiration_attributes>}
 Within the `entry-time-to-live` or `entry-idle-time` element, this element specifies the expiration rules for removing old region entries that you are not using. You can destroy or invalidate entries, either locally or across the cluster. Within the `region-time-to-live` or `region-idle-time` element, this element specifies the expiration rules for the entire region.
 
 **API:** See APIs for `entry-time-to-live`, `entry-idle-time`, `region-time-to-live`, `region-idle-time`
@@ -1454,8 +1411,7 @@ Within the `entry-time-to-live` or `entry-idle-time` element, this element speci
 </region-attributes>
 ```
 
-## <custom-expiry>
-
+## <custom-expiry> {#custom_expiry>}
 Specifies the custom class that implements `org.apache.geode.cache.CustomExpiry`. You define this class in order to override the region-wide settings for specific entries. See [Configure Data Expiration](https://geode.apache.org/docs/guide/17/developing/expiration/configuring_data_expiration.html) for an example.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -1479,8 +1435,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
 
-## <partition-attributes>
-
+## <partition-attributes> {#partition_attributes>}
 Defines the region as partitioned and controls partitioning behavior. This is set during the region creation in the first data store for the partitioned region.
 
 **Note:** With the exception of `local-max-memory`, all members defining a partitioned region must use the same partition attribute settings.
@@ -1509,8 +1464,7 @@ Defines the region as partitioned and controls partitioning behavior. This is se
 </region-attributes>
 ```
 
-## <partition-resolver>
-
+## <partition-resolver> {#partition_resolver>}
 Describes a custom PartitionResolver for a region.
 
 **API:** `org.apache.geode.cache.PartitionAttributesFactory.setPartitionResolver`
@@ -1538,8 +1492,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </region>
 ```
 
-## <partition-listener>
-
+## <partition-listener> {#partition_listener>}
 Defines a custom PartitionListener for a partitioned region.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -1559,8 +1512,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
  </partition-attributes>
 ```
 
-## <fixed-partition-attributes>
-
+## <fixed-partition-attributes> {#fixed_partition_attributes>}
 Describes a partition in a Fixed Partitioned Region.
 
 **API:** `org.apache.geode.cache.PartitionAttributesFactory.addFixedPartitionAttributes`
@@ -1595,8 +1547,7 @@ Describes a partition in a Fixed Partitioned Region.
 </cache>
 ```
 
-## <membership-attributes>
-
+## <membership-attributes> {#membership_attributes>}
 Establishes reliability requirements and behavior for a region. Use this to configure the region to require one or more membership roles to be running in the system for reliable access to the region. You can set up your own roles, such as producer or backup, specifying each role as a string. Membership attributes have no effect unless one or more required roles are specified.
 
 **API:** `org.apache.geode.cache.RegionFactory.setMembershipAttributes`
@@ -1626,8 +1577,7 @@ Establishes reliability requirements and behavior for a region. Use this to conf
 </region-attributes>
 ```
 
-## <required-role>
-
+## <required-role> {#required_role>}
 Specifies a role that is required for reliable access to the region.
 
 **API:** `org.apache.geode.cache.MembershipAttributes`
@@ -1648,8 +1598,7 @@ Specifies a role that is required for reliable access to the region.
 </membership-attributes>
 ```
 
-## <subscription-attributes>
-
+## <subscription-attributes> {#subscription_attributes>}
 Specifies subscriber requirements and behavior for the region. There is one subscription attribute, `interest-policy`, that defines which distributed entry events are delivered to the local region.
 
 **Note:** The interest policy determines which events are delivered, but the `data-policy` determines how the events are applied to the cache.
@@ -1673,8 +1622,7 @@ Specifies subscriber requirements and behavior for the region. There is one subs
 </region-attributes>
 ```
 
-## <cache-loader>
-
+## <cache-loader> {#cache_loader>}
 An event-handler plug-in that allows you to program for cache misses. At most, one cache loader can be defined in each member for the region. For distributed regions, a cache loader may be invoked remotely from other members that have the region defined. When an entry get results in a cache miss in a region with a cache loader defined, the loader’s load method is called. This method is usually programmed to retrieve data from an outside data source, but it can do anything required by your application.
 
 For partitioned regions, if you want to have a cache loader, install an instance of the cache loader in every data store. Partitioned regions support partitioned loading, where each cache loader loads only the data entries in the local member. If data redundancy is configured, data is loaded only if the local member holds the primary copy.
@@ -1691,8 +1639,7 @@ For partitioned regions, if you want to have a cache loader, install an instance
 </region-attributes>
 ```
 
-## <cache-writer>
-
+## <cache-writer> {#cache_writer>}
 An event-handler plug-in that allows you to receive before-event notification for changes to the region and its entries. It also has the ability to abort events. At most, one cache writer can be defined in each member for the region. A cache writer may be invoked remotely from other members that have the region defined.
 
 **API:** `org.apache.geode.cache.RegionFactory.setCacheWriter`
@@ -1707,8 +1654,7 @@ An event-handler plug-in that allows you to receive before-event notification fo
 </region-attributes>
 ```
 
-## <cache-listener>
-
+## <cache-listener> {#cache_listener>}
 An event-handler plug-in that receives after-event notification of changes to the region and its entries. Any number of cache listeners can be defined for a region in any member. Geode offers several listener types with callbacks to handle data and process events. Depending on the `data-policy` and the `interest-policy` subscription attributes, a cache listener may receive only events that originate in the local cache, or it may receive those events along with events that originate remotely.
 
 Specify the Java class for the cache listener and its initialization parameters with the `<class-name>`and `<parameter>` sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -1727,8 +1673,7 @@ Specify the Java class for the cache listener and its initialization parameters 
 </region-attributes>
 ```
 
-## <compressor>
-
+## <compressor> {#compressor>}
 A compressor registers a custom class that extends `Compressor` to support compression on a region.
 
 **Example:**
@@ -1744,8 +1689,7 @@ A compressor registers a custom class that extends `Compressor` to support compr
 ...
 ```
 
-## <eviction-attributes>
-
+## <eviction-attributes> {#eviction_attributes>}
 Specifies whether and how to control a region’s size. Size is controlled by removing least recently used (LRU) entries to make space for new ones. This may be done through destroy or overflow actions. You can configure your region for lru-heap-percentage with an eviction action of local-destroy using stored region attributes.
 
 **Default:** Uses the lru-entry-count algorithm.
@@ -1764,8 +1708,7 @@ Specifies whether and how to control a region’s size. Size is controlled by re
 </region-attributes
 ```
 
-## <lru-entry-count>
-
+## <lru-entry-count> {#lru_entry_count>}
 Using the maximum attribute, specifies maximum region capacity based on entry count.
 
 **<lru-entry-count> Attributes**
@@ -1777,8 +1720,7 @@ Using the maximum attribute, specifies maximum region capacity based on entry co
 
 
 
-## <lru-heap-percentage>
-
+## <lru-heap-percentage> {#lru_heap_percentage>}
 Runs evictions when the Geode resource manager says to. The manager orders evictions when the total cache size is over the heap or off-heap percentage limit specified in the resource manager configuration. You can declare a Java class that implements the ObjectSizer interface to measure the size of objects in the Region.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -1791,8 +1733,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 
 
 
-## <lru-memory-size>
-
+## <lru-memory-size> {#lru_memory_size>}
 Using the maximum attribute, specifies maximum region capacity based on the amount of memory used, in megabytes. You can declare a Java class that implements the ObjectSizer interface to measure the size of objects in the Region.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -1806,8 +1747,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 
 
 
-## <jndi-bindings>
-
+## <jndi-bindings> {#jndi_bindings>}
 Specifies the binding for a data-source used in transaction management. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html).
 
 **Example:**
@@ -1844,8 +1784,7 @@ Specifies the binding for a data-source used in transaction management. See [Con
    </jndi-bindings>
 ```
 
-## <jndi-binding>
-
+## <jndi-binding> {#jndi_binding>}
 For every datasource that is bound to the JNDI tree, there should be one `<jndi-binding>` element. This element describes the property and the configuration of the datasource. Geode uses the attributes of the `<jndi-binding>` element for configuration. Use the `<config-property>` element to configure properties for the datasource.
 
 We recommend that you set the username and password with the `user-name` and `password` jndi-binding attributes rather than using the `<config-property>` element.
@@ -1872,8 +1811,7 @@ We recommend that you set the username and password with the `user-name` and `pa
 
 
 
-## <config-property>
-
+## <config-property> {#config_property>}
 A configuration property of the datasource. Use the sub-elements to identify the name, datatype, and value of the property.
 
 **Default:**
@@ -1890,20 +1828,16 @@ A configuration property of the datasource. Use the sub-elements to identify the
 
 Configuration properties vary depending on the database vendor. See [Configuring Database Connections Using JNDI](https://geode.apache.org/docs/guide/17/developing/outside_data_sources/configuring_db_connections_using_JNDI.html) for examples of different configuration property configurations.
 
-## <config-property-name>
-
+## <config-property-name> {#config_property_name>}
 The name of this datasource property.
 
-## <config-property-type>
-
+## <config-property-type> {#config_property_type>}
 The data type of this datasource property.
 
-## <config-property-value>
-
+## <config-property-value> {#config_property_value>}
 The value of this datasource property.
 
-## <region>
-
+## <region> {#region>}
 Defines a region in the cache. See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes) for more details on configuring regions. You can specify zero or more subregions within a region. See [Create and Access Data Subregions](https://geode.apache.org/docs/guide/17/basic_config/data_regions/managing_data_regions.html#data_regions__section_jn1_sry_5m) for restrictions on creating subregions. For example, you cannot create a partitioned subregion.
 
 **Default:**
@@ -1941,8 +1875,7 @@ Defines a region in the cache. See [](https://geode.apache.org/docs/guide/17/ref
 
 See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region-attributes) for a complete listing of region attributes.
 
-## <index>
-
+## <index> {#index>}
 Describes an index to be created on a region. The index node, if any, should all come immediately after the “region-attributes” node. The “name” attribute is a required field which identifies the name of the index. See [Working with Indexes](https://geode.apache.org/docs/guide/17/developing/query_index/query_index.html) for more information on indexes.
 
 **Default:**
@@ -1982,8 +1915,7 @@ Describes an index to be created on a region. The index node, if any, should all
 </region>
 ```
 
-## <lucene:index>
-
+## <lucene:index> {#lucene:index>}
 Describes a Lucene index to be created on a region. The `lucene` namespace and the scoping operator (`:`) must be specified, as the Geode `cache` namespace also defines an `index` element (for OQL indexes).
 
 **API:** `org.apache.geode.cache.lucene` package
@@ -2012,8 +1944,7 @@ Describes a Lucene index to be created on a region. The `lucene` namespace and t
 </cache>
 ```
 
-## <lucene:field>
-
+## <lucene:field> {#lucene:field>}
 Describes a field to be included in a Lucene index. Including the `lucene` namespace and the scoping operator (`:`) clarifies, but is not required.
 
 **API:** `org.apache.geode.cache.lucene` package
@@ -2030,8 +1961,7 @@ Describes a field to be included in a Lucene index. Including the `lucene` names
 </region>
 ```
 
-## <entry>
-
+## <entry> {#entry>}
 An “entry” element describes an entry to be added to a region. Note that if an entry with the given key already exists in the region, it will be replaced.
 
 **Default:**
@@ -2052,12 +1982,10 @@ An “entry” element describes an entry to be added to a region. Note that if 
 </region>
 ```
 
-## <key>
-
+## <key> {#key>}
 Required. Describes the key in a region entry. A key can contain either a <string> or a <declarable> sub-element.
 
-## <string>
-
+## <string> {#string>}
 Specifies a String to be placed in a Region entry.
 
 **Example:**
@@ -2074,8 +2002,7 @@ Specifies a String to be placed in a Region entry.
 </region>
 ```
 
-## <declarable>
-
+## <declarable> {#declarable>}
 Specifies a Declarable object to be placed in a Region entry.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -2095,12 +2022,10 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </parameter>
 ```
 
-## <value>
-
+## <value> {#value>}
 Required. Describes the value of a region entry. A `<value>` can contain either a `<string>` or a `<declarable>` sub-element.
 
-## <string>
-
+## <string> {#string>}
 Specifies a String to be placed in a Region entry.
 
 **Example:**
@@ -2117,8 +2042,7 @@ Specifies a String to be placed in a Region entry.
 </region>
 ```
 
-## <declarable>
-
+## <declarable> {#declarable>}
 Specifies a Declarable object to be placed in a Region entry.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -2138,14 +2062,12 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </parameter>
 ```
 
-## <region>
-
+## <region> {#region>}
 When nested within a `<region>` element, defines a subregion. See [Create and Access Data Subregions](https://geode.apache.org/docs/guide/17/basic_config/data_regions/managing_data_regions.html#data_regions__section_jn1_sry_5m) for restrictions on creating subregions. For example, you cannot create a partitioned subregion.
 
 See [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#region)
 
-## <function-service>
-
+## <function-service> {#function_service>}
 Configures the behavior of the function execution service.
 
 **Example:**
@@ -2161,8 +2083,7 @@ Configures the behavior of the function execution service.
 </function-service>
 ```
 
-## <function>
-
+## <function> {#function>}
 Defines a function for registration in the function service
 
 Specify the Java class for the function and its initialization parameters with the `<class-name>` and `<parameter>` sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -2181,8 +2102,7 @@ Specify the Java class for the function and its initialization parameters with t
 </function>
 ```
 
-## <resource-manager>
-
+## <resource-manager> {#resource_manager>}
 A memory monitor that tracks cache size as a percentage of total heap or off-heap memory and controls size by restricting access to the cache and prompting eviction of old entries from the cache. For tenured heap, used in conjunction with settings for JVM memory and Java garbage collection. For off-heap memory, used with the off-heap memory manager.
 
 **API:** `org.apache.geode.cache.control.ResourceManager`
@@ -2208,8 +2128,7 @@ A memory monitor that tracks cache size as a percentage of total heap or off-hea
 </cache>
 ```
 
-## <serialization-registration>
-
+## <serialization-registration> {#serialization_registration>}
 Set of serializer or instantiator tags to register customer DataSerializer extensions or DataSerializable implementations respectively.
 
 **Example:**
@@ -2222,16 +2141,14 @@ Set of serializer or instantiator tags to register customer DataSerializer exten
 </serialization-registration> 
 ```
 
-## <serializer>
-
+## <serializer> {#serializer>}
 Allows you to configure the DataSerializer for this Geode member. It registers a custom class which extends DataSerializer to support custom serialization of non-modifiable object types inside Geode.
 
 Specify the Java class for the `DataSerializer` and its initialization parameters with the `<class-name>` sub-element.
 
 **API:** You can also register a `DataSerializer` by using the `org.apache.geode.DataSerializer.register`API. Use the `org.apache.geode.Instantiator` API to register a `DataSerializable` implementation.
 
-## <instantiator>
-
+## <instantiator> {#instantiator>}
 An Instantiator registers a custom class which implements the `DataSerializable` interface to support custom object serialization inside Geode.
 
 Specify the Java class and its initialization parameters with the `<class-name>` sub-element.
@@ -2246,8 +2163,7 @@ You can also directly specify `<instantiator>` as a sub-element of `<cache>`. Us
 | :-------- | :----------------------------------------------------------- | :------ |
 | id        | Required. ID that the Instantiator should associate with the `DataSerializable` type. |         |
 
-## <backup>
-
+## <backup> {#backup>}
 Defines additional files or directories that should be backed up when the system wide backup command is invoked. Disk stores with persistent data are automatically backed up and do not need to be listed with this element.
 
 **Example:**
@@ -2257,8 +2173,7 @@ Defines additional files or directories that should be backed up when the system
 <backup>/users/jpearson/gfSystemInfo/myCustomerConfig.doc</backup>
 ```
 
-## <initializer>
-
+## <initializer> {#initializer>}
 Used to specify a callback class (and optionally its parameters) that will be run after the cache is initialized. This element can be specified for both server and client caches.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements. See [ and ](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#class-name_parameter).
@@ -2278,8 +2193,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </initializer>
 ```
 
-## <declarable>
-
+## <declarable> {#declarable>}
 Specifies a Declarable object to be placed in a Region entry.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -2299,8 +2213,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </parameter>
 ```
 
-## <class-name> and <parameter>
-
+## <class-name> and <parameter> {#class_name>_and_<parameter>}
 Specify the name of a Java class with the `<class-name>` sub-element.
 
 Specify initialization parameters for the class using the `<parameter>` sub-element. Use the `name`attribute to specify the name of the parameter and specify its value in the content of the [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#string)sub-element or by specifying a Java class with the [](https://geode.apache.org/docs/guide/17/reference/topics/cache_xml.html#declarable) sub-element.
@@ -2318,8 +2231,7 @@ The following transaction writer configuration example specifies a Java class na
 </transaction-writer>
 ```
 
-## <declarable>
-
+## <declarable> {#declarable>}
 Specifies a Declarable object to be placed in a Region entry.
 
 Specify the Java class and its initialization parameters with the `<class-name>` and `<parameter>`sub-elements.
@@ -2339,8 +2251,7 @@ Specify the Java class and its initialization parameters with the `<class-name>`
 </parameter>
 ```
 
-## <string>
-
+## <string> {#string>}
 Specifies a String to be placed in a Region entry.
 
 **Example:**
@@ -2359,7 +2270,7 @@ Specifies a String to be placed in a Region entry.
 
 
 
-# Region Shortcuts
+# Region Shortcuts {#Region_Shortcuts}
 
 
 
@@ -2451,7 +2362,7 @@ For more information about using the various types of Geode regions and when to 
 
 
 
-# Region Shortcuts Quick Reference
+# Region Shortcuts Quick Reference {#Region_Shortcuts_Quick_Reference}
 
 
 
