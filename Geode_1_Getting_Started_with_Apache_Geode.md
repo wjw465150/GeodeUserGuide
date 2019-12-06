@@ -175,7 +175,7 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
   1. 编辑`/etc/sysctl.conf`文件以包含以下行：
 
-     ```
+     ```properties
      net.ipv4.tcp_syncookies = 0
      ```
 
@@ -183,7 +183,7 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
   2. 重新加载`sysctl.conf`：
 
-     ```
+     ```properties
      sysctl -p
      ```
 
@@ -197,7 +197,7 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
 1. 设置JAVA_HOME环境变量。
 
-   ```
+   ```properties
    JAVA_HOME=/usr/java/jdk1.8.0_121
    export JAVA_HOME
    ```
@@ -206,19 +206,19 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
 3. 在包含解压缩源代码的目录中，无需测试即可构建：
 
-   ```
+   ```bash
    $ ./gradlew build -Dskip.tests=true
    ```
 
    或者，使用测试构建：
 
-   ```
+   ```bash
    $ ./gradlew build 
    ```
 
 4. 通过调用`gfsh`来打印版本信息并退出来验证安装。 在Linux/Unix平台上，版本类似于：
 
-   ```
+   ```bash
    $ cd geode-assembly/build/install/apache-geode
    $ bin/gfsh version
    v1.1.0
@@ -228,7 +228,7 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
 1. 设置JAVA_HOME环境变量。 例如：
 
-   ```
+   ```bash
    $ set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_121" 
    ```
 
@@ -238,19 +238,19 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
 4. 在包含解压缩源代码的文件夹中，不使用测试进行构建：
 
-   ```
+   ```bash
    $ gradle build -Dskip.tests=true
    ```
 
    或者，使用测试构建：
 
-   ```
+   ```bash
    $ gradle build
    ```
 
 5. 通过调用`gfsh`来打印版本信息并退出来验证安装。
 
-   ```
+   ```bash
    $ cd geode-assembly\build\install\apache-geode\bin
    $ gfsh.bat version
    v1.1.0
@@ -262,52 +262,52 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
 2. 解压缩.zip文件或展开.tar文件，其中`path_to_product`是绝对路径，文件名因版本号而异。 对于.zip格式：
 
-   ```
+   ```bash
    $ unzip apache-geode-1.1.0.zip -d path_to_product
    ```
 
    对于.tar格式：
 
-   ```
+   ```bash
    $ tar -xvf apache-geode-1.1.0.tar -C path_to_product
    ```
 
 3. 设置JAVA_HOME环境变量。 在Linux / Unix平台上：
 
-   ```
+   ```bash
    JAVA_HOME=/usr/java/jdk1.8.0_121
    export JAVA_HOME
    ```
 
    在Windows平台上：
 
-   ```
+   ```bash
    set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_121"
    ```
 
 4. 将Geode脚本添加到PATH环境变量中。 在Linux/Unix平台上：
 
-   ```
+   ```bash
    PATH=$PATH:$JAVA_HOME/bin:path_to_product/bin
    export PATH
    ```
 
    在Windows平台上：
 
-   ```
+   ```bash
    set PATH=%PATH%;%JAVA_HOME%\bin;path_to_product\bin 
    ```
 
 5. 要验证安装，请在命令行键入`gfsh version`，并注意输出列出已安装的Geode版本。 例如：
 
-   ```
+   ```bash
    $ gfsh version
    v1.1.0
    ```
 
    有关更详细的版本信息，例如构建日期，内部版本号和正在使用的JDK版本，请调用：
 
-   ```
+   ```bash
    $ gfsh version --full
    ```
 
@@ -370,7 +370,7 @@ gfsh> start server --name=server1 --include-system-classpath=true
 
 例如，要使用LocatorLauncher API启动Geode定位器进程，可以在命令行上执行以下命令：
 
-```
+```bash
 prompt# java -cp "path_to_product/lib/geode-dependencies.jar"
 org.apache.geode.distributed.LocatorLauncher start locator1
 <locator-launcher-options>
@@ -378,7 +378,7 @@ org.apache.geode.distributed.LocatorLauncher start locator1
 
 要使用ServerLauncher API启动Geode服务器进程，请执行以下操作：
 
-```
+```bash
 prompt# java -cp "path_to_product/lib/geode-dependencies.jar:/path/to/your/applications/classes.jar"
 org.apache.geode.distributed.ServerLauncher start server1
 <server-launcher-options>
@@ -388,7 +388,7 @@ org.apache.geode.distributed.ServerLauncher start server1
 
 要使用嵌入式缓存启动应用程序：
 
-```
+```bash
 java -cp "path_to_product/lib/geode-dependencies.jar:/path/to/your/applications/classes.jar"
 com.mycompany.package.ApplicationWithEmbeddedCache
 ```

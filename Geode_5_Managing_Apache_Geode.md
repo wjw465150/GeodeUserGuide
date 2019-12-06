@@ -149,10 +149,10 @@ Geode的管理和监视系统由一个JMX Manager节点(应该只有一个)和�
 
 **受管节点**
 
-Each member of a cluster is a managed node. Any node that is not currently also acting as a JMX Manager node is referred to simply as a managed node. A managed node has the following resources so that it can answer JMX queries both locally and remotely:
+群集的每个成员都是一个受管节点。 当前未同时充当JMX Manager节点的任何节点都简称为受管节点。 受管节点具有以下资源，因此它可以在本地和远程回答JMX查询：
 
-- Local MXBeans that represent the locally monitored components on the node. See [List of Geode JMX MBeans](http://geode.apache.org/docs/guide/17/managing/management/list_of_mbeans.html#topic_4BCF867697C3456D96066BAD7F39FC8B) for a list of possible MXBeans existing for the managed node.
-- Built-in platform MBeans.
+- 代表节点上本地监视的组件的本地MXBean。 请参阅[Geode JMX MBean列表](http://geode.apache.org/docs/guide/17/managing/management/list_of_mbeans.html#topic_4BCF867697C3456D96066BAD7F39FC8B)，以获取受管节点现有的可能MXBean列表。
+- 内置平台MBeans。
 
 **JMX Manager Node**
 
@@ -196,7 +196,7 @@ Geode管理API代表JMX用户的Geode集群。 但是，它们不提供JMX中存
 
 Geode管理的入口点是通过ManagementService接口。 例如，要创建Management Service的实例：
 
-```
+```java
 ManagementService service = ManagementService.getManagementService(cache);
 ```
 
@@ -836,7 +836,7 @@ Geode以编程方式模拟Java提供的开箱即用的JMX，并在所有可管�
 
 **注意:** CommandService API目前仅在JMX Manager节点上可用。
 
-```
+```java
 // Get existing CommandService instance or create new if it doesn't exist
 commandService = CommandService.createLocalCommandService(cache);
 
@@ -846,7 +846,7 @@ CommandService commandService = CommandService.getUsableLocalCommandService();
 
 接下来，处理命令及其输出：
 
-```
+```java
 // Process the user specified command String
 Result regionListResult = commandService.processCommand("list regions");
 
@@ -858,7 +858,7 @@ while (regionListResult.hasNextLine()) {
 
 或者，您可以从命令字符串创建一个可以重复使用的CommandStatement对象，而不是处理该命令。
 
-```
+```java
 // Create a command statement that can be reused multiple times
 CommandStatement showDeadLocksCmdStmt = commandService.createCommandStatement
     ("show dead-locks --file=deadlock-info.txt");
@@ -984,7 +984,7 @@ gfsh>start server --name=server1 --initial-heap=30m --max-heap=30m \
 
 cache.xml 例子:
 
-```
+```xml
 <cache>
 <region refid="REPLICATE_HEAP_LRU" />
 ...
@@ -1031,7 +1031,7 @@ Geode`ResourceManagerStats`提供有关内存使用以及管理器阈值和逐�
 
 - XML:
 
-  ```
+  ```xml
   <cache>
   <region name="bigDataStore" refid="PARTITION_HEAP_LRU"/>
   ...
@@ -1043,7 +1043,7 @@ Geode`ResourceManagerStats`提供有关内存使用以及管理器阈值和逐�
 
 - Java:
 
-  ```
+  ```java
   Cache cache = CacheFactory.create();
   
   ResourceManager rm = cache.getResourceManager();
@@ -1166,16 +1166,16 @@ create region
 `--off-heap=(true | false)`设置指定区域的off-heap属性。 有关详细信息，请参阅[create region](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/create.html#topic_54B0985FEC5241CA9D26B0CE0A5EA863)。
 
 describe member
-displays off-heap size
+显示堆外大小
 
 describe offline-disk-store
-shows if an off-line region is off-heap
+显示离线区域是否处于堆外
 
 describe region
-displays the value of a region’s off-heap attribute
+显示区域的堆外属性的值
 
 show metrics
-includes off-heap metrics `maxMemory`, `freeMemory`, `usedMemory`, `objects`, `fragmentation` and `defragmentationTime`
+包括堆外指标 `maxMemory`, `freeMemory`, `usedMemory`, `objects`, `fragmentation` 和 `defragmentationTime`
 
 start server
 支持堆外选项`--lock-memory`，`--off-heap-memory-size`，`--critical-off-heap-percentage`和`--eviction-off-heap-percentage`请参阅 [启动服务器](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/start.html#topic_3764EE2DB18B4AE4A625E0354471738A)了解详情。
@@ -1194,7 +1194,7 @@ gemfire.properties文件支持一个堆外属性：
 `off-heap-memory-size`
 指定堆外内存的大小，以兆字节(m)或千兆字节(g)为单位。 例如：
 
-```
+```properties
 off-heap-memory-size=4096m
 off-heap-memory-size=120g
 ```
@@ -1224,7 +1224,7 @@ cache.xml文件支持两个资源管理器属性：
 
 例如:
 
-```
+```xml
 <cache>
 ...
    <resource-manager 
@@ -1240,14 +1240,14 @@ Geode收集有关堆外内存使用情况的统计信息，您可以使用gfsh`s
 
 默认情况下，堆外内存优化用于存储大小为128 KB的值。 此图称为“最大优化存储值大小”，我们将在此处用*maxOptStoredValSize*表示。 如果您的数据通常运行较大，则可以通过将OFF_HEAP_FREE_LIST_COUNT系统参数增加到大于`maxOptStoredValSize/8`的数字来增强性能，其中*maxOptStoredValSize*以KB(1024字节)表示。 因此，默认值对应于：
 
-```
+```properties
 128 KB / 8 = (128 * 1024) / 8 = 131,072 / 8 = 16,384
 -Dgemfire.OFF_HEAP_FREE_LIST_COUNT=16384
 ```
 
 要优化最大优化存储值大小（默认值的两倍或256 KB），空闲列表计数应加倍：
 
-```
+```properties
 -Dgemfire.OFF_HEAP_FREE_LIST_COUNT=32768
 ```
 
@@ -1281,7 +1281,7 @@ Geode收集有关堆外内存使用情况的统计信息，您可以使用gfsh`s
    $ echo 1 > /proc/sys/vm/drop_caches
    ```
 
-3. Start each Geode data store with the gfsh `-lock-memory=true` option. If you deploy more than one server per host, begin by starting each server sequentially. Starting servers sequentially avoids a race condition in the operating system that can cause failures (even machine crashes) if you accidentally over-allocate the available RAM. After you verify that the system configuration is stable, you can then start servers concurrently.
+3. 使用gfsh `-lock-memory=true`选项启动每个Geode数据存储。 如果每个主机部署多个服务器，请先顺序启动每个服务器。 如果不小心分配了可用的RAM，则按顺序启动服务器可以避免操作系统中的竞争状况，该竞争状况可能导致故障（甚至导致机器崩溃）。 确认系统配置稳定后，即可并发启动服务器。
 
 
 ## 磁盘存储
@@ -1374,38 +1374,38 @@ Geode不会将索引写入磁盘。
 
 **文件名的第一部分: Usage Identifier**
 
-| Values   | Used for                                                     | Examples                                 |
+| 值   | 用于                                                     | 例子                                 |
 | -------- | ------------------------------------------------------------ | ---------------------------------------- |
-| OVERFLOW | Oplog data from overflow regions and queues only.            | OVERFLOWoverflowDS1_1.crf                |
-| BACKUP   | Oplog data from persistent and persistent+overflow regions and queues. | BACKUPoverflowDS1.if, BACKUPDEFAULT.if   |
-| DRLK_IF  | Access control - locking the disk store.                     | DRLK_IFoverflowDS1.lk, DRLK_IFDEFAULT.lk |
+| OVERFLOW | 仅来自溢出区域和队列的Oplog数据。 | OVERFLOWoverflowDS1_1.crf                |
+| BACKUP   | 来自持久性和持久性+溢出区域和队列的Oplog数据。 | BACKUPoverflowDS1.if, BACKUPDEFAULT.if   |
+| DRLK_IF  | 访问控制-锁定磁盘存储。         | DRLK_IFoverflowDS1.lk, DRLK_IFDEFAULT.lk |
 
 **文件名的第二部分: Disk Store Name**
 
-| Values            | Used for                                                     | Examples                                                     |
+| 值            | 用于                                                     | 例子                                                     |
 | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <disk store name> | Non-default disk stores.                                     | name=“overflowDS1” DRLK_IFoverflowDS1.lk, name=“persistDS1” BACKUPpersistDS1_1.crf |
-| DEFAULT           | Default disk store name, used when persistence or overflow are specified on a region or queue but no disk store is named. | DRLK_IFDEFAULT.lk, BACKUPDEFAULT_1.crf                       |
+| <disk store name> | 非默认磁盘存储。                             | name=“overflowDS1” DRLK_IFoverflowDS1.lk, name=“persistDS1” BACKUPpersistDS1_1.crf |
+| DEFAULT           | 默认磁盘存储名称，当在区域或队列上指定持久性或溢出但未命名磁盘存储时使用。 | DRLK_IFDEFAULT.lk, BACKUPDEFAULT_1.crf                       |
 
 **文件名的第三部分: oplog Sequence Number**
 
-| Values                           | Used for                                        | Examples                                                     |
+| 值                           | 用于                                        | 例子                                                     |
 | -------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ |
-| Sequence number in the format _n | Oplog data files only. Numbering starts with 1. | OVERFLOWoverflowDS1_1.crf, BACKUPpersistDS1_2.crf, BACKUPpersistDS1_3.crf |
+| 序列号格式为 _n | 仅Oplog数据文件。 编号从1开始。 | OVERFLOWoverflowDS1_1.crf, BACKUPpersistDS1_2.crf, BACKUPpersistDS1_3.crf |
 
 **文件扩展名**
 
-| File extension | Used for                                         | Notes                                                        |
-| -------------- | ------------------------------------------------ | ------------------------------------------------------------ |
-| if             | Disk store metadata                              | Stored in the first disk-dir listed for the store. Negligible size - not considered in size control. |
-| lk             | Disk store access control                        | Stored in the first disk-dir listed for the store. Negligible size - not considered in size control. |
-| crf            | Oplog: create, update, and invalidate operations | Pre-allocated 90% of the total max-oplog-size at creation.   |
-| drf            | Oplog: delete operations                         | Pre-allocated 10% of the total max-oplog-size at creation.   |
-| krf            | Oplog: key and crf offset information            | Created after the oplog has reached the max-oplog-size. Used to improve performance at startup. |
+| File extension | 用于                                  | 说明                                                         |
+| -------------- | ------------------------------------- | ------------------------------------------------------------ |
+| if             | 磁盘存储元数据                        | 存储在为存储列出的第一个磁盘目录中。 可忽略的大小-在大小控制中不考虑。 |
+| lk             | 磁盘存储访问控制                      | 存储在为存储列出的第一个磁盘目录中。 可忽略的大小-在大小控制中不考虑。 |
+| crf            | Oplog：创建，更新和作废               | 在创建时预分配了最大max-oplog大小的90％。   |
+| drf            | Oplog: 删除操作                       | 创建时预先分配的总最大操作日志大小的10％。   |
+| krf            | Oplog: 键和crf偏移量信息 | 在oplog达到max-oplog-size后创建。 用于提高启动时的性能。 |
 
 磁盘存储的示例文件为persistDS1和overflowDS1：
 
-```
+```bash
 bash-2.05$ ls -tlr persistData1/
 total 8
 -rw-rw-r--   1 person users        188 Mar  4 06:17 BACKUPpersistDS1.if
@@ -1421,7 +1421,7 @@ total 1028
 
 持久区域的默认磁盘存储文件示例：
 
-```
+```bash
 bash-2.05$ ls -tlr
 total 106
 -rw-rw-r--   1 person users       1010 Mar  8 15:01 defTest.xml
@@ -1444,7 +1444,7 @@ drwxrwxr-x   2 person users        512 Mar  8 15:01 backupDirectory
 
 此示例清单显示系统中的日志，其中只有一个为存储指定的磁盘目录。 第一个日志(`BACKUPCacheOverflow_1.crf`和`BACKUPCacheOverflow_1.drf`)已关闭，系统正在写入第二个日志。
 
-```
+```bash
 bash-2.05$ ls -tlra 
 total 55180
 drwxrwxr-x   7 person users        512 Mar 22 13:56 ..
@@ -1668,7 +1668,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 - cache.xml:
 
-  ```
+  ```xml
   <cache>
     <gateway-sender id="persistedsender1" parallel="true" 
      remote-distributed-system-id="1"
@@ -1709,7 +1709,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 **磁盘存储配置属性和元素**
 
-| disk-store attribute             | 描述                                                         | 缺省值  |
+| disk-store 属性                  | 描述                                                         | 缺省值  |
 | -------------------------------- | ------------------------------------------------------------ | ------- |
 | `name`                           | 用于标识此磁盘存储的字符串。 所有区域和队列都通过指定此名称来选择其磁盘存储。 | DEFAULT |
 | `allow-force-compaction`         | 布尔值，指示是否允许通过API或命令行工具进行手动压缩。        | false   |
@@ -1737,7 +1737,7 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 例子:
 
-```
+```xml
 <disk-dirs>
     <disk-dir>/host1/users/gf/memberA_DStore</disk-dir>
     <disk-dir>/host2/users/gf/memberA_DStore</disk-dir> 
@@ -1768,13 +1768,13 @@ drwxrwxr-x   2 person users       2560 Mar 22 13:57 .
 
 - cache.xml
 
-  ```
+  ```xml
   <region refid="PARTITION_PERSISTENT_OVERFLOW"/>
   ```
 
 使用默认磁盘存储区进行服务器订阅队列溢出（cache.xml）的示例：
 
-```
+```xml
 <cache-server port="40404">
     <client-subscription eviction-policy="entry" capacity="10000"/>
 </cache-server>
@@ -1788,7 +1788,7 @@ Geode使用默认磁盘存储配置设置初始化默认磁盘存储。 您可�
 
 cache.xml:
 
-```
+```xml
 <disk-store name="DEFAULT" allow-force-compaction="true">
      <disk-dirs>
         <disk-dir>/export/thor/customerData</disk-dir>
@@ -1953,17 +1953,17 @@ gfsh>shutdown --include-locators=true
 
 **注意:** 这些命令中的每一个都在联机磁盘存储或脱机磁盘存储上运行，但不能同时运行。
 
-| gfsh Command                  | Online or Offline Command | See …                                                        |
-| ----------------------------- | ------------------------- | ------------------------------------------------------------ |
-| `alter disk-store`            | Off                       | [保持磁盘存储与缓存同步](http://geode.apache.org/docs/guide/17/managing/disk_storage/keeping_offline_disk_store_in_sync.html#syncing_offline_disk_store) |
-| `compact disk-store`          | On                        | [在磁盘存储日志文件上运行压缩](http://geode.apache.org/docs/guide/17/managing/disk_storage/compacting_disk_stores.html#compacting_disk_stores) |
-| `backup disk-store`           | On                        | [为系统恢复和运营管理创建备份](http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html#backup_restore_disk_store) |
-| `compact offline-disk-store`  | Off                       | [在磁盘存储日志文件上运行压缩](http://geode.apache.org/docs/guide/17/managing/disk_storage/compacting_disk_stores.html#compacting_disk_stores) |
-| `export offline-disk-store`   | Off                       | [为系统恢复和运营管理创建备份](http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html#backup_restore_disk_store) |
-| `revoke missing-disk-store`   | On                        | [处理丢失的磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores) |
-| `show missing-disk-stores`    | On                        | [处理丢失的磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores) |
-| `shutdown`                    | On                        | [启动并关闭磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/starting_system_with_disk_stores.html) |
-| `validate offline disk-store` | Off                       | [验证磁盘存储e](http://geode.apache.org/docs/guide/17/managing/disk_storage/validating_disk_store.html#validating_disk_store) |
+| gfsh 命令                     | Online or Offline 命令 | 参见 …                                                       |
+| ----------------------------- | ---------------------- | ------------------------------------------------------------ |
+| `alter disk-store`            | Off                    | [保持磁盘存储与缓存同步](http://geode.apache.org/docs/guide/17/managing/disk_storage/keeping_offline_disk_store_in_sync.html#syncing_offline_disk_store) |
+| `compact disk-store`          | On                     | [在磁盘存储日志文件上运行压缩](http://geode.apache.org/docs/guide/17/managing/disk_storage/compacting_disk_stores.html#compacting_disk_stores) |
+| `backup disk-store`           | On                     | [为系统恢复和运营管理创建备份](http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html#backup_restore_disk_store) |
+| `compact offline-disk-store`  | Off                    | [在磁盘存储日志文件上运行压缩](http://geode.apache.org/docs/guide/17/managing/disk_storage/compacting_disk_stores.html#compacting_disk_stores) |
+| `export offline-disk-store`   | Off                    | [为系统恢复和运营管理创建备份](http://geode.apache.org/docs/guide/17/managing/disk_storage/backup_restore_disk_store.html#backup_restore_disk_store) |
+| `revoke missing-disk-store`   | On                     | [处理丢失的磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores) |
+| `show missing-disk-stores`    | On                     | [处理丢失的磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/handling_missing_disk_stores.html#handling_missing_disk_stores) |
+| `shutdown`                    | On                     | [启动并关闭磁盘存储](http://geode.apache.org/docs/guide/17/managing/disk_storage/starting_system_with_disk_stores.html) |
+| `validate offline disk-store` | Off                    | [验证磁盘存储e](http://geode.apache.org/docs/guide/17/managing/disk_storage/validating_disk_store.html#validating_disk_store) |
 
 要获得任何gfsh命令的完整命令语法，请在gfsh命令行中运行`help <command>`。
 
@@ -2083,7 +2083,7 @@ gfsh>compact offline-disk-store --name=Disk2 --disk-dirs=/Disks/Disk2
 
 在这个离线压缩运行列表的例子中，磁盘存储压缩在`*_3.*`文件中没有任何关系，所以它们是独立的。 `*_4.*`文件有垃圾记录，因此来自它们的oplog被压缩成新的`*_5.*`文件。
 
-```
+```bash
 bash-2.05$ ls -ltra backupDirectory
 total 28
 -rw-rw-r--   1 user users          3 Apr  7 14:56 BACKUPds1_3.drf
@@ -2277,7 +2277,7 @@ Missing disk store successfully revoked
 
 要修改Geode应用程序的设置，请在启动成员时将其添加到java命令行：
 
-```
+```properties
 -Dgemfire.syncWrites=true
 ```
 
@@ -2320,7 +2320,7 @@ gfsh命令`backup disk-store`为集群中运行的所有成员创建磁盘存储
 
   例如，要在备份中包含文件`myExtraBackupStuff`，数据存储的`cache.xml`文件规范将包括：
 
-  ```
+  ```xml
   <backup>./myExtraBackupStuff</backup>
   ```
 
@@ -2537,7 +2537,7 @@ snapshot-<region>[-<subregion>]*
 
 **使用 Java API:**
 
-```
+```java
 File mySnapshotDir = ...
 Cache cache = ...
 
@@ -2552,7 +2552,7 @@ cache.getSnapshotService().save(mySnapshotDir, SnapshotFormat.GEMFIRE);
 
 **Java API:**
 
-```
+```java
 File mySnapshot = ...
 Region<String, MyObject> region = ... 
 
@@ -2581,7 +2581,7 @@ gfsh>export data --region=region1 --file=region1_2012_10_10.gfd --member=server1
 
 **Java API:**
 
-```
+```java
 File mySnapshotDir = ...
 Region<String, MyObject> region = ... 
 
@@ -2624,7 +2624,7 @@ gfsh>export data --parallel --region=region1 --dir=region1_2012_10_10 --member=s
 
 **Java API:**
 
-```
+```java
 File mySnapshotDir = ...
 Cache cache = ...
 
@@ -2635,7 +2635,7 @@ cache.getSnapshotService().load(mySnapshotDir, SnapshotFormat.GEMFIRE);
 
 **Java API:**
 
-```
+```java
 File mySnapshot = ...
 Region<String, MyObject> region = ...
 
@@ -2669,7 +2669,7 @@ gfsh>import data --region=region1 --file=region1_2012_10_10.gfd --member=server2
 
 以下示例按偶数键过滤快照数据。
 
-```
+```java
 File mySnapshot = ...
 Region<Integer, MyObject> region = ...
 
@@ -2694,7 +2694,7 @@ snapsrv.save(mySnapshot, SnapshotFormat.GEMFIRE, options);
 
 以下是处理先前生成的快照文件中的条目的快照阅读器的示例。
 
-```
+```java
 File mySnapshot = ...
 SnapshotIterator<String, MyObject> iter = SnapshotReader.read(mySnapshot);
 try {
@@ -2820,7 +2820,7 @@ regionFactory.setCompressor(SnappyCompressor.getDefaultInstance());
 
 您还可以通过查询正在使用的编解码器来检查区域是否已启用压缩。 空编解码器表示没有为该区域启用压缩。
 
-```
+```java
 Region myRegion = cache.getRegion("myRegion");
 Compressor compressor = myRegion.getAttributes().getCompressor();
 ```
@@ -3145,7 +3145,7 @@ Operation.isExpiration(): false
 
 - 默认情况下启用网络分区检测。 `gemfire.properties`文件中的默认设置是
 
-  ```
+  ```properties
   enable-network-partition-detection=true
   ```
 
@@ -3321,7 +3321,7 @@ Geode没有任何需要启用或打开的外部接口或服务。
 
 使用`security-manager`属性指定实现`SecurityManager`接口的认证回调和授权回调。 定义此属性后，将启用身份验证和授权。 `security-manager`属性的定义是实现`SecurityManager`接口的类的完全限定名。 例如：
 
-```
+```properties
 security-manager = com.example.security.MySecurityManager
 ```
 
@@ -3345,7 +3345,7 @@ security-manager = com.example.security.MySecurityManager
 
 通过定义“security-post-processor”属性以及接口定义的路径，启用数据的后处理。 例如，
 
-```
+```properties
 security-post-processor = com.example.security.MySecurityPostProcessing
 ```
 
@@ -3377,7 +3377,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
 - 在服务器的`gfsecurity.properties`文件中设置`security-username`和`security-password`，该文件将在服务器启动时读取，如示例中所示
 
-  ```
+  ```properties
    security-username=admin
    security-password=xyz1234
   ```
@@ -3386,7 +3386,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
 - 为服务器实现`AuthInitialize`接口的`getCredentials`方法。 此回调的位置在属性`security-peer-auth-init`中定义，如示例中所示
 
-  ```
+  ```properties
    security-peer-auth-init=com.example.security.MyAuthInitialize
   ```
 
@@ -3400,7 +3400,7 @@ security-post-processor = com.example.security.MySecurityPostProcessing
 
 - 为客户端实现`AuthInitialize`接口的`getCredentials`方法。 此回调的位置在属性`security-client-auth-init`中定义，如示例中所示
 
-  ```
+  ```properties
    security-client-auth-init=com.example.security.ClientAuthInitialize
   ```
 
@@ -3534,7 +3534,7 @@ public Object authenticate(final Properties credentials)
 
 此表对为`gfsh`操作分配的权限进行分类。
 
-| `gfsh` Command                | Assigned `ResourcePermission`                                |
+| `gfsh` 命令                   | Assigned `ResourcePermission`                                |
 | ----------------------------- | ------------------------------------------------------------ |
 | alter disk-store              | CLUSTER:MANAGE:DISK                                          |
 | alter region                  | DATA:MANAGE:RegionName                                       |
@@ -3642,7 +3642,7 @@ public Object authenticate(final Properties credentials)
 
 此表对为JMX操作分配的权限进行分类。
 
-| JMX Operation                                        | Assigned `ResourcePermission`                 |
+| JMX 操作                                             | Assigned `ResourcePermission`                 |
 | ---------------------------------------------------- | --------------------------------------------- |
 | DistributedSystemMXBean.shutdownAllMembers           | CLUSTER:MANAGE                                |
 | ManagerMXBean.start                                  | CLUSTER:MANAGE                                |
@@ -3762,9 +3762,9 @@ SSL通过确保只有您标识的应用程序可以共享集群数据来保护�
 
 为了安全起见，必须在存储，分发和处理期间保护Geode系统中缓存的数据。 任何时候，集群中的数据可能位于以下一个或多个位置：
 
-- In memory
-- On disk
-- In transit between processes (for example, in an internet or intranet)
+- 在内存里
+- 在磁盘上
+- 进程之间的传输(例如，在internet或intranet中)
 
 为了保护内存或磁盘上的数据，Geode依赖于您的标准系统安全功能，例如防火墙，操作系统设置和JDK安全设置。
 
@@ -3874,7 +3874,7 @@ Java管理扩展通信，包括与`gfsh`utility的通信。 Pulse监视工具使
 
 要在整个集群中实现安全的SSL通信，每个进程都应为所有组件启用SSL。
 
-```
+```properties
 ssl-enabled-components=all
 ssl-endpoint-identification-enabled=true
 ssl-keystore=secure/keystore.dat
@@ -3893,7 +3893,7 @@ ssl-truststore-password=changeit
 
 集群SSL未启用。
 
-```
+```properties
 ssl-enabled-components=server,locator
 ssl-server-alias=server
 ssl-keystore=secure/keystore.dat
@@ -3907,7 +3907,7 @@ ssl-default-alias=Server-Cert
 
 集群SSL未启用。
 
-```
+```properties
 ssl-enabled-components=locator
 ssl-locator-alias=locator
 ssl-keystore=secure/keystore.dat
@@ -3923,7 +3923,7 @@ ssl-default-alias=Locator-Cert
 
 在此示例中，客户端的信任存储必须信任定位器和服务器证书。 由于客户端未指定证书别名，因此SSL将在其密钥库中使用默认证书。
 
-```
+```properties
 ssl-enabled-components=server,locator
 ssl-endpoint-identification-enabled=true
 ssl-keystore=secret/keystore.dat
@@ -3977,7 +3977,7 @@ Table 2. SSL配置属性
 
    2. 使用上述属性，根据需要为不同的组件类型配置SSL属性。 例如，要为客户端和服务器之间的通信启用SSL，您可以在`gemfire.properties`文件中配置属性，类似于：
 
-      ```
+      ```properties
       ssl-enabled-components=server
       ssl-protocols=any
       ssl-ciphers=SSL_RSA_WITH_NULL_MD5, SSL_RSA_WITH_NULL_SHA
@@ -3995,7 +3995,7 @@ Table 2. SSL配置属性
 
 此示例使用Java`keytool`应用程序创建的密钥库为提供程序提供正确的凭据。 要创建密钥库，请运行`keytool`实用程序：
 
-```
+```bash
 keytool -genkey \ 
 -alias self \ 
 -dname "CN=trusted" \ 
@@ -4012,7 +4012,7 @@ keytool -genkey \
 
 您可以在`gemfire.properties`文件中启用SSL。 在此示例中，为所有组件启用了SSL。
 
-```
+```properties
 ssl-enabled-components=all
 mcast-port=0
 locators=<hostaddress>[<port>]
@@ -4022,7 +4022,7 @@ locators=<hostaddress>[<port>]
 
 您可以在`gfsecurity.properties`文件中指定特定于提供程序的设置，然后可以通过限制对此文件的访问来保护该文件。 以下示例配置JDK附带的默认JSSE提供程序设置。
 
-```
+```properties
 ssl-keystore=/path/to/trusted.keystore
 ssl-keystore-password=password
 ssl-truststore=/path/to/trusted.keystore
@@ -4118,7 +4118,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 
 1. 编辑`/etc/sysctl.conf`文件以包含以下行：
 
-   ```
+   ```properties
    net.ipv4.tcp_syncookies = 0
    ```
 
@@ -4126,7 +4126,7 @@ gfsh>connect --locator=localhost[10334] --use-ssl \
 
 2. 重新加载`sysctl.conf`：
 
-   ```
+   ```bash
    sysctl -p
    ```
 
@@ -4740,7 +4740,7 @@ Geode进程使用TCP / IP和UDP单播和多播协议进行通信。 在所有情
 
 - **Client/server**. 客户端的池套接字缓冲区大小应该与池使用的服务器的设置相匹配，如这些示例中的`cache.xml`片段：
 
-  ```
+  ```xml
   Client Socket Buffer Size cache.xml Configuration:
   <pool>name="PoolA" server-group="dataSetA" socket-buffer-size="42000"...
   
@@ -4754,7 +4754,7 @@ Geode进程使用TCP / IP和UDP单播和多播协议进行通信。 在所有情
 
 通过UDP通信，一个接收器可以让许多发送器立即发送给它。 为了适应所有传输，接收缓冲区应该大于发送缓冲区的总和。 如果您的系统最多有五个成员在任何时间运行，其中所有成员都更新其数据区域，则应将接收缓冲区设置为发送缓冲区大小的至少五倍。 如果您的系统具有生产者和使用者成员，其中只有两个生产者成员一次运行，则接收缓冲区大小应设置为发送缓冲区大小的两倍以上，如下例所示：
 
-```
+```properties
 mcast-send-buffer-size=42000
 mcast-recv-buffer-size=90000
 udp-send-buffer-size=42000
@@ -4824,7 +4824,7 @@ Unix系统有一个默认的最大套接字缓冲区大小，用于接收UDP多�
 
 **套接字共享**
 
-您可以为peer-to-peer 喝 client-to-server连接配置套接字共享：
+您可以为peer-to-peer 和 client-to-server连接配置套接字共享：
 
 - **Peer-to-peer**. 您可以配置您的成员是在应用程序级别还是在线程级别共享套接字。 要在应用程序级别启用共享，请将`gemfire.properties`属性`conserve-sockets`设置为`true`。 但是，为了实现最大吞吐量，我们建议您将`conserve-sockets`设置为`false`。
 
@@ -4961,7 +4961,7 @@ gfsh>start server --name=server_name --J=-Dp2p.handshakeTimeoutMs=75000
 
   网关发送方的socket-buffer-size属性应与发送方连接的所有网关接收方的网关接收方的socket-buffer-size属性相匹配，如下所示`cache.xml`片段：
 
-  ```
+  ```xml
   Gateway Sender Socket Buffer Size cache.xml Configuration: 
   
   <gateway-sender id="sender2" parallel="true"
@@ -6864,19 +6864,19 @@ enable-cluster-configuration = false
 
 要判断区域是分区的，分布式的还是本地的，请检查`cache.xml`文件。 如果文件包含本地范围设置，则该区域与任何其他成员都没有连接：
 
-```
+```xml
 <region-attributes scope="local">
 ```
 
 如果文件包含任何其他范围设置，则它正在配置分布式区域。 例如：
 
-```
+```xml
 <region-attributes scope="distributed-no-ack">
 ```
 
 如果文件包含以下任一行，则表示正在配置分区区域。
 
-```
+```xml
 <partition-attributes...
 <region-attributes data-policy="partition"/>
 <region-attributes data-policy="persistent-partition"/>

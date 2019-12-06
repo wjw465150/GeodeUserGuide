@@ -377,7 +377,7 @@ public class CreateRegionCacheListener
 
   确定要分配给分区区域的桶数，并相应地设置配置。
 
-- **Custom-Partitioning and Colocating Data**
+- **自定义分区和数据共置**
 
   您可以自定义Apache Geode如何使用自定义分区和数据同地对分区区域数据进行分组。
 
@@ -469,7 +469,7 @@ Geode自动确定托管分区区域数据的成员中数据的物理位置。 Ge
 
 - XML:
 
-  ```
+  ```xml
   <region name="PR1"> 
     <region-attributes refid="PARTITION"> 
       <partition-attributes total-num-buckets="7"/> 
@@ -479,7 +479,7 @@ Geode自动确定托管分区区域数据的成员中数据的物理位置。 Ge
 
 - Java:
 
-  ```
+  ```java
   RegionFactory rf = 
       cache.createRegionFactory(RegionShortcut.PARTITION);
   rf.setPartitionAttributes(new PartitionAttributesFactory().setTotalNumBuckets(7).create());
@@ -1122,7 +1122,7 @@ enforce-unique-host=true
 
 - XML:
 
-  ```
+  ```xml
   // Give a crashed member 10 seconds to restart 
   // before recovering redundancy
   <region name="PR1"> 
@@ -1134,7 +1134,7 @@ enforce-unique-host=true
 
 - Java:
 
-  ```
+  ```java
   PartitionAttributes pa = new PartitionAttributesFactory().setRecoveryDelay(10000).create(); 
   ```
 
@@ -1178,7 +1178,7 @@ enforce-unique-host=true
 
 - Java:
 
-  ```
+  ```java
   PartitionAttributes pa = new PartitionAttributesFactory().setStartupRecoveryDelay(5000).create(); 
   ```
 
@@ -1375,7 +1375,7 @@ partition | putLocalRate                | 0
 
 例如:
 
-```
+```java
 Object product = ...
 Region r = ...
 DistributedSystem ds = ...
@@ -1405,7 +1405,7 @@ PartitionRegionHelper.moveBucketByKey(r, source, destination, product);
 
 例如:
 
-```
+```java
 Region r = ...
 DistributedSystem ds = ...
 String sourceName = ...
@@ -1532,7 +1532,7 @@ PartitionRegionHelper.moveData(r, source, destination, 20);
 
 1. 选择与您的区域配置最匹配的区域快捷方式设置。 请参阅** org.apache.geode.cache.RegionShortcut **或[Region Shortcuts](https://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_regionshortcuts.html#concept_ymp_rkz_4dffhdfhk). 要创建复制区域，请使用`REPLICATE`快捷方式设置之一。 要创建预加载区域，请将您的区域`data-policy`设置为`preloaded`。 这个`cache.xml`声明创建了一个复制区域：
 
-   ```
+   ```xml
    <region-attributes refid="REPLICATE"> 
    </region-attributes>
    ```
@@ -1549,7 +1549,7 @@ PartitionRegionHelper.moveData(r, source, destination, 20);
 
    例子:
 
-   ```
+   ```xml
    <region-attributes refid="REPLICATE" scope="distributed-no-ack"> 
    </region-attributes>
    ```
@@ -1558,7 +1558,7 @@ PartitionRegionHelper.moveData(r, source, destination, 20);
 
    例子:
 
-   ```
+   ```xml
    <region-attributes refid="REPLICATE" scope="distributed-ack" concurrency-checks-enabled="true"> 
    </region-attributes>
    ```
@@ -1590,7 +1590,7 @@ PartitionRegionHelper.moveData(r, source, destination, 20);
 
 - 锁定超时限制等待获取锁定。 缓存属性`lock-timeout`控制隐式锁请求。 对于显式锁定，通过调用从`Region` API返回的`java.util.concurrent.locks.Lock`实例来指定等待时间。 您可以等待一段特定的时间，无论是否有锁，都可以立即返回，或者无限期地等待。
 
-  ```
+  ```xml
   <cache lock-timeout="60"> 
   </cache>
   ```
@@ -1603,7 +1603,7 @@ PartitionRegionHelper.moveData(r, source, destination, 20);
 
 - 锁定租约限制锁定在自动释放之前可以保持多长时间。 定时锁允许应用程序在成员未能在租用时间内释放获得的锁时进行恢复。 对于所有锁定，此超时使用缓存属性`lock-lease`设置。
 
-  ```
+  ```xml
   <cache lock-lease="120"> </cache>
   ```
 
@@ -1880,7 +1880,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 
 1. 根据需要配置磁盘存储。 请参阅[设计和配置磁盘存储](https://geode.apache.org/docs/guide/17/managing/disk_storage/using_disk_stores.html#defining_disk_stores)。 缓存磁盘存储区定义数据写入磁盘的位置和方式。
 
-   ```
+   ```xml
    <disk-store name="myPersistentStore" . . . >
    <disk-store name="myOverflowStore" . . . >
    ```
@@ -1891,7 +1891,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 
      例子:
 
-     ```
+     ```xml
      <region name="overflowRegion" . . . >
        <region-attributes disk-store-name="myOverflowStore" disk-synchronous="true">
          <eviction-attributes>
@@ -1911,7 +1911,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 
      例子:
 
-     ```
+     ```xml
      <region name="partitioned_region" refid="PARTITION_PERSISTENT">
        <region-attributes disk-store-name="myPersistentStore">
          . . . 
@@ -1943,7 +1943,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 
 区域溢出配置：
 
-```
+```xml
 <!-- Overflow when the region goes over 10000 entries -->
 <region-attributes>
   <eviction-attributes>
@@ -1954,7 +1954,7 @@ Geode持续存在并溢出了几种类型的数据。 您可以保留或溢出�
 
 服务器客户端订阅队列溢出的配置：
 
-```
+```xml
 <!-- Overflow the server's subscription queues when the queues reach 1 Mb of memory -->
 <cache> 
   <cache-server> 
@@ -2122,7 +2122,7 @@ Apache Geode提供以下过期操作：
 
 **复制区域示例:**
 
-```
+```xml
 // Setting standard expiration on an entry
 <region-attributes statistics-enabled="true"> 
   <entry-idle-time> 
@@ -2135,7 +2135,7 @@ Apache Geode提供以下过期操作：
 
   1. 编写实现`org.apache.geode.cache.CustomExpiry`的自定义过期类。 例如:
 
-     ```
+     ```java
      // Custom expiration class
      // Use the key for a region entry to set entry-specific expiration timeouts of 
      //   10 seconds for even-numbered keys with a DESTROY action on the expired entries
@@ -2154,7 +2154,7 @@ Apache Geode提供以下过期操作：
 
   2. 在区域的到期属性设置中定义类。 例如：
 
-     ```
+     ```xml
      <!-- Set default entry idle timeout expiration for the region --> 
      <!-- Pass entries to custom expiry class for expiration overrides -->
      <region-attributes statistics-enabled="true"> 
@@ -2303,7 +2303,7 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 
 **MySQL**
 
-```
+```xml
 ...
 <jndi-bindings>
    <jndi-binding type="XAPooledDataSource" 
@@ -2322,7 +2322,7 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 
 **PostgreSQL**
 
-```
+```xml
 ...
 <jndi-bindings>
    <jndi-binding type="XAPooledDataSource" 
@@ -2346,7 +2346,7 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 
 **Oracle**
 
-```
+```xml
 ...
 <jndi-bindings>
    <jndi-binding type="XAPooledDataSource" 
@@ -2365,7 +2365,7 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 
 **Microsoft SQL Server**
 
-```
+```xml
 ...
 <jndi-bindings>
    <jndi-binding type="XAPooledDataSource" 
@@ -2499,7 +2499,7 @@ initial-capacity="16" load-factor="0.75" concurrency-level="16" statistics-enabl
 
 简单的数据源连接通常不需要特定于供应商的属性设置。 如果需要，请添加`config-property`标签，如前面的示例所示。
 
-```
+```xml
 <?xml version="1.0"?>
 <cache xmlns="http://geode.apache.org/schema/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -2577,7 +2577,7 @@ load-factor="0.75" concurrency-level="16" statistics-enabled="true">
 
 这是一个示例实现：
 
-```
+```java
 public class SimpleCacheLoader implements CacheLoader {
     public Object load(LoaderHelper helper) {
         String key = (String) helper.getKey();
@@ -2599,7 +2599,7 @@ public class SimpleCacheLoader implements CacheLoader {
 
 这是`cache.xml`文件中的一个示例配置，它指定不带参数的加载器：
 
-```
+```xml
 <region-attributes>
     <cache-loader>
         <class-name>myLoader</class-name>
@@ -2609,7 +2609,7 @@ public class SimpleCacheLoader implements CacheLoader {
 
 或者，这是`cache.xml`文件中的一个示例配置，它指定带有参数的加载器：
 
-```
+```xml
 <cache-loader>
     <class-name>com.company.data.DatabaseLoader</class-name>
     <parameter name="URL">
@@ -2686,7 +2686,7 @@ gfsh>alter region --name=r3 --cache-loader=com.example.appname.myCacheLoader
 
 实现`org.apache.geode.cache.CacheLoader`接口。 区域创建配置缓存加载器，如下例所示：
 
-```
+```java
 RegionFactory<String,Object> rf = cache.createRegionFactory(REPLICATE);
 rf.setCacheLoader(new QuoteLoader());
 quotes = rf.create("NASDAQ-Quotes");
@@ -2919,7 +2919,7 @@ Java和其他客户端可以针对服务器缓存中的对象运行查询和执�
 
    3. 使用 Java API:
 
-      ```
+      ```java
       Cache c = new CacheFactory()
         .setPdxSerializer(new ReflectionBasedAutoSerializer("com.company.domain.DomainObject"))
         .create();
@@ -2964,7 +2964,7 @@ Java和其他客户端可以针对服务器缓存中的对象运行查询和执�
 
    - 使用 Java API:
 
-     ```
+     ```java
      Cache c = new CacheFactory()
        .setPdxSerializer(new ReflectionBasedAutoSerializer(true,"com.company.domain.DomainObject"))
        .create();
@@ -3168,7 +3168,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
       例子:
 
-      ```
+      ```java
       import org.apache.geode.cache.Declarable;
       import org.apache.geode.pdx.PdxReader;
       import org.apache.geode.pdx.PdxSerializer;
@@ -3279,7 +3279,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
    例如:
 
-   ```
+   ```java
    import org.apache.geode.pdx.PdxReader;
    import org.apache.geode.pdx.PdxSerializable;
    import org.apache.geode.pdx.PdxWriter;
@@ -3292,7 +3292,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
    例如:
 
-   ```
+   ```java
    public PortfolioPdx(){}
    ```
 
@@ -3308,7 +3308,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
       示例`toData`代码：
 
-      ```
+      ```java
       // PortfolioPdx fields
         private int id;
         private String pkid;
@@ -3401,7 +3401,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
    例如:
 
-   ```
+   ```xml
    // Cache configuration setting PDX read behavior 
    <cache>
      <pdx read-serialized="true" />
@@ -3413,7 +3413,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
    例如:
 
-   ```
+   ```java
    // put/get code with serialized read behavior
    // put is done as normal
    myRegion.put(myKey, myPdxSerializableObject);
@@ -3574,7 +3574,7 @@ Geode的`DataSerializable`接口为您提供比标准Java序列化或Geode PDX�
 
 以下提供了如何使用cache.xml注册实例化器的示例。
 
-```
+```xml
 <serialization-registration>
 <instantiator id="30">
    <class-name>com.package.MyClass</class-name>
@@ -4267,7 +4267,7 @@ public boolean processEvents(@SuppressWarnings("rawtypes") List<AsyncEvent> list
 
    **cache.xml 配置**
 
-   ```
+   ```xml
    <cache>
    <region name="Customer">
        <region-attributes async-event-queue-ids="sampleQueue">
@@ -4279,7 +4279,7 @@ public boolean processEvents(@SuppressWarnings("rawtypes") List<AsyncEvent> list
 
    **Java 配置**
 
-   ```
+   ```java
    RegionFactory rf1 = cache.createRegionFactory();
    rf1.addAsyncEventQueue(sampleQueue);
    Region customer = rf1.create("Customer");
@@ -4292,7 +4292,7 @@ public boolean processEvents(@SuppressWarnings("rawtypes") List<AsyncEvent> list
 
    使用Java API，您还可以向已创建的区域添加和删除队列：
 
-   ```
+   ```java
    AttributesMutator mutator = order.getAttributesMutator();
    mutator.addAsyncEventQueueId("sampleQueue");        
    ```
@@ -4411,7 +4411,7 @@ implements Declarable {
 
 此清单使用`RegionFactory`方法`addCacheListener`定义缓存侦听器。
 
-```
+```java
 Region newReg = cache.createRegionFactory()
           .addCacheListener(new SimpleCacheListener())
           .create(name);
@@ -4419,7 +4419,7 @@ Region newReg = cache.createRegionFactory()
 
 You can create a cache writer similarly, using the `RegionFactory` method `setCacheWriter`, like this:
 
-```
+```java
 Region newReg = cache.createRegionFactory()
           .setCacheWriter(new SimpleCacheWriter())
           .create(name);
@@ -4429,7 +4429,7 @@ Region newReg = cache.createRegionFactory()
 
 XML:
 
-```
+```xml
 <region name="exampleRegion">
   <region-attributes>
     . . .
@@ -4448,7 +4448,7 @@ XML:
 
 API:
 
-```
+```java
 CacheListener listener1 = new myCacheListener1(); 
 CacheListener listener2 = new myCacheListener2(); 
 CacheListener listener3 = new myCacheListener3(); 
@@ -4462,7 +4462,7 @@ Region nr = cache.createRegionFactory()
 
 **安装Write-Behind 缓存 监听器**
 
-```
+```xml
 //AsyncEventQueue with listener that performs WBCL work
 <cache>
    <async-event-queue id="sampleQueue" persistent="true"
@@ -4503,7 +4503,7 @@ Region nr = cache.createRegionFactory()
 
   - 要接收所有事件，请将`subscription-attributes` `intece-policy`设置为`all`：
 
-    ```
+    ```xml
     <region-attributes> 
         <subscription-attributes interest-policy="all"/> 
     </region-attributes>
@@ -4511,7 +4511,7 @@ Region nr = cache.createRegionFactory()
 
   - 要仅为本地存储的数据接收事件，请将`subscription-attributes` `interest-policy`设置为`cache-content`或不设置它（`cache-content`是默认值）：
 
-    ```
+    ```xml
     <region-attributes> 
         <subscription-attributes interest-policy="cache-content"/> 
     </region-attributes>
@@ -4547,7 +4547,7 @@ Region nr = cache.createRegionFactory()
 
    2. 使用区域的`registerInterest`*方法指定所需的条目。 例子：
 
-      ```
+      ```java
       // Register interest in a single key and download its entry 
       // at this time, if it is available in the server cache 
       Region region1 = . . . ;
@@ -4592,7 +4592,7 @@ Region nr = cache.createRegionFactory()
 
 要配置高可用性，请在客户端池配置中设置`subscription-redundancy`。 此设置指示要使用的辅助服务器的数量。 例如：
 
-```
+```xml
 <!-- Run one secondary server -->
 <pool name="red1" subscription-enabled="true" subscription-redundancy="1"> 
   <locator host="nick" port="41111"/> 
@@ -4677,14 +4677,14 @@ Region nr = cache.createRegionFactory()
 
 - XML:
 
-  ```
+  ```xml
   <!-- Set message ttl to 5 minutes --> 
   <cache-server port="41414" message-time-to-live="300" />
   ```
 
 - Java:
 
-  ```
+  ```java
   Cache cache = ...;
   CacheServer cacheServer = cache.addCacheServer();
   cacheServer.setPort(41414);
@@ -4712,14 +4712,14 @@ Region nr = cache.createRegionFactory()
 
 - `gemfire.properties` 文件:
 
-  ```
+  ```properties
   durable-client-id=31 
   durable-client-timeout=200 
   ```
 
 - Java:
 
-  ```
+  ```properties
   Properties props = new Properties(); 
   props.setProperty("durable-client-id", "31"); 
   props.setProperty("durable-client-timeout", "" + 200); 
@@ -4736,7 +4736,7 @@ Region nr = cache.createRegionFactory()
 
 注册器兴趣和查询创建方法都有一个可选的布尔参数，用于指示持久性。 默认情况下，所有都是非持久的。
 
-```
+```java
 // Durable registration
 // Define keySpecification, interestResultPolicy, durability 
 exampleRegion.registerInterest(keySpecification, interestResultPolicySpecification, true);
@@ -4756,7 +4756,7 @@ CqQuery myCq = queryService.newCq(cqName, queryString, cqAttributes, true);
 
 1. 通过使用带有布尔值`keepalive`参数的`Pool.close`或`ClientCache.close`来断开与队列保持活动的请求。
 
-   ```
+   ```java
    clientCache.close(true);
    ```
 
@@ -4768,7 +4768,7 @@ CqQuery myCq = queryService.newCq(cqName, queryString, cqAttributes, true);
 
       例如，对于仅创建了默认池的客户端：
 
-      ```
+      ```java
       int pendingEvents = cache.getDefaultPool().getPendingEventCount();
       
       if (pendingEvents == -2) { // client connected for the first time  … // continue
@@ -4783,7 +4783,7 @@ CqQuery myCq = queryService.newCq(cqName, queryString, cqAttributes, true);
 
       对于具有多个池的客户端：
 
-      ```
+      ```java
       int pendingEvents = 0;
       
       int pendingEvents1 = PoolManager.find(“pool1”).getPendingEventCount();
@@ -4813,7 +4813,7 @@ CqQuery myCq = queryService.newCq(cqName, queryString, cqAttributes, true);
 
    4. 调用`ClientCache.readyForEvents`，以便服务器重放存储的事件。 如果先前发送就绪消息，则客户端可能会丢失事件。
 
-   ```
+   ```java
    ClientCache clientCache = ClientCacheFactory.create(); 
    // Here, create regions, listeners that are not defined in the cache.xml . . .
    // Here, run all register interest calls before doing anything else
@@ -4898,7 +4898,7 @@ Geode处理应用程序和兴趣注册之间的冲突，因此它们不会创建
 
 在服务器区域配置中的服务器级别启用协调：
 
-```
+```xml
 <region ... >
   <region-attributes enable-subscription-conflation="true" /> 
 </region>
@@ -4906,7 +4906,7 @@ Geode处理应用程序和兴趣注册之间的冲突，因此它们不会创建
 
 根据需要，在客户端的`gemfire.properties`中覆盖服务器设置：
 
-```
+```properties
 conflate-events=false
 ```
 
@@ -4930,7 +4930,7 @@ conflate-events=false
 
 - 可选的: 增加队列同步的频率。 这仅适用于将服务器冗余用于高可用性的配置。 增加客户端的池配置，`subscription-ack-interval`。 客户端定期向服务器发送批量消息确认，而不是单独确认每条消息。 较低的设置可以加快邮件传递速度，并且通常可以减少服 较高的设置有助于包含服务器队列大小。 例：
 
-  ```
+  ```xml
   <!-- Set subscription ack interval to 3 seconds -->
   <cache> 
     <pool ... subscription-enabled="true" 
@@ -4945,7 +4945,7 @@ conflate-events=false
 
   - 可选的: 溢出到磁盘。 通过设置服务器的`client-subscription`属性来配置订阅队列溢出。 通过溢出，最近使用的（MRU）事件被写入磁盘，保留最旧的事件，即下一行发送到客户端的事件，在内存中可用。 例：
 
-    ```
+    ```xml
     <!-- Set overflow after 10K messages are enqueued -->
     <cache-server port="40404"> 
       <client-subscription 
@@ -4959,14 +4959,14 @@ conflate-events=false
 
     XML:
 
-    ```
+    ```xml
     <!-- Set the maximum message count to 50000 entries -->
       <cache-server port="41414" maximum-message-count="50000" />
     ```
 
     API:
 
-    ```
+    ```java
     Cache cache = ...; 
     CacheServer cacheServer = cache.addCacheServer(); 
     cacheServer.setPort(41414); 
@@ -4995,7 +4995,7 @@ conflate-events=false
 
 如果将值设置为低于此值，则可能会丢失活动线程跟踪记录。 这可能导致客户端将重复的事件消息处理到其关联线程的高速缓存中。 值得努力将`subscription-message-tracking-timeout`设置为合理的最低值。
 
-```
+```xml
 <!-- Set the tracking timeout to 70 seconds -->
 <pool name="client" subscription-enabled="true" subscription-message-tracking-timeout="70000"> 
     ...
@@ -5040,7 +5040,7 @@ conflate-events=false
 
 - XML 例子:
 
-  ```
+  ```xml
   <cache>
     <gateway-sender id="persistedsender1" parallel="false" 
      remote-distributed-system-id="1"
@@ -5053,7 +5053,7 @@ conflate-events=false
 
 - API 例子:
 
-  ```
+  ```java
   Cache cache = new CacheFactory().create();
   
   GatewaySenderFactory gateway = cache.createGatewaySenderFactory();
@@ -5079,7 +5079,7 @@ conflate-events=false
 
 - XML 例子:
 
-  ```
+  ```xml
   <cache>
      <async-event-queue id="persistentAsyncQueue" persistent="true"
       disk-store-name="diskStoreA" parallel="true">
@@ -5102,7 +5102,7 @@ conflate-events=false
 
 - API 例子:
 
-  ```
+  ```java
   Cache cache = new CacheFactory().create();
   AsyncEventQueueFactory factory = cache.createAsyncEventQueueFactory();
   factory.setPersistent(true);
@@ -5164,7 +5164,7 @@ conflate-events=false
 
 - **cache.xml 配置**
 
-  ```
+  ```xml
   <cache>
     <gateway-sender id="NY" parallel="false" 
      remote-distributed-system-id="1"
@@ -5178,7 +5178,7 @@ conflate-events=false
 
 - **Java API 配置**
 
-  ```
+  ```java
   Cache cache = new CacheFactory().create();
   
   GatewaySenderFactory gateway = cache.createGatewaySenderFactory();
@@ -5209,7 +5209,7 @@ conflate-events=false
 
 - **cache.xml 配置**
 
-  ```
+  ```xml
   <cache>
      <async-event-queue id="sampleQueue" persistent="true"
       disk-store-name="async-disk-store" parallel="false"
@@ -5233,7 +5233,7 @@ conflate-events=false
 
 - **Java API 配置**
 
-  ```
+  ```java
   Cache cache = new CacheFactory().create();
   AsyncEventQueueFactory factory = cache.createAsyncEventQueueFactory();
   factory.setPersistent(true);
@@ -5279,7 +5279,7 @@ conflate-events=false
 
 - **cache.xml 配置**
 
-  ```
+  ```xml
   <cache>
     <gateway-sender id="NY" parallel="true" 
      remote-distributed-system-id="1"
@@ -5292,7 +5292,7 @@ conflate-events=false
 
 - **Java API 配置**
 
-  ```
+  ```java
   Cache cache = new CacheFactory().create();
   
   GatewaySenderFactory gateway = cache.createGatewaySenderFactory();
@@ -5320,7 +5320,7 @@ conflate-events=false
 
 - **cache.xml 配置**
 
-  ```
+  ```xml
   <cache>
      <async-event-queue id="sampleQueue" persistent="true"
       disk-store-name="async-disk-store" parallel="false"
@@ -5344,7 +5344,7 @@ conflate-events=false
 
 - **Java API 配置**
 
-  ```
+  ```java
   Cache cache = new CacheFactory().create();
   AsyncEventQueueFactory factory = cache.createAsyncEventQueueFactory();
   factory.setPersistent(true);
@@ -5487,13 +5487,13 @@ Geode也不会传播增量：
 
 - `gemfire.properties`:
 
-  ```
+  ```properties
   delta-propagation=false
   ```
 
 - API:
 
-  ```
+  ```properties
   Properties props = new Properties();
   props.setProperty("delta-propagation", false);
   this.cache = new ClientCacheFactory(props).create();
@@ -5527,7 +5527,7 @@ Geode也不会传播增量：
 
 - `cache.xml`:
 
-  ```
+  ```xml
   <region name="region_with_cloning">
       <region-attributes refid="REPLICATE" cloning-enabled="true">
       </region-attributes>
@@ -5536,7 +5536,7 @@ Geode也不会传播增量：
 
 - API:
 
-  ```
+  ```java
   RegionFactory rf = cache.createRegionFactory(REPLICATE);
   rf.setCloningEnabled(true);
   custRegion = rf.create("customer");
@@ -5774,7 +5774,7 @@ Geode提供了一种类似SQL的查询语言OQL，允许您访问存储在Geode�
 
 **示例Geode查询代码(Java)**
 
-```
+```java
 // Identify your query string.
  String queryString = "SELECT * FROM /exampleRegion";
 
@@ -5798,7 +5798,7 @@ Geode提供了一种类似SQL的查询语言OQL，允许您访问存储在Geode�
 
 以下示例查询字符串使用`/exampleRegion`，其键是项目组合ID，其值对应于以下类定义中显示的汇总数据：
 
-```
+```java
 class Portfolio implements DataSerializable {
    int ID;
    String type;
@@ -5818,19 +5818,19 @@ class Position implements DataSerializable {
 
 1. 选择所有有效投资组合
 
-   ```
+   ```sql
    SELECT * FROM /exampleRegion WHERE status = 'active'
    ```
 
 2. 选择状态以`activ`开头的所有投资组合。
 
-   ```
+   ```sql
    SELECT * FROM /exampleRegion p WHERE p.status LIKE 'activ%'
    ```
 
 3. 选择ID大于100的所有投资组合。
 
-   ```
+   ```sql
    SELECT * from /exampleRegion p WHERE p.ID > 100
    ```
 
@@ -5838,7 +5838,7 @@ class Position implements DataSerializable {
 
 从满足status ='active'的where子句条件的区域中选择不同的对象。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE status = 'active'
 ```
 
@@ -5846,7 +5846,7 @@ SELECT DISTINCT * FROM /exampleRegion WHERE status = 'active'
 
 在查询字符串中，可以使用别名定义路径表达式（区域及其对象）。 可以在查询的其他位置使用或引用此别名。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 SELECT p.ID, p.status FROM /exampleRegion p WHERE p.ID > 0
 ```
@@ -5855,7 +5855,7 @@ SELECT p.ID, p.status FROM /exampleRegion p WHERE p.ID > 0
 
 有关支持的运算符的完整列表，请参阅[运算符](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators) 。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE NOT (status = 'active') AND ID = 2
 SELECT * FROM /exampleRegion WHERE NOT (ID IN SET(1,2))
 ```
@@ -5864,7 +5864,7 @@ SELECT * FROM /exampleRegion WHERE NOT (ID IN SET(1,2))
 
 有关支持的运算符的完整列表，请参阅[运算符](https://geode.apache.org/docs/guide/17/developing/query_additional/operators.html#operators)。
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE ID > 4 AND ID < 9
 SELECT * FROM /exampleRegion WHERE ID = 0 OR ID = 1
 SELECT DISTINCT p.status FROM /exampleRegion p 
@@ -5873,14 +5873,14 @@ WHERE (p.createTime IN SET (10|) OR p.status IN SET ('active')) AND p.ID > 0
 
 **使用不等于**
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio WHERE portfolio.ID <> 2
 SELECT * FROM /exampleRegion portfolio WHERE portfolio.ID != 2
 ```
 
 **投影属性示例**
 
-```
+```sql
 SELECT p.get('account') FROM /exampleRegion p
 ```
 
@@ -5888,13 +5888,13 @@ SELECT p.get('account') FROM /exampleRegion p
 
 以下查询使用HashMap类型的位置。
 
-```
+```sql
 SELECT p, pos FROM /exampleRegion p, p.positions.values pos WHERE pos.secId = 'VMW'
 ```
 
 **使用 LIMIT**
 
-```
+```sql
 SELECT * FROM /exampleRegion p WHERE p.ID > 0 LIMIT 2
 ```
 
@@ -5902,7 +5902,7 @@ SELECT * FROM /exampleRegion p WHERE p.ID > 0 LIMIT 2
 
 有关详细信息，请参阅[COUNT](https://geode.apache.org/docs/guide/17/developing/query_select/the_select_statement.html#concept_85AE7D6B1E2941ED8BD2A8310A81753E__section_B2CBA00EB83F463DAF4769D7859C64C8)。
 
-```
+```sql
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0 LIMIT 50
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0 AND status LIKE 'act%'
@@ -5915,7 +5915,7 @@ WHERE p.ID > 0 OR p.status = 'active' OR pos.secId OR pos.secId = 'IBM'
 
 **使用 LIKE**
 
-```
+```sql
 SELECT * FROM /exampleRegion ps WHERE ps.pkid LIKE '_bc'
 SELECT * FROM /exampleRegion ps WHERE ps.status LIKE '_b_' OR ps.pkid = '2'
 SELECT * FROM /exampleRegion ps WHERE ps.status LIKE '%b%
@@ -5923,7 +5923,7 @@ SELECT * FROM /exampleRegion ps WHERE ps.status LIKE '%b%
 
 **使用区域输入键和值**
 
-```
+```sql
 SELECT * FROM /exampleRegion.keys k WHERE k.ID = 1
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.key = '1'
 SELECT key, positions FROM /exampleRegion.entrySet, value.positions.values positions 
@@ -5937,7 +5937,7 @@ WHERE portfolio.status = 'active'
 
 **嵌套查询**
 
-```
+```sql
 IMPORT "query".Portfolio;
 SELECT * FROM /exampleRegion, (SELECT DISTINCT * FROM /exampleRegion p TYPE Portfolio, p.positions 
 WHERE value!=null)
@@ -5951,7 +5951,7 @@ FROM /exampleRegion x, x.positions.values pos WHERE x.ID = p.ID ) AS itrX
 
 **查询FROM子句表达式的结果**
 
-```
+```sql
 SELECT DISTINCT * FROM (SELECT DISTINCT * FROM /Portfolios ptf, positions pos) p 
 WHERE p.get('pos').value.secId = 'IBM'
 ```
@@ -5960,7 +5960,7 @@ WHERE p.get('pos').value.secId = 'IBM'
 
 使用hashmap查询。 在以下示例中，'version'是hashmap中的键之一。
 
-```
+```sql
 SELECT * FROM /exampleRegion p WHERE p['version'] = '1.0'
 SELECT entry.key, entry.value FROM /exampleRegion.entries entry 
 WHERE entry.value['version'] = '100'
@@ -5968,13 +5968,13 @@ WHERE entry.value['version'] = '100'
 
 **映射示例“map”是嵌套的HashMap对象**
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.portfolios['key2'] >= 3
 ```
 
 **获取数组值的示例查询**
 
-```
+```sql
 SELECT * FROM /exampleRegion p WHERE p.names[0] = 'aaa'
 SELECT * FROM /exampleRegion p WHERE p.collectionHolderMap.get('1').arr[0] = '0'
 ```
@@ -5983,7 +5983,7 @@ SELECT * FROM /exampleRegion p WHERE p.collectionHolderMap.get('1').arr[0] = '0'
 
 必须将DISTINCT关键字与ORDER BY查询一起使用。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID asc
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID desc
@@ -5997,7 +5997,7 @@ SELECT DISTINCT p.names[1] FROM /exampleRegion p ORDER BY p.names[1]
 
 **连接查询**
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 
 WHERE portfolio1.status = portfolio2.status
 SELECT portfolio1.ID, portfolio2.status FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 
@@ -6012,13 +6012,13 @@ SELECT DISTINCT a, b.price FROM /exampleRegoin1 a, /exampleRegion2 b WHERE a.pri
 
 **使用 AS**
 
-```
+```sql
 SELECT * FROM /exampleRegion p, p.positions.values AS pos WHERE pos.secId != '1'
 ```
 
 **使用 TRUE**
 
-```
+```sql
 SELECT DISTINCT * FROM /Portfolios WHERE TRUE
 ```
 
@@ -6026,7 +6026,7 @@ SELECT DISTINCT * FROM /Portfolios WHERE TRUE
 
 参见 [IN 和 SET](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_AC12146509F141378E493078540950C7).
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio WHERE portfolio.ID IN SET(1, 2)
 SELECT * FROM /exampleRegion portfolio, portfolio.positions.values positions 
 WHERE portfolio.Pk IN SET ('1', '2') AND positions.secId = '1'
@@ -6041,7 +6041,7 @@ AND portfolio.status = 'active'
 
 在以下查询中，sp的类型为Set。
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE sp = set('20', '21', '22')
 ```
 
@@ -6049,7 +6049,7 @@ SELECT * FROM /exampleRegion WHERE sp = set('20', '21', '22')
 
 对于像list这样的其他集合类型（sp是List类型），查询可以写成如下：
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE sp.containsAll(set('20', '21', '22'))
 ```
 
@@ -6057,7 +6057,7 @@ SELECT * FROM /exampleRegion WHERE sp.containsAll(set('20', '21', '22'))
 
 有关详细信息，请参阅[方法调用](https://geode.apache.org/docs/guide/17/developing/query_select/the_where_clause.html#the_where_clause__section_D2F8D17B52B04895B672E2FCD675A676) 。
 
-```
+```sql
 SELECT * FROM /exampleRegion p WHERE p.length > 1
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.size >= 2
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.isEmpty
@@ -6068,7 +6068,7 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.name.startsWith('Bo')
 
 要在查询级别设置调试，请在查询之前添加** <trace> **关键字。 （如果您使用的是IMPORT语句，请在IMPORT之前包含它）。
 
-```
+```sql
 <trace>
 SELECT * from /exampleRegion, positions.values TYPE myclass
 ```
@@ -6077,7 +6077,7 @@ SELECT * from /exampleRegion, positions.values TYPE myclass
 
 要访问与查询语言保留字同名的任何方法，属性或命名对象，请将该名称括在双引号内。
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE status = 'active' AND "type" = 'XYZ'
 SELECT DISTINCT "type" FROM /exampleRegion WHERE status = 'active'
 ```
@@ -6086,7 +6086,7 @@ SELECT DISTINCT "type" FROM /exampleRegion WHERE status = 'active'
 
 在同一个类名存在于两个不同的名称范围（包）中的情况下，需要有一种引用同名的不同类的方法。 IMPORT语句用于在查询中为类建立名称范围。
 
-```
+```sql
 IMPORT package.Position;
 SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position WHERE positions.mktValue >= 25.00
 ```
@@ -6095,7 +6095,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 指定对象类型有助于查询引擎以最佳速度处理查询。 除了在配置期间指定对象类型（使用键约束和值约束）之外，还可以在查询字符串中显式指定类型。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position WHERE positions.mktValue >= 25.00
 ```
 
@@ -6103,7 +6103,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 使用ELEMENT(expr)从集合或数组中提取单个元素。 如果参数不是只包含一个元素的集合或数组，则此函数抛出`FunctionDomainException`。
 
-```
+```sql
 ELEMENT(SELECT DISTINCT * FROM /exampleRegion WHERE id = 'XYZ-1').status = 'active'
 ```
 
@@ -6117,7 +6117,7 @@ ELEMENT(SELECT DISTINCT * FROM /exampleRegion WHERE id = 'XYZ-1').status = 'acti
 
 要在查询中使用方法，请使用映射到要调用的公共方法的属性名称。 例如：
 
-```
+```sql
 /*valid method invocation*/ 
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.size >= 2 - maps to positions.size()
 ```
@@ -6126,7 +6126,7 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.size >= 2 - maps to po
 
 不，您无法在对象上调用静态方法。 例如，以下查询无效。
 
-```
+```sql
 /*invalid method invocation*/
 SELECT DISTINCT * FROM /exampleRegion WHERE aDay = Day.Wednesday
 ```
@@ -6167,7 +6167,7 @@ SelectResults results = (SelectResults) query.execute(params);
 
 确定查询的性能是否会从索引中受益。 例如，在以下查询中，pkid上的索引可以加快查询速度。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.pkid = '123'
 ```
 
@@ -6177,7 +6177,7 @@ SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.pkid = '123'
 
 **示例代码**
 
-```
+```java
 QueryService qs = cache.getQueryService();
  qs.createIndex("myIndex", "status", "/exampleRegion");
  qs.createKeyIndex("myKeyIndex", "id", "exampleRegion");
@@ -6187,7 +6187,7 @@ QueryService qs = cache.getQueryService();
 
 **示例XML**
 
-```
+```xml
 <region name="portfolios">
  <region-attributes . . . >
  </region-attributes>
@@ -6239,13 +6239,13 @@ QueryService qs = cache.getQueryService();
 
 您可以在查询级别调试特定查询，方法是在要调试的查询字符串之前添加<trace>关键字。 这是一个例子：
 
-```
+```sql
 <trace> SELECT * FROM /exampleRegion
 ```
 
 你也可以写：
 
-```
+```sql
 <TRACE> SELECT * FROM /exampleRegion
 ```
 
@@ -6272,13 +6272,13 @@ System.setProperty("gemfire.Query.VERBOSE","true");
 
 如果隐式属性或方法名称只能与一个无类型迭代器关联，则Geode查询处理器将假定它与该迭代器关联。 但是，如果多个非类型化迭代器在范围内，则查询将失败并出现`TypeMismatchException`。 以下查询失败，因为查询处理器未完全键入表达式：
 
-```
+```sql
 select distinct value.secId from /pos , getPositions(23)
 ```
 
 但是，以下查询成功，因为迭代器是使用变量显式命名的，或者是键入的：
 
-```
+```sql
 select distinct e.value.secId from /pos , getPositions(23) e
 ```
 
@@ -6286,7 +6286,7 @@ select distinct e.value.secId from /pos , getPositions(23) e
 
 使用HINT *indexname*可以指示查询引擎优先选择并过滤指定索引的结果。 如果提供多个索引名称，则查询引擎将使用所有可用索引，但更喜欢指定的索引。
 
-```
+```sql
 <HINT 'IDIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ'
 <HINT 'IDIndex', 'OwnerIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ' AND p.value < 100
 ```
@@ -6295,13 +6295,13 @@ select distinct e.value.secId from /pos , getPositions(23) e
 
 您可以使用Java String类方法`toUpperCase`和`toLowerCase`来转换要执行不区分大小写搜索的字段。 例如：
 
-```
+```sql
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.value.toUpperCase LIKE '%BAR%'
 ```
 
 或者
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 ```
 
@@ -6315,7 +6315,7 @@ Geode提供类似SQL的查询语言，允许您访问存储在Geode区域中的�
 
 典型的Geode OQL查询的语法是：
 
-```
+```sql
 [IMPORT package]
 SELECT [DISTINCT] projectionList
 FROM collection1, [collection2, …]
@@ -6325,7 +6325,7 @@ FROM collection1, [collection2, …]
 
 因此，一个简单的Geode OQL查询类似于以下内容：
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE status = ‘active’
 ```
 
@@ -6360,7 +6360,7 @@ Geode QueryService提供了创建Query对象的方法。 然后，您可以使�
 
 **示例代码**
 
-```
+```java
  // Identify your query string.
  String queryString = "SELECT DISTINCT * FROM /exampleRegion";
 
@@ -6386,7 +6386,7 @@ Geode QueryService提供了创建Query对象的方法。 然后，您可以使�
 
 **示例代码**
 
-```
+```java
 // Identify your query string.
  String queryString = "SELECT DISTINCT * FROM /exampleRegion";
 
@@ -6487,7 +6487,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 查询所有不同值的区域。 从区域返回一组唯一条目值：
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion
 ```
 
@@ -6499,25 +6499,25 @@ SELECT key, positions FROM /exampleRegion.entrySet, value.positions.values posit
 
 查询区域的条目值。 从Region.Entry对象返回一组唯一值，这些对象的键等于1：
 
-```
+```sql
 SELECT DISTINCT entry.value FROM /exampleRegion.entries entry WHERE entry.key = '1'
 ```
 
 查询区域的条目值。 返回`ID`字段大于1000的所有条目值的集合：
 
-```
+```sql
 SELECT * FROM /exampleRegion.entries entry WHERE entry.value.ID > 1000
 ```
 
 查询区域中的条目键。 返回键为`1`的区域中的一组输入键：
 
-```
+```sql
 SELECT * FROM /exampleRegion.keySet key WHERE key = '1'
 ```
 
 查询区域中的值。 返回状态属性值为`active`的区域中的条目值集合：
 
-```
+```sql
 SELECT * FROM /exampleRegion.values portfolio WHERE portfolio.status = 'active'
 ```
 
@@ -6529,7 +6529,7 @@ SELECT * FROM /exampleRegion.values portfolio WHERE portfolio.status = 'active'
 
 **例子:**
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 SELECT * FROM /exampleRegion p, p.positions.values AS pos WHERE pos.secId != '1'
 ```
@@ -6540,7 +6540,7 @@ SELECT * FROM /exampleRegion p, p.positions.values AS pos WHERE pos.secId != '1'
 
 **例子:**
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position WHERE positions.mktValue >= 25.00
 ```
 
@@ -6552,7 +6552,7 @@ SELECT DISTINCT * FROM /exampleRegion, positions.values positions TYPE Position 
 
 例如:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 ```
 
@@ -6560,7 +6560,7 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.status = 'active'
 
 在下一个示例查询中，第一个FROM子句表达式中指定的集合由SELECT语句的其余部分使用，包括第二个FROM子句表达式。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion, positions.values p WHERE p.qty > 1000.00
 ```
 
@@ -6595,7 +6595,7 @@ otherValue=2
 
 以下查询：
 
-```
+```sql
 SELECT * FROM /CustomObjects c 
 WHERE c.ID > 1 AND c.ID < 3 
 AND c.otherValue > 0 AND c.otherValue < 3
@@ -6605,7 +6605,7 @@ AND c.otherValue > 0 AND c.otherValue < 3
 
 或者，以下查询：
 
-```
+```sql
 SELECT * FROM /CustomObjects c 
 WHERE c.ID > 1 AND c.ID < 3 
 AND c.otherValue > 1 AND c.otherValue < 3
@@ -6637,7 +6637,7 @@ gfsh>configure pdx --read-serialized=true
 
 在cache.xml，设置如下:
 
-```
+```xml
 // Cache configuration setting PDX read behavior 
 <cache>
   <pdx read-serialized="true">
@@ -6655,7 +6655,7 @@ gfsh>configure pdx --read-serialized=true
 
 对于属性的位置。secId是公共的，有getter方法“getSecId()”，查询可以写成如下:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.secId = '1'
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.SecId = '1'
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.getSecId() = '1'
@@ -6669,7 +6669,7 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.position1.getSecId() = '1'
 
 下面的语句从 /exampleRegion和 /exampleRegion2区域返回所有具有相同状态的投资组合。
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 WHERE portfolio1.status = portfolio2.status
 ```
 
@@ -6679,19 +6679,19 @@ SELECT * FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 WHERE portfo
 
 查询两个区域。返回具有相同状态的投资组合的ID和状态。
 
-```
+```sql
 SELECT portfolio1.ID, portfolio2.status FROM /exampleRegion portfolio1, /exampleRegion2 portfolio2 WHERE portfolio1.status = portfolio2.status
 ```
 
 查询两个区域，遍历每个投资组合中的所有`头寸`。返回所有4元组，包括来自两个区域的值和来自位置的`secId`字段匹配的两个区域的`位置`映射的值部分。
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio1, portfolio1.positions.values positions1, /exampleRegion2 portfolio2, portfolio2.positions.values positions2 WHERE positions1.secId = positions2.secId
 ```
 
 与前一个示例相同的查询，具有匹配的附加约束的ID将为1。
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio1, portfolio1.positions.values positions1, /exampleRegion2 portfolio2, portfolio2.positions.values positions2 WHERE portfolio1.ID = 1 AND positions1.secId = positions2.secId
 ```
 
@@ -6707,13 +6707,13 @@ Geode对LIKE谓词提供了有限的支持。LIKE可以用来表示`等于`。�
 
 查询该地区。返回status = `active`的所有对象:
 
-```
+```sql
 SELECT * FROM /exampleRegion p WHERE p.status LIKE 'active'
 ```
 
 使用通配符查询区域以进行比较。返回状态以`activ`开头的所有对象:
 
-```
+```sql
 SELECT * FROM /exampleRegion p WHERE p.status LIKE 'activ%'
 ```
 
@@ -6721,13 +6721,13 @@ SELECT * FROM /exampleRegion p WHERE p.status LIKE 'activ%'
 
 您可以使用Java字符串类方法`toUpperCase`和`toLowerCase`转换要执行不区分大小写搜索的字段。例如:
 
-```
+```sql
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.value.toUpperCase LIKE '%BAR%'
 ```
 
 或者
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 ```
 
@@ -6749,7 +6749,7 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.size >= 2 - maps to po
 
 在下面的例子中，查询对position调用isEmpty，并返回没有position的所有投资组合的集合:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.isEmpty
 ```
 
@@ -6759,7 +6759,7 @@ SELECT DISTINCT * FROM /exampleRegion p WHERE p.positions.isEmpty
 
 这个示例将参数“Bo”传递给公共方法，并返回所有以“Bo”开头的名称。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion p WHERE p.name.startsWith('Bo')
 ```
 
@@ -6794,7 +6794,7 @@ gfsh>start server --name=Server1 \
 
 例如，以下查询无效:
 
-```
+```sql
 //INVALID QUERY
 select distinct * from /QueryRegion0 where aDay = Day.Wednesday
 ```
@@ -6807,14 +6807,14 @@ select distinct * from /QueryRegion0 where aDay = Day.Wednesday
 
 查询枚举类型使用toString方法:
 
-```
+```sql
 // eStatus is an enum with values 'active' and 'inactive'
 select * from /exampleRegion p where p.eStatus.toString() = 'active'
 ```
 
 使用绑定参数查询枚举类型。期望的Enum字段(Day.Wednesday)的值作为执行参数传递:
 
-```
+```sql
 select distinct * from /QueryRegion0 where aDay = $1
 ```
 
@@ -6834,7 +6834,7 @@ IN表达式是一个布尔值，指示在兼容类型的表达式集合中是否
 
 另一个例子是，您正在查询的集合是由一个子查询定义的。这个查询寻找的公司有一个活跃的投资组合文件:
 
-```
+```sql
 SELECT name, address FROM /company 
   WHERE id IN (SELECT id FROM /portfolios WHERE status = 'active')
 ```
@@ -6845,7 +6845,7 @@ SELECT name, address FROM /company
 
 下面是一个集合值类型比较的例子，其中sp是集合类型:
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE sp = set('20','21','22')
 ```
 
@@ -6853,7 +6853,7 @@ SELECT * FROM /exampleRegion WHERE sp = set('20','21','22')
 
 对于list等其他集合类型，查询可以写成:
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE sp.containsAll(set('20','21','22))
 ```
 
@@ -6861,7 +6861,7 @@ SELECT * FROM /exampleRegion WHERE sp.containsAll(set('20','21','22))
 
 为了将其用于Set值，查询可以写成:
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE sp IN SET (set('20','21','22'),set('10',11','12'))
 ```
 
@@ -6892,7 +6892,7 @@ Double.NaN 和 Float.NaN的比较行为,在Geode查询中的NaN遵循JDK方法Fl
 
 如果在代码中定义以下查询时将值组合在一起，那么在执行查询时，解析值本身被认为是未定义的，不会在结果集中返回。
 
-```
+```sql
 String query = "SELECT * FROM /positions p WHERE p.value =" + Float.NaN
 ```
 
@@ -6900,7 +6900,7 @@ String query = "SELECT * FROM /positions p WHERE p.value =" + Float.NaN
 
 要检索NaN值而不需要另一个字段已经存储为NaN，可以在代码中定义以下查询:
 
-```
+```sql
 String query = "SELECT * FROM /positions p WHERE p.value > " + Float.MAX_VALUE;
 ```
 
@@ -6910,7 +6910,7 @@ String query = "SELECT * FROM /positions p WHERE p.value > " + Float.MAX_VALUE;
 
 例如，该查询选择体重指数小于25的所有人:
 
-```
+```sql
 String query = "SELECT * FROM /people p WHERE p.height * p.height/p.weight < 25";
 ```
 
@@ -6926,34 +6926,34 @@ SELECT语句允许您从WHERE搜索操作返回的对象集合中筛选数据。
 
 使用*查询区域中的所有对象。返回投资组合的集合(exampleRegion将投资组合包含为值)。
 
-```
+```sql
 SELECT * FROM /exampleRegion
 ```
 
 从位置查询secid。从活动投资组合的头寸中返回secid集合:
 
-```
+```sql
 SELECT secId FROM /exampleRegion, positions.values TYPE Position 
 WHERE status = 'active'
 ```
 
 返回活动投资组合的struct<type: string,="" position:="" map="">的集合。</type:>结构的第二个字段是Map (java .utils)。对象，其中包含位置映射作为值:
 
-```
+```sql
 SELECT "type", positions FROM /exampleRegion 
 WHERE status = 'active'
 ```
 
 返回活动投资组合<portfolios: Portfolio, values: Position> 的结构体集合:
 
-```
+```sql
 SELECT * FROM /exampleRegion, positions.values 
 TYPE Position WHERE status = 'active'
 ```
 
 返回活动投资组合<pflo: Portfolio, posn: Position>的结构体集合:
 
-```
+```sql
 SELECT * FROM /exampleRegion portfolio, positions positions 
 TYPE Position WHERE portfolio.status = 'active'
 ```
@@ -6980,7 +6980,7 @@ SELECT语句的结果要么是未定义的，要么是实现[SelectResults](http
 
 如果希望将结果设置为唯一的行，请使用DISTINCT关键字。注意，在Geode的当前版本中，您不再需要在SELECT语句中使用DISTINCT关键字。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion
 ```
 
@@ -6992,7 +6992,7 @@ SELECT DISTINCT * FROM /exampleRegion
 
 例如，这个查询最多返回10个值:
 
-```
+```sql
 SELECT * FROM /exampleRegion LIMIT 10
 ```
 
@@ -7000,19 +7000,19 @@ SELECT * FROM /exampleRegion LIMIT 10
 
 可以使用order by子句按升序或降序排列查询结果。在编写ORDER BY查询时，必须使用DISTINCT。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID
 ```
 
 以下查询按升序对结果进行排序:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID asc
 ```
 
 以下查询按降序对结果进行排序:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion WHERE ID < 101 ORDER BY ID desc
 ```
 
@@ -7036,7 +7036,7 @@ COUNT关键字返回与WHERE子句中指定的查询选择条件匹配的结果�
 
 以下查询是返回区域项的示例计数查询:
 
-```
+```sql
 SELECT COUNT(*) FROM /exampleRegion
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0 LIMIT 50
@@ -7048,7 +7048,7 @@ WHERE ID IN SET(1,2,3,4,5)
 
 下面的COUNT查询返回与查询的选择条件匹配的结构类型的总数。
 
-```
+```sql
 SELECT COUNT(*) 
 FROM /exampleRegion p, p.positions.values pos 
 WHERE p.ID > 0 AND pos.secId 'IBM'
@@ -7056,7 +7056,7 @@ WHERE p.ID > 0 AND pos.secId 'IBM'
 
 下面的COUNT查询使用不同的关键字，并从结果的数量中消除重复。
 
-```
+```sql
 SELECT DISTINCT COUNT(*)
 FROM /exampleRegion p, p.positions.values pos
 WHERE p.ID > 0 OR p.status = 'active' OR pos.secId
@@ -7083,7 +7083,7 @@ OR pos.secId = 'IBM'
 
 `COUNT`函数的作用是:返回所选表达式在集合中形成的值的数量。例如，返回销售额为正的员工数量:
 
-```
+```sql
 SELECT count(e.sales) FROM /employees e WHERE e.sales > 0.0
 ```
 
@@ -7093,7 +7093,7 @@ SELECT count(e.sales) FROM /employees e WHERE e.sales > 0.0
 
 当聚合函数与其他选定项组合使用时，需要`GROUP BY`。它允许排序。例如,
 
-```
+```sql
 SELECT ID, MAX(e.sales) FROM /employees e GROUP BY ID
 ```
 
@@ -7156,13 +7156,13 @@ Geode查询语言支持完整的ASCII和Unicode字符集。
 
 在查询字符串和区域条目匹配方面，如果希望对特定字段执行不区分大小写的搜索，可以在查询中使用Java字符串类`toUpperCase`和`toLowerCase`方法。例如:
 
-```
+```sql
 SELECT entry.value FROM /exampleRegion.entries entry WHERE entry.value.toUpperCase LIKE '%BAR%'
 ```
 
 或者
 
-```
+```sql
 SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 ```
 
@@ -7172,7 +7172,7 @@ SELECT * FROM /exampleRegion WHERE foo.toLowerCase LIKE '%bar%'
 
 注释行使用`--`(双破折号)。注释块以`/*`开头，以`*/`结尾。例如:
 
-```
+```sql
 SELECT * --my comment 
 FROM /exampleRegion /* here is
 a comment */ WHERE status = ‘active’
@@ -7210,7 +7210,7 @@ A possibly empty sequence of x.
 
 语法列表:
 
-```
+```sql
 symbol ::= expression
 query_program ::= [ imports semicolon ] query [semicolon]
 imports ::= import { semicolon import }
@@ -7291,7 +7291,7 @@ digit ::= any unicode digit
 
 以下表达式均为终端字符:
 
-```
+```sql
 dot ::= .
 left_paren ::= (
 right_paren ::= )
@@ -7319,7 +7319,7 @@ plus ::= +
 
   例子:
 
-  ```
+  ```properties
   'Hello' value = Hello
   'He said, ''Hello''' value = He said, 'Hello'
   ```
@@ -7372,14 +7372,14 @@ Geode支持比较、逻辑、一元、算术、映射、索引、点和右箭头
 
 以下是支持的算术运算符:
 
-| Operator | Meaning        |
-| -------- | -------------- |
-| +        | addition       |
-| -        | subtraction    |
-| *        | multiplication |
-| /        | division       |
-| %        | modulus        |
-| MOD      | modulus        |
+| 操作符 | 含义           |
+| ------ | -------------- |
+| +      | addition       |
+| -      | subtraction    |
+| *      | multiplication |
+| /      | division       |
+| %      | modulus        |
+| MOD    | modulus        |
 
 **映射和索引操作符**
 
@@ -7407,7 +7407,7 @@ Map和region值通过键使用相同的语法进行访问。关键字可以是�
 
 例子:
 
-```
+```sql
 SELECT DISTINCT "type" FROM /portfolios WHERE status = 'active'
 SELECT DISTINCT * FROM /region1 WHERE emps."select"() < 100000 
 ```
@@ -7431,10 +7431,6 @@ Geode支持以下文字类型:
 **浮点**
 
 如果浮点文字的后缀是ASCII字母`F`，则它的类型为`float`。否则，它的类型是`double`。可选地，它可以有ASCII字母`D`的后缀。双精度字面值或浮点字面值可以选择性地包含指数后缀`E`或`e`，后跟有符号或无符号数字。
-
-
-
-
 
 **string**
 
@@ -7533,7 +7529,7 @@ Float.NaN and Double.NaN不作为原语计算;相反，它们的比较方式与J
 
 - 静态方法调用。例如，以下查询无效:
 
-  ```
+  ```sql
   SELECT DISTINCT * FROM /QueryRegion0 WHERE aDay = Day.Wednesday
   ```
 
@@ -7635,7 +7631,7 @@ Geode可以在查询运行时间超过配置的时间时监视并抛出异常。
 
 **示例代码**
 
-```
+```java
 // specify the query string
 String queryString = "SELECT DISTINCT * FROM /exampleRegion p WHERE p.id = $1 and p.status = $2";
 
@@ -7660,7 +7656,7 @@ SelectResults results = (SelectResults) query.execute(params);
 
 例如，通过将集合作为查询参数值传入，可以对任何集合使用以下查询。在这个查询中，您可以以$1传入一个Region对象，但不能传入区域的字符串名称。
 
-```
+```sql
 SELECT DISTINCT * FROM $1 p WHERE p.status = $2
 ```
 
@@ -7691,7 +7687,7 @@ Geode允许您使用分区区域跨分布式节点管理和存储大量数据。
 
 **例子:**
 
-```
+```sql
 // This query works because p.status is part of projection list
 select distinct p.ID, p.status from /region p where p.ID > 5 order by p.status
 // This query works providing status is part of the value indicated by *
@@ -7706,7 +7702,7 @@ select distinct * from /region where ID > 5 order by status
 
 1. 实现一个使用RegionFunctionContext执行查询的函数.
 
-   ```
+   ```java
    /**
     * This function executes a query using its RegionFunctionContext
     * which provides a filter on data which should be queried.
@@ -7767,7 +7763,7 @@ select distinct * from /region where ID > 5 order by status
 
    例如，假设您已经定义了PortfolioKey类:
 
-   ```
+   ```java
    public class PortfolioKey implements DataSerializable {
      private int id;
      private long startValidTime;
@@ -7783,7 +7779,7 @@ select distinct * from /region where ID > 5 order by status
 
    您可以使用`MyPartitionResolver`将ID相同的所有键存储在同一个bucket中。这个`PartitionResolver`必须在分区区域创建时使用xml或api进行声明式配置。有关更多信息，请参见[配置分区区域](https://geode.apache.org/docs/guide/17/developing/partitioned_regions/managing_partitioned_regions.html#configure_partitioned_regions)。
 
-   ```
+   ```java
    /** This resolver returns the value of the ID field in the key. With this resolver, 
     * all Portfolios using the same ID are colocated in the same bucket.
     */
@@ -7796,7 +7792,7 @@ select distinct * from /region where ID > 5 order by status
 
 3. 通过在函数调用中设置筛选器，在客户端或任何其他节点上执行函数。
 
-   ```
+   ```java
    /**
     * Execute MyFunction for query on specified keys.
     *
@@ -7927,7 +7923,7 @@ select distinct * from /region where ID > 5 order by status
 
 例如，假设您的等连接查询如下:
 
-```
+```sql
 SELECT DISTINCT * FROM /QueryRegion1 r1,
 /QueryRegion2 r2 WHERE r1.ID = r2.ID
 ```
@@ -8015,9 +8011,9 @@ if (resultList.size() != 0) {
   (SELECT DISTINCT *FROM /prRgn WHERE attribute > 10).size
   ```
 
-  This query is allowed:
+  允许以下查询：
 
-  ```
+  ```sql
   // VALID for partitioned regions
   SELECT DISTINCT *FROM /prRgn WHERE attribute > 10
   ```
@@ -8042,13 +8038,13 @@ if (resultList.size() != 0) {
 
 下面是一个例子:
 
-```
+```sql
 <trace> select * from /exampleRegion
 ```
 
 你也可以这样写:
 
-```
+```sql
 <TRACE> select * from /exampleRegion
 ```
 
@@ -8369,7 +8365,7 @@ gfsh> create index --name=myKeyIndex --expression=id --region=/exampleRegion
 
 **使用 Java API:**
 
-```
+```java
 QueryService qs = cache.getQueryService();
  qs.createHashIndex("myHashIndex", "mktValue", "/exampleRegion");
 ```
@@ -8383,7 +8379,7 @@ gfsh> create index --name=myHashIndex --expression=mktValue --region=/exampleReg
 
 **使用 cache.xml:**
 
-```
+```xml
 <region name=exampleRegion>
  <region-attributes . . . >
  </region-attributes>
@@ -8400,7 +8396,7 @@ gfsh> create index --name=myHashIndex --expression=mktValue --region=/exampleReg
 
 例如，您可以创建一个映射索引来支持以下查询:
 
-```
+```sql
 SELECT * FROM /users u WHERE u.name['first'] = 'John' OR u.name['last'] = 'Smith'
 ```
 
@@ -8408,7 +8404,7 @@ map索引扩展了在单个键上创建的常规范围索引，方法是为其�
 
 下面的Java代码示例提供了如何创建映射索引的示例:
 
-```
+```java
 QueryService qs = cache.getQueryService();
 
 //This will create indexes for for keys 'PVTL' and 'VMW'
@@ -8464,7 +8460,7 @@ Message : Region ' /r3' not found: from  /r3Occurred on following members
 
 **Java API 例子:**
 
-```
+```java
  Cache cache = new CacheFactory().create();
     QueryService queryService = cache.getQueryService();
     queryService.defineIndex("name1", "indexExpr1", "regionPath1");
@@ -8477,7 +8473,7 @@ Message : Region ' /r3' not found: from  /r3Occurred on following members
 
 索引定义存储在本地的`gfsh`客户机上。如果您想创建一组新索引，或者如果一个或多个索引创建失败，您可能希望使用 `clear defined indexes`命令清除存储的定义。定义的索引可以使用Java API清除:
 
-```
+```java
 queryService.clearDefinedIndexes();
 ```
 
@@ -8510,7 +8506,7 @@ gfsh> clear defined indexes
 
 索引存储为基于索引表达式的紧凑或非紧凑数据结构(即使索引键类型相同)。例如，考虑以下乘客对象:
 
-```
+```java
 Passenger {
    String name,
    Date travelDate,
@@ -8550,7 +8546,7 @@ Flight {
 
 **例子:**
 
-```
+```sql
 <HINT 'IDIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ'
 ```
 
@@ -8558,7 +8554,7 @@ Flight {
 
 **例子:**
 
-```
+```sql
 <HINT 'IDIndex', 'OwnerIndex'> SELECT * FROM /Portfolios p WHERE p.ID > 10 AND p.owner = 'XYZ' AND p.value < 100
 ```
 
@@ -8570,7 +8566,7 @@ Flight {
 
 如果pkid是/exampleRegion区域的键，那么在pkid上创建键索引是最好的选择，因为键索引没有维护开销。如果pkid不是关键字，那么关于pkid的范围索引应该可以提高性能。
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.pkid = '123'
 ```
 
@@ -8581,7 +8577,7 @@ SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.pkid = '123'
 
 对于这个查询，您可以尝试对名称、年龄或两者都使用范围索引:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.status = 'active' and portfolio.ID > 45
 ```
 
@@ -8589,7 +8585,7 @@ SELECT DISTINCT * FROM /exampleRegion portfolio WHERE portfolio.status = 'active
 
 这个查询深入到一个层次:
 
-```
+```sql
 SELECT DISTINCT * FROM /exampleRegion portfolio, portfolio.positions.values positions where positions.secId = 'AOL' and positions.MktValue > 1
 ```
 
@@ -8607,7 +8603,7 @@ SELECT DISTINCT * FROM /exampleRegion portfolio, portfolio.positions.values posi
 
    对于这个查询:
 
-   ```
+   ```sql
    SELECT DISTINCT inv.name, ord.orderID, ord.status 
    FROM /investors inv, /orders ord 
    WHERE inv.investorID = ord.investorID 
@@ -8624,7 +8620,7 @@ SELECT DISTINCT * FROM /exampleRegion portfolio, portfolio.positions.values posi
 
    对于该示例查询:
 
-   ```
+   ```sql
    SELECT DISTINCT *
    FROM /investors inv, /securities sc, inv.heldSecurities inv_hs
        WHERE sc.status = "active"
@@ -8658,7 +8654,7 @@ SELECT DISTINCT * FROM /exampleRegion portfolio, portfolio.positions.values posi
 
 下面的示例索引创建调用不适用于溢出区域。
 
-```
+```java
 // This index will not work on an overflow region because there are two iterators in the FROM clause.
 createIndex("secIdIndex", "b.secId","/portfolios pf, pf.positions.values b");
 
@@ -8668,7 +8664,7 @@ createIndex("indx1", "entries.value.getID", "/exampleRegion.entrySet() entries")
 
 下面的示例索引适用于溢出区域。
 
-```
+```java
 createIndex("pkidIndex", "p.pkid", "/Portfolios p");
 
 createIndex("indx1", "ks.toString", "/portfolio.keySet() ks");
@@ -8692,7 +8688,7 @@ gfsh> create index -name="indx1" --expression="ks.toString" --region="/portfolio
 
 在这个示例查询中:
 
-```
+```sql
 SELECT DISTINCT * 
 FROM /investors inv, /securities sc, /orders or, 
 inv.ordersPlaced inv_op, or.securities or_sec 
@@ -8714,7 +8710,7 @@ inv.ordersPlaced inv_op, or.securities or_sec
 
 在示例中添加另一个条件:
 
-```
+```sql
 SELECT DISTINCT * 
 FROM /investors inv, /securities sc, /orders or, 
 inv.ordersPlaced inv_op, or.securities or_sec, sc.investors sc_invs 
@@ -8789,7 +8785,7 @@ createIndex("i", "p.positions[*]", "/exampleRegion p")
 
 下面是一些关于索引的示例查询。
 
-```
+```sql
 SELECT * FROM (SELECT * FROM /R2 m) r2, (SELECT * FROM  /exampleRegion e WHERE e.pkid IN r2.sp) p
 
 SELECT * FROM (SELECT * FROM /R2 m WHERE m.ID IN SET (1, 5, 10)) r2, 
@@ -8830,7 +8826,7 @@ FROM /exampleRegion
 
 使用CQ，客户机向服务器端发送一个查询以供执行，并接收满足条件的事件。例如，在存储股票市场交易订单的区域中，您可以通过运行一个CQ查询来检索某个价格上的所有订单，查询如下:
 
-```
+```sql
 SELECT * FROM /tradeOrder t WHERE t.price > 100.00
 ```
 
@@ -8933,13 +8929,13 @@ CQs仅由客户端在其服务器上运行。
 
    CQ查询的基本语法是:
 
-   ```
+   ```sql
    SELECT * FROM /fullRegionPath [iterator] [WHERE clause]
    ```
 
    此示例查询可用于获取价格超过$100的所有交易订单:
 
-   ```
+   ```sql
    SELECT * FROM /tradeOrder t WHERE t.price > 100.00
    ```
 
@@ -9459,7 +9455,7 @@ LRU驱逐和事务可以很好地协作。从事务中操作的区域条目上�
 
 应用程序需要严格但较慢的隔离模型(比如不允许对过渡状态进行脏读)，应该设置一个属性并将读操作封装在事务中。使用属性配置这个严格的隔离模型:
 
-```
+```properties
 -Dgemfire.detectReadConflicts=true
 ```
 

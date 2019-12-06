@@ -307,7 +307,7 @@ Geode对等体是Geode集群的成员，它不充当另一个Geode集群的客�
 
    2. 或者，如果您未使用集群配置服务，请直接在集群的每个成员中配置cache.xml。 在`cache.xml`中，使用`cache` DOCTYPE并在`<cache>`元素中配置缓存。 例：
 
-      ```
+      ```xml
       <?xml version="1.0" encoding="UTF-8"?>
       <cache
           xmlns="http://geode.apache.org/schema/cache"
@@ -353,7 +353,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
    1. 在`cache.xml`中，使用`client-cache` DOCTYPE并在`<client-cache>`元素中配置缓存。 根据需要配置服务器连接池和区域。 例：
 
-      ```
+      ```xml
       <?xml version="1.0" encoding="UTF-8"?>
       <client-cache
           xmlns="http://geode.apache.org/schema/cache"
@@ -371,7 +371,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
    2. 如果使用多个服务器池，请为每个客户端区域显式配置池名称。 例：
 
-      ```
+      ```xml
       <pool name="svrPool1">
           <locator host="host1" port="40404"/>
       </pool>
@@ -385,7 +385,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
    3. 在Java客户端应用程序中，使用`ClientCacheFactory``create`method创建缓存。 例：
 
-      ```
+      ```java
       ClientCache clientCache = new ClientCacheFactory().create();
       ```
 
@@ -393,13 +393,13 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
 2. 使用`Cache`实例的`close`方法完成后关闭缓存：
 
-   ```
+   ```java
    cache.close();
    ```
 
    如果您的客户端是持久的，并且您希望在关闭客户端缓存时维护持久队列，请使用：
 
-   ```
+   ```java
    clientCache.close(true);
    ```
 
@@ -464,17 +464,17 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
    1. 配置客户端的服务器池以进行多个安全用户身份验证。 例：
 
-      ```
+      ```xml
       <pool name="serverPool" multiuser-authentication="true">
           <locator host="host1" port="44444"/>
-          </pool>
+      </pool>
       ```
 
       这样就可以通过池访问`RegionService`实例，并为`ClientCache`实例禁用它。
 
    2. 在您的`ClientCache`实例创建`ClientCache`之后，为每个用户调用`createAuthenticatedView`方法，提供用户的特定凭据。 这些是两个用户的create方法调用：
 
-      ```
+      ```java
       Properties properties = new Properties();
       properties.setProperty("security-username", cust1Name);
       properties.setProperty("security-password", cust1Pwd);
@@ -516,7 +516,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
 在cache.xml中：
 
-```
+```xml
 <initializer>
    <class-name>MyInitializer</class-name>
       <parameter name="members">
@@ -527,7 +527,7 @@ Geode客户端是将大部分或全部数据请求和更新发送到Geode服务�
 
 这是相应的类定义：
 
-```
+```java
 import org.apache.geode.cache.Declarable;
 
 public class MyInitializer implements Declarable {
@@ -541,7 +541,7 @@ public class MyInitializer implements Declarable {
 
 1. 启动`SystemMembershipListener`
 
-   ```
+   ```xml
    <initializer>
       <class-name>TestSystemMembershipListener</class-name>
    </initializer>
@@ -549,7 +549,7 @@ public class MyInitializer implements Declarable {
 
 2. 编写一个监视缓存资源的自定义工具
 
-   ```
+   ```xml
    <initializer>
       <class-name>ResourceMonitorCacheXmlLoader</class-name>
    </initializer>
@@ -637,19 +637,19 @@ gfsh>create region --name=region1 --type=REPLICATE
 
 名为Portfolios的复制区域的`region`声明：
 
-```
+```xml
 <region name="Portfolios" refid="REPLICATE"/>
 ```
 
 名为myRegion的分区区域的`region`声明：
 
-```
+```xml
 <region name="myRegion" refid="PARTITION"/>
 ```
 
 将内容备份到磁盘的分区区域的`region`声明：
 
-```
+```xml
 <region name="myRegion" refid="PARTITION_PERSISTENT"/>
 ```
 
@@ -665,7 +665,7 @@ gfsh>create region --name=region1 --type=REPLICATE
 
 复制区域的`region`声明，配置了一个事件监听器，其中条目到期：
 
-```
+```xml
 <region name="myRegion" refid="REPLICATE">
     <region-attributes statistics-enabled="true">
         <entry-time-to-live>
@@ -682,37 +682,7 @@ gfsh>create region --name=region1 --type=REPLICATE
 
 Geode的区域API为不同的系统成员类型提供专门的行为。
 
-- `对等/服务器` 区域API
-
-  . 使用这些方法，接口和类来创建`对等/服务器`区域。 这些都在
-
-   
-
-  ```
-  org.apache.geode.cache
-  ```
-
-   
-
-  package. 它们对应于
-
-   
-
-  ```
-  cache.xml
-  ```
-
-  内部的声明
-
-   
-
-  ```
-  <cache>
-  ```
-
-   
-
-  用于创建和配置区域的元素。
+- `对等/服务器` 区域API 使用这些方法，接口和类来创建`对等/服务器`区域。 这些都在`  org.apache.geode.cache` package. 它们对应于`cache.xml` 内部的声明`<cache>`用于创建和配置区域的元素。
 
   - **org.apache.geode.cache.Cache.createRegionFactory** . 这个方法采用`RegionShortcut``enum`来启动区域配置，并返回一个`RegionFactory`。 使用`createRegionFactory()`而不是`new RegionFactory`来创建RegionFactory。
   - **org.apache.geode.cache.RegionFactory**. 提供设置单个区域属性和创建区域的方法。 `create`调用返回一个`Region`。
@@ -745,7 +715,7 @@ Geode的区域API为不同的系统成员类型提供专门的行为。
 
 创建名为Portfolios的复制区域：
 
-```
+```java
 Cache cache = CacheFactory.create();
 RegionFactory rf = cache.createRegionFactory(REPLICATE);
 Region pfloRegion = rf.create("Portfolios");
@@ -753,7 +723,7 @@ Region pfloRegion = rf.create("Portfolios");
 
 使用侦听器创建分区区域：
 
-```
+```java
 RegionFactory rf =   
     cache.createRegionFactory(RegionShortcut.PARTITION);
 rf.addCacheListener(new LoggingCacheListener());
@@ -762,7 +732,7 @@ custRegion = rf.create("customer");
 
 创建一个分区区域，其中包含用于共处区域的分区解析程序：
 
-```
+```java
 PartitionAttributesFactory paf = new PartitionAttributesFactory<CustomerId, String>();
 paf.setPartitionResolver(new CustomerOrderResolver());
 
@@ -775,7 +745,7 @@ custRegion = rf.create("customer");
 
 使用池规范创建客户区域：
 
-```
+```java
 ClientRegionFactory<String,String> cRegionFactory = 
     cache.createClientRegionFactory(PROXY);
 Region<String, String> region = 
@@ -795,7 +765,7 @@ Region<String, String> region =
 
 - `cache.xml`中的声明：
 
-  ```
+  ```xml
   <?xml version="1.0"?>
   <cache
       xmlns="http://geode.apache.org/schema/cache"
@@ -818,7 +788,7 @@ Region<String, String> region =
 
 - `RegionFactory` API调用：
 
-  ```
+  ```xml
   Cache cache = CacheFactory.create();
   RegionFactory rf = cache.createRegionFactory(REPLICATE);
   Region pfloRegion = rf.create("Portfolios");
@@ -839,14 +809,14 @@ Region<String, String> region =
 
 无效区域操作将删除区域的所有条目值，同时保持条目密钥不变。 只能通过“Region”实例上的API调用此操作。 发生事件通知。
 
-```
+```java
 // Invalidate the entire distributed region 
 Region.invalidateRegion(); 
 ```
 
 API还提供了一种方法，仅使本地缓存中的条目无效。 此方法可能不会在复制区域上使用，因为这样做会使复制协定无效。
 
-```
+```java
 // Invalidate the region within this member
 Region.localInvalidateRegion(); 
 ```
@@ -855,7 +825,7 @@ Region.localInvalidateRegion();
 
 清除区域操作将删除区域中的所有条目。 此操作不适用于分区区域。 可以通过`Region`实例上的API调用此操作：
 
-```
+```java
 // Remove all entries for the region
 Region.clear(); 
 ```
@@ -872,7 +842,7 @@ gfsh>remove --region=Region1 --all
 
 销毁区域操作移除整个区域。 可以通过“Region”实例上的API调用此操作：
 
-```
+```java
 // Remove the entire region
 Region.destroyRegion();
 ```
@@ -897,7 +867,7 @@ gfsh>destroy region --name=Region1
 
 使用此选项可以在不关闭整个缓存的情况下停止持久和分区区域的本地缓存：
 
-```
+```java
 Region.close();
 ```
 
@@ -930,7 +900,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 
 通过在`refid`属性设置中为区域创建提供ID来检索区域快捷方式和自定义命名属性。 此示例使用快捷方式REPLICATE属性创建区域：
 
-```
+```xml
 <region name="testREP" refid="REPLICATE"/>
 ```
 
@@ -944,7 +914,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 
 4. 将属性设置存储在名为`testPRPersist`的新自定义属性中：
 
-   ```
+   ```xml
    <disk-store name="testDiskStore" >
        <disk-dirs>
            <disk-dir>PRPersist1</disk-dir>
@@ -976,34 +946,12 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 
 **缓存数据存储模式**
 
-- `PARTITION`
-
-   
-
-  . 创建分区区域。 这是该地区的数据存储。 您也可以使用指定这些选项
-
-   
-
-  ```
-  PARTITION
-  ```
-
-  :
+- `PARTITION` 创建分区区域。 这是该地区的数据存储。 您也可以使用指定这些选项`PARTITION`:
 
   - **PROXY**. 数据不存储在本地缓存中，成员是该区域的数据访问者。 这需要其他成员创建该区域的非代理副本，因此数据存储在某处。
   - **REDUNDANT**. 该区域存储所有数据的辅助副本，以实现高可用性。
 
-- `REPLICATE`
-
-  . 创建复制区域。 这是该地区的数据存储。 您也可以使用指定这些选项
-
-   
-
-  ```
-  REPLICATE
-  ```
-
-  :
+- `REPLICATE` 创建复制区域。 这是该地区的数据存储。 您也可以使用指定这些选项`REPLICATE`:
 
   - **PROXY**. 数据不存储在本地缓存中，成员是该区域的数据访问者。 这需要其他成员创建该区域的非代理副本，因此数据存储在某处。
 
@@ -1087,7 +1035,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 
 这个例子使用`RegionFactory` API根据预定义的`PARTITION`区域快捷方式创建一个区域：
 
-```
+```java
 final Region diskPortfolios = 
     new RegionFactory("PARTITION").create("Portfolios");
 ```
@@ -1217,7 +1165,7 @@ Region<String, String> region = regionFactory
 
 此示例存储属性以供稍后由缓存编写器检索。
 
-```
+```java
 // Attach a user attribute to a Region with database info for table portfolio
 Object myAttribute = "portfolio"; 
 final Region portfolios = 
@@ -1275,7 +1223,7 @@ public class PortfolioDBWriter extends CacheWriterAdapter {
 
 要在缓存中创建或更新条目，请使用“Region.put”。 例如：
 
-```
+```java
 String name = ... 
 String value = ...  
 this.currRegion.put(name,value); 
@@ -1327,7 +1275,7 @@ void putAll(String command) throws CacheException
 
 1. 通过将缓存属性`copy-on-read`设置为true(默认值为false)来更改缓存的条目检索行为。
 
-   ```
+   ```xml
    <cache copy-on-read="true">
     ...
    </cache>

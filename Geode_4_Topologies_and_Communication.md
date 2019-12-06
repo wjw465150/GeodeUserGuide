@@ -172,7 +172,7 @@ UDP单播是用于一般消息传递的TCP的替代方案。 当集群中有大�
 
 对于每个成员，Geode为UDP单播通信选择一个唯一的端口。 您可以通过在`gemfire.properties`文件中设置`membership -port-range`来限制用于选择的范围。 例：
 
-```
+```properties
 membership-port-range=1024-60000
 ```
 
@@ -331,13 +331,13 @@ IPv4是默认版本。
 
 `gemfire.properties`文件可以列出定位器：
 
-```
+```properties
 locators=<locator1-address>[<port1>],<locator2-address>[<port2>]
 ```
 
 要运行独立成员，`gemfire.properties`文件禁用使用定位器：
 
-```
+```properties
 locators=
 mcast-address=                    
 mcast-port=0
@@ -359,13 +359,13 @@ mcast-port=0
 
    TCP是通信的默认协议。 要使用它，只需确保在`gemfire.properties`中没有禁用它。 要么没有'disable-tcp`条目，要么有这个条目：
 
-   ```
+   ```properties
    disable-tcp=false
    ```
 
    要将UDP单播用于常规消息传递，请将此条目添加到`gemfire.properties`：
 
-   ```
+   ```properties
    disable-tcp=true
    ```
 
@@ -375,14 +375,14 @@ mcast-port=0
 
    1. 为区域消息传递配置UDP多播，在`gemfire.properties`中设置非默认多播地址和端口选择：
 
-      ```
+      ```properties
       mcast-address=<address>
       mcast-port=<port>
       ```
 
    2. 在`cache.xml`中，为需要多播消息传递的每个区域启用多播：
 
-      ```
+      ```xml
       <region-attributes multicast-enabled="true"/> 
       ```
 
@@ -400,7 +400,7 @@ mcast-port=0
 
 1. 将成员组名称添加到成员的`gemfire.properties`文件中。 例如：
 
-   ```
+   ```properties
    #gemfire.properties
    groups=Portfolios,ManagementGroup1
    ```
@@ -489,7 +489,7 @@ Apache Geode定位器为您的客户提供可靠，灵活的服务器发现服�
 
 定位器和服务器在其`gemfire.properties`中配置了相同的对等发现：
 
-```
+```properties
 locators=lucy[41111] 
 ```
 
@@ -521,14 +521,14 @@ locators=lucy[41111]
 
 这是服务器1的`gemfire.properties`定义：
 
-```
+```properties
 #gemfire.properties
 groups=Portfolios
 ```
 
 客户端1的`pool`声明：
 
-```
+```xml
 <pool name="PortfolioPool" server-group="Portfolios"...
   <locator host="lucy" port="41111">
 ```
@@ -618,7 +618,7 @@ Apache Geode客户端进程中的服务器池管理对服务器层的所有客�
 
      例如：
 
-     ```
+     ```xml
      <cache-server port="40404" ... />
      ```
 
@@ -632,7 +632,7 @@ Apache Geode客户端进程中的服务器池管理对服务器层的所有客�
 
 2. 配置客户端以连接到服务器。 在客户端`cache.xml`中，使用服务器系统的定位器列表配置客户端服务器池并配置客户端区域以使用池。 例如：
 
-   ```
+   ```xml
    <client-cache>
       <pool name="publisher" subscription-enabled="true">
          <locator host="lucy" port="41111"/> 
@@ -680,7 +680,7 @@ Apache Geode客户端进程中的服务器池管理对服务器层的所有客�
 
 2. 要配置客户端连接到特定成员组，请修改客户端的`cache.xml`文件，为每个`server-group`定义一个不同的池，并将池分配给相应的客户区：
 
-   ```
+   ```xml
    <pool name="PortfolioPool" server-group="Portfolios" ...
      <locator host="lucy" port="41111">
      ...
@@ -700,7 +700,7 @@ Apache Geode客户端进程中的服务器池管理对服务器层的所有客�
 
 通常，定位器和服务器使用相同的属性文件，该文件将定位器列为对等成员和连接客户端的发现机制。 例如：
 
-```
+```properties
 mcast-port=0
 locators=localhost[41111]
 ```
@@ -721,7 +721,7 @@ prompt# gfsh start locator --name=locator_name --port=41111
 
 服务器的`cache.xml`声明了一个`cache-server`元素，它将JVM标识为集群中的服务器。
 
-```
+```xml
 <cache> 
   <cache-server port="40404" ... /> 
   <region . . . 
@@ -746,7 +746,7 @@ gfsh>start server --name=server1 --server-port=40404
 
 只为客户端定义了一个池，因此池会自动分配给所有客户端区域。
 
-```
+```xml
 <client-cache>
     <pool name="publisher" subscription-enabled="true">
        <locator host="localhost" port="41111"/>
@@ -820,7 +820,7 @@ private static void runSubscriber() throws InterruptedException {
 
 客户端的服务器规范必须与服务器正在侦听的地址匹配。 在服务器缓存配置文件中，以下是相关设置。
 
-```
+```xml
 <cache>
     <cache-server port="40404" ... /> 
       <region . . .
@@ -828,7 +828,7 @@ private static void runSubscriber() throws InterruptedException {
 
 客户端的`cache.xml`文件声明了一个显式列出服务器的连接池，并在客户端区域的属性中命名池。 此XML文件使用区域属性模板初始化区域属性配置。
 
-```
+```xml
 <client-cache>
     <pool name="publisher" subscription-enabled="true">
         <server host="localhost" port="40404"/>
@@ -871,7 +871,7 @@ Geode提供了一个默认实用程序，用于探测服务器及其资源使用
 
 在您用于该区域的`Pool`实例上调用`releaseThreadLocalConnection`：
 
-```
+```java
 Region myRegion ...
 PoolManager.find(myRegion).releaseThreadLocalConnection();
 ```
@@ -1089,7 +1089,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
 2. 为多站点系统中的每个集群配置成员身份和通信。 您必须在WAN配置中使用定位器进行对等发现。 请参阅[配置点对点发现](http://geode.apache.org/docs/guide/17/topologies_and_comm/p2p_configuration/setting_up_a_p2p_system.html)。 使用唯一的`distributed-system-id`启动每个集群，并使用`remote-locators`识别远程集群。 例如：
 
-   ```
+   ```properties
    mcast-port=0
    locators=<locator1-address>[<port1>],<locator2-address>[<port2>]
    distributed-system-id=1
@@ -1142,7 +1142,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
      这些示例`cache.xml`条目配置两个并行网关发送器，以将区域事件分发到两个远程Geode集群（集群“2”和“3”）：
 
-     ```
+     ```xml
      <cache>
        <gateway-sender id="sender2" parallel="true" 
         remote-distributed-system-id="2"/> 
@@ -1156,7 +1156,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
      此示例代码显示如何使用API配置并行网关发件人：
 
-     ```
+     ```java
      // Create or obtain the cache
      Cache cache = new CacheFactory().create();
      
@@ -1177,7 +1177,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
      在cache.xml中：
 
-     ```
+     ```xml
      <gateway-sender id="sender2" parallel="true"
       remote-distributed-system-id="2" 
       maximum-queue-memory="150"/> 
@@ -1252,7 +1252,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
   使用`gateway-sender-ids` region属性将网关发件人添加到区域。 要分配多个网关发件人，请使用逗号分隔列表。 例如：
 
-  ```
+  ```xml
   <region-attributes gateway-sender-ids="sender2,sender3">
   </region-attributes>
   ```
@@ -1261,7 +1261,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
   此示例显示将两个网关发件人（在前面的示例中配置）添加到分区区域：
 
-  ```
+  ```java
   RegionFactory rf = 
     cache.createRegionFactory(RegionShortcut.PARTITION);
   rf.addCacheListener(new LoggingCacheListener());
@@ -1309,7 +1309,7 @@ WAN部署增加了Geode系统的消息传递需求。 为避免与WAN消息传�
 
 - **Java API配置**
 
-  ```
+  ```java
   // Create or obtain the cache
   Cache cache = new CacheFactory().create();
   
@@ -1460,7 +1460,7 @@ boglesbymac(ny-4:88724)<v5>:52993 | 5247 | 6            |["boglesbymac(ln-1:8865
   </cache>
   ```
 
-  ```
+  ```xml
   <cache>xml
     ...
     <gateway-receiver start-port="1530" end-port="1551"> 
@@ -1565,7 +1565,7 @@ boglesbymac(ny-4:88724)<v5>:52993 | 5247 | 6            |["boglesbymac(ln-1:8865
 
    **cache.xml**
 
-   ```
+   ```xml
    <cache>
         ... 
        <gateway-conflict-resolver>
@@ -1577,7 +1577,7 @@ boglesbymac(ny-4:88724)<v5>:52993 | 5247 | 6            |["boglesbymac(ln-1:8865
 
    **Java API**
 
-   ```
+   ```java
    // Create or obtain the cache
    Cache cache = new CacheFactory().create();
    
