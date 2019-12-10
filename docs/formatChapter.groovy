@@ -3,10 +3,11 @@
 def parten = ~/^#{2,}\s{1}.{1,}[^}]$/
 def parten2 = ~/[a-zA-Z]{1}[a-zA-Z -\\’]{1,}/
 
-File file = new File($/c:\WJW_E\hello1_Geode.md/$)
+def name=$/c:\WJW_E\白石-Markdown\Geode\Geode_8_Apache_Geode_Reference.md/$
+
+File file = new File($/${name}.FFF/$)
 file.write("") 
 
-def name=$/c:\WJW_D\讲义\Geode\Geode_7_Tools_and_Modules.md/$
 String newLine;
 new File(name).eachLine{line->
   if (parten.matcher(line.trim()).matches() ) {

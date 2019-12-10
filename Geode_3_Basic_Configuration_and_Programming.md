@@ -684,7 +684,7 @@ Geode的区域API为不同的系统成员类型提供专门的行为。
 
 - `对等/服务器` 区域API 使用这些方法，接口和类来创建`对等/服务器`区域。 这些都在`  org.apache.geode.cache` package. 它们对应于`cache.xml` 内部的声明`<cache>`用于创建和配置区域的元素。
 
-  - **org.apache.geode.cache.Cache.createRegionFactory** . 这个方法采用`RegionShortcut``enum`来启动区域配置，并返回一个`RegionFactory`。 使用`createRegionFactory()`而不是`new RegionFactory`来创建RegionFactory。
+  - **org.apache.geode.cache.Cache.createRegionFactory** . 这个方法采用`RegionShortcut`  `enum`来启动区域配置，并返回一个`RegionFactory`。 使用`createRegionFactory()`而不是`new RegionFactory`来创建RegionFactory。
   - **org.apache.geode.cache.RegionFactory**. 提供设置单个区域属性和创建区域的方法。 `create`调用返回一个`Region`。
   - **org.apache.geode.cache.RegionShortcut**. 定义公共区域配置。
 
@@ -692,7 +692,7 @@ Geode的区域API为不同的系统成员类型提供专门的行为。
 
   这些是对等/服务器区域API的客户端版本。 这些客户端API提供类似的功能，但是根据客户区域的需求和行为进行定制。
 
-  - **org.apache.geode.cache.clientCache.createRegionFactory** . 这个方法使用`ClientRegionShortcut``enum`来启动区域配置，并返回一个`ClientRegionFactory`。
+  - **org.apache.geode.cache.clientCache.createRegionFactory** . 这个方法使用`ClientRegionShortcut` `enum`来启动区域配置，并返回一个`ClientRegionFactory`。
   - **org.apache.geode.cache.client.ClientRegionFactory**. 提供设置单个区域属性和创建区域的方法。 `create`调用返回`Region`。
   - **org.apache.geode.cache.client.ClientRegionShortcut** . 定义公共区域配置。
 
@@ -807,7 +807,7 @@ Region<String, String> region =
 
 **使区域无效**
 
-无效区域操作将删除区域的所有条目值，同时保持条目密钥不变。 只能通过“Region”实例上的API调用此操作。 发生事件通知。
+无效(Invalidate )区域操作将删除区域的所有条目值，同时保持条目的键不变。 只能通过`Region`实例上的API调用此操作。 发生事件通知。
 
 ```java
 // Invalidate the entire distributed region 
@@ -823,7 +823,7 @@ Region.localInvalidateRegion();
 
 **清除区域**
 
-清除区域操作将删除区域中的所有条目。 此操作不适用于分区区域。 可以通过`Region`实例上的API调用此操作：
+清除(clear )区域操作将删除区域中的所有条目。 此操作不适用于**分区区域**。 可以通过`Region`实例上的API调用此操作：
 
 ```java
 // Remove all entries for the region
@@ -840,7 +840,7 @@ gfsh>remove --region=Region1 --all
 
 **销毁区域**
 
-销毁区域操作移除整个区域。 可以通过“Region”实例上的API调用此操作：
+销毁(destroy )区域操作移除整个区域。 可以通过`Region`实例上的API调用此操作：
 
 ```java
 // Remove the entire region
@@ -970,7 +970,7 @@ Geode提供了许多预定义的快捷方式区域属性设置供您使用。 �
 
 **客户端的`ClientRegionShortcuts`**
 
-这些是客户端区域快捷方式设置中可用的主要选项。 列出的名称单独或组合出现在快捷方式标识符中，如“PROXY”和“CACHING_PROXY”中的“PROXY”。
+&emsp;这些是客户端区域快捷方式设置中可用的主要选项。 列出的名称单独或组合出现在快捷方式标识符中，如“PROXY”和“CACHING_PROXY”中的“PROXY”。
 
 **与服务器和数据存储的通信**
 

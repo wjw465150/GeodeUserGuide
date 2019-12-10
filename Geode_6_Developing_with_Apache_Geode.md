@@ -2754,7 +2754,7 @@ Geode数据序列化比PDX序列化快约25％，但使用PDX序列化将帮助�
 
 **表 1.** 序列化选项：功能比较
 
-**注意:** 默认情况下，您可以将Geode delta传播与PDX序列化一起使用。 但是，如果已将Geode属性`read-serialized`设置为“true”，则delta传播将不起作用。 在反序列化方面，要应用更改增量传播，需要域类实例和`fromDelta`方法。 如果你将`read-serialized`设置为true，那么你将收到一个`PdxInstance`而不是一个域类实例，而'PdxInstance`没有delta传播所需的`fromDelta`方法。
+**注意:** 默认情况下，您可以将Geode delta传播与PDX序列化一起使用。 但是，如果已将Geode属性`read-serialized`设置为“true”，则delta传播将不起作用。 在反序列化方面，要应用更改增量传播，需要域类实例和`fromDelta`方法。 如果你将`read-serialized`设置为true，那么你将收到一个`PdxInstance`而不是一个域类实例，而`PdxInstance`没有delta传播所需的`fromDelta`方法。
 
 **Geode序列化（PDX或数据可序列化）和Java序列化之间的差异**
 
@@ -2839,8 +2839,8 @@ Java和其他客户端可以针对服务器缓存中的对象运行查询和执�
 
 1. 对于要使用PDX序列化序列化的每种对象类型，请使用以下序列化选项之一：
 
-   - [使用基于自动反射的PDX序列化](https://geode.apache.org/docs/guide/17/developing/data_serialization/auto_serialization.html)
-   - [使用PdxSerializer序列化您的域对象](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializer.html)
+   - [使用基于自动反射的PDX序列化](#使用基于自动反射的PDX序列化)
+   - [使用PdxSerializer序列化您的域对象](####使用PdxSerializer序列化您的域对象)
    - [在域对象中实现PdxSerializable](https://geode.apache.org/docs/guide/17/developing/data_serialization/use_pdx_serializable.html)
 
 2. 要确保服务器不需要加载应用程序类，请将`pdx` `read-serialized`属性设置为true。 在gfsh中，在启动服务器之前执行以下命令：
@@ -2860,7 +2860,7 @@ Java和其他客户端可以针对服务器缓存中的对象运行查询和执�
 仅对于多站点（WAN）安装 - 如果要在任何启用WAN的区域中使用PDX序列化，则对于每个群集，必须选择介于0（零）和255之间的唯一整数并设置`distributed-system-id` 在每个成员的`gemfire.properties`文件中。 请参见[配置多站点（WAN）系统](https://geode.apache.org/docs/guide/17/topologies_and_comm/multi_site_configuration/setting_up_a_multisite_system.html).
 
 
-#### 使用基于自动反射的PDX序列化 {#使用基于自动反射的PDX序列化}
+#### 使用基于自动反射的PDX序列化
 
 您可以将缓存配置为自动序列化和反序列化域对象，而无需向其添加任何额外代码。
 
@@ -3038,7 +3038,7 @@ com.company.special.Patient#identity=ssn
   ```
 
 
-##### 扩展ReflectionBasedAutoSerializer {#扩展ReflectionBasedAutoSerializer}
+##### 扩展ReflectionBasedAutoSerializer
 
 您可以扩展`ReflectionBasedAutoSerializer`以自定义方式处理序列化。 本节概述了可用的基于方法的自定义选项以及扩展序列化程序以支持BigDecimal和BigInteger类型的示例。
 
@@ -3143,8 +3143,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
   }
 ```
 
-
-#### 使用PdxSerializer序列化您的域对象 {#使用PdxSerializer序列化您的域对象}
+#### 使用PdxSerializer序列化您的域对象
 
 对于您不能或不想修改的域对象，请使用`PdxSerializer`类来序列化和反序列化对象的字段。 您对整个缓存使用一个`PdxSerializer`实现，为您以这种方式处理的所有域对象编程。
 
@@ -3152,7 +3151,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 
 如果您编写自己的`PdxSerializer`并且还使用`ReflectionBasedAutoSerializer`，那么`PdxSerializer`需要拥有`ReflectionBasedAutoSerializer`并委托给它。 Cache只能有一个`PdxSerializer`实例。
 
-**注意:** `PdxSerializer``toData`和`fromData`方法与`PdxSerializable`的方法不同。 它们具有不同的参数和结果。
+**注意:** `PdxSerializer`的`toData`和`fromData`方法与`PdxSerializable`的方法不同。 它们具有不同的参数和结果。
 
 **步骤**
 
@@ -3269,7 +3268,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 4. 如果需要，您还可以在使用`PdxWriter`时启用额外验证。 您可以通过将系统属性`gemfire.validatePdxWriters`设置为**true**来设置此项。 请注意，如果要调试新代码，则只应设置此选项，因为此选项会降低系统性能。
 
 
-#### 在域对象中实现PdxSerializable {#在域对象中实现PdxSerializable}
+#### 在域对象中实现PdxSerializable
 
 对于可以修改源的域对象，在对象中实现`PdxSerializable`接口，并使用其方法序列化和反序列化对象的字段。
 
@@ -3367,7 +3366,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
 - 根据需要，配置和编程Geode应用程序以使用`PdxInstance`进行选择性对象反序列化。 请参阅[编写应用程序以使用Pdx实例](https://geode.apache.org/docs/guide/17/developing/data_serialization/program_application_for_pdx.html).
 
 
-#### 编写应用程序以使用PdxInstances {#编写应用程序以使用PdxInstances}
+#### 编写应用程序以使用PdxInstances
 
 `PdxInstance`是PDX序列化字节周围的轻量级包装器。 它为应用程序提供对PDX序列化对象字段的运行时访问。
 
@@ -3447,7 +3446,7 @@ public FieldType get FieldType(Field f, Class<?> clazz) {
    **注意:** 由于PDX的限制，如果启用PDX的缓存包含TreeSet域对象，则应实现可以处理域对象和PdxInstance对象的Comparator。 您还需要在服务器上提供域类。
 
 
-#### 将JSON文档添加到Geode缓存 {#将JSON文档添加到Geode缓存}
+#### 将JSON文档添加到Geode缓存
 
 `JSONFormatter` API允许您将JSON格式的文档放入区域，然后通过将文档作为PdxInstances存储在内部来检索它们。
 
@@ -3482,7 +3481,7 @@ Geode本身支持使用JSON格式的文档。 将JSON文档添加到Geode缓存�
 如果您希望仅按指定字段顺序不同的JSON文档映射到相同的typeID，请将属性`gemfire.pdx.mapper.sort-json-field-names`设置为“true”。 这告诉系统在序列化之前对JSON字段进行排序，允许系统识别匹配的条目，并有助于减少序列化机制生成的pdx typeID的数量。
 
 
-#### 使用PdxInstanceFactory创建PdxInstances {#使用PdxInstanceFactory创建PdxInstances}
+#### 使用PdxInstanceFactory创建PdxInstances
 
 当域类在服务器上不可用时，您可以使用`PdxInstanceFactory`接口从原始数据创建`PdxInstance`。
 
@@ -3514,7 +3513,7 @@ PdxInstance pi = cache.createPdxInstanceFactory("com.company.DomainObject")
 `RegionService`有一个方法，允许你创建一个表示枚举的`PdxInstance`。 请参阅Java API文档中的`RegionService.createPdxEnum`。
 
 
-#### 将PDX元数据保留到磁盘 {#将PDX元数据保留到磁盘}
+#### 将PDX元数据保留到磁盘
 
 Geode允许您将PDX元数据持久保存到磁盘并指定要使用的磁盘存储。
 
@@ -3591,7 +3590,7 @@ Geode的`DataSerializable`接口为您提供比标准Java序列化或Geode PDX�
 请参阅[DataSerializable]上的JavaDocs(https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializable.html)和[DataSerializer](https://geode.apache.org/releases/latest/javadoc/org/apache/geode/DataSerializer.html) 了解更多信息。
 
 
-### 标准Java序列化 {#标准Java序列化}
+### 标准Java序列化
 
 您可以对仅在Java应用程序之间分发的数据使用标准Java序列化。 如果在非Java客户端和Java服务器之间分发数据，则需要执行其他编程以获取各种类格式之间的数据。
 
@@ -3926,7 +3925,7 @@ Geode提供了许多类型的事件和事件处理程序，可帮助您管理不
 | `TransactionEvent`                  | `TransactionListener`, `TransactionWriter`                   | 描述事务中完成的工作。 此事件可能用于挂起或已提交的事务，也可能用于显式回滚或失败提交放弃的工作。 该工作由`EntryEvent`实例的有序列表表示。 条目事件按事务中执行操作的顺序列出。在执行事务操作时，条目事件被混合，每个条目的最后一个事件仅保留在列表中。 因此，如果修改了条目A，然后是条目B，那么条目A，该列表将包含条目B的事件，后面是条目A的第二个事件。 |
 
 
-### 实现Geode事件处理程序 {#实现Geode事件处理程序}
+### 实现Geode事件处理程序
 
 您可以为区域和区域条目操作以及管理事件指定事件处理程序。
 
@@ -4082,7 +4081,7 @@ Region nr = cache.createRegionFactory()
 ```
 
 
-#### 为Write-Behind Cache事件处理实现AsyncEventListener {#为WriteBehindCache事件处理实现AsyncEventListener}
+#### 为Write-Behind Cache事件处理实现AsyncEventListener
 
 `AsyncEventListener`在将批量事件应用于区域后异步处理这些事件。 您可以使用`AsyncEventListener`实现作为后写缓存事件处理程序，以将区域更新与数据库同步。
 
@@ -9821,3 +9820,6 @@ Geode的默认`ResultCollector`将所有结果收集到一个`ArrayList`中。�
 
 
 
+
+
+[id]: 

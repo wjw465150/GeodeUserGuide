@@ -2559,52 +2559,52 @@ gfsh>create lucene index --name=testIndex --region=testRegion
 
 **参数，创建区域:**
 
-| 名称                                    | 描述                                                  | 默认值                                                      |
-| :-------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| --name                                  | *Required.* 要创建的区域的名称/路径.           |                                                              |
-| --type                                  | *Required* （如果未指定template-region。）要创建的区域类型。 选项包括：PARTITION，PARTITION_REDUNDANT，REPLICATE，LOCAL等。要获取所有区域类型选项的列表，请添加--type参数，然后选择TAB键以显示完整列表. |                                                              |
-| --template-region                       | *Required* （如果未指定type。）创建此区域时应重复其属性的区域的名称/路径. |                                                              |
-| --groups                                | 将在其上创建区域的成员组.     |                                                              |
-| --if-not-exists                         | 如果已存在具有相同名称的区域，则不会创建新区域。 默认情况下，尝试创建重复区域会报告为错误。 如果指定此选项没有值或指定值为`true`，则gfsh会显示“跳过...”确认，但不会引发错误. | false                                                        |
-| --key-constraint                        | 作为区域键允许的对象的完全限定类名。 确保区域条目的键都属于同一类. |                                                              |
-| --value-constraint                      | 允许作为区域值的对象的完全限定类名。 如果未指定，则区域值可以是任何类. |                                                              |
-| --enable-statistics                     | 是否收集该地区的统计数据。 必须为true才能在该地区使用expiration. |                                                              |
-| --entry-idle-time-expiration            | 区域的条目可以在未被访问的情况下保留在缓存中多长时间. | no expiration                                                |
-| --entry-idle-time-expiration-action     | 对超过空闲到期的条目采取的操作。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
-| --entry-time-to-live-expiration         | 区域的条目可以在未被访问或更新的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 | no expiration                                                |
-| --entry-time-to-live-expiration-action  | 对超过TTL到期的条目采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
-| --entry-idle-time-custom-expiry         | 为入口空闲时间实现CustomExpiry的类的名称。 为初始化属性附加JSON字符串。 |                                                              |
-| --entry-time-to-live-custom-expiry      | 实现CustomExpiry以进入生存时间的类的名称。 为初始化属性附加JSON字符串。 |                                                              |
-| --region-idle-time-expiration           | 该区域可以在未被访问的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 |                                                              |
-| --region-idle-time-expiration-action    | 对超过空闲到期的区域采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
-| --region-time-to-live-expiration        | 该区域可以在未被访问或更新的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 | no expiration                                                |
-| --region-time-to-live-expiration-action | 对超过TTL到期的区域采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                                              |
-| --disk-store                            | 此区域使用的磁盘存储。 [list disk-stores](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#topic_BC14AD57EA304FB3845766898D01BD04)命令可用于显示现有磁盘存储。 |                                                              |
-| --enable-synchronous-disk               | 对于将数据持久保存到磁盘的区域，是否同步完成写入。 |                                                              |
-| --enable-async-conflation               | 是否允许聚合由该区域的生产者成员发送的异步TCP/IP消息。 false值会导致所有异步消息单独发送。 |                                                              |
-| --enable-subscription-conflation        | 服务器是否应将其消息与客户端混淆。 false值会导致所有服务器 - 客户端消息单独发送。 |                                                              |
-| --cache-listener                        | 要实例化的插件的完全限定类名，用于接收对区域及其条目的更改的事件后通知。 可以配置任意数量的缓存侦听器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`init()`方法的参数字段。 |                                                              |
-| --cache-loader                          | 要实例化的插件的完全限定类名，用于接收区域中缓存未命中的通知。 最多可以在该区域的每个成员中定义一个缓存加载器。 对于分布式区域，可以从具有定义区域的其他成员远程调用缓存加载器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`initialize()`方法的参数字段。 |                                                              |
-| --cache-writer                          | 要实例化的插件的完全限定类名，用于接收区域及其条目更改的事件前通知。 插件可能会取消该事件。 最多可以在该区域的每个成员中定义一个缓存写入器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`init()`方法的参数字段。 |                                                              |
-| --async-event-queue-id                  | 将用于后写操作的异步事件队列的ID。 |                                                              |
-| --gateway-sender-id                     | 要将数据路由到的网关发件人的ID。     |                                                              |
-| --enable-concurrency-checks             | 是否实现了区域版本向量。 区域版本向量是版本控制方案的扩展，有助于复制区域的同步。 |                                                              |
-| --enable-cloning                        | 确定fromDelta如何将增量应用于本地缓存以进行增量传播。 如果为true，则将更新应用于值的克隆，然后将克隆保存到缓存中。 如果为false，则在缓存中就地修改该值。 |                                                              |
-| --concurrency-level                     | 估计将同时访问区域条目的最大应用程序线程数。 此属性不适用于分区区域。 |                                                              |
-| --colocated-with                        | 与该地区相关的中部地区。   |                                                              |
-| --local-max-memory                      | 此进程中区域使用的最大内存量（以兆字节为单位）。 (默认值为可用堆的90%。) |                                                              |
-| --recovery-delay                        | 现有成员在成员崩溃之后等待的延迟（以毫秒为单位），然后在其余成员上恢复此区域的冗余。 默认值（-1）表示在发生故障后不会恢复冗余。 |                                                              |
-| --redundant-copies                      | 所需桶的额外副本数量。 额外的副本允许面对VM离开（有意或无意）的高可用性和负载平衡读取操作。 （允许值：0,1,2和3） |                                                              |
+| 名称                                    | 描述                                                         | 默认值                                 |
+| :-------------------------------------- | :----------------------------------------------------------- | :------------------------------------- |
+| --name                                  | *Required.* 要创建的区域的名称/路径.                         |                                        |
+| --type                                  | *Required* （如果未指定template-region。）要创建的区域类型。 选项包括：PARTITION，PARTITION_REDUNDANT，REPLICATE，LOCAL等。<br/>要获取所有区域类型选项的列表，请添加--type参数，然后选择TAB键以显示完整列表. |                                        |
+| --template-region                       | *Required* （如果未指定type。）创建此区域时应重复其属性的区域的名称/路径. |                                        |
+| --groups                                | 将在其上创建区域的成员组.                                    |                                        |
+| --if-not-exists                         | 如果已存在具有相同名称的区域，则不会创建新区域。 默认情况下，尝试创建重复区域会报告为错误。 如果指定此选项没有值或指定值为`true`，则gfsh会显示“跳过...”确认，但不会引发错误. | false                                  |
+| --key-constraint                        | 作为区域键允许的对象的完全限定类名。 确保区域条目的键都属于同一类. |                                        |
+| --value-constraint                      | 允许作为区域值的对象的完全限定类名。 如果未指定，则区域值可以是任何类. |                                        |
+| --enable-statistics                     | 是否收集该地区的统计数据。 必须为true才能在该地区使用expiration. |                                        |
+| --entry-idle-time-expiration            | 区域的条目可以在未被访问的情况下保留在缓存中多长时间.        | no expiration                          |
+| --entry-idle-time-expiration-action     | 对超过空闲到期的条目采取的操作。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                        |
+| --entry-time-to-live-expiration         | 区域的条目可以在未被访问或更新的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 | no expiration                          |
+| --entry-time-to-live-expiration-action  | 对超过TTL到期的条目采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                        |
+| --entry-idle-time-custom-expiry         | 为条目空闲时间实现CustomExpiry的类的名称。 为初始化属性附加JSON字符串。 |                                        |
+| --entry-time-to-live-custom-expiry      | 实现CustomExpiry以进入生存时间的类的名称。 为初始化属性附加JSON字符串。 |                                        |
+| --region-idle-time-expiration           | 该区域可以在未被访问的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 |                                        |
+| --region-idle-time-expiration-action    | 对超过空闲到期的区域采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                        |
+| --region-time-to-live-expiration        | 该区域可以在未被访问或更新的情况下保留在缓存中多长时间。 默认值为此类型没有到期。 | no expiration                          |
+| --region-time-to-live-expiration-action | 对超过TTL到期的区域采取的措施。 有效的到期操作包括destroy，local-destroy，invalidate（默认），local-invalidate。 |                                        |
+| --disk-store                            | 此区域使用的磁盘存储。 [list disk-stores](https://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/list.html#topic_BC14AD57EA304FB3845766898D01BD04)命令可用于显示现有磁盘存储。 |                                        |
+| --enable-synchronous-disk               | 对于将数据持久保存到磁盘的区域，是否同步完成写入。           |                                        |
+| --enable-async-conflation               | 是否允许聚合由该区域的生产者成员发送的异步TCP/IP消息。 false值会导致所有异步消息单独发送。 |                                        |
+| --enable-subscription-conflation        | 服务器是否应将其消息与客户端混淆。 false值会导致所有服务器 - 客户端消息单独发送。 |                                        |
+| --cache-listener                        | 要实例化的插件的完全限定类名，用于接收对区域及其条目的更改的事件后通知。 可以配置任意数量的缓存侦听器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`init()`方法的参数字段。 |                                        |
+| --cache-loader                          | 要实例化的插件的完全限定类名，用于接收区域中缓存未命中的通知。 最多可以在该区域的每个成员中定义一个缓存加载器。 对于分布式区域，可以从具有定义区域的其他成员远程调用缓存加载器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`initialize()`方法的参数字段。 |                                        |
+| --cache-writer                          | 要实例化的插件的完全限定类名，用于接收区域及其条目更改的事件前通知。 插件可能会取消该事件。 最多可以在该区域的每个成员中定义一个缓存写入器。 完全限定的类名可以附加一个JSON规范，该规范将被解析成为实现`Declarable`接口的类的`init()`方法的参数字段。 |                                        |
+| --async-event-queue-id                  | 将用于后写操作的异步事件队列的ID。                           |                                        |
+| --gateway-sender-id                     | 要将数据路由到的网关发件人的ID。                             |                                        |
+| --enable-concurrency-checks             | 是否实现了区域版本向量。 区域版本向量是版本控制方案的扩展，有助于复制区域的同步。 |                                        |
+| --enable-cloning                        | 确定fromDelta如何将增量应用于本地缓存以进行增量传播。 如果为true，则将更新应用于值的克隆，然后将克隆保存到缓存中。 如果为false，则在缓存中就地修改该值。 |                                        |
+| --concurrency-level                     | 估计将同时访问区域条目的最大应用程序线程数。 此属性不适用于分区区域。 |                                        |
+| --colocated-with                        | 与该地区相关的中部地区。                                     |                                        |
+| --local-max-memory                      | 此进程中区域使用的最大内存量（以兆字节为单位）。 (默认值为可用堆的90%。) |                                        |
+| --recovery-delay                        | 现有成员在成员崩溃之后等待的延迟（以毫秒为单位），然后在其余成员上恢复此区域的冗余。 默认值（-1）表示在发生故障后不会恢复冗余。 |                                        |
+| --redundant-copies                      | 所需桶的额外副本数量。 额外的副本允许面对VM离开（有意或无意）的高可用性和负载平衡读取操作。 （允许值：0,1,2和3） |                                        |
 | --startup-recovery-delay                | 新成员在假定其共享级别冗余之前将等待的延迟（以毫秒为单位）。 这允许在将冗余工作负载分配给新成员之前启动多个区域的时间。 值-1表示添加新成员不会触发冗余恢复。 | 默认设置是在添加新成员时立即恢复冗余。 |
-| --total-max-memory                      | 所有进程中该区域使用的最大内存量（以兆字节为单位）。 |                                                              |
-| --total-num-buckets                     | 所有进程中该区域使用的哈希桶总数。 | 113                                                          |
-| --compressor                            | 实现区域压缩的Java类名称。 您可以编写一个实现`org.apache.geode.compression.Compressor`的自定义压缩器，或者您可以指定与Geode捆绑在一起的Snappy压缩器(`org.apache.geode.compression.SnappyCompressor`)。 请参阅[区域压缩](https://geode.apache.org/docs/guide/17/managing/region_compression.html#topic_r43_wgc_gl)。 | no compression                                               |
-| --off-heap                              | 指定区域值是存储在堆内存还是堆外内存中。 如果为true，则区域值位于堆外内存中。 如果指定的参数没有值，则使用true值。 | false                                                        |
-| --partition-resolver                    | 指定自定义分区解析程序的完整路径。 指定`org.apache.geode.cache.util.StringPrefixPartitionResolver`以使用包含的字符串前缀分区解析程序。 |                                                              |
-| --eviction-entry-count                  | 实现驱逐，驱逐政策基于该地区的条目数量。 |                                                              |
-| --eviction-max-memory                   | 启用驱逐，其中驱逐策略基于区域消耗的内存量（以兆字节为单位）。 |                                                              |
-| --eviction-action                       | 达到驱逐阈值时采取的行动。本地销毁当地销毁物品。 请谨慎使用 - 可能导致不一致.overflow-to-diskEntry溢出到磁盘。 对于分区区域，这提供了整个区域中最可靠的读取行为。 |                                                              |
-| –eviction-object-sizer                  | 指定ObjectSizer接口的实现，以测量区域中对象的大小。 sizer仅适用于基于堆和内存的驱逐。 |                                                              |
+| --total-max-memory                      | 所有进程中该区域使用的最大内存量（以兆字节为单位）。         |                                        |
+| --total-num-buckets                     | 所有进程中该区域使用的哈希桶总数。                           | 113                                    |
+| --compressor                            | 实现区域压缩的Java类名称。 您可以编写一个实现`org.apache.geode.compression.Compressor`的自定义压缩器，或者您可以指定与Geode捆绑在一起的Snappy压缩器(`org.apache.geode.compression.SnappyCompressor`)。 请参阅[区域压缩](https://geode.apache.org/docs/guide/17/managing/region_compression.html#topic_r43_wgc_gl)。 | no compression                         |
+| --off-heap                              | 指定区域值是存储在堆内存还是堆外内存中。 如果为true，则区域值位于堆外内存中。 如果指定的参数没有值，则使用true值。 | false                                  |
+| --partition-resolver                    | 指定自定义分区解析程序的完整路径。 指定`org.apache.geode.cache.util.StringPrefixPartitionResolver`以使用包含的字符串前缀分区解析程序。 |                                        |
+| --eviction-entry-count                  | 启用逐出，其中逐出策略基于区域中的条目数。                   |                                        |
+| --eviction-max-memory                   | 启用驱逐，其中驱逐策略基于区域消耗的内存量（以兆字节为单位）。 |                                        |
+| --eviction-action                       | 达到驱逐阈值时采取的行动。<br/> `local-destroy`: 条目在本地被销毁。 谨慎使用-可能导致不一致。<br/> `overflow-to-diskEntry`: 条目溢出到磁盘。 对于分区区域，这提供了整个区域中最可靠的读取行为。 |                                        |
+| –eviction-object-sizer                  | 指定ObjectSizer接口的实现，以测量区域中对象的大小。 sizer仅适用于基于堆和内存的驱逐。 |                                        |
 
 
 
