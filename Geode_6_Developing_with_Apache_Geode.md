@@ -7039,18 +7039,16 @@ COUNT关键字返回与WHERE子句中指定的查询选择条件匹配的结果�
 SELECT COUNT(*) FROM /exampleRegion
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0
 SELECT COUNT(*) FROM /exampleRegion WHERE ID > 0 LIMIT 50
-SELECT COUNT(*) FROM /exampleRegion 
-WHERE ID >0 AND status LIKE 'act%'
-SELECT COUNT(*) FROM /exampleRegion 
-WHERE ID IN SET(1,2,3,4,5)
+SELECT COUNT(*) FROM /exampleRegion WHERE ID >0 AND status LIKE 'act%'
+SELECT COUNT(*) FROM /exampleRegion WHERE ID IN SET(1,2,3,4,5)
 ```
 
 下面的COUNT查询返回与查询的选择条件匹配的结构类型的总数。
 
 ```sql
 SELECT COUNT(*) 
-FROM /exampleRegion p, p.positions.values pos 
-WHERE p.ID > 0 AND pos.secId 'IBM'
+  FROM /exampleRegion p, p.positions.values pos 
+  WHERE p.ID > 0 AND pos.secId 'IBM'
 ```
 
 下面的COUNT查询使用不同的关键字，并从结果的数量中消除重复。
@@ -8014,7 +8012,7 @@ if (resultList.size() != 0) {
 
   ```sql
   // VALID for partitioned regions
-  SELECT DISTINCT *FROM /prRgn WHERE attribute > 10
+  SELECT DISTINCT * FROM /prRgn WHERE attribute > 10
   ```
 
 - 只要只引用一个分区区域，SELECT表达式本身可以是任意复杂的，包括嵌套的SELECT表达式。

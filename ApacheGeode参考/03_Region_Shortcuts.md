@@ -1,16 +1,18 @@
-# Region Shortcuts
+# Region Shortcuts(区域快捷方式)
 
-This topic describes the various region shortcuts you can use to configure Geode regions.
+[TOC]
 
-Region shortcuts are groupings of pre-configured attributes that define the characteristics of a region. You can use a region shortcut as a starting point when configuring regions and you can add additional configurations to customize your application. To reference a region shortcut in a Geode `cache.xml` file, use the `refid` attribute of the `<region>` element. For example:
+本主题介绍可用于配置Geode区域的各种区域快捷方式。
 
-```
+区域快捷方式是定义区域特征的预配置属性的分组。 在配置区域时，可以使用区域快捷方式作为起点，还可以添加其他配置以自定义应用程序。 要在Geode的`cache.xml`文件中引用区域快捷方式，请使用`<region>`元素的`refid`属性。 例如：
+
+```xml
 <region name="myRegion" refid="PARTITION_REDUNDANT"/>
 ```
 
-You can override the default values and add additional configurations within a `<region-attributes>` element of the `cache.xml` file. For example, the following configuration overrides the local-max-memory setting and adds the recovery-delay attribute:
+您可以覆盖默认值，并在`cache.xml`文件的`<region-attributes>`元素内添加其他配置。 例如，以下配置将覆盖local-max-memory设置，并添加recovery-delay属性：
 
-```
+```xml
 <region name="myRegion" refid="PARTITION_REDUNDANT">
     <region-attributes>
         <partition-attributes 
@@ -20,23 +22,23 @@ You can override the default values and add additional configurations within a `
 </region>
 ```
 
-You can also create your own, named region shortcuts for common custom configurations. See [Region Shortcuts and Custom Named Region Attributes](https://geode.apache.org/docs/guide/17/basic_config/data_regions/region_shortcuts.html).
+您也可以为常见的自定义配置创建自己的命名区域快捷方式。 请参见[区域快捷方式和自定义命名区域属性](https://geode.apache.org/docs/guide/17/basic_config/data_regions/region_shortcuts.html).
 
-To configure a region using the gfsh command-line tool, specify the shortcut name with the `--type` argument. For example:
+要使用gfsh命令行工具配置区域，请使用`--type`参数指定快捷方式名称。 例如：
 
 ```
 gfsh>create region --name=myRegion --type=PARTITION_REDUNDANT
 ```
 
-**Note:** If you change the cache.xml file that defines a region, you must restart the member before the changes take effect.
+**注意:** 如果更改了定义区域的cache.xml文件，则必须重新启动成员才能使更改生效。
 
-For more information about configuring regions, see [Region Management](https://geode.apache.org/docs/guide/17/basic_config/data_regions/managing_data_regions.html).
+有关配置区域的更多信息，请参见[区域管理]。(https://geode.apache.org/docs/guide/17/basic_config/data_regions/managing_data_regions.html).
 
-For more information about using the various types of Geode regions and when to use them, see [Region Types](https://geode.apache.org/docs/guide/17/developing/region_options/region_types.html#region_types).
+有关使用各种类型的Geode区域以及何时使用它们的更多信息，请参见[区域类型]。(https://geode.apache.org/docs/guide/17/developing/region_options/region_types.html#region_types).
 
-- **Region Shortcuts Quick Reference**
+- **区域快捷键快速参考**
 
-  This section provides a quick reference for all region shortcuts.
+  本部分提供所有区域快捷方式的快速参考。
 
 - **LOCAL**
 
@@ -86,60 +88,60 @@ For more information about using the various types of Geode regions and when to 
 
 
 
-## Region Shortcuts Quick Reference 
+## 区域快捷键快速参考
 
-This section provides a quick reference for all region shortcuts.
+本部分提供所有区域快捷方式的快速参考。
 
-[Region Shortcuts Default Configurations](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_table.html#reference_ufj_5kz_4k__table_lkl_hws_mk) summarizes the default configurations for each region shortcut. See the cross reference for additional information about each shortcut.
+[区域快捷方式默认配置](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_table.html#reference_ufj_5kz_4k__table_lkl_hws_mk)总结了每个区域快捷方式的默认配置。 有关每个快捷方式的其他信息，请参见交叉参考。
 
 
 
-| Region Shortcut                                              | Region Attributes                                        | Other Attributes                                             |
-| :----------------------------------------------------------- | :------------------------------------------------------- | :----------------------------------------------------------- |
-| [LOCAL](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_w2h_3cd_lk) | scope: local data-policy: NORMAL                         |                                                              |
-| [LOCAL_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_wd5_lpy_lk) | scope: local data-policy: NORMAL                         | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:local-destroy |
-| [LOCAL_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_adk_y4y_lk) | scope: local data-policy: NORMAL                         | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-disk |
-| [LOCAL_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_l5r_y4y_lk) | scope: local data-policy: PERSISTENT_REPLICATE           |                                                              |
-| [LOCAL_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_a45_y4y_lk) | scope: local data-policy: PERSISTENT_REPLICATE           | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-disk |
-| [PARTITION](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_ow5_4qy_lk) | data-policy: PARTITION                                   |                                                              |
-| [PARTITION_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_twx_y4y_lk) | data-policy: PARTITION                                   | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:local-destroy |
-| [PARTITION_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_js1_z4y_lk) | data-policy: PARTITION                                   | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-disk |
-| [PARTITION_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_d4k_jpy_lk) | data-policy: PERSISTENT_PARTITION                        |                                                              |
-| [PARTITION_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_v5l_jpy_lk) | data-policy: PERSISTENT_PARTITION                        | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-disk |
-| [PARTITION_PROXY](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_v4m_jpy_lk) | data-policy: PARTITION                                   | Partition Attributeslocal-max-memory:0                       |
-| [PARTITION_PROXY_REDUNDANT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_c1n_jpy_lk) | data-policy: PARTITION                                   | Partition Attributesredundant-copies:1local-max-memory0      |
-| [PARTITION_REDUNDANT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_shn_jpy_lk) | data-policy: PARTITION                                   | Partition Attributesredundant-copies:1                       |
-| [PARTITION_REDUNDANT_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_m4n_jpy_lk) | data-policy: PARTITION                                   | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:local-destroyPartition Attributesredundant-copies:1 |
-| [PARTITION_REDUNDANT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_own_jpy_lk) | data-policy: PARTITION                                   | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-diskPartition Attributesredundant-copies:1 |
-| [PARTITION_REDUNDANT_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_bd4_jpy_lk) | data-policy: PERSISTENT_PARTITION                        | Partition Attributesredundant-copies:1                       |
-| [PARTITION_REDUNDANT_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_xqq_tvc_lk) | data-policy: PERSISTENT_PARTITION                        | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-diskPartition Attributesredundant-copies:1 |
-| [REPLICATE](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_wq4_jpy_lk) | data-policy: REPLICATE scope: distributed-ack            |                                                              |
-| [REPLICATE_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_xx4_jpy_lk) | data-policy: PRELOADED scope: distributed-ack            | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:local-destroy**Note:**Normally, you cannot have a `local-destroy`eviction policy on replicated regions. However, the REPLICATE_HEAP_LRU region is not the same as other replicated regions. This region is preloaded and remains in synch by registering interest in the keys of its peer’s replicated regions.Subscription Attributesinterest-policy:all |
-| [REPLICATE_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_t2p_jpy_lk) | data-policy: REPLICATE scope: distributed-ack            | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-disk |
-| [REPLICATE_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_emp_jpy_lk) | data-policy: PERSISTENT_REPLICATE scope: distributed-ack |                                                              |
-| [REPLICATE_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_tsp_jpy_lk) | data-policy: PERSISTENT_REPLICATE scope: distributed-ack | Eviction Attributeseviction-algorithm:lru-heap-percentageeviction-action:overflow-to-disk |
-| [REPLICATE_PROXY](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_n1q_jpy_lk) | data-policy: EMPTY scope: distributed-ack                |                                                              |
+| 区域快捷方式                                                 | 区域属性                                                     | 其他属性                                                     |
+| :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [LOCAL](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_w2h_3cd_lk) | 范围(scope): local <br/>数据政策(data-policy): NORMAL                        |                                                              |
+| [LOCAL_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_wd5_lpy_lk) | 范围(scope): local <br/>数据政策(data-policy): NORMAL                        | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): local-destroy |
+| [LOCAL_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_adk_y4y_lk) | 范围(scope): local <br/>数据政策(data-policy): NORMAL                        | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk |
+| [LOCAL_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_l5r_y4y_lk) | 范围(scope): local <br/>数据政策(data-policy): PERSISTENT_REPLICATE          |                                                              |
+| [LOCAL_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_a45_y4y_lk) | 范围(scope): local <br/>数据政策(data-policy): PERSISTENT_REPLICATE          | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk |
+| [PARTITION](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_ow5_4qy_lk) | 数据政策(data-policy): PARTITION                                       |                                                              |
+| [PARTITION_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_twx_y4y_lk) | 数据政策(data-policy): PARTITION                                       | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): local-destroy |
+| [PARTITION_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_js1_z4y_lk) | 数据政策(data-policy): PARTITION                                       | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk |
+| [PARTITION_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_d4k_jpy_lk) | 数据政策(data-policy): PERSISTENT_PARTITION                            |                                                              |
+| [PARTITION_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_v5l_jpy_lk) | 数据政策(data-policy): PERSISTENT_PARTITION                            | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk |
+| [PARTITION_PROXY](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_v4m_jpy_lk) | 数据政策(data-policy): PARTITION                                       | 分区属性<br/><br/>local-max-memory: 0            |
+| [PARTITION_PROXY_REDUNDANT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_c1n_jpy_lk) | 数据政策(data-policy): PARTITION                                       | 分区属性<br/><br/>redundant-copies(冗余副本): 1<br/>local-max-memory: 0 |
+| [PARTITION_REDUNDANT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_shn_jpy_lk) | 数据政策(data-policy): PARTITION                                       | 分区属性<br/><br/>redundant-copies(冗余副本): 1            |
+| [PARTITION_REDUNDANT_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_m4n_jpy_lk) | 数据政策(data-policy): PARTITION                                       | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): local-destroy<br/><br/>分区属性<br/>redundant-copies(冗余副本): 1 |
+| [PARTITION_REDUNDANT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_own_jpy_lk) | 数据政策(data-policy): PARTITION                                       | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk<br/><br/>分区属性<br/>redundant-copies(冗余副本): 1 |
+| [PARTITION_REDUNDANT_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_bd4_jpy_lk) | 数据政策(data-policy): PERSISTENT_PARTITION                            | 分区属性<br/><br/>redundant-copies(冗余副本): 1            |
+| [PARTITION_REDUNDANT_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_xqq_tvc_lk) | 数据政策(data-policy): PERSISTENT_PARTITION                            | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk<br/><br/>分区属性<br/>redundant-copies(冗余副本): 1 |
+| [REPLICATE](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_wq4_jpy_lk) | 数据政策(data-policy): REPLICATE <br/>范围(scope): distributed-ack           |                                                              |
+| [REPLICATE_HEAP_LRU](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_xx4_jpy_lk) | 数据政策(data-policy): PRELOADED <br/><br/>范围(scope): distributed-ack      | 驱逐属性<br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/><br/>age驱逐行动(eviction-action): local-destroy<br/>**Note:**<span style="color:red">Normally, you cannot have a `local-destroy`eviction policy on replicated regions. However, the REPLICATE_HEAP_LRU region is not the same as other replicated regions. This region is preloaded and remains in synch by registering interest in the keys of its peer’s replicated regions.</span><br/><br/>Subscription Attributes<br/>interest-policy: all |
+| [REPLICATE_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_t2p_jpy_lk) | 数据政策(data-policy): REPLICATE <br/><br/>范围(scope): distributed-ack      | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk |
+| [REPLICATE_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_emp_jpy_lk) | 数据政策(data-policy): PERSISTENT_REPLICATE<br/><br/>范围(scope): distributed-ack |                                                              |
+| [REPLICATE_PERSISTENT_OVERFLOW](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_tsp_jpy_lk) | 数据政策(data-policy): PERSISTENT_REPLICATE <br/>范围(scope): distributed-ack | 驱逐属性<br/><br/>驱逐算法(eviction-algorithm): lru-heap-percent<br/>age驱逐行动(eviction-action): overflow-to-disk |
+| [REPLICATE_PROXY](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_n1q_jpy_lk) | 数据政策(data-policy): EMPTY <br/><br/>范围(scope): distributed-ack          |                                                              |
 
-Table 1. Region Shortcuts Default Configurations
+表1.区域快捷方式默认配置
 
 
 
 ## LOCAL
 
-### Description
+### 描述
 
-A region configured with the LOCAL region shortcut is scoped only to its JVM and is not visible to other peer members. The region does not distribute data and operations to other caches.
+使用LOCAL区域快捷方式配置的区域仅在其JVM范围内，其他对等成员不可见。 该区域不会将数据和操作分发到其他缓存。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |        |
 | :----------- | :----- |
-| scope:       | local  |
-| data-policy: | NORMAL |
+| 范围(scope):       | local  |
+| 数据政策(data-policy): | NORMAL |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myLOCALregion --type=LOCAL
@@ -158,9 +160,9 @@ Region | data-policy | NORMAL
        | size        | 0
 ```
 
-### XML Definition of LOCAL
+### XML的定义 - LOCAL
 
-```
+```xml
 <region name="myLOCALregion">
    <region-attributes scope="local"/>
 </region>
@@ -168,27 +170,27 @@ Region | data-policy | NORMAL
 
 ## LOCAL_HEAP_LRU
 
-### Description
+### 描述
 
-A region configured with the LOCAL_HEAP_LRU region shortcut is scoped to its JVM and is not visible to other peer members. The region does not distribute data and operations to other caches. The region destroys the least recently used entries when it detects that the JVM is running low on memory.
+使用LOCAL_HEAP_LRU区域快捷方式配置的区域在其JVM范围内，其他对等成员不可见。 该区域不会将数据和操作分发到其他缓存。 当该区域检测到JVM的内存不足时，该区域将破坏最近最少使用的条目。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |        |
 | :----------- | :----- |
-| scope:       | local  |
-| data-policy: | NORMAL |
+| 范围(scope):       | local  |
+| 数据政策(data-policy): | NORMAL |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | local-destroy       |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | local-destroy       |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myLHLregion --type=LOCAL_HEAP_LRU
@@ -209,9 +211,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | local-destroy
 ```
 
-### XML Definition of LOCAL_HEAP_LRU
+### XML的定义 - LOCAL_HEAP_LRU
 
-```
+```xml
 <region name="myLHLregion">
    <region-attributes 
         scope="local">
@@ -229,27 +231,27 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## LOCAL_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the LOCAL_OVERFLOW region shortcut is scoped only to its JVM and is not visible to other peer members. The region does not distribute data and operations to other caches. The region moves the values of entries to disk when it detects that the JVM is running low on memory.
+使用LOCAL_OVERFLOW区域快捷方式配置的区域仅在其JVM范围内，其他对等成员不可见。 该区域不会将数据和操作分发到其他缓存。 当区域检测到JVM的内存不足时，该区域会将条目的值移至磁盘。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |        |
 | :----------- | :----- |
-| scope:       | local  |
-| data-policy: | NORMAL |
+| 范围(scope):       | local  |
+| 数据政策(data-policy): | NORMAL |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myLOregion --type=LOCAL_OVERFLOW
@@ -270,7 +272,7 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | overflow-to-disk
 ```
 
-### XML Definition of LOCAL_OVERFLOW
+### XML的定义 - LOCAL_OVERFLOW
 
 ```
 <region name="myLOregion">
@@ -286,20 +288,20 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## LOCAL_PERSISTENT
 
-### Description
+### 描述
 
-A region configured with the LOCAL_PERSISTENT region shortcut is scoped to its JVM and is not visible to other peer members. The region does not distribute data and operations to other caches. The region writes its state to disk and can recover that state when the member restarts.
+使用LOCAL_PERSISTENT区域快捷方式配置的区域在其JVM范围内，其他对等成员不可见。 该区域不会将数据和操作分发到其他缓存。 该区域将其状态写入磁盘，并且在成员重新启动时可以恢复该状态。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| scope:       | local                |
-| data-policy: | PERSISTENT_REPLICATE |
+| 范围(scope):       | local                |
+| 数据政策(data-policy): | PERSISTENT_REPLICATE |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myLPregion --type=LOCAL_PERSISTENT
@@ -322,9 +324,9 @@ Non-Default Attributes Shared By Hosting Members
 Region | size | 0
 ```
 
-### XML Definition of LOCAL_PERSISTENT
+### XML的定义 - LOCAL_PERSISTENT
 
-```
+```xml
 <region name="myLPregion">
     <region-attributes 
       scope="local" 
@@ -334,27 +336,27 @@ Region | size | 0
 
 ## LOCAL_PERSISTENT_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the LOCAL_PERSISTENT_OVERFLOW region shortcut is scoped to its JVM and is not visible to other peer members. The region does not distribute data and operations to other caches. The region writes its state to disk and can recover that state when the member restarts. The region also removes the values of entries from memory when it detects that the JVM is running low on memory.
+使用LOCAL_PERSISTENT_OVERFLOW区域快捷方式配置的区域在其JVM范围内，其他对等成员不可见。 该区域不会将数据和操作分发到其他缓存。 该区域将其状态写入磁盘，并且在成员重新启动时可以恢复该状态。 当区域检测到JVM的内存不足时，该区域还会从内存中删除条目的值。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| scope:       | local                |
-| data-policy: | PERSISTENT_REPLICATE |
+| 范围(scope):       | local                |
+| 数据政策(data-policy): | PERSISTENT_REPLICATE |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myLPOregion --type=LOCAL_PERSISTENT_OVERFLOW
@@ -379,9 +381,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | overflow-to-disk
 ```
 
-### XML Definition of LOCAL_PERSISTENT_OVERFLOW
+### XML的定义 - LOCAL_PERSISTENT_OVERFLOW
 
-```
+```xml
 <region name="myLPOregion">
    <region-attributes 
         scope="local" 
@@ -396,19 +398,19 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## PARTITION
 
-### Description
+### 描述
 
-A region configured with the PARTITION region shortcut is partitioned across each peer member that created the region.
+使用PARTITION区域快捷方式配置的区域在创建该区域的每个对等成员之间进行分区。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPregion --type=PARTITION
@@ -431,9 +433,9 @@ Non-Default Attributes Shared By Hosting Members
 Region | size | 0
 ```
 
-### XML Definition of PARTITION
+### XML的定义 - PARTITION
 
-```
+```xml
 <region name="myPregion">
     <region-attributes 
       data-policy="partition"/>
@@ -442,26 +444,26 @@ Region | size | 0
 
 ## PARTITION_HEAP_LRU
 
-### Description
+### 描述
 
-A region configured with PARTITION_HEAP_LRU is partitioned across each peer member that created the region. The region destroys entries when it detects that the JVM is running low on memory.
+使用PARTITION_HEAP_LRU配置的区域在创建该区域的每个对等成员之间进行分区。 当该区域检测到JVM的内存不足时，该区域将破坏条目。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | local-destroy       |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | local-destroy       |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPHLregion --type=PARTITION_HEAP_LRU
@@ -486,9 +488,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | local-destroy
 ```
 
-### XML Definition of PARTITION_HEAP_LRU
+### XML的定义 - PARTITION_HEAP_LRU
 
-```
+```xml
 <region name="myPHLregion">
   <region-attributes 
       data-policy="partition">
@@ -504,26 +506,26 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## PARTITION_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the PARTITION_OVERFLOW region shortcut has state that is partitioned across each peer member that creates the region. The region moves the values of entries to disk when it detects that the JVM is running low on memory.
+使用PARTITION_OVERFLOW区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 当区域检测到JVM的内存不足时，该区域会将条目的值移至磁盘。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPOregion --type=PARTITION_OVERFLOW
@@ -548,9 +550,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | overflow-to-disk
 ```
 
-### XML Definition of PARTITION_OVERFLOW
+### XML的定义 - PARTITION_OVERFLOW
 
-```
+```xml
 <region name="myPOregion">
     <region-attributes 
         data-policy="partition">
@@ -564,19 +566,19 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## PARTITION_PERSISTENT
 
-### Description
+### 描述
 
-A region configured with the PARTITION_PERSISTENT region shortcut has state that is partitioned across each peer member that creates the region. The region writes its state to disk and can recover that state when the member restarts.
+使用PARTITION_PERSISTENT区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 该区域将其状态写入磁盘，并且在成员重新启动时可以恢复该状态。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| data-policy: | PERSISTENT_PARTITION |
+| 数据政策(data-policy): | PERSISTENT_PARTITION |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPPregion --type=PARTITION_PERSISTENT
@@ -599,9 +601,9 @@ Non-Default Attributes Shared By Hosting Members
 Region | size | 0
 ```
 
-### XML Definition of PARTITION_PERSISTENT
+### XML的定义 - PARTITION_PERSISTENT
 
-```
+```xml
 <region name="myPPregion">
     <region-attributes 
      data-policy="persistent-partition"/>
@@ -610,26 +612,26 @@ Region | size | 0
 
 ## PARTITION_PERSISTENT_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the PARTITION_PERSISTENT_OVERFLOW region shortcut has state that is partitioned across each peer member that creates the region. The region writes its state to disk and can recover that state when the member restarts. The region removes the values of entries from memory when it detects that the JVM is running low on memory.
+使用PARTITION_PERSISTENT_OVERFLOW区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 该区域将其状态写入磁盘，并且在成员重新启动时可以恢复该状态。 当区域检测到JVM的内存不足时，该区域将从内存中删除条目的值。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| data-policy: | PERSISTENT_PARTITION |
+| 数据政策(data-policy): | PERSISTENT_PARTITION |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPPOregion --type=PARTITION_PERSISTENT_OVERFLOW
@@ -654,9 +656,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | overflow-to-disk
 ```
 
-### XML Definition of PARTITION_PERSISTENT_OVERFLOW
+### XML的定义 - PARTITION_PERSISTENT_OVERFLOW
 
-```
+```xml
 <region name="myPPOregion">
    <region-attributes 
         data-policy="persistent-partition">
@@ -670,25 +672,25 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## PARTITION_PROXY
 
-### Description
+### 描述
 
-A region configured with the PARTITION_PROXY region shortcut has no local state and forwards all operations to a peer region configured with the PARTITION shortcut or a peer region configured with the PARTITION_PERSISTENT shortcut.
+使用PARTITION_PROXY区域快捷方式配置的区域没有本地状态，并将所有操作转发到使用PARTITION快捷方式配置的对等区域或使用PARTITION_PERSISTENT快捷方式配置的对等区域。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
 | local-max-memory: | 0    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPPXYregion --type=PARTITION_PROXY
@@ -712,9 +714,9 @@ Region    | size             | 0
 Partition | local-max-memory | 0
 ```
 
-### XML Definition of PARTITION_PROXY
+### XML的定义 - PARTITION_PROXY
 
-```
+```xml
 <region name="myPPXYregion">
     <region-attributes 
         data-policy="partition">
@@ -726,26 +728,26 @@ Partition | local-max-memory | 0
 
 ## PARTITION_PROXY_REDUNDANT
 
-### Description
+### 描述
 
-A region configured with the PARTITION_PROXY_REDUNDANT region shortcut has no local state and forwards all operations to a peer region configured with the PARTITION_REDUNDANT shortcut or a peer region configured with the PARTITION_REDUNDANT_PERSISTENT shortcut.
+使用PARTITION_PROXY_REDUNDANT区域快捷方式配置的区域没有本地状态，并将所有操作转发到使用PARTITION_REDUNDANT快捷方式配置的对等区域或使用PARTITION_REDUNDANT_PERSISTENT快捷方式配置的对等区域。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
-| redundant-copies: | 1    |
+| redundant-copies(冗余副本): | 1    |
 | local-max-memory  | 0    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPPRregion --type=PARTITION_PROXY_REDUNDANT
@@ -770,9 +772,9 @@ Partition | redundant-copies | 1
           | local-max-memory | 0
 ```
 
-### XML Definition of PARTITION_PROXY_REDUNDANT
+### XML的定义 - PARTITION_PROXY_REDUNDANT
 
-```
+```xml
 <region name="myPPRregion">
     <region-attributes 
        data-policy="partition">
@@ -785,25 +787,25 @@ Partition | redundant-copies | 1
 
 ## PARTITION_REDUNDANT
 
-### Description
+### 描述
 
-A region configured with the PARTITION_REDUNDANT region shortcut has state that is partitioned across each peer member that creates the region. The region maintains an extra copy of the data in memory.
+使用PARTITION_REDUNDANT区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 该区域在内存中维护数据的额外副本。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
-| redundant-copies: | 1    |
+| redundant-copies(冗余副本): | 1    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPRregion --type=PARTITION_REDUNDANT
@@ -827,9 +829,9 @@ Region    | size             | 0
 Partition | redundant-copies | 1
 ```
 
-### XML Definition of PARTITION_REDUNDANT
+### XML的定义 - PARTITION_REDUNDANT
 
-```
+```xml
 <region name="myPRregion">
    <region-attributes 
        data-policy="partition">
@@ -841,32 +843,32 @@ Partition | redundant-copies | 1
 
 ## PARTITION_REDUNDANT_HEAP_LRU
 
-### Description
+### 描述
 
-A region configured with the PARTITION_REDUNDANT_HEAP_LRU region shortcut has state that is partitioned across each peer member that creates the region. The region keeps an extra copy of the data in memory. The region destroys entries when it detects that the JVM is running low on memory.
+使用PARTITION_REDUNDANT_HEAP_LRU区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 该区域将额外的数据副本保存在内存中。 当该区域检测到JVM的内存不足时，该区域将破坏条目。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | local-destroy       |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | local-destroy       |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
-| redundant-copies: | 1    |
+| redundant-copies(冗余副本): | 1    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPRHLregion --type=PARTITION_REDUNDANT_HEAP_LRU
@@ -892,9 +894,9 @@ Eviction  | eviction-algorithm | lru-heap-percentage
 Partition | redundant-copies   | 1
 ```
 
-### XML Definition of PARTITION_REDUNDANT_HEAP_LRU
+### XML的定义 - PARTITION_REDUNDANT_HEAP_LRU
 
-```
+```xml
 <region name="myPRHLregion">
     <region-attributes 
         data-policy="partition">
@@ -912,32 +914,32 @@ Partition | redundant-copies   | 1
 
 ## PARTITION_REDUNDANT_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the PARTITION_REDUNDANT_OVERFLOW region shortcut has state that is partitioned across each peer member that creates the region. The region keeps an extra copy of the data in memory. The region moves the values of entries to disk when it detects that the JVM is running low on memory.
+使用PARTITION_REDUNDANT_OVERFLOW区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 该区域将额外的数据副本保存在内存中。 当区域检测到JVM的内存不足时，该区域会将条目的值移至磁盘。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |           |
 | :----------- | :-------- |
-| data-policy: | PARTITION |
+| 数据政策(data-policy): | PARTITION |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
-| redundant-copies: | 1    |
+| redundant-copies(冗余副本): | 1    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPROregion --type=PARTITION_REDUNDANT_OVERFLOW
@@ -963,9 +965,9 @@ Eviction  | eviction-algorithm | lru-heap-percentage
 Partition | redundant-copies   | 1
 ```
 
-### XML Definition of PARTITION_REDUNDANT_OVERFLOW
+### XML的定义 - PARTITION_REDUNDANT_OVERFLOW
 
-```
+```xml
 <region name="myPROregion">
    <region-attributes 
        data-policy="partition">
@@ -981,25 +983,25 @@ Partition | redundant-copies   | 1
 
 ## PARTITION_REDUNDANT_PERSISTENT
 
-### Description
+### 描述
 
-A region configured with the PARTITION_REDUNDANT_PERSISTENT region shortcut has state that is partitioned across each peer member that creates the region. The region writes its state to disk and recovers its state from disk when the region is created. The region maintains an extra copy of the data in memory.
+使用PARTITION_REDUNDANT_PERSISTENT区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 创建区域时，该区域将其状态写入磁盘，并从磁盘恢复其状态。 该区域在内存中维护数据的额外副本。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| data-policy: | PERSISTENT_PARTITION |
+| 数据政策(data-policy): | PERSISTENT_PARTITION |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
-| redundant-copies: | 1    |
+| redundant-copies(冗余副本): | 1    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myPRPregion --type=PARTITION_REDUNDANT_PERSISTENT
@@ -1023,9 +1025,9 @@ Region    | size             | 0
 Partition | redundant-copies | 1
 ```
 
-### XML Definition of PARTITION_REDUNDANT_PERSISTENT
+### XML的定义 - PARTITION_REDUNDANT_PERSISTENT
 
-```
+```xml
 <region name="myPRPregion">
    <region-attributes 
        data-policy="persistent-partition">
@@ -1037,32 +1039,32 @@ Partition | redundant-copies | 1
 
 ## PARTITION_REDUNDANT_PERSISTENT_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the PARTITION_REDUNDANT_PERSISTENT_OVERFLOW region shortcut has state that is partitioned across each peer member that creates the region. The region writes its state to disk and recovers its state from disk when the region is created. The region maintains an extra copy of the data in memory. The region removes the values of entries from memory when it detects that the JVM is running out of memory.
+使用PARTITION_REDUNDANT_PERSISTENT_OVERFLOW区域快捷方式配置的区域具有在创建该区域的每个对等成员之间划分的状态。 创建区域时，该区域将其状态写入磁盘，并从磁盘恢复其状态。 该区域在内存中维护数据的额外副本。 当该区域检测到JVM内存不足时，将从内存中删除条目的值。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| data-policy: | PERSISTENT_PARTITION |
+| 数据政策(data-policy): | PERSISTENT_PARTITION |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-Partition Attributes
+分区属性
 
 |                   |      |
 | :---------------- | :--- |
-| redundant-copies: | 1    |
+| redundant-copies(冗余副本): | 1    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 create region --name=myPRPOregion --type=PARTITION_REDUNDANT_PERSISTENT_OVERFLOW
@@ -1083,9 +1085,9 @@ Eviction  | eviction-algorithm | lru-heap-percentage
 Partition | redundant-copies   | 1
 ```
 
-### XML Definition of PARTITION_REDUNDANT_PERSISTENT_OVERFLOW
+### XML的定义 - PARTITION_REDUNDANT_PERSISTENT_OVERFLOW
 
-```
+```xml
 <region name="myPRPOregion">
     <region-attributes 
        data-policy="persistent-partition">
@@ -1101,20 +1103,20 @@ Partition | redundant-copies   | 1
 
 ## REPLICATE
 
-### Description
+### 描述
 
-A region configured with the REPLICATE region shortcut has local state that is kept in sync with all other peer regions configured with a REPLICATE data policy.
+配置了REPLICATE区域快捷方式的区域具有本地状态，该状态与配置了REPLICATE数据策略的所有其他对等区域保持同步。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                 |
 | :----------- | :-------------- |
-| scope:       | distributed-ack |
-| data-policy: | REPLICATE       |
+| 范围(scope):       | distributed-ack |
+| 数据政策(data-policy): | REPLICATE       |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myRregion --type=REPLICATE
@@ -1129,9 +1131,9 @@ server1 | Region "/myRregion" created on "server1"
 server2 | Region "/myRregion" created on "server2"
 ```
 
-### XML Definition of REPLICATE
+### XML的定义 - REPLICATE
 
-```
+```xml
 <region name="myRregion">
     <region-attributes 
        scope="distributed-ack" 
@@ -1141,32 +1143,32 @@ server2 | Region "/myRregion" created on "server2"
 
 ## REPLICATE_HEAP_LRU
 
-### Description
+### 描述
 
-A region configured with the REPLICATE_HEAP_LRU region shortcut has local state that is kept in sync with all other peer regions configured with a REPLICATE data policy. The region destroys entries when it detects that the JVM is running low on memory.
+使用REPLICATE_HEAP_LRU区域快捷方式配置的区域具有本地状态，该状态与使用REPLICATE数据策略配置的所有其他对等区域保持同步。 当该区域检测到JVM的内存不足时，该区域将破坏条目。
 
-**Note:** Normally, you cannot have a `local-destroy` eviction policy on replicated regions. However, the REPLICATE_HEAP_LRU region is not the same as other replicated regions. This region is preloaded and remains in synch by registering interest in the keys of its peer’s replicated regions.
+**注意:** 通常，在复制区域上不能有`local-destroy`驱逐策略。 但是，REPLICATE_HEAP_LRU区域与其他复制的区域不同。 该区域已预加载，并且通过在对等方复制区域的键中注册兴趣来保持同步。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                 |
 | :----------- | :-------------- |
-| scope:       | distributed-ack |
-| data-policy: | PRELOADED       |
+| 范围(scope):       | distributed-ack |
+| 数据政策(data-policy): | PRELOADED       |
 
-Eviction Attributes
+驱逐属性
 
-| eviction-algorithm: | lru-heap-percentage                                          |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage                                          |
 | ------------------- | ------------------------------------------------------------ |
-| eviction-action:    | local-destroy**Note:**Normally, you cannot have a `local-destroy` eviction policy on replicated regions. However, the REPLICATE_HEAP_LRU region is not the same as other replicated regions. This region is preloaded and remains in synch by registering interest in the keys of its peer’s replicated regions. |
+| 驱逐行动(eviction-action):    | local-destroy<br/>**注意:** 通常，在复制区域上不能有`local-destroy`驱逐策略。 但是，REPLICATE_HEAP_LRU区域与其他复制的区域不同。 该区域已预加载，并且通过在对等方复制区域的键中注册兴趣来保持同步。 |
 
 |                  |      |
 | :--------------- | :--- |
 | interest-policy: | all  |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myRHLregion --type=REPLICATE_HEAP_LRU
@@ -1191,9 +1193,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | local-destroy
 ```
 
-### XML Definition of REPLICATE_HEAP_LRU
+### XML的定义 - REPLICATE_HEAP_LRU
 
-```
+```xml
 <region name="myRHLregion">
     <region-attributes 
        scope="distributed-ack" 
@@ -1212,27 +1214,27 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## REPLICATE_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the REPLICATE_OVERFLOW region shortcut has local state that is kept in sync with all other peer regions configured with a REPLICATE data policy.
+使用REPLICATE_OVERFLOW区域快捷方式配置的区域具有本地状态，该状态与配置了REPLICATE数据策略的所有其他对等区域保持同步。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                 |
 | :----------- | :-------------- |
-| scope:       | distributed-ack |
-| data-policy: | REPLICATE       |
+| 范围(scope):       | distributed-ack |
+| 数据政策(data-policy): | REPLICATE       |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myROregion --type=REPLICATE_OVERFLOW
@@ -1257,9 +1259,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | overflow-to-disk
 ```
 
-### XML Definition of REPLICATE_OVERFLOW
+### XML的定义 - REPLICATE_OVERFLOW
 
-```
+```xml
 <region name="myROregion">
     <region-attributes 
        scope="distributed-ack" 
@@ -1274,20 +1276,20 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## REPLICATE_PERSISTENT
 
-### Description
+### 描述
 
-A region configured with the REPLICATE_PERSISTENT region shortcut has local state that is kept in sync with all other peer regions that are configured with a REPLICATE data policy. The region writes its state to disk and recovers that state when the member restarts.
+使用REPLICATE_PERSISTENT区域快捷方式配置的区域具有本地状态，该状态与配置了REPLICATE数据策略的所有其他对等区域保持同步。 该区域将其状态写入磁盘，并在成员重新启动时恢复该状态。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| scope:       | distributed-ack      |
-| data-policy: | PERSISTENT_REPLICATE |
+| 范围(scope):       | distributed-ack      |
+| 数据政策(data-policy): | PERSISTENT_REPLICATE |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myRPregion --type=REPLICATE_PERSISTENT
@@ -1310,9 +1312,9 @@ Non-Default Attributes Shared By Hosting Members
 Region | size | 0
 ```
 
-### XML Definition of REPLICATE_PERSISTENT
+### XML的定义 - REPLICATE_PERSISTENT
 
-```
+```xml
 <region name="myRPregion">
     <region-attributes 
         scope="distributed-ack" 
@@ -1322,27 +1324,27 @@ Region | size | 0
 
 ## REPLICATE_PERSISTENT_OVERFLOW
 
-### Description
+### 描述
 
-A region configured with the REPLICATE_PERSISTENT_OVERFLOW region shortcut has local state that is kept in sync with all other peer regions configured with a REPLICATE data policy. The region writes its state to disk and recovers that state when the member restarts. The region removes the values of entries from memory when it detects that the JVM is running low on memory.
+使用REPLICATE_PERSISTENT_OVERFLOW区域快捷方式配置的区域具有本地状态，该状态与使用REPLICATE数据策略配置的所有其他对等区域保持同步。 该区域将其状态写入磁盘，并在成员重新启动时恢复该状态。 当区域检测到JVM的内存不足时，该区域将从内存中删除条目的值。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                      |
 | :----------- | :------------------- |
-| scope:       | distributed-ack      |
-| data-policy: | PERSISTENT_REPLICATE |
+| 范围(scope):       | distributed-ack      |
+| 数据政策(data-policy): | PERSISTENT_REPLICATE |
 
-Eviction Attributes
+驱逐属性
 
 |                     |                     |
 | :------------------ | :------------------ |
-| eviction-algorithm: | lru-heap-percentage |
-| eviction-action:    | overflow-to-disk    |
+| 驱逐算法(eviction-algorithm): | lru-heap-percentage |
+| 驱逐行动(eviction-action):    | overflow-to-disk    |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myRPOregion --type=REPLICATE_PERSISTENT
@@ -1371,9 +1373,9 @@ Eviction | eviction-algorithm | lru-heap-percentage
          | eviction-action    | overflow-to-disk
 ```
 
-### XML Definition of REPLICATE_PERSISTENT_OVERFLOW
+### XML的定义 - REPLICATE_PERSISTENT_OVERFLOW
 
-```
+```xml
  <region name="myRPOregion">
     <region-attributes 
        scope="distributed-ack" 
@@ -1388,20 +1390,20 @@ Eviction | eviction-algorithm | lru-heap-percentage
 
 ## REPLICATE_PROXY
 
-### Description
+### 描述
 
-A region configured with the REPLICATE_PROXY region shortcut has no local state and forwards all operations to a peer region configured with the [REPLICATE](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_wq4_jpy_lk) or [REPLICATE_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_emp_jpy_lk) region shortcut.
+使用REPLICATE_PROXY区域快捷方式配置的区域没有本地状态，并将所有操作转发到使用[REPLICATE](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_wq4_jpy_lk)或[REPLICATE_PERSISTENT](https://geode.apache.org/docs/guide/17/reference/topics/region_shortcuts_reference.html#reference_emp_jpy_lk)区域快捷方式。
 
-### Default Attributes
+### 默认属性
 
-Region Attributes
+区域属性
 
 |              |                 |
 | :----------- | :-------------- |
-| scope:       | distributed-ack |
-| data-policy: | EMPTY           |
+| 范围(scope):       | distributed-ack |
+| 数据政策(data-policy): | EMPTY           |
 
-### gfsh Command Example
+### gfsh命令示例
 
 ```
 gfsh>create region --name=myRPXYregion --type=REPLICATE_PROXY
@@ -1424,9 +1426,9 @@ Non-Default Attributes Shared By Accessor Members
 Region | size | 0
 ```
 
-### XML Definition of REPLICATE_PROXY
+### XML的定义 - REPLICATE_PROXY
 
-```
+```xml
 <region name="myRPXYregion">
     <region-attributes 
         scope="distributed-ack" 
