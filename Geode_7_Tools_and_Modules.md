@@ -1572,36 +1572,36 @@ alter runtime [--members=value(,value)*] [--groups=value(,value)*]
 
 **Parameters, alter runtime**
 
-| 名称                      | 描述                                                  | 默认值                                                |
-| :------------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| –members                  | 要在运行时更改其配置的成员的名称或ID。 如果未指定此参数，则会使用群集配置服务为所有群集成员修改配置属性。 | 如果未指定，则使用群集配置服务的所有成员 |
-| –groups                   | 要更改其成员的运行时配置的组的名称。 如果未指定此参数，则会使用群集配置服务为所有群集成员修改配置属性。 | 如果未指定，则使用群集配置服务的所有成员 |
-| –archive-disk-space-limit | 归档磁盘空间限制。 组合的所有非活动统计归档文件的最大大小（以兆字节为单位）。 如果超出此限制，则会删除非活动归档文件，最先删除，直到总大小在限制范围内。 如果设置为零，则磁盘空间使用不受限制。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                                            |
-| –archive-file-size-limit  | 存档文件大小限制。 单个统计存档文件的最大大小（以兆字节为单位）。 超过此限制后，将创建新的统计存档文件，并且当前存档文件将变为非活动状态。 如果设置为零，则文件大小不受限制。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                                            |
-| –log-disk-space-limit     | 记录磁盘空间限制。 所有非活动日志文件的最大大小（以兆字节为单位）。 如果超出此限制，则会删除非活动日志文件，这是最早的，直到总大小在限制范围内。 如果设置为零，则磁盘空间使用不受限制。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                                            |
-| –log-file-size-limit      | 日志文件大小限制。 日志文件关闭之前的最大大小（兆字节），并且日志记录将滚动到新的（子）日志文件。 如果设置为零，则禁用日志滚动。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                                            |
-| –loglevel                 | 新的日志级别。 此选项是必需的，您必须指定一个值。 有效值包括:`ALL`， `TRACE`， `DEBUG`，`INFO`，`WARN`，`ERROR`，`FATAL`，`OFF`。 | INFO                                                         |
-| –statistic-archive-file   | 正在运行的系统成员写入统计样本的文件。 例如:“StatisticsArchiveFile.gfs”。 必须定义为将归档存储到文件。 将`.gz`后缀添加到文件名会导致它被压缩。 请参阅[统计](https://geode.apache.org/docs/guide/17/managing/statistics/chapter_overview.html)。 | *not set*                                                    |
-| –statistic-sample-rate    | 统计抽样率。 有效值为（以毫秒为单位）:100 - 60000.请参阅[统计](https://geode.apache.org/docs/guide/17/managing/statistics/chapter_overview.html)。 | 1000                                                         |
-| –enable-statistics        | 是否应启用统计抽样。 指定`--statistic-archive-file`将统计信息存储到文件中。 有效值为:`true`和`false`。 请参阅[统计](https://geode.apache.org/docs/guide/17/managing/statistics/chapter_overview.html)。 | false                                                        |
-| –copy-on-read             | 对或错。 设置高速缓存读取操作的“读取时复制”功能。 请参阅[安全条目修改](https://geode.apache.org/docs/guide/17/basic_config/data_entries_custom_classes/managing_data_entries.html#managing_data_entries__section_A0E0F889AC344EFA8DF304FD64418809)。 | false                                                        |
-| –lock-lease               | 设置此缓存获取的分布式锁定租约的长度（以秒为单位）。 请参阅[设置缓存超时](https://geode.apache.org/docs/guide/17/managing/monitor_tune/performance_controls_setting_cache_timeouts.html#perf)。 | 120                                                          |
-| –lock-timeout             | 设置高速缓存操作在超时之前可等待以获取分布式锁定租约的秒数。 请参阅[设置缓存超时](https://geode.apache.org/docs/guide/17/managing/monitor_tune/performance_controls_setting_cache_timeouts.html#perf)。 | 60                                                           |
-| –message-sync-interval    | 设置主缓存服务器节点将消息发送到所有辅助缓存服务器节点的频率（以秒为单位），以删除已从队列调度的事件。 请参阅[更改服务器队列同步频率](https://geode.apache.org/docs/guide/17/developing/events/ha_event_messaging_whats_next.html#ha_event_messaging_whats_next__section_741052B413F24F47A14F5B7D7955F0AA)。 | 1                                                            |
-| –search-timeout           | 设置缓存获取操作可用于搜索值的秒数。 请参阅[设置缓存超时](https://geode.apache.org/docs/guide/17/managing/monitor_tune/performance_controls_setting_cache_timeouts.html#perf)。 | 300                                                          |
+| 名称                       | 描述                                                         | 默认值                                   |
+| :------------------------- | :----------------------------------------------------------- | :--------------------------------------- |
+| --members                  | 要在运行时更改其配置的成员的名称或ID。 如果未指定此参数，则会使用群集配置服务为所有群集成员修改配置属性。 | 如果未指定，则使用群集配置服务的所有成员 |
+| --groups                   | 要更改其成员的运行时配置的组的名称。 如果未指定此参数，则会使用群集配置服务为所有群集成员修改配置属性。 | 如果未指定，则使用群集配置服务的所有成员 |
+| --archive-disk-space-limit | 归档磁盘空间限制。 组合的所有非活动统计归档文件的最大大小（以兆字节为单位）。 如果超出此限制，则会删除非活动归档文件，最先删除，直到总大小在限制范围内。 如果设置为零，则磁盘空间使用不受限制。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                        |
+| --archive-file-size-limit  | 存档文件大小限制。 单个统计存档文件的最大大小（以兆字节为单位）。 超过此限制后，将创建新的统计存档文件，并且当前存档文件将变为非活动状态。 如果设置为零，则文件大小不受限制。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                        |
+| --log-disk-space-limit     | 记录磁盘空间限制。 所有非活动日志文件的最大大小（以兆字节为单位）。 如果超出此限制，则会删除非活动日志文件，这是最早的，直到总大小在限制范围内。 如果设置为零，则磁盘空间使用不受限制。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                        |
+| --log-file-size-limit      | 日志文件大小限制。 日志文件关闭之前的最大大小（兆字节），并且日志记录将滚动到新的（子）日志文件。 如果设置为零，则禁用日志滚动。 有效值为（以兆字节为单位）:0  -  1000000。 | 0                                        |
+| --log-level                | 新的日志级别。 此选项是必需的，您必须指定一个值。 有效值包括:`ALL`， `TRACE`， `DEBUG`，`INFO`，`WARN`，`ERROR`，`FATAL`，`OFF`。 | INFO                                     |
+| --statistic-archive-file   | 正在运行的系统成员写入统计样本的文件。 例如:“StatisticsArchiveFile.gfs”。 必须定义为将归档存储到文件。 将`.gz`后缀添加到文件名会导致它被压缩。 请参阅[统计](https://geode.apache.org/docs/guide/17/managing/statistics/chapter_overview.html)。 | *not set*                                |
+| --statistic-sample-rate    | 统计抽样率。 有效值为（以毫秒为单位）:100 - 60000.请参阅[统计](https://geode.apache.org/docs/guide/17/managing/statistics/chapter_overview.html)。 | 1000                                     |
+| --enable-statistics        | 是否应启用统计抽样。 指定`--statistic-archive-file`将统计信息存储到文件中。 有效值为:`true`和`false`。 请参阅[统计](https://geode.apache.org/docs/guide/17/managing/statistics/chapter_overview.html)。 | false                                    |
+| --copy-on-read             | 对或错。 设置高速缓存读取操作的“读取时复制”功能。 请参阅[安全条目修改](https://geode.apache.org/docs/guide/17/basic_config/data_entries_custom_classes/managing_data_entries.html#managing_data_entries__section_A0E0F889AC344EFA8DF304FD64418809)。 | false                                    |
+| --lock-lease               | 设置此缓存获取的分布式锁定租约的长度（以秒为单位）。 请参阅[设置缓存超时](https://geode.apache.org/docs/guide/17/managing/monitor_tune/performance_controls_setting_cache_timeouts.html#perf)。 | 120                                      |
+| --lock-timeout             | 设置高速缓存操作在超时之前可等待以获取分布式锁定租约的秒数。 请参阅[设置缓存超时](https://geode.apache.org/docs/guide/17/managing/monitor_tune/performance_controls_setting_cache_timeouts.html#perf)。 | 60                                       |
+| --message-sync-interval    | 设置主缓存服务器节点将消息发送到所有辅助缓存服务器节点的频率（以秒为单位），以删除已从队列调度的事件。 请参阅[更改服务器队列同步频率](https://geode.apache.org/docs/guide/17/developing/events/ha_event_messaging_whats_next.html#ha_event_messaging_whats_next__section_741052B413F24F47A14F5B7D7955F0AA)。 | 1                                        |
+| --search-timeout           | 设置缓存获取操作可用于搜索值的秒数。 请参阅[设置缓存超时](https://geode.apache.org/docs/guide/17/managing/monitor_tune/performance_controls_setting_cache_timeouts.html#perf)。 | 300                                      |
 
 
 
 **示例命令:**
 
 ```bash
-alter runtime --members=server1 --loglevel=WARN --enable-statistics=true
+alter runtime --members=server1 --log-level=WARN --enable-statistics=true
 ```
 
 **样本输出:**
 
 ```bash
-gfsh>alter runtime --members=server1 --loglevel=WARN --enable-statistics=true
+gfsh>alter runtime --members=server1 --log-level=WARN --enable-statistics=true
 Runtime configuration altered successfully for the following member(s)
 192.0.2.0(server1:240)<v1>:64871
 ```
@@ -6273,56 +6273,56 @@ start server --name=value [--assign-buckets(=value)] [--bind-address=value]
 
 **参数，启动服务器**
 
-| 名称                              | 描述                                                  | 默认值                                                |
+| 名称                              | 描述                                                         | 默认值                                                       |
 | :-------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| --name                            | 此服务器的成员名称。 如果未指定，gfsh将生成随机名称。 |                                                              |
-| --assign-buckets                  | 是否在服务器启动时将桶分配给缓存的分区区域。 | false                                                        |
-| --bind-address                    | 服务器绑定的IP地址。            | 绑定到所有本地地址                                 |
-| --cache-xml-file                  | 指定用于在创建缓存时初始化缓存的XML文件或资源的名称。 |                                                              |
+| --name                            | 此服务器的成员名称。 如果未指定，gfsh将生成随机名称。        |                                                              |
+| --assign-buckets                  | 是否在服务器启动时将桶分配给缓存的分区区域。                 | false                                                        |
+| --bind-address                    | 服务器绑定的IP地址。                                         | 绑定到所有本地地址                                           |
+| --cache-xml-file                  | 指定用于在创建缓存时初始化缓存的XML文件或资源的名称。        |                                                              |
 | --classpath                       | 应用程序类在核心jar文件之后添加到服务器的CLASSPATH。 有关详细信息，请参阅[设置CLASSPATH](https://geode.apache.org/docs/guide/17/getting_started/setup_classpath.html)。 |                                                              |
 | --include-system-classpath        | 如果为true，则在服务器的CLASSPATH上包含System CLASSPATH，因为默认情况下不包含System CLASSPATH。 如果指定没有值，则该值设置为true。 | false                                                        |
 | --disable-default-server          | W除此之外，默认情况下将启动缓存服务器。 如果指定的参数没有值，则该值设置为true。 如果设置为true，则缓存服务器充当对等方。 | false                                                        |
-| --disable-exit-when-out-of-memory | 发生OutOfMemoryError时阻止JVM退出。 | false                                                        |
-| --enable-time-statistics          | 是否打开Geode操作收集其他基于时间的统计信息。 | true                                                         |
+| --disable-exit-when-out-of-memory | 发生OutOfMemoryError时阻止JVM退出。                          | false                                                        |
+| --enable-time-statistics          | 是否打开Geode操作收集其他基于时间的统计信息。                | true                                                         |
 | --properties-file                 | `gemfire.properties`文件，用于配置服务器的集群。 文件的路径可以是gfsh工作目录的绝对路径或相对路径。 |                                                              |
 | --security-properties-file        | `gfsecurity.properties`文件，用于在集群中配置服务器的安全配置。 文件的路径可以是gfsh目录的绝对路径或相对路径。 |                                                              |
-| --groups                          | 缓存服务器的组名称。                 |                                                              |
-| --force                           | 是否允许覆盖先前高速缓存服务器运行的PID文件。 | false                                                        |
-| --locators                        | 设置高速缓存服务器用于加入适当的Geode集群的定位器列表。 |                                                              |
-| --locator-wait-time               | 设置服务器在放弃之前等待定位器在启动期间可用的秒数。 | 0                                                            |
+| --groups                          | 缓存服务器的组名称。                                         |                                                              |
+| --force                           | 是否允许覆盖先前高速缓存服务器运行的PID文件。                | false                                                        |
+| --locators                        | 设置高速缓存服务器用于加入适当的Geode集群的定位器列表。      |                                                              |
+| --locator-wait-time               | 设置服务器在放弃之前等待定位器在启动期间可用的秒数。         | 0                                                            |
 | --log-level                       | 设置记录到Cache Server日志文件的输出级别。 日志级别的可能值包括：`ALL，TRACE，DEBUG，INFO，WARN，ERROR，FATAL，OFF`。 |                                                              |
 | --mcast-address                   | 用于绑定UDP套接字以进行多播联网的IP地址或主机名，以便缓存服务器可以找到Geode集群中的其他成员。 如果mcast-port为零，则忽略mcast-address。 |                                                              |
 | --mcast-port                      | 设置用于多播联网的端口，以便缓存服务器可以找到Geode群集的其他成员。 零值禁用mcast。 |                                                              |
 | --memcached-port                  | 如果指定且非零，则设置嵌入式Gemcached服务器的端口号并启动Gemcached服务器。 |                                                              |
 | --memcached-protocol              | 设置嵌入式Gemcached服务器使用的协议。 有效值为`BINARY`和`ASCII`。如果省略此属性，则使用ASCII协议。 |                                                              |
-| --server-bind-address             | 覆盖此服务器将侦听客户端连接的`bind-address`。 在多宿主服务器环境中设置此选项以区分与客户端的通信。 设置空字符串（“”）的值使用`bind-address`的值。 | `bind-address`的值                                      |
-| --server-port                     | 服务器端口将侦听客户端连接。       | 40404                                                        |
+| --server-bind-address             | 覆盖此服务器将侦听客户端连接的`bind-address`。 在多宿主服务器环境中设置此选项以区分与客户端的通信。 设置空字符串（“”）的值使用`bind-address`的值。 | `bind-address`的值                                           |
+| --server-port                     | 服务器端口将侦听客户端连接。**译者注: 如果是0,就随机选择一个可用端口.** | 40404                                                        |
 | --spring-xml-location             | 指定用于引导和配置Geode Server的Spring XML配置文件的位置。 此配置文件可以存在于CLASSPATH（默认）或Spring的Resource（Loader）位置说明符支持的任何位置（例如，classpath:，file：等）。 ResourceLoader在[Spring文档](http://docs.spring.io/spring/docs/4.0.9.RELEASE/spring-framework-reference/htmlsingle/#resources-resourceloader)中描述。 |                                                              |
-| --rebalance                       | 是否在Geode集群中启动重新平衡。    | false                                                        |
-| --dir                             | 指定运行服务器的目录。此目录将写入您启动`gfsh`的位置。| 如果未指定，则以服务器命名该目录。   |
+| --rebalance                       | 是否在Geode集群中启动重新平衡。                              | false                                                        |
+| --dir                             | 指定运行服务器的目录。此目录将写入您启动`gfsh`的位置。       | 如果未指定，则以服务器命名该目录。                           |
 | --statistic-archive-file          | 写入统计样本的文件。 例如：“StatisticsArchiveFile.gfs”。 必须定义为将归档存储到文件。 空字符串（默认）禁用统计信息存档。 | *not set*                                                    |
 | --initial-heap                    | 堆的初始大小，格式与JVM -Xms参数相同。**注意:** 如果使用`--J=-Xms` 和`--J=-Xmx` JVM属性而不是`--initial-heap`和`--max-heap`，那么Geode不使用默认的JVM资源管理属性。 如果使用JVM属性，则必须手动为驱逐，垃圾收集，堆百分比等指定所有属性。 |                                                              |
 | --max-heap                        | 堆的最大大小，格式与JVM -Xmx参数相同。**注意:** 如果使用`--J=-Xms` 和`--J=-Xmx` JVM属性而不是`--initial-heap`和`--max-heap`，那么Geode不使用默认的JVM资源管理属性。 如果使用JVM属性，则必须手动为驱逐，垃圾收集，堆百分比等指定所有属性。. |                                                              |
 | --J                               | 参数传递给运行缓存服务器的JVM。 例如，`--J=-Dfoo.bar=true`会将属性“foo.bar”设置为“true”。如果要传递的参数包含空格或逗号，请将选项括在单引号中。 |                                                              |
 | --use-cluster-configuration       | 指定服务器是否从定位器请求群集配置。 请参见[群集配置服务概述](https://geode.apache.org/docs/guide/17/configuring/cluster_config/gfsh_persist.html)。 | true                                                         |
-| --critical-heap-percentage        | 设置堆的百分比等于或高于该百分比，由于垃圾收集暂停或内存不足异常，缓存被认为有可能无法运行。 超过阈值，需要堆空间的操作将抛出一个`LowMemoryException`。 此功能需要额外的VM标志才能正常执行; 你必须设置`--initial-heap`和`--max-heap`或相应的JVM属性来使用这个阈值。 您还必须将`--max-heap`和`--initial-heap`设置为相同的值。 | 0 (没有强制执行关键堆阈值)                      |
-| --critical-off-heap-percentage    | 由于内存不足异常，高速缓存被认为有可能无法运行的危险时使用的堆外内存百分比。 超过阈值，需要堆空间的操作将抛出一个`LowMemoryException`。 | 0 (没有严格的堆外阈值强制执行)                  |
+| --critical-heap-percentage        | 设置堆的百分比等于或高于该百分比，由于垃圾收集暂停或内存不足异常，缓存被认为有可能无法运行。 超过阈值，需要堆空间的操作将抛出一个`LowMemoryException`。 此功能需要额外的VM标志才能正常执行; 你必须设置`--initial-heap`和`--max-heap`或相应的JVM属性来使用这个阈值。 您还必须将`--max-heap`和`--initial-heap`设置为相同的值。 | 0 (没有强制执行关键堆阈值)                                   |
+| --critical-off-heap-percentage    | 由于内存不足异常，高速缓存被认为有可能无法运行的危险时使用的堆外内存百分比。 超过阈值，需要堆空间的操作将抛出一个`LowMemoryException`。 | 0 (没有严格的堆外阈值强制执行)                               |
 | --eviction-heap-percentage        | 设置应在HeapLRU驱逐配置的区域上开始驱逐的堆的百分比。 更改此值可能会导致驱逐立即开始。 在任何给定时间只允许对此属性或关键堆百分比进行一次更改，并且在允许下一次更改之前将完全实现其效果。 此功能需要额外的VM标志才能正常执行; 你必须设置`--initial-heap`和`--max-heap`或相应的JVM属性来使用这个阈值。 您还必须将`--max-heap`和`--initial-heap`设置为相同的值。 | 0，如果没有使用堆eviction配置区域，则将`critical-heap-percentage`设置为非零值，比该值小5%。如果未配置`critical-heap-percentage`，则为80%。 |
 | --eviction-off-heap-percentage    | 在为堆外和HeapLRU驱逐配置的区域上应该开始驱逐的堆外存储器的百分比。 更改此值可能会导致驱逐立即开始。 在任何给定时间，只允许对此属性或关键堆外百分比进行一次更改，并且在允许下一次更改之前将完全实现其效果。 | 0，如果没有区域配置堆驱逐如果`critical-off-heap-percentage`设置为非零值，则比该值小5%。 80%，如果没有配置`critical-off-heap-percentage`。 |
 | --hostname-for-clients            | 设置定位器将为客户端提供的IP地址或主机名。 客户端使用该地址连接到服务器。 当客户端使用不同的地址与服务器连接而不是`bind-address`时，设置此值，因为这些客户端可能与私有云或多宿主环境中的服务器连接。 不指定此选项或将此选项设置为空字符串（“”）会导致将`bind-address`提供给客户端。 |                                                              |
 | --max-connections                 | 设置允许的最大客户端连接数。 达到最大值时，缓存服务器将停止接受连接 |                                                              |
-| --message-time-to-live            | 设置客户端队列中的消息将过期的时间（以秒为单位）。 |                                                              |
-| --max-message-count               | 设置可以在客户端队列中排队的最大消息数。 |                                                              |
+| --message-time-to-live            | 设置客户端队列中的消息将过期的时间（以秒为单位）。           |                                                              |
+| --max-message-count               | 设置可以在客户端队列中排队的最大消息数。                     |                                                              |
 | --max-threads                     | 设置此缓存服务器中允许的最大线程数，以便为客户端请求提供服务。 默认值为0会导致缓存服务器为每个客户端连接专用一个线程。 |                                                              |
 | --socket-buffer-size              | 设置此CacheServer的套接字连接的缓冲区大小（以字节为单位）。 默认值为32768字节。 |                                                              |
 | --lock-memory                     | （仅限Linux）如果为true，则成员的堆和堆外内存将锁定在RAM中，从而阻止它们被分页到磁盘。 您必须增加相关的`ulimit`操作系统资源，以允许操作系统锁定足够大小的内存块。 | false                                                        |
 | --off-heap-memory-size            | 用于存储区域值的整数堆外堆内存。 以千兆字节为单位，后缀为`g`，或者后缀为`m`的兆字节。 例如，使用`--off-heap-memory-size=2g`分配2 GB的堆外空间。 默认值0不使用任何堆外内存。 | 0                                                            |
-| --start-rest-api                  | 如果为true，则启动REST API服务。                      | false                                                        |
+| --start-rest-api                  | 如果为true，则启动REST API服务。                             | false                                                        |
 | --redirect-output                 | 如果为true，则将标准输出和标准错误重定向到服务器日志文件。 如果指定没有值，则该值设置为true。 | false                                                        |
-| --http-service-port               | 指定HTTP服务端口。                             | 7070                                                         |
-| --http-service-bind-address       | 指定HTTP服务绑定到的IP地址。 | 本地主机的地址                             |
+| --http-service-port               | 指定HTTP服务端口。                                           | 7070                                                         |
+| --http-service-bind-address       | 指定HTTP服务绑定到的IP地址。                                 | 本地主机的地址                                               |
 | --user                            | 用于对群集进行身份验证的凭据的用户名。 如果指定，如果未指定`--password`选项，则`gfsh`将提示输入密码。 |                                                              |
-| --password                        | 用于对群集进行身份验证的凭据的密码部分。 |                                                              |
+| --password                        | 用于对群集进行身份验证的凭据的密码部分。                     |                                                              |
 
 **例子**
 
