@@ -29,7 +29,8 @@
 
   需要快速介绍Apache Geode？ 参加这个简短的游览，尝试基本功能。
 
-## 关于 Apache {#关于Apache}
+<a name="1___关于_Apache"></a>
+## 关于 Apache
 
 Apache Geode是一个数据管理平台，可在广泛分布的云架构中提供对数据密集型应用程序的实时，一致的访问。
 
@@ -46,7 +47,8 @@ Geode跨多个进程汇集内存，CPU，网络资源和可选的本地磁盘，
 有关产品功能的更多信息，请参阅 [Apache Geode的主要特点](#Apache Geode的主要特点).
 
 
-## Apache Geode的主要特点 {#ApacheGeode的主要特点}
+<a name="2___Apache_Geode的主要特点"></a>
+## Apache Geode的主要特点
 
 本节总结了主要功能和主要功能。
 
@@ -132,6 +134,7 @@ Geode跨多个进程汇集内存，CPU，网络资源和可选的本地磁盘，
 
 C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需通过SOAP或XML等转换层。 服务器端行为虽然是用Java实现的，但它为C ++和.NET应用程序提供了唯一的本机缓存。 可以在C ++进程堆中管理应用程序对象，并使用对象的常见“线上”表示将其分发到其他进程。 C ++序列化对象可以直接反序列化为等效的Java或C＃对象。 使用一种语言更改业务对象可以在使用其他支持的语言编写的应用程序中触发可靠的通知。
 
+<a name="3___先决条件和安装说明"></a>
 ## 先决条件和安装说明
 
 满足一小部分先决条件的每个Apache Geode主机都可以遵循提供的安装说明。
@@ -153,6 +156,7 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
   本节介绍如何删除Geode。
 
 
+<a name="4____主机要求"></a>
 ### 主机要求
 
 主机必须满足Apache Geode的一系列要求。
@@ -189,6 +193,7 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
 
   有关详细信息，请参阅[禁用TCP SYN Cookie](http://geode.apache.org/docs/guide/17/managing/monitor_tune/disabling_tcp_syn_cookies.html)。
 
+<a name="5____如何安装"></a>
 ### 如何安装
 
 从源代码构建或使用ZIP或TAR发行版在将运行Apache Geode的每台物理和虚拟机上安装Apache Geode。
@@ -312,7 +317,8 @@ C＃，C ++和Java应用程序可以共享应用程序业务对象，而无需�
    ```
 
 
-### 设置CLASSPATH {#设置CLASSPATH}
+<a name="6____设置CLASSPATH"></a>
+### 设置CLASSPATH
 
 本主题描述了Geode进程如何设置其CLASSPATH。
 
@@ -395,13 +401,15 @@ com.mycompany.package.ApplicationWithEmbeddedCache
 
 **注意:** 使用您自己的应用程序更新服务器进程的CLASSPATH的另一种方法是使用`gfsh deploy`命令。 部署应用程序JAR文件将自动更新所有部署目标成员的CLASSPATH。有关详细信息，请参阅[将应用程序JAR部署到Apache Geode成员](http://geode.apache.org/docs/guide/17/configuring/cluster_config/deploying_application_jars.html#concept_4436C021FB934EC4A330D27BD026602C)。
 
+<a name="7____如何卸载"></a>
 ### 如何卸载
 
 本节介绍如何删除Geode。
 
 关闭所有正在运行的Geode进程，然后删除整个目录树。 不需要对Windows注册表项进行其他系统修改或修改。  
 
-## Apache Geode在15分钟或更短时间内完成 {#ApacheGeode在15分钟或更短时间内完成}
+<a name="8___Apache_Geode在15分钟或更短时间内完成"></a>
+## Apache Geode在15分钟或更短时间内完成
 
 需要快速介绍Apache Geode？ 参加这个简短的游览，尝试基本功能。
 

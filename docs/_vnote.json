@@ -80,9 +80,22 @@
             "name": "Geode_8_Apache_Geode_Reference.md",
             "tags": [
             ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-12-11T07:43:16Z",
+            "modified_time": "2019-12-11T07:43:16Z",
+            "name": "01_Geode_Properties_File.md",
+            "tags": [
+            ]
         }
     ],
     "sub_directories": [
+        {
+            "name": "ApacheGeode参考"
+        }
     ],
     "version": "1"
 }

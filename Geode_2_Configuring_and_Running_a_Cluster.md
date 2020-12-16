@@ -60,6 +60,7 @@
 
 
 
+<a name="1___集群配置服务概述"></a>
 ## 集群配置服务概述
 
 Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保存到集群中的定位器，并将配置分发给集群成员。
@@ -172,7 +173,8 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
 如果您不想使用集群配置服务，请启动定位器，并将`--enable-cluster-configuration`参数设置为false，或者不要使用独立定位器。 然后，您需要在所有集群成员上单独配置缓存（通过cache.xml或API）。
 
 
-## 教程 - 创建和使用集群配置 {#教程创建和使用集群配置}
+<a name="2___教程___创建和使用集群配置"></a>
+## 教程 - 创建和使用集群配置
 
 一个简短的演练，使用一台计算机演示如何使用`gfsh`为Geode集群创建集群配置。
 
@@ -493,7 +495,8 @@ Apache Geode集群配置服务将由`gfsh`commands创建的集群配置持久保
     No longer connected to 192.0.2.0[1099].
     ```
 
-## 将应用程序JAR部署到Apache Geode成员 {#将应用程序JAR部署到ApacheGeode成员}
+<a name="3___将应用程序JAR部署到Apache_Geode成员"></a>
+## 将应用程序JAR部署到Apache Geode成员
 
 您可以将应用程序JAR文件动态部署到特定成员或集群中的所有成员。 Geode自动跟踪JAR文件版本; 将已部署的JAR文件自动加载到CLASSPATH; 并自动注册JAR包含的任何函数。
 
@@ -607,6 +610,7 @@ deploy-working-dir=/usr/local/gemfire/deploy
 
 
 
+<a name="4___使用成员组"></a>
 ## 使用成员组
 
 Apache Geode允许您将集群成员组织到逻辑成员组中。
@@ -632,6 +636,7 @@ Apache Geode允许您将集群成员组织到逻辑成员组中。
 
 
 
+<a name="5___导出和导入集群配置"></a>
 ## 导出和导入集群配置
 
 集群配置服务导出和导入使用`gfsh`为整个Apache Geode集群创建的配置。
@@ -675,6 +680,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 请参阅[导入集群配置](http://geode.apache.org/docs/guide/17/tools_modules/gfsh/command-pages/import.html#topic_vnv_grz_ck)。
 
+<a name="6___集群配置文件和故障排除"></a>
 ## 集群配置文件和故障排除
 
 在Geode中使用集群配置服务时，可以检查定位器上`cluster_config`目录中生成的配置文件。 `gfsh`在集群级别和单个组级别保存配置文件。
@@ -732,7 +738,8 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 
 
-## 使用gfsh通过HTTP或HTTPS管理远程集群 {#使用gfsh通过HTTP或HTTPS管理远程集群}
+<a name="7___使用gfsh通过HTTP或HTTPS管理远程集群"></a>
+## 使用gfsh通过HTTP或HTTPS管理远程集群
 
 您可以通过HTTP或HTTPS将`gfsh`连接到远程集群，并使用`gfsh`commands管理集群。
 
@@ -791,6 +798,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 
 
+<a name="8___在没有集群配置服务的情况下部署配置文件"></a>
 ## 在没有集群配置服务的情况下部署配置文件
 
 您可以在系统目录结构或jar文件中部署Apache Geode配置文件。 您可以确定部署配置文件的方式并相应地进行设置。
@@ -815,6 +823,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
   本节提供了在JAR文件中部署配置文件的过程和示例。
 
+<a name="9____部署配置文件的主要步骤"></a>
 ### 部署配置文件的主要步骤
 
 这些是部署配置文件的基本步骤，以及后续章节中的相关详细信息。
@@ -829,6 +838,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 - **gfsecurity.properties**. 一个可选的单独文件，包含与`gemfire.properties`中另外定义的安全相关（`security- *`）设置。 将这些成员属性放入单独的文件允许您限制用户对这些特定设置的访问。 请参阅[Geode属性参考](http://geode.apache.org/docs/guide/17/reference/topics/gemfire_properties.html)。
 - `cache.xml`. 声明性缓存配置文件。 此文件包含缓存，区域和区域条目配置的XML声明。 您还可以使用它来配置磁盘存储，数据库登录凭据，服务器和远程站点位置信息以及套接字信息。 请参阅[cache.xml](http://geode.apache.org/docs/guide/17/reference/topics/chapter_overview_cache_xml.html#cache_xml)。
 
+<a name="10____默认文件规范和搜索位置"></a>
 ### 默认文件规范和搜索位置
 
 每个文件都有一个默认名称，一组文件搜索位置以及可用于覆盖默认值的系统属性。
@@ -857,6 +867,7 @@ import cluster-configuration --zip-file-name=/home/username/configs/myClusterCon
 
 
 
+<a name="11____更改文件规范"></a>
 ### 更改文件规范
 
 您可以在`gemfire.properties`文件和命令行中更改所有文件规范。
@@ -907,7 +918,8 @@ locators=cache-xml-file=/gemfireSamples/examples/dist/cacheRunner/queryPortfolio
 4. 验证jar文件副本是运行时应用程序唯一可见的副本。 Geode在搜索其他位置后搜索`CLASSPATH`，因此这些文件在其他搜索区域中无法使用。
 5. 启动应用程序。 配置文件从jar文件加载。
 
-### 部署配置JAR的示例 {#部署配置JAR的示例}
+<a name="12____部署配置JAR的示例"></a>
+### 部署配置JAR的示例
 
 以下示例在`my.jar`中部署缓存配置文件`myCache.xml`。 以下显示了'my.jar`的内容：
 
@@ -929,6 +941,7 @@ myConfig/myCache.xml
 
 
 
+<a name="13___启动和关闭系统"></a>
 ## 启动和关闭系统
 
 确定正确的启动和关闭过程，并编写启动和关闭脚本。
@@ -1065,7 +1078,8 @@ gfsh>start server --J=-DDistributionManager.DISCONNECT_WAIT=<milliseconds>
 
 
 
-## 运行Geode定位器进程 {#运行Geode定位器进程}
+<a name="14___运行Geode定位器进程"></a>
+## 运行Geode定位器进程
 
 定位器是一个Geode进程，它告诉运行成员所在的新连接成员，并为服务器使用提供负载均衡。
 
@@ -1302,7 +1316,8 @@ gfsh> start locator --name=locator1 --port=9009 --mcast-port=0 \
 
 
 
-## 运行Geode服务器进程 {#运行Geode服务器进程}
+<a name="15___运行Geode服务器进程"></a>
+## 运行Geode服务器进程
 
 Geode服务器是一个作为客户端/服务器系统的长期可配置成员运行的进程。
 
@@ -1455,6 +1470,7 @@ gfsh>stop server --dir=server1
 
 
 
+<a name="16___管理系统输出文件"></a>
 ## 管理系统输出文件
 
 Geode输出文件是可选的，可以变得非常大。 与系统管理员一起确定放置它们的位置，以避免干扰其他系统活动。
@@ -1467,6 +1483,7 @@ Geode包括几种类型的可选输出文件，如下所述。
 
 
 
+<a name="17___防火墙注意事项"></a>
 ## 防火墙注意事项
 
 您可以为涉及防火墙的情况配置和限制端口使用，例如，在客户端 - 服务器或服务器 - 服务器连接之间。
@@ -1479,6 +1496,7 @@ Geode包括几种类型的可选输出文件，如下所述。
 
   确保为防火墙正确配置了端口设置。
 
+<a name="18____防火墙和连接"></a>
 ### 防火墙和连接
 
 请注意在计算机上运行防火墙可能导致的连接问题。
@@ -1496,6 +1514,7 @@ Apache Geode是一个以网络为中心的分布式系统，因此如果您的�
 
 
 
+<a name="19____防火墙和端口"></a>
 ### 防火墙和端口
 
 确保为防火墙正确配置了端口设置。
